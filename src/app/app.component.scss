@@ -1,0 +1,123 @@
+@import './../styles.scss';
+
+.content{
+    height: 100vh;
+    // box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.mat-drawer-container{
+    height: 100%;
+}
+
+.sidenav-container{
+    width: 350px;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: $bgPage;
+    border: none;
+}
+
+.sidenav{
+    background-color: $bgContent;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.logo-container{
+    padding: 16px;
+    border-bottom: 1px solid white;
+    min-height: 56px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+
+mat-toolbar{
+    min-height: 56px;
+    height: 56px;
+    background-color: $bgPage;
+}
+
+.menu-items{
+    margin-block-start: 0;
+    padding-inline-start: 0;
+    li{
+        padding-left: 16px;
+        padding-right: 16px;
+        height: 48px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        cursor: pointer;
+        &:hover{
+            background-color: rgba(0,0,0,0.05);
+        }
+        mat-icon{
+            margin-right: 16px;
+        }
+    }
+}
+
+.action-buttons{
+    width: 100%;
+    text-align: end;
+}
+
+.open-channels, .open-direct-messages{ 
+    margin-bottom: 32px;
+    box-shadow: none !important;
+    border-radius: 40px !important;
+    mat-expansion-panel-header{
+        border-radius: 40px;
+    }
+    mat-panel-title{
+        font-size: 16px;
+        font-weight: 600;
+        mat-icon{
+            margin-right: 16px;
+        }
+    }
+}
+
+.open-direct-messages{
+
+}
+
+.logo-container{
+    mat-icon{
+        transform: scale(2);
+        margin-right: 16px;
+    }
+    span{
+        font-size: 28px;
+    }
+}
+
+.main-content-container{
+    background-color: $bgPage ;
+    padding: 12px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.main-content{
+    padding: 16px 56px;
+    background-color: $bgContent;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.router-container{
+    
+}
+
+.write-message{
+    width: 100%;
+}
