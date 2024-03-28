@@ -1,24 +1,38 @@
-.login-container {
+.main-container {
     height: 100%;
     padding: 64px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
 
-    .logo-container {
+    .header-container {
         display: flex;
+        justify-content: space-between;
         align-items: center;
 
-        >span {
-            font-size: 30px;
-            font-weight: bold;
-            margin-left: 16px;
+        .logo-container {
+            display: flex;
+            align-items: center;
+
+            >span {
+                font-size: 30px;
+                font-weight: bold;
+                margin-left: 16px;
+            }
+        }
+
+        .new-account-container {
+            display: flex;
+            flex-direction: column;
+            text-align: end;
         }
     }
 
-    .new-account-container {
+    .login-container {
+        // height: 80%;
+        padding: 32px;
+        width: 60%;
         display: flex;
         flex-direction: column;
-        text-align: end;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
     }
 }

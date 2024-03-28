@@ -1,12 +1,30 @@
-<div class="login-container">
-    <div class="logo-container">
-        <img src="./../assets/img/logo-header.svg" alt="">
-        <span>DABubble</span>
+<div class="main-container">
+    <div class="header-container">
+        <div class="logo-container">
+            <img src="./../assets/img/logo-header.svg" alt="">
+            <span>DABubble</span>
+        </div>
+
+        <div class="new-account-container">
+            <span>Neu bei DABubble?</span>
+            <span>Konto erstellen</span>
+        </div>
     </div>
 
-    <div class="new-account-container">
-        <span>Neu bei DABubble?</span>
-        <span>Konto erstellen</span>
-    </div>
+    <div class="login-container">
+        <span>Anmeldung</span>
+        <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
 
+        <form>
+            <mat-form-field>
+                <input type="email" matInput [formControl]="emailFormControl" placeholder="E-Mail">
+                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
+                <mat-error>Diese E-Mail-Adresse ist leider ungültig.</mat-error>
+                }
+                @if (emailFormControl.hasError('required')) {
+                <mat-error>Bitte E-Mail-Adresse eingeben.</mat-error>
+                }
+            </mat-form-field>
+        </form>
+    </div>
 </div>
