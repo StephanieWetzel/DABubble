@@ -12,4 +12,5 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 })
 export class LoginComponent {
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  passwordFormControl = new FormControl('', [Validators.required]);
 }

@@ -1,11 +1,20 @@
+@import './../../styles.scss';
+
 .main-container {
     height: 100%;
-    padding: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .header-container {
+        padding: 64px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
 
         .logo-container {
             display: flex;
@@ -35,4 +44,9 @@
         justify-content: center;
         background-color: white;
     }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
 }

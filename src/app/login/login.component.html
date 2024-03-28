@@ -25,6 +25,17 @@
                 <mat-error>Bitte E-Mail-Adresse eingeben.</mat-error>
                 }
             </mat-form-field>
+
+            <mat-form-field>
+                <!-- Hier evtl. noch etwas hinzufügen, das checkt, ob das Passwort vorhanden ist. Wenn nein, kommt neuer Error ("ungültiges Passwort") -->
+                <input type="password" matInput [formControl]="passwordFormControl" placeholder="Passwort">
+                <!-- @if (passwordFormControl.hasError('password') && !passwordFormControl.hasError('required')) {
+                            <mat-error>Diese E-Mail-Adresse ist leider ungültig.</mat-error>
+                            } -->
+                @if (passwordFormControl.hasError('required')) {
+                <mat-error>Bitte Passwort eingeben.</mat-error>
+                }
+            </mat-form-field>
         </form>
     </div>
 </div>
