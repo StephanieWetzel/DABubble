@@ -1,0 +1,68 @@
+@import './../../styles.scss';
+
+section {
+    height: fit-content;
+    width: 100%;
+    background-color: $bgPage;
+    padding-top: 12px;
+    @include dFlex($jc: flex-start);
+}
+
+.logo-container {
+    @include dFlex($jc: flex-start);
+    width: 350px;
+    padding: 0 24px;
+
+    img {
+        height: 70px;
+        width: 70px;
+    }
+
+    span {
+        font-size: 30px;
+        margin-left: 16px;
+    }
+}
+
+.search-and-profile {
+    @include dFlex($jc: space-between);
+    width: 100%;
+    padding: 0 24px;
+
+    .search {
+        @include dFlex($jc: space-between);
+        width: 70%;
+        box-sizing: border-box;
+        background-color: white;
+        border-radius: 42px;
+        padding: 8px 16px;
+        input {
+            font-size: 20px;
+            border: none;
+            outline: none;
+            box-shadow: none;
+            background-color: white;
+            width: 80%;
+        }
+        mat-icon{
+            transform: scale(1.2);
+            color: rgba(0, 0, 0, 0.4);
+        }
+    }
+    .profile{
+        @include dFlex($g:20px);
+        span{
+            font-size: 28px;
+        }
+    }
+}
+
+.search-chat {
+    border-radius: 30px !important;
+    height: fit-content;
+    overflow: hidden;
+}
+
+.mat-mdc-text-field-wrapper {
+    border-radius: 30px !important;
+}
