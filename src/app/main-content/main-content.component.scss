@@ -1,0 +1,63 @@
+@import './../../styles.scss';
+
+.content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-toggle-btn{
+    position: fixed;
+    left: 0;
+    top: 150px;
+    height: 50px;
+    z-index: 2;
+    background-color: rgba(0,0,0,.1);
+}
+
+mat-toolbar{
+    width: 100%;
+    height: fit-content;
+}
+
+app-header{
+    width: 100%;
+}
+
+.mat-drawer-container {
+    height: 100%;
+}
+
+.sidenav-container {
+    width: 350px;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: $bgPage;
+    border: none;
+}
+
+.sidenav {
+    background-color: $bgContent;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.main-content-container {
+    background-color: $bgPage ;
+    padding: 12px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.main-content {
+    padding: 16px 56px;
+    background-color: $bgContent;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.write-message {
+    width: 100%;
+}

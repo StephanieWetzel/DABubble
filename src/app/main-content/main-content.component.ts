@@ -21,7 +21,8 @@ import { HeaderComponent } from '../header/header.component';
         MatExpansionModule, 
         HeaderComponent, 
         RouterOutlet,
-        RouterLink
+        RouterLink,
+        
       ]
 })
 export class MainContentComponent {
