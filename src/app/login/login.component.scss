@@ -1,0 +1,24 @@
+.login-container {
+    height: 100%;
+    padding: 64px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .logo-container {
+        display: flex;
+        align-items: center;
+
+        >span {
+            font-size: 30px;
+            font-weight: bold;
+            margin-left: 16px;
+        }
+    }
+
+    .new-account-container {
+        display: flex;
+        flex-direction: column;
+        text-align: end;
+    }
+}

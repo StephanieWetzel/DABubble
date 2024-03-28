@@ -22,7 +22,7 @@ import { LoginComponent } from './login/login.component';
     MatToolbarModule,
     MatSidenavModule,
     MatExpansionModule,
-    HeaderComponent
+    HeaderComponent,
     LoginComponent
   ],
   templateUrl: './app.component.html',
