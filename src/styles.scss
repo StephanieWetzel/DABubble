@@ -16,6 +16,23 @@ $bgContent: #FFFFFF;
 $bgPage: #ECEEFE;
 // brauchen wir diese Variable hier, wenn wir im body einfach die background-color setzen? Die ist ja für jede Seite gleich oder? - Steffi
 
+@mixin dFlex($jc: center, $ai: center, $g: 0, $fd: row) {
+    display: flex;
+    justify-content: $jc;
+    align-items: $ai;
+    gap: $g;
+    flex-direction: $fd;
+}
+
+.search-and-profile {
+    mat-form-field {
+        .mat-mdc-text-field-wrapper {
+            border-radius: 42px;
+            background: white;
+        }
+    }
+}
+
 
 
 // FONTS
