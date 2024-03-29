@@ -1,0 +1,18 @@
+@import './../../../styles.scss';
+
+
+section{
+    height: 100%;
+    width: 100%;
+    @include dFlex($fd: column);
+    app-messages{
+        width: 100%;
+        flex: 1;
+    }
+    app-input-box{
+        width: 100%;
+    }
+    app-headbar{
+        width: 100%;
+    }
+}
