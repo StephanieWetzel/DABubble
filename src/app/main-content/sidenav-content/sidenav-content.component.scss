@@ -1,0 +1,79 @@
+@import './../../../styles.scss';
+
+
+.nav-head{
+    @include dFlex(space-between);
+    padding: 32px 30px 0px 30px;
+    margin-bottom: 25px;
+    > div {
+        @include dFlex(flex-start, center, 16px, row);
+        >h3 {
+            font-size: 24px;
+            margin: 0;
+        }
+    }
+}
+
+.nav-channels{
+    @include dFlex(space-between, flex-start);
+    padding: 0px 30px 0px 30px;
+}
+
+.expansion-panel-main {
+    box-shadow: none !important;
+    width: auto;
+    > mat-expansion-panel-header {
+        padding: 0;
+        &:hover {
+            background-color: white !important;
+            color: blue;
+        }
+    }
+    
+}
+
+.channels-head{
+    @include dFlex(center, center, 0, row);
+    > h3 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 0;
+    }
+    > .drop-down-arrow {
+        rotate: 0deg;
+    }
+}
+
+.list {
+    @include dFlex(center, flex-start, 0, column)
+}
+
+.mat-expansion-panel-header.mat-expanded{
+    height: 48px; /*class for accordion expand height*/
+}
+
+.add-channel {
+    @include dFlex(center, center);
+   
+    > button {
+        border: none;
+        background-color: white;
+        margin-top: 8px;
+        &:hover {
+            border-radius: 100%;
+            color: #535af1;
+            background-color: #eceefe;
+            cursor: pointer;
+        }
+        > mat-icon{
+            font-size: 35px;
+            @include dFlex();
+            height: 32px;
+        }
+    }
+}
+
+.nav-direct-messages{
+    @include dFlex(space-between, flex-start);
+    padding: 32px 30px 0px 30px;   
+}

@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
+import { SidenavContentComponent } from './sidenav-content/sidenav-content.component';
 import { ChatComponent } from './chat/chat.component';
 
 
@@ -23,7 +24,8 @@ import { ChatComponent } from './chat/chat.component';
         HeaderComponent, 
         RouterOutlet,
         RouterLink,
-        ChatComponent
+        ChatComponent,
+        SidenavContentComponent
       ]
 })
 export class MainContentComponent {
