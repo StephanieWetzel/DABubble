@@ -52,8 +52,14 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <div class="user-">
-
+      <div *ngFor="let user of users" class="user-list">
+        <div class="user-pair">
+          <img [src]="user.avatar">
+          <div class="online-attribut">
+            <img [src]="user.isUserOnline ? './assets/icons/Online.png' : './assets/icons/Offline.png'            ">
+          </div>
+        </div>
+        <p>{{ user.fullName }}</p>
       </div>
     </div>
   </mat-expansion-panel>

@@ -10,7 +10,7 @@
       font-size: 24px;
       font-weight: bold;
       margin: 0;
-      font-family: 'Nunito' !important;
+      font-family: "Nunito" !important;
     }
   }
 }
@@ -22,27 +22,27 @@
 }
 
 .add-channel-head {
-    @include dFlex(flex-end, center);
-    position: absolute;
-    z-index: 4;
-    right: -28px;
-    top: 7px;
-    margin-left: 78px;
-    > button {
-      border: none;
-      background-color: white;
-      &:hover {
-        border-radius: 100%;
-        color: #535af1;
-        background-color: #eceefe;
-        cursor: pointer;
-      }
-      > mat-icon {
-        font-size: 35px;
-        @include dFlex();
-        height: 32px;
-      }
+  @include dFlex(flex-end, center);
+  position: absolute;
+  z-index: 4;
+  right: -28px;
+  top: 7px;
+  margin-left: 78px;
+  > button {
+    border: none;
+    background-color: white;
+    &:hover {
+      border-radius: 100%;
+      color: #535af1;
+      background-color: #eceefe;
+      cursor: pointer;
     }
+    > mat-icon {
+      font-size: 35px;
+      @include dFlex();
+      height: 32px;
+    }
+  }
 }
 
 .expansion-panel-main {
@@ -51,31 +51,31 @@
   > mat-expansion-panel-header {
     padding: 0;
     &:hover {
-        background-color: white !important;
-        color: #535af1;
+      background-color: white !important;
+      color: #535af1;
     }
   }
 }
 .channels-head {
-    @include dFlex(center, center, 0, row);
-    > .drop-down-arrow {
-      rotate: 0deg;
+  @include dFlex(center, center, 0, row);
+  > .drop-down-arrow {
+    rotate: 0deg;
+  }
+  > .icon-with-name {
+    @include dFlex();
+    > h3 {
+      font-size: 20px;
+      font-family: "Nunito" !important;
+      font-weight: bold;
+      margin: 0;
     }
-    > .icon-with-name {
-      @include dFlex();
-      > h3 {
-        font-size: 20px;
-        font-family: 'Nunito' !important;
-        font-weight: bold;
-        margin: 0;
-      }
-    }
+  }
 }
 .icon-with-name:hover {
+  color: #535af1;
+  .arrow-drop-down {
     color: #535af1;
-    .arrow-drop-down {
-      color: #535af1;
-    }
+  }
 }
 .mat-expansion-panel-body {
   padding: 0px !important;
@@ -112,6 +112,40 @@
       }
       mat-icon {
         font-size: 25px;
+      }
+    }
+  }
+  > .user-list {
+    @include dFlex(center, center, 15px);
+    margin-left: 18px;
+    padding: 5px 20px 5px 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    border-top-left-radius: 32px;
+    border-bottom-left-radius: 32px;
+    border-top-right-radius: 32px;
+    border-bottom-right-radius: 32px;
+    &:hover {
+      background-color: #eceefe;
+      color: #535af1;
+      cursor: pointer;
+    }
+    > p {
+      margin: 0;
+    }
+    > .user-pair {
+      @include dFlex(center, center);
+      position: relative;
+      > img {
+        height: 50px;
+      }
+      > .online-attribut {
+        position: absolute;
+        bottom: -6px;
+        right: 0;
+        > img {
+          height: 14px;
+        }
       }
     }
   }
