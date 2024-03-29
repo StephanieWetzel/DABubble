@@ -20,6 +20,7 @@ span {
 $bgContent: #FFFFFF;
 $bgPage: #ECEEFE;
 // brauchen wir diese Variable hier, wenn wir im body einfach die background-color setzen? Die ist ja für jede Seite gleich oder? - Steffi
+// --> dieser mat-drawer container benutzt als background color weiß (vermutlich standard von angular material)... deswegen habe ich das über die Variablen gelöst... - Henrik
 
 @mixin dFlex($jc: center, $ai: center, $g: 0, $fd: row) {
     display: flex;
@@ -38,7 +39,23 @@ $bgPage: #ECEEFE;
     }
 }
 
+//Spezifikation für tiny mce: 
+.tox-tbtn {
+    cursor: pointer !important;
+    border-radius: 50% !important;
 
+    svg {
+        margin: 0 0 !important;
+    }
+}
+
+.tox-editor-header{
+    border-top: none !important;
+}
+
+.tox-sidebar-wrap * {
+    cursor: text !important;
+}
 
 // FONTS
 /* nunito-200 - latin */
