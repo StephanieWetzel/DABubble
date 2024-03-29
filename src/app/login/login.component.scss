@@ -32,7 +32,7 @@
 
                 &:hover {
                     cursor: pointer;
-                    border-color: #D4D6EF;
+                    border-color: #CCCFEB;
                     color: #444DF2;
                 }
             }
@@ -68,10 +68,12 @@ form {
     padding-top: 32px;
     gap: 8px;
     width: 100%;
+    box-sizing: border-box;
 
     .forgot-password {
         color: #797EF3;
-        padding: 8px;
+        padding: 4px 12px;
+        border-radius: 32px;
 
         &:hover {
             cursor: pointer;
@@ -86,7 +88,7 @@ form {
         align-items: center;
         justify-content: center;
         gap: 8px;
-        padding: 16px 0;
+        padding: 24px 0;
 
         div {
             width: 100%;
@@ -149,6 +151,13 @@ form {
     }
 }
 
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 32px;
+}
+
 .footer-container {
     display: flex;
     justify-content: center;
@@ -165,9 +174,43 @@ form {
 
         &:hover {
             cursor: pointer;
-            border-color: #D4D6EF;
+            border-color: #CCCFEB;
             color: #444DF2;
         }
+    }
+}
+
+span {
+    font-weight: 600;
+}
+
+input {
+    border: none;
+    background-color: #ECEEFE;
+    width: 100%;
+    outline: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.mail-and-pw {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background-color: #ECEEFE;
+    border: 1px solid transparent;
+    padding: 16px 32px !important;
+
+    &:hover {
+        cursor: pointer;
+        border: 1px solid #757575 !important;
+    }
+
+    &:focus {
+        border: 1px solid #535AF1 !important;
     }
 }
 
@@ -185,6 +228,10 @@ form {
     transition: all 150ms ease-in-out;
 }
 
-span {
-    font-weight: 600;
-}
+// .purple-border {
+//     border-color: #535AF1 !important;
+
+//     &:hover {
+//         border-color: #535AF1 !important;
+//     }
+// }

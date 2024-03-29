@@ -8,11 +8,15 @@ body {
 body {
     margin: 0;
     background-color: #ECEEFE;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
 }
 
 body.mat-typography h2,
 p,
-span {
+span,
+input,
+mat-form-field {
     font-family: 'Nunito', sans-serif;
     font-size: 16px;
 }
@@ -49,7 +53,7 @@ $bgPage: #ECEEFE;
     }
 }
 
-.tox-editor-header{
+.tox-editor-header {
     border-top: none !important;
 }
 
