@@ -1,3 +1,5 @@
 <section>
-    <p>messages works!</p>
+    <div *ngFor="let message of getList()" >
+        {{ message.content }}
+    </div>
 </section>
