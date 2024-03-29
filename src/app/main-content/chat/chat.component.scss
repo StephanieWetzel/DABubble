@@ -5,6 +5,10 @@ section{
     height: 100%;
     width: 100%;
     @include dFlex($fd: column);
+    app-headbar{
+        width: 100%;
+        min-height: 100px;
+    }
     app-messages{
         width: 100%;
         flex: 1;
@@ -12,7 +16,5 @@ section{
     app-input-box{
         width: 100%;
     }
-    app-headbar{
-        width: 100%;
-    }
+    
 }
