@@ -1,0 +1,44 @@
+<section class="nav-head">
+  <div>
+    <img src="./assets/img/Workspace logo.png" alt="logo" />
+    <h3>Devspace</h3>
+  </div>
+  <img src="./assets/icons/edit_square.png" />
+</section>
+
+<section class="nav-channels">
+  <mat-expansion-panel [expanded]="true" hideToggle class="expansion-panel-main">
+    <mat-expansion-panel-header>
+      <div class="channels-head">
+        <mat-icon style="margin-right: 15px;">arrow_drop_down</mat-icon>
+        <mat-icon style="margin-right: 10px;">workspaces_outline</mat-icon>
+        <h3>Channels</h3>
+      </div>
+    </mat-expansion-panel-header>
+    <div class="list">
+      <span><mat-icon style="font-style: italic;">tag</mat-icon> Allgemeinasdasdas</span>
+      <span><mat-icon style="font-style: italic;">tag</mat-icon> Allgemein</span>
+    </div>
+  </mat-expansion-panel>
+  <div class="add-channel">
+    <button>
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</section>
+
+<section class="nav-direct-messages">
+  <mat-expansion-panel [expanded]="true" hideToggle class="expansion-panel-main">
+    <mat-expansion-panel-header>
+      <div class="channels-head">
+        <mat-icon style="margin-right: 15px;">arrow_drop_down</mat-icon>
+        <mat-icon style="margin-right: 10px;" svgIcon="square-edit" aria-hidden="false"></mat-icon>
+        <h3>Direktnachrichten</h3>
+      </div>
+    </mat-expansion-panel-header>
+    <div class="list">
+      <span><mat-icon style="font-style: italic;">tag</mat-icon> Allgemeinasdasdas</span>
+      <span><mat-icon style="font-style: italic;">tag</mat-icon> Allgemein</span>
+    </div>
+  </mat-expansion-panel>
+</section>
