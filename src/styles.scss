@@ -7,8 +7,14 @@ body {
 
 body {
     margin: 0;
-    font-family: 'Nunito' !important;
     background-color: #ECEEFE;
+}
+
+body.mat-typography h2,
+p,
+span {
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
 }
 
 $bgContent: #FFFFFF;
