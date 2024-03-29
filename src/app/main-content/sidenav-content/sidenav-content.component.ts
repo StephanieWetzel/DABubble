@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -14,11 +14,11 @@ const EDIT_SQUARE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24" vi
   imports: [MatExpansionModule, MatIconModule],
   templateUrl: './sidenav-content.component.html',
   styleUrl: './sidenav-content.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class SidenavContentComponent {
   
-  constructor(iconRegistry:MatIconRegistry, sanitizer: DomSanitizer){
-    iconRegistry.addSvgIconLiteral('square_edit', sanitizer.bypassSecurityTrustHtml(EDIT_SQUARE_ICON))
+  constructor(){
   }
 
 

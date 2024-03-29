@@ -1,79 +1,154 @@
-@import './../../../styles.scss';
+@import "./../../../styles.scss";
 
-
-.nav-head{
-    @include dFlex(space-between);
-    padding: 32px 30px 0px 30px;
-    margin-bottom: 25px;
-    > div {
-        @include dFlex(flex-start, center, 16px, row);
-        >h3 {
-            font-size: 24px;
-            margin: 0;
-        }
+.nav-head {
+  @include dFlex(space-between);
+  padding: 32px 30px 0px 30px;
+  margin-bottom: 25px;
+  > div {
+    @include dFlex(flex-start, center, 16px, row);
+    > h3 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+      font-family: 'Nunito' !important;
     }
+  }
 }
 
-.nav-channels{
-    @include dFlex(space-between, flex-start);
-    padding: 0px 30px 0px 30px;
+/*Channels*/
+.nav-channels {
+  @include dFlex(space-between, flex-start);
+  padding: 0px 0px 0px 30px;
+}
+
+.add-channel-head {
+    @include dFlex(flex-end, center);
+    position: absolute;
+    z-index: 4;
+    right: -28px;
+    top: 7px;
+    margin-left: 78px;
+    > button {
+      border: none;
+      background-color: white;
+      &:hover {
+        border-radius: 100%;
+        color: #535af1;
+        background-color: #eceefe;
+        cursor: pointer;
+      }
+      > mat-icon {
+        font-size: 35px;
+        @include dFlex();
+        height: 32px;
+      }
+    }
 }
 
 .expansion-panel-main {
-    box-shadow: none !important;
-    width: auto;
-    > mat-expansion-panel-header {
-        padding: 0;
-        &:hover {
-            background-color: white !important;
-            color: blue;
-        }
+  box-shadow: none !important;
+  width: auto;
+  > mat-expansion-panel-header {
+    padding: 0;
+    &:hover {
+        background-color: white !important;
+        color: #535af1;
     }
-    
+  }
 }
-
-.channels-head{
+.channels-head {
     @include dFlex(center, center, 0, row);
-    > h3 {
+    > .drop-down-arrow {
+      rotate: 0deg;
+    }
+    > .icon-with-name {
+      @include dFlex();
+      > h3 {
         font-size: 20px;
+        font-family: 'Nunito' !important;
         font-weight: bold;
         margin: 0;
+      }
     }
-    > .drop-down-arrow {
-        rotate: 0deg;
+}
+.icon-with-name:hover {
+    color: #535af1;
+    .arrow-drop-down {
+      color: #535af1;
     }
+}
+.mat-expansion-panel-body {
+  padding: 0px !important;
 }
 
 .list {
-    @include dFlex(center, flex-start, 0, column)
-}
-
-.mat-expansion-panel-header.mat-expanded{
-    height: 48px; /*class for accordion expand height*/
-}
-
-.add-channel {
-    @include dFlex(center, center);
-   
-    > button {
-        border: none;
-        background-color: white;
-        margin-top: 8px;
-        &:hover {
-            border-radius: 100%;
-            color: #535af1;
-            background-color: #eceefe;
-            cursor: pointer;
-        }
-        > mat-icon{
-            font-size: 35px;
-            @include dFlex();
-            height: 32px;
-        }
+  @include dFlex(center, flex-start, 0, column);
+  > .list-enumeration {
+    @include dFlex();
+    margin-left: 18px;
+    padding: 5px 20px 5px 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    > mat-icon {
+      margin-right: 10px;
     }
+  }
+  > .channel-enumeration {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+    &:hover {
+      background-color: #eceefe;
+      cursor: pointer;
+    }
+  }
+  > .add-effect {
+    &:hover {
+      mat-icon,
+      span {
+        color: #535af1;
+        cursor: pointer;
+      }
+      mat-icon {
+        font-size: 25px;
+      }
+    }
+  }
 }
 
-.nav-direct-messages{
-    @include dFlex(space-between, flex-start);
-    padding: 32px 30px 0px 30px;   
+.mat-expansion-panel-header.mat-expanded {
+  height: 48px !important; /*class for accordion expand height*/
+}
+
+.nav-direct-messages {
+  @include dFlex(space-between, center);
+  padding: 20px 30px 0px 30px;
+}
+
+/*Material Icons CSS*/
+
+.material-icons {
+  font-family: "Material Icons";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: "liga";
 }
