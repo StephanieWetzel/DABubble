@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { RawEditorOptions } from 'tinymce';
+import tinymce, { RawEditorOptions } from 'tinymce';
+import { ChatService } from '../chat-service/chat.service';
+import { Message } from '../../../../assets/models/message.class';
 
 @Component({
   selector: 'app-input-box',
@@ -12,7 +14,9 @@ import { RawEditorOptions } from 'tinymce';
 
 
 export class InputBoxComponent {
-  public editorInit: RawEditorOptions =  {
+  public editorInit: RawEditorOptions = {
+    id: 'inputData',
+    selector: '#inputData',
     base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
@@ -25,4 +29,23 @@ export class InputBoxComponent {
     toolbar: 'link emoticons',
   };
 
+
+  constructor(private chatService: ChatService){
+    
+  }
+
+  sendMessage() {
+
+    let data = tinymce.get("inputData")
+    console.log(data);
+    if (data) {
+      let content = data.getContent();
+      let message = new Message();
+      message.content = content;
+      console.log('my message: ', message);
+      this.chatService.addMessage(message);
+    } else {
+      console.log('no data available');
+    }
+  }
 }

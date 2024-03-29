@@ -7,7 +7,6 @@ section{
     @include dFlex($fd: column);
     app-headbar{
         width: 100%;
-        min-height: 100px;
     }
     app-messages{
         width: 100%;

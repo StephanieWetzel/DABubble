@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ChatService } from '../chat-service/chat.service';
 
 @Component({
   selector: 'app-messages',
@@ -7,6 +8,9 @@ import { Component } from '@angular/core';
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
 })
-export class MessagesComponent {
 
+export class MessagesComponent {
+  constructor(private chatService: ChatService){
+    
+  }
 }
