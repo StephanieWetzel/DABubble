@@ -1,22 +1,20 @@
 <div class="main-container">
     <div class="header-container">
-        <div class="logo-container">
-            <img src="./../assets/img/logo-header.svg" alt="">
-            <span>DABubble</span>
-        </div>
+        <img src="assets/img/logo-header_complete.svg" alt="">
 
         <div class="new-account-container">
-            <span>Neu bei DABubble?</span>
-            <span>Konto erstellen</span>
+            <span class="fs-15">Neu bei DABubble?</span>
+            <span class="new-account tr-150ms">Konto erstellen</span>
         </div>
     </div>
 
     <div class="login-container">
-        <span>Anmeldung</span>
+        <h2 class="login">Anmeldung</h2>
         <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
 
         <form>
             <mat-form-field>
+                <mat-icon matPrefix>mail</mat-icon>
                 <input type="email" matInput [formControl]="emailFormControl" placeholder="E-Mail">
                 @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
                 <mat-error>Diese E-Mail-Adresse ist leider ungültig.</mat-error>
@@ -28,6 +26,7 @@
 
             <mat-form-field>
                 <!-- Hier evtl. noch etwas hinzufügen, das checkt, ob das Passwort vorhanden ist. Wenn nein, kommt neuer Error ("ungültiges Passwort") -->
+                <mat-icon class="material-icons-outlined" matPrefix>lock</mat-icon>
                 <input type="password" matInput [formControl]="passwordFormControl" placeholder="Passwort">
                 <!-- @if (passwordFormControl.hasError('password') && !passwordFormControl.hasError('required')) {
                             <mat-error>Diese E-Mail-Adresse ist leider ungültig.</mat-error>
@@ -36,6 +35,29 @@
                 <mat-error>Bitte Passwort eingeben.</mat-error>
                 }
             </mat-form-field>
+
+            <span class="forgot-password tr-150ms">Passwort vergessen?</span>
+
+            <div class="or">
+                <div></div>
+                <span>ODER</span>
+                <div></div>
+            </div>
+
+            <div class="google-sign-in tr-150ms br-32">
+                <img src="assets/img/google.svg" alt="">
+                <span>Anmelden mit Google</span>
+            </div>
+
+            <div class="btn-container">
+                <button class="login-btn br-32 tr-150ms" mat-flat-button>Anmelden</button>
+                <button class="guest-login-btn br-32 tr-150ms" mat-flat-button>Gäste-Login</button>
+            </div>
         </form>
+    </div>
+
+    <div class="footer-container">
+        <span class="footer-content tr-150ms">Impressum</span>
+        <span class="footer-content tr-150ms">Datenschutz</span>
     </div>
 </div>
