@@ -11,7 +11,7 @@
 <section class="nav-channels">
   <div style="position: relative;">
     <div class="add-channel-head">
-      <button>
+      <button (click)="addChannel()">
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -30,7 +30,7 @@
       <span class="list-enumeration channel-enumeration"><mat-icon style="font-style: italic;">tag</mat-icon> Entwicklerteam</span>
       <div class="list-enumeration add-effect">
         <mat-icon>add_circle_outline</mat-icon>
-        <span>Channel hinzufügen</span>
+        <span (click)="addChannel()">Channel hinzufügen</span>
       </div>
     </div>
   </mat-expansion-panel>
@@ -56,7 +56,7 @@
         <div class="user-pair">
           <img [src]="user.avatar">
           <div class="online-attribut">
-            <img [src]="user.isUserOnline ? './assets/icons/Online.png' : './assets/icons/Offline.png'            ">
+            <img [src]="user.isUserOnline ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
           </div>
         </div>
         <p>{{ user.fullName }}</p>

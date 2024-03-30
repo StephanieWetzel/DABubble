@@ -1,0 +1,55 @@
+@import "./../../../../styles.scss";
+
+h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.dialog {
+  @include dFlex(flex-start, center, 0, column);
+  margin: 40px 40px;
+  width: 870px;
+  height: 540px;
+  > .dialog-head {
+    width: 100%;
+    @include dFlex(space-between);
+    > h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+    }
+    margin-bottom: 20px;
+  }
+  > .exmpl-text {
+    > p {
+      font-size: 18px;
+      margin: 0;
+    }
+    margin-bottom: 20px;
+  }
+  > form {
+    width: 100%;
+    > .channel-name {
+      width: 100%;
+      @include dFlex(flex-start, flex-start, 0, column);
+      margin-bottom: 20px;
+    }
+    > .channel-form {
+      width: 100%;
+      @include dFlex(flex-start, flex-start, 0, column);
+      margin-bottom: 20px;
+      > .inputs {
+        width: 100%;
+      }
+    }
+    > .description {
+        @include dFlex(flex-start, center,0, row);
+        width: 100%;
+        margin-bottom: 20px;
+        > p {
+          margin: 0 8px;
+        }
+      }
+  }
+}

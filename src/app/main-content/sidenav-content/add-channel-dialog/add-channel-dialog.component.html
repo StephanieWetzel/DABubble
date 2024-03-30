@@ -1,1 +1,32 @@
-<p>add-channel-dialog works!</p>
+<section class="dialog">
+  <div class="dialog-head">
+    <h2>Channel erstellen</h2>
+    <mat-icon>close</mat-icon>
+  </div>
+  <div class="exmpl-text">
+    <p>
+      Channels dienen deinem Team zur Kommunikation. Am beseten sollten sie
+      themenbezogen sein #marketing zum Beispiel.
+    </p>
+  </div>
+  <form>
+    <div class="channel-name">
+      <h3>Channel-Name</h3>
+    </div>
+    <div class="channel-form">
+      <mat-form-field class="inputs">
+        <span matTextPrefix># &nbsp;</span>
+        <input type="tel" matInput placeholder="z.B. Kooperationsprojekte" />
+      </mat-form-field>
+    </div>
+    <div class="description">
+      <h3>Beschreibung</h3>
+      <p>(optional)</p>
+    </div>
+    <div class="channel-form">
+      <mat-form-field class="inputs">
+        <input type="tel" matInput placeholder="Dein Text hier" />
+      </mat-form-field>
+    </div>
+  </form>
+</section>

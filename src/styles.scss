@@ -61,6 +61,11 @@ $bgPage: #ECEEFE;
     cursor: text !important;
 }
 
+/*style for add channel dialog*/
+.custom-add-channel-dialog .mat-mdc-dialog-surface {
+    border-radius: 30px !important;
+}
+
 // FONTS
 /* nunito-200 - latin */
 @font-face {
