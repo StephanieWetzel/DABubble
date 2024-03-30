@@ -15,5 +15,4 @@ export class CustomDatePipe implements PipeTransform {
     };
     return date.toLocaleDateString('de-DE', options);
   }
-
 }

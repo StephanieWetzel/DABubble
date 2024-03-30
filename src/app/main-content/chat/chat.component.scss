@@ -5,16 +5,15 @@ section{
     height: 100%;
     width: 100%;
     @include dFlex($fd: column);
-    overflow-y: scroll;
     app-headbar{
         width: 100%;
     }
     app-messages{
+        overflow-y: scroll;
         width: 100%;
         flex: 1;
     }
     app-input-box{
         width: 100%;
     }
-    
 }
