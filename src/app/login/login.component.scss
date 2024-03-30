@@ -240,6 +240,13 @@ form {
     flex-direction: column;
     gap: 32px;
     margin-bottom: 32px;
+
+    .invalid-text {
+        display: flex;
+        color: #ED1E79;
+        font-size: 14px;
+        text-align: start;
+    }
 }
 
 .footer-container {
@@ -292,10 +299,6 @@ input {
         cursor: pointer;
         border: 1px solid #757575 !important;
     }
-
-    &:focus {
-        border: 1px solid #535AF1 !important;
-    }
 }
 
 
@@ -312,10 +315,10 @@ input {
     transition: all 150ms ease-in-out;
 }
 
-// .purple-border {
-//     border-color: #535AF1 !important;
+.purple-border {
+    border-color: #535AF1 !important;
 
-//     &:hover {
-//         border-color: #535AF1 !important;
-//     }
-// }
+    &:hover {
+        border-color: #535AF1 !important;
+    }
+}

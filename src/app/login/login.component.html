@@ -24,12 +24,13 @@
             <div class="input-container">
                 <div>
                     <!-- email -->
-                    <div class="mail-and-pw tr-150ms br-32"
-                        [ngClass]="{'purple-border': formData.get('email')?.touched}">
-                        <img src="assets/img/mail_unfocused.svg" alt="">
+                    <div (click)="isMailFocused = true" class="mail-and-pw tr-150ms br-32"
+                        [ngClass]="{'purple-border': isMailFocused}">
+                        <img [src]="isMailFocused ? 'assets/img/mail_focused.svg' : 'assets/img/mail_unfocused.svg'">
                         <input formControlName="email" type="email" placeholder="E-Mail" required
-                            pattern="[^@]+@[^\.]+\..+" [ngClass]="{'purple-border': formData.get('email')?.touched}">
+                            pattern="[^@]+@[^\.]+\..+">
                     </div>
+
                     <div *ngIf="formData.get('email')?.invalid && formData.get('email')?.touched">
                         <span class="invalid-text" *ngIf="formData.get('email')?.errors?.['required']">
                             *Bitte E-Mail-Adresse eingeben.
@@ -42,8 +43,10 @@
 
                 <div>
                     <!-- password -->
-                    <div class="mail-and-pw google-sign-in tr-150ms br-32">
-                        <img src="assets/img/lock_unfocused.svg" alt="">
+                    <div (click)="isPasswordFocused = true" [ngClass]="{'purple-border': isPasswordFocused}"
+                        class="mail-and-pw google-sign-in tr-150ms br-32">
+                        <img
+                            [src]="isPasswordFocused ? 'assets/img/lock_focused.svg' : 'assets/img/lock_unfocused.svg'">
                         <input formControlName="password" type="password" placeholder="Passwort" required>
                     </div>
                     <div *ngIf="formData.get('password')?.invalid && formData.get('password')?.touched">
@@ -53,28 +56,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- <mat-form-field>
-                <mat-icon class="material-icons-outlined" matPrefix>mail</mat-icon>
-                <input type="email" matInput [formControl]="emailFormControl" placeholder="E-Mail">
-                @if (emailFormControl.hasError('email') && !emailFormControl.hasError('required')) {
-                <mat-error>Diese E-Mail-Adresse ist leider ungültig.</mat-error>
-                }
-                @if (emailFormControl.hasError('required')) {
-                <mat-error>Bitte E-Mail-Adresse eingeben.</mat-error>
-                }
-            </mat-form-field> -->
-
-            <!-- <mat-form-field>
-                <mat-icon class="material-icons-outlined" matPrefix>lock</mat-icon>
-                <input type="password" matInput [formControl]="passwordFormControl" placeholder="Passwort">
-                @if (passwordFormControl.hasError('password') && !passwordFormControl.hasError('required')) {
-                            <mat-error>Diese E-Mail-Adresse ist leider ungültig.</mat-error>
-                            }
-                @if (passwordFormControl.hasError('required')) {
-                <mat-error>Bitte Passwort eingeben.</mat-error>
-                }
-            </mat-form-field> -->
 
             <div><span class="forgot-password tr-150ms">Passwort vergessen?</span></div>
 
