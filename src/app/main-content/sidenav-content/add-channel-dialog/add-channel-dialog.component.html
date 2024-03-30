@@ -14,19 +14,24 @@
       <h3>Channel-Name</h3>
     </div>
     <div class="channel-form">
-      <mat-form-field class="inputs">
-        <span matTextPrefix># &nbsp;</span>
-        <input type="tel" matInput placeholder="z.B. Kooperationsprojekte" />
-      </mat-form-field>
+      <div class="inputs br-32">
+        <!--<img src="assets/img/mail_unfocused.svg" alt="">--> 
+        <mat-icon>tag_outline</mat-icon>
+        <input formControlName="channel" type="text" placeholder="z.B. Kooperationsprojekte" required>
+      </div>
     </div>
     <div class="description">
       <h3>Beschreibung</h3>
       <p>(optional)</p>
     </div>
     <div class="channel-form">
-      <mat-form-field class="inputs">
-        <input type="tel" matInput placeholder="Dein Text hier" />
-      </mat-form-field>
+      <div class="inputs br-32">
+        <!--<img src="assets/img/mail_unfocused.svg" alt="">--> 
+        <textarea formControlName="channel" type="text" placeholder="Dein Text hier" required></textarea>
+      </div>
+    </div>
+    <div class="create-btn ts125">
+      <div><span>Erstellen</span></div>
     </div>
   </form>
 </section>
