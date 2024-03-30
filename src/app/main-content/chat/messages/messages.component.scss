@@ -1,3 +1,60 @@
+@import './../../../../styles.scss';
+
 section{
     padding: 20px  20px 0 20px ;
+}
+
+.message{
+    width: 100%;
+    margin-bottom: 30px;
+    p{
+        width: fit-content;
+        padding: 15px;
+        background-color: #ECEEFE;
+        border-top-right-radius: 30px;
+        border-bottom-right-radius: 30px;
+        border-bottom-left-radius: 30px;
+        margin-bottom: 8px;
+    }
+}
+
+.info{
+    margin-bottom: 8px;
+    .name{
+        font-size: 18px;
+        font-weight: 700;
+        margin-right: 20px;
+    }
+    .time{
+        font-size: 14px;
+        color: #686868;
+    }
+}
+
+.date{
+    width: 100%;
+    margin-bottom: 20px;
+    @include dFlex();
+    div{
+        height: 1px;
+        flex: 1;
+        background-color: #ADB0D9;
+    }
+    span{
+        padding: 5px 15px;
+        border: 1px #ADB0D9 solid;
+        border-radius: 30px;
+    }
+}
+
+.answers{
+    .count{
+        color: #535AF1;
+        font-size: 18px;
+        margin-right: 20px;
+    }
+    .last{
+        font-size: 14px;
+        color: #686868;
+    }
 }
