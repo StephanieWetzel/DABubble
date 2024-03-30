@@ -6,8 +6,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class CustomDatePipe implements PipeTransform {
 
-  transform(value: unknown, ...args: unknown[]): unknown {
-    return null;
+  transform(value: number, ...args: unknown[]): string {
+    const date = new Date(value); // Umwandlung von Sekunden in Millisekunden
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long', 
+      day: '2-digit', 
+      month: 'long'
+    };
+    return date.toLocaleDateString('de-DE', options);
   }
 
 }

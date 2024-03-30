@@ -2,7 +2,7 @@
     <div *ngFor="let message of getList()" class="message">
         <div class="date">
             <div></div>
-            <span>Dienstag, 14 Januar</span>
+            <span>{{ message.time | customDate }}</span>
             <div></div>
         </div>
         <div class="info">

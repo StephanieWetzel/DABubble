@@ -37,15 +37,14 @@ export class InputBoxComponent {
   sendMessage() {
 
     let data = tinymce.get("inputData")
-    console.log(data);
     if (data) {
       let content = data.getContent();
       let message = new Message();
       message.content = content;
-      console.log('my message: ', message);
       this.chatService.addMessage(message);
     } else {
       console.log('no data available');
     }
   }
+  
 }

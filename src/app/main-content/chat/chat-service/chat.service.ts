@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
+import { Firestore, orderBy, query } from '@angular/fire/firestore';
 import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { Message } from '../../../../assets/models/message.class';
 
@@ -24,20 +24,21 @@ export class ChatService  {
 
 
   getMessages() {
-    onSnapshot(this.getMessagesRef(), (collection) => {
+    onSnapshot(this.getMessagesQ(), (queryCollection) => {
       this.messages = [];
-      collection.forEach(doc => {
+      queryCollection.forEach(doc => {
         let data = doc.data();
         let message = new Message({ data, id: doc.id})
         message.content = doc.data()['content'];
-        message.time = doc.data()['content'];
+        message.time = doc.data()['time'];
         this.messages.push(message);
-        console.log('im Service',this.messages);
       });
     })
-    
   }
 
+  getMessagesQ(){
+    return query(this.getMessagesRef(), orderBy('time', 'asc'));
+  }
 
   getMessagesRef() {
     return collection(this.firestore, 'messages')
