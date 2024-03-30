@@ -1,5 +1,21 @@
 @import './../../styles.scss';
 
+.intro-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 999;
+
+    span {
+        position: absolute;
+        color: white;
+        font-size: 96px;
+        right: 368px;
+    }
+}
+
 .main-container {
     height: 100%;
     display: flex;
