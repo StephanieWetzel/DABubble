@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { style } from '@angular/animations';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,6 +19,9 @@ export class LoginComponent {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   });
+
+  isMailFocused: boolean = false;
+  isPasswordFocused: boolean = false;
 
 
   constructor(private fbuilder: FormBuilder) {
