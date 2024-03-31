@@ -6,21 +6,21 @@
     flex-direction: column;
 }
 
-.drawer-toggle-btn{
+.drawer-toggle-btn {
     position: fixed;
     left: 0;
     top: 150px;
     height: 50px;
     z-index: 2;
-    background-color: rgba(0,0,0,.1);
+    background-color: rgba(0, 0, 0, .1);
 }
 
-mat-toolbar{
+mat-toolbar {
     width: 100%;
     height: fit-content;
 }
 
-app-header{
+app-header {
     width: 100%;
 }
 
@@ -63,11 +63,11 @@ app-header{
     width: 100%;
 }
 
-.router-container{
+.router-container {
     height: 100%;
 }
 
-app-chat{
+app-chat {
     display: block;
     height: 100%;
 }
