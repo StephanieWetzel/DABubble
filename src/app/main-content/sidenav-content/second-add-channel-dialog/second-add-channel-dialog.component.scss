@@ -1,0 +1,71 @@
+@import "./../../../../styles.scss";
+
+.check-flex {
+    display: flex;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.custom-radio-button {
+  display: inline-block;
+  position: relative;
+  padding-left: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Verstecken des Standard-Radio-Buttons */
+.custom-radio-button input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Erstellen des Custom-Kreises */
+.custom-radio-button .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  border: 1px solid #adb0d9;
+  &:hover {
+    border-color: #797ef3;
+  }
+}
+
+/* Wenn der Radio-Button ausgewählt ist, ändern Sie den inneren Kreis */
+.custom-radio-button input:checked ~ .checkmark {
+  background-color: #ffffff;
+  border: 1px solid #adb0d9;
+}
+
+/* Erstellen des inneren Kreises */
+.custom-radio-button .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Wenn der Radio-Button ausgewählt ist, zeigen Sie den inneren Kreis */
+.custom-radio-button input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.custom-radio-button .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #444df2;
+}
+
+
+p {
+    margin: 0 !important;
+    font-size: 18px !important;
+}

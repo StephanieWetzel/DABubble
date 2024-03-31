@@ -1,0 +1,26 @@
+<section class="dialog">
+  <div class="dialog-head">
+    <h2>Leute hinzufügen</h2>
+    <mat-icon>close</mat-icon>
+  </div>
+  <form [formGroup]="secondDialogGroup">
+    <div class="check-flex">
+      <label class="custom-radio-button">
+        <input type="radio" name="radio" />
+        <span class="checkmark"></span>
+      </label>
+      <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
+    </div>
+    
+    <div class="check-flex">
+        <label class="custom-radio-button">
+          <input type="radio" name="radio" />
+          <span class="checkmark"></span>
+        </label>
+        <p>Bestimmte Leute hinzufügen</p>
+      </div>
+    <div class="create-btn ts125">
+      <div><span>Erstellen</span></div>
+    </div>
+  </form>
+</section>

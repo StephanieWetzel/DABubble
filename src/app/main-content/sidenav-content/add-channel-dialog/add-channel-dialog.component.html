@@ -9,13 +9,12 @@
       themenbezogen sein #marketing zum Beispiel.
     </p>
   </div>
-  <form>
+  <form [formGroup]="firstDialogGroup">
     <div class="channel-name">
       <h3>Channel-Name</h3>
     </div>
     <div class="channel-form">
       <div class="inputs br-32">
-        <!--<img src="assets/img/mail_unfocused.svg" alt="">--> 
         <mat-icon>tag_outline</mat-icon>
         <input formControlName="channel" type="text" placeholder="z.B. Kooperationsprojekte" required>
       </div>
@@ -26,12 +25,11 @@
     </div>
     <div class="channel-form">
       <div class="inputs br-32">
-        <!--<img src="assets/img/mail_unfocused.svg" alt="">--> 
-        <textarea formControlName="channel" type="text" placeholder="Dein Text hier" required></textarea>
+        <textarea formControlName="description" type="text" placeholder="Dein Text hier" required></textarea>
       </div>
     </div>
     <div class="create-btn ts125">
-      <div><span>Erstellen</span></div>
+      <div (click)="onClose()"><span>Erstellen</span></div>
     </div>
   </form>
 </section>
