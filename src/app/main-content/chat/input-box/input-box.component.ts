@@ -27,6 +27,7 @@ export class InputBoxComponent {
     placeholder: 'Nachricht an Chat ... ',
     statusbar: false,
     toolbar: 'link emoticons',
+    entity_encoding: 'raw'
   };
 
 
@@ -42,6 +43,7 @@ export class InputBoxComponent {
       let message = new Message();
       message.content = content;
       this.chatService.addMessage(message);
+      data.setContent('');
     } else {
       console.log('no data available');
     }
