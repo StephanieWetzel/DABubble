@@ -9,8 +9,7 @@ h3 {
 .dialog {
   @include dFlex(flex-start, center, 0, column);
   margin: 40px 40px;
-  width: 870px;
-  height: 540px;
+  width: 872px;
   > .dialog-head {
     width: 100%;
     @include dFlex(space-between);
@@ -41,15 +40,91 @@ h3 {
       margin-bottom: 20px;
       > .inputs {
         width: 100%;
+        max-width: 100%;
+        @include dFlex(flex-start, center, 0px);
+        border: 1px solid #adb0d9;
+        > mat-icon {
+          padding-left: 20px;
+          font-style: italic;
+          opacity: 0.4;
+        }
+      }
+      > .tarea-input {
+        @include dFlex(center, center);
+        width: 100%;
+        max-width: 100%;
+        border: 1px solid #adb0d9;
       }
     }
     > .description {
-        @include dFlex(flex-start, center,0, row);
-        width: 100%;
-        margin-bottom: 20px;
-        > p {
-          margin: 0 8px;
+      @include dFlex(flex-start, center, 0, row);
+      width: 100%;
+
+      margin-bottom: 20px;
+      > p {
+        margin: 0 8px;
+      }
+    }
+    > .create-btn {
+      width: 100%;
+      @include dFlex(flex-end, center,0,row);
+      > div {
+        @include dFlex(center,center);
+        width: 125px;
+        height: 49px;
+        border-radius: 32px;
+        background-color: #444df2;
+        cursor: pointer;
+        &:hover {
+          background-color: #797ef3;
+        }
+        > span {
+          color: white;
+          font-size: 18px;
+          font-weight: bold;
         }
       }
+    }
   }
+}
+
+textarea {
+  padding: 18px 0 0px 0 !important;
+  resize: none;
+
+  box-sizing: border-box;
+  margin-left: 28px;
+  max-width: 92% !important;
+  vertical-align: middle;
+  &::placeholder {
+    font-size: 18px;
+    vertical-align: middle;
+  }
+}
+
+input,
+textarea {
+  border: none;
+  background-color: none;
+  width: 100%;
+  max-width: 88%;
+  outline: none;
+  padding: 18px 15px;
+  font-family: "Nunito";
+  font-size: 18px;
+  &:hover {
+    cursor: pointer;
+  }
+  ::placeholder {
+    font-family: "Nunito";
+    font-size: 18px;
+  }
+}
+
+.br-32 {
+  border-radius: 32px;
+}
+
+.ts125 {
+  transition: all 150ms ease-in-out;
 }
