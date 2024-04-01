@@ -65,6 +65,10 @@ $bgPage: #ECEEFE;
 .custom-add-channel-dialog .mat-mdc-dialog-surface {
     border-radius: 30px !important;
 }
+// style for search container
+.mdc-dialog__surface {
+    overflow-y: visible !important; 
+}
 
 // FONTS
 /* nunito-200 - latin */

@@ -6,19 +6,47 @@
   <form [formGroup]="secondDialogGroup">
     <div class="check-flex">
       <label class="custom-radio-button">
-        <input type="radio" name="radio" />
+        <input
+          formControlName="selectedOption"
+          type="radio"
+          name="radio"
+          value="entireTeam"
+        />
         <span class="checkmark"></span>
       </label>
       <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
     </div>
-    
+
     <div class="check-flex">
-        <label class="custom-radio-button">
-          <input type="radio" name="radio" />
-          <span class="checkmark"></span>
-        </label>
-        <p>Bestimmte Leute hinzufügen</p>
+      <label class="custom-radio-button">
+        <input
+          formControlName="selectedOption"
+          type="radio"
+          name="radio"
+          value="chooseUser"
+        />
+        <span class="checkmark"></span>
+      </label>
+      <p>Bestimmte Leute hinzufügen</p>
+    </div>
+
+    <div class="channel-form ts125 search-input" *ngIf="secondDialogGroup.get('selectedOption').value === 'chooseUser'">
+      <div class="inputs br-32">
+        <input formControlName="searchInput" type="text" placeholder="Namen eingeben" />
       </div>
+      <div class="search-results" *ngIf="searchResults.length > 0">
+        <div class="user-result-list" *ngFor="let user of searchResults">
+          <div class="user-pair">
+            <img [src]="user.avatar">
+            <div class="online-attribut">
+              <img [src]="user.state ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+            </div>
+          </div>
+          <p>{{ user.name }}</p>
+        </div>
+      </div>
+    </div>
+
     <div class="create-btn ts125">
       <div><span>Erstellen</span></div>
     </div>
