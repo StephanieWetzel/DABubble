@@ -28,7 +28,7 @@ export class SidenavContentComponent {
   new User(false, 'Sebastian', '', './assets/img/avatar_clean2.png')
 ]
   constructor(public dialog: MatDialog) {
-    const dialogRef = this.dialog.open(SecondAddChannelDialogComponent)
+    //const dialogRef = this.dialog.open(SecondAddChannelDialogComponent)
   }
 
   addChannel() {
