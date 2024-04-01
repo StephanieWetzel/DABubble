@@ -18,7 +18,6 @@ export class ChatService  {
   }
 
   async addMessage(message: Message) {
-    
     message = this.toJSON(message)
     message.content = this.removePTags(message.content);
     await addDoc(this.getMessagesRef(), message);

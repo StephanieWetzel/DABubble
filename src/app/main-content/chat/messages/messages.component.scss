@@ -60,30 +60,3 @@ section{
 }
 
 
-
-/* Dieser Stil gilt für alle scrollbaren Elemente auf der Webseite */
-section::-webkit-scrollbar {
-    width: 8px;
-}
-
-/* Handle (der bewegliche Teil der Scrollbar) */
-section::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-/* Handle Hover */
-section::-webkit-scrollbar-thumb:hover {
-    background: #555;
-}
-
-/* Der Hintergrund der Scrollbar (der Teil, auf dem der Handle bewegt wird) */
-section::-webkit-scrollbar-track {
-    background: #FFFFFF;
-    border-radius: 4px;
-}
-
-/* Optional: Das Styling für den Button der Scrollbar (die Pfeile oben und unten), falls vorhanden */
-section::-webkit-scrollbar-button {
-    display: none;
-}

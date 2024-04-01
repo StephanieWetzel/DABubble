@@ -40,6 +40,7 @@ export class InputBoxComponent {
     let data = tinymce.get("inputData")
     if (data) {
       let content = data.getContent();
+      content = this.decodeHtmlEntities(content);
       let message = new Message();
       message.content = content;
       this.chatService.addMessage(message);
@@ -49,4 +50,9 @@ export class InputBoxComponent {
     }
   }
   
+  decodeHtmlEntities(encodedString: string) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = encodedString;
+    return textArea.value;
+  }
 }
