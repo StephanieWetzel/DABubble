@@ -1,15 +1,16 @@
 @import './../../../../styles.scss';
 
-section{
-    padding: 20px  0;
+section {
+    padding: 20px 0;
 }
 
-.message{
+.message {
     width: 100%;
     margin-bottom: 30px;
-    
+
     box-sizing: border-box;
-    p{
+
+    p {
         width: fit-content;
         padding: 15px;
         background-color: #ECEEFE;
@@ -21,59 +22,101 @@ section{
     }
 }
 
-.message-container{
-    padding: 20px 35px;
+.custom-outline-icon {
+    color: transparent;
+    text-shadow: 0 0 1px #000;
+}
+
+.message-container {
+    padding: 10px 35px;
     transition: all .15s;
-    &:hover{
+    position: relative;
+
+    &:hover {
         background-color: $bgPage;
-        p{
+
+        p {
             background-color: $bgContent;
+        }
+
+        .options-container{
+            visibility: visible;
         }
     }
 }
 
+.options-container {
+    position: absolute;
+    display: flex;
+    visibility: hidden;
+    top: -24px;
+    right: 40px;
+    @include dFlex($g:16px);
+    padding: 8px 12px;
+    background-color: $bgContent;
+    border: $bgPage 2px solid;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    div{
+        font-size: 20px;
+        cursor: pointer;
+    }
+    
+}
 
-.info{
+.check{
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+    @include dFlex();
+}   
+
+.info {
     margin-bottom: 8px;
-    .name{
+
+    .name {
         font-size: 18px;
         font-weight: 700;
         margin-right: 20px;
     }
-    .time{
+
+    .time {
         font-size: 14px;
         color: #686868;
     }
 }
 
-.date{
+.date {
     width: 100%;
     margin-bottom: 20px;
     padding: 0 20px;
     box-sizing: border-box;
     @include dFlex();
-    div{
+
+    div {
         height: 1px;
         flex: 1;
         background-color: #ADB0D9;
     }
-    span{
+
+    span {
         padding: 5px 15px;
         border: 1px #ADB0D9 solid;
         border-radius: 30px;
     }
 }
 
-.answers{
-    .count{
+.answers {
+    .count {
         color: #535AF1;
         font-size: 18px;
         margin-right: 20px;
     }
-    .last{
+
+    .last {
         font-size: 14px;
         color: #686868;
     }
 }
-
-
