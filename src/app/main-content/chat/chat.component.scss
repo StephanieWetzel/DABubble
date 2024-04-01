@@ -1,20 +1,49 @@
 @import './../../../styles.scss';
 
 
-section{
+section {
     height: 100%;
     width: 100%;
     @include dFlex($fd: column);
-    overflow-y: scroll;
-    app-headbar{
+
+    app-headbar {
         width: 100%;
     }
-    app-messages{
+
+    app-messages {
+        overflow-y: scroll;
         width: 100%;
         flex: 1;
     }
-    app-input-box{
+
+    app-input-box {
         width: 100%;
     }
-    
+}
+
+/* Dieser Stil gilt für alle scrollbaren Elemente auf der Webseite */
+app-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Handle (der bewegliche Teil der Scrollbar) */
+app-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+/* Handle Hover */
+app-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Der Hintergrund der Scrollbar (der Teil, auf dem der Handle bewegt wird) */
+app-messages::-webkit-scrollbar-track {
+    background: #FFFFFF;
+    border-radius: 4px;
+}
+
+/* Optional: Das Styling für den Button der Scrollbar (die Pfeile oben und unten), falls vorhanden */
+app-messages::-webkit-scrollbar-button {
+    display: none;
 }

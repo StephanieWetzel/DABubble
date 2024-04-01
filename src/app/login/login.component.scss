@@ -10,7 +10,7 @@
     z-index: 999;
     overflow: hidden;
     background: linear-gradient(1.46deg, #313AE6 1.22%, #797EF3 98.76%);
-    animation: backgroundFadeOut 1s 2.5s forwards;
+    animation: backgroundFadeOut 1s 2.4s forwards;
 
     div {
         display: flex;
@@ -29,7 +29,7 @@
         img {
             height: 200px;
             width: auto;
-            animation: imageAnimation 1s;
+            animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
         }
     }
 }
@@ -48,6 +48,18 @@
     }
 }
 
+@keyframes imageUpAnimation {
+    0% {
+        /* Startposition des Bildes */
+        transform: translateX(0) translateY(0) scale(1);
+    }
+
+    100% {
+        /* Endposition des Bildes (links oben) */
+        transform: translateX(-300%) translateY(-180%) scale(0.3);
+    }
+}
+
 @keyframes textAnimation {
     0% {
         transform: translateX(-100%) scale(1); // Text außerhalb des Bildschirms auf der linken Seite
@@ -60,7 +72,7 @@
 
     100% {
         opacity: 1; // Text bleibt sichtbar
-        transform: translate(calc(-100% - 0vw), calc(-50% - 40vh)) scale(0.4); // Text schwebt nach links oben zur Ausgangsposition und wird kleiner
+        transform: translateX(-180%) translateY(-1800%) scale(0.4); // Text schwebt nach links oben zur Ausgangsposition und wird kleiner
     }
 }
 
@@ -253,7 +265,7 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 64px;
+    padding-top: 32px;
     gap: 32px;
 
     .footer-content {
