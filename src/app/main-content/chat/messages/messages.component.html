@@ -5,15 +5,19 @@
             <span>{{ message.time | customDate }}</span>
             <div></div>
         </div>
-        <div class="info">
-            <span class="name">Noah Braun</span>
-            <span class="time">{{ message.time | customTime }}</span>
+        <div class="message-container">
+            <div class="info">
+                <span class="name">Noah Braun</span>
+                <span class="time">{{ message.time | customTime }}</span>
+            </div>
+
+            <p>{{ message.content }}</p>
+            <div class="answers">
+                <span class="count">2 Antworten</span>
+                <span class="last">Letzte Antwort 14:56</span>
+            </div>
         </div>
 
-        <p>{{ message.content }}</p>
-        <div class="answers">
-            <span class="count">2 Antworten</span>
-            <span class="last">Letzte Antwort 14:56</span>
-        </div>
+
     </div>
 </section>

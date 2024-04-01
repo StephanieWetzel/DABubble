@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { ChatService } from '../chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-input-box',
   standalone: true,
-  imports: [EditorModule],
+  imports: [EditorModule, CommonModule],
   templateUrl: './input-box.component.html',
   styleUrl: './input-box.component.scss'
 })
@@ -27,29 +28,40 @@ export class InputBoxComponent {
     placeholder: 'Nachricht an Chat ... ',
     statusbar: false,
     toolbar: 'link emoticons',
-    entity_encoding: 'raw'
+    entity_encoding: 'raw',
+    setup: (editor) => {
+      editor.on('input', () => {
+        const content = this.getInputContent(editor)
+        this.isContentEmpty = !content;
+        this.cdr.detectChanges();
+        console.log(this.isContentEmpty);
+      });
+    }
   };
 
+  isContentEmpty: boolean = true;
 
-  constructor(private chatService: ChatService){
-    
+
+  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {
+
+  }
+
+  getInputContent(input: any) {
+    return input.getContent({ format: 'text' }).trim();
   }
 
   sendMessage() {
-
     let data = tinymce.get("inputData")
-    if (data) {
-      let content = data.getContent();
-      content = this.decodeHtmlEntities(content);
+    if (data && this.getInputContent(data) >= 1) {
+      let content = data.getContent({ format: 'text' });
+      // content = this.decodeHtmlEntities(content);
       let message = new Message();
       message.content = content;
       this.chatService.addMessage(message);
       data.setContent('');
-    } else {
-      console.log('no data available');
     }
   }
-  
+
   decodeHtmlEntities(encodedString: string) {
     const textArea = document.createElement('textarea');
     textArea.innerHTML = encodedString;

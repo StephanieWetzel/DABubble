@@ -1,12 +1,14 @@
 @import './../../../../styles.scss';
 
 section{
-    padding: 20px  20px 0 20px ;
+    padding: 20px  0;
 }
 
 .message{
     width: 100%;
     margin-bottom: 30px;
+    
+    box-sizing: border-box;
     p{
         width: fit-content;
         padding: 15px;
@@ -15,8 +17,21 @@ section{
         border-bottom-right-radius: 30px;
         border-bottom-left-radius: 30px;
         margin-bottom: 8px;
+        transition: all .15s;
     }
 }
+
+.message-container{
+    padding: 20px 35px;
+    transition: all .15s;
+    &:hover{
+        background-color: $bgPage;
+        p{
+            background-color: $bgContent;
+        }
+    }
+}
+
 
 .info{
     margin-bottom: 8px;
@@ -34,6 +49,8 @@ section{
 .date{
     width: 100%;
     margin-bottom: 20px;
+    padding: 0 20px;
+    box-sizing: border-box;
     @include dFlex();
     div{
         height: 1px;

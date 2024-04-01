@@ -19,7 +19,6 @@ export class ChatService  {
 
   async addMessage(message: Message) {
     message = this.toJSON(message)
-    message.content = this.removePTags(message.content);
     await addDoc(this.getMessagesRef(), message);
   }
 
@@ -56,7 +55,7 @@ export class ChatService  {
     }
   }
 
-  removePTags(text: string) {
-    return text.replace(/^<p>/i, '').replace(/<\/p>$/i, '');
-  }
+  // removePTags(text: string) {
+  //   return text.replace(/^<p>/i, '').replace(/<\/p>$/i, '');
+  // }
 }

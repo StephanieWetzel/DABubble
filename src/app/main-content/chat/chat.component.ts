@@ -12,10 +12,7 @@ import { HeadbarComponent } from './headbar/headbar.component';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
-export class ChatComponent implements AfterViewInit {
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
-  }
+export class ChatComponent {
 
   // scrollToBottom(): void {
   //   try {

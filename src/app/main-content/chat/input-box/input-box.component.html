@@ -1,6 +1,6 @@
 <section>
     <editor id="inputData" [init]="editorInit"></editor>
-    <button class="submit-btn" (click)="sendMessage()">
+    <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty}" (click)="sendMessage()">
         <img src="./../../../../assets/img/send-message.svg" alt="send message">
     </button>
 </section>

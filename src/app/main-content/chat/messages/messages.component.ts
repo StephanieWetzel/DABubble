@@ -26,7 +26,6 @@ export class MessagesComponent {
 
   getList(): Message[] {
     this.messages = this.chatService.messages;
-    console.log(this.messages);
     return this.chatService.messages;
   }
 }
