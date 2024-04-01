@@ -5,11 +5,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { style } from '@angular/animations';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, MatInputModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatButtonModule, NgIf, NgClass, NgStyle],
+  imports: [CommonModule, MatInputModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatButtonModule, NgIf, NgClass, NgStyle, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
