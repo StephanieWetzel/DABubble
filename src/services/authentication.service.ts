@@ -7,12 +7,12 @@ import { Auth } from "@angular/fire/auth";
 
 @Injectable({
     providedIn: 'root'
-  })
+})
 
 
 export class AuthenticationService {
 
-    constructor(public auth: Auth){}
+    constructor(public auth: Auth) { }
     //auth: Auth = getAuth();
 
 
