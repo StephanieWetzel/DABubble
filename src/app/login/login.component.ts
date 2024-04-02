@@ -1,5 +1,5 @@
 import { CommonModule, NgIf, NgClass, NgStyle } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -14,7 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 //import { getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { getFirestore } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, doc, setDoc } from '@angular/fire/firestore';
+import { User } from '../../assets/models/user.class';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -35,8 +36,8 @@ import { getFirestore } from '@angular/fire/firestore';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  email: string = 'bastiwolff432@gmail.com';
-  password: string = '123456789';
+
+  firestore: Firestore = inject(Firestore)  
 
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -58,8 +59,30 @@ export class LoginComponent {
       const email = this.formData.value.email;
       const password = this.formData.value.password;
       try {
-        await this.authService.login(email, password);
+        await this.authService.login(email, password).then((userCredential) => {
+          console.log('Sign up success');
+          const user = userCredential.user;
+          console.log(user.uid)
+        });
       } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+  async signUp() {
+    if (this.formData.valid) {
+      try {
+        await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
+          const userAuth = userCredential.user;
+          const user = new User(this.formData.value);
+          user.userId = userAuth.uid;
+          const userRef = doc(this.firestore, "user", userAuth.uid);
+          console.log(user)
+          setDoc(userRef, user.toJSON());
+          console.log('user signed up :D')
+        }) 
+      }catch (error){
         console.error(error);
       }
     }
