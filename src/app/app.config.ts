@@ -18,5 +18,5 @@ export const appConfig: ApplicationConfig = {
       "authDomain": "dabubble-172c7.firebaseapp.com",
       "messagingSenderId": "1098632374519"
     }))),
-    importProvidersFrom(provideAuth(() => getAuth())), importProvidersFrom(provideFirestore(() => getFirestore())), provideAnimationsAsync(), provideAnimationsAsync()]
+    importProvidersFrom(provideAuth(() => getAuth())), importProvidersFrom(provideFirestore(() => getFirestore())), provideAnimationsAsync()]
 };
