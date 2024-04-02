@@ -20,23 +20,23 @@ export class SecondAddChannelDialogComponent {
   secondDialogGroup: FormGroup | any;
   searchResults: any[] = [];
   //user: User = new User();
-  users = [new User('Sebasstian','','',true,'./assets/img/avatar_clean2.png'), 
-  new User('Henrik','','',false,'./assets/img/avatar_clean1.png'), 
-  new User('Stephanei','','',false,'./assets/img/avatar_clean0.png')]
+  // users = [new User('Sebasstian','','',true,'./assets/img/avatar_clean2.png'), 
+  // new User('Henrik','','',false,'./assets/img/avatar_clean1.png'), 
+  // new User('Stephanei','','',false,'./assets/img/avatar_clean0.png')]
 
   constructor(public dialogRef: MatDialogRef<SecondAddChannelDialogComponent>) {
     this.secondDialogGroup = new FormGroup({
       selectedOption: new FormControl('', [Validators.required]),
       searchInput: new FormControl(''),
     })
-    this.secondDialogGroup.get('searchInput').valueChanges.subscribe((searchTerm: string) => {
+    /*this.secondDialogGroup.get('searchInput').valueChanges.subscribe((searchTerm: string) => {
       this.searchResults = searchTerm ? this.findResults(searchTerm): [];
-    })
+    })*/
   }
 
-  private findResults(searchTerm: string): any[] {
+  /*private findResults(searchTerm: string): any[] {
     return this.users.filter(item => item.name?.toLowerCase().includes(searchTerm.toLowerCase()))
-  }
+  }*/
 
   onClose(): void {
     this.dialogRef.close(this.secondDialogGroup.value)
