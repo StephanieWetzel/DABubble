@@ -1,13 +1,44 @@
 @import './../../../styles.scss';
 
+section{
+    height: 100%;
+    @include dFlex;
+}
+.chat-container{
+    height: 100%;
+    padding-right: 12px;
+    background-color: $bgPage;
+    flex: 1;
+}
 
-section {
+.reply-container{
+    height: 100%;
+    padding-left: 12px;
+    background-color: $bgPage;
+}
+
+app-reply{
+    height: 100%;
+    background-color: $bgContent;
+    border-radius: 30px;
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.5s ease-out
+}
+
+.show-reply{
+    max-width: 400px;
+}
+
+.chat {
     height: 100%;
     width: 100%;
     @include dFlex($fd: column);
-
+    background-color: $bgContent;
+    border-radius: 30px;
     app-headbar {
         width: 100%;
+        overflow: hidden;
     }
 
     app-messages {
@@ -21,7 +52,6 @@ section {
     }
 }
 
-/* Dieser Stil gilt für alle scrollbaren Elemente auf der Webseite */
 app-messages::-webkit-scrollbar {
     width: 8px;
 }

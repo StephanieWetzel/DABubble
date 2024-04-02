@@ -1,6 +1,6 @@
 <section>
-    <div *ngFor="let message of getList()" class="message">
-        <div class="date">
+    <div *ngFor="let message of getList(); let i = index" class="message">
+        <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
             <span>{{ message.time | customDate }}</span>
             <div></div>
@@ -12,14 +12,14 @@
             </div>
             <p>{{ message.content }}</p>
             <div class="answers">
-                <span class="count">2 Antworten</span>
+                <span class="count" (click)="showReply()">2 Antworten</span>
                 <span class="last">Letzte Antwort 14:56</span>
             </div>
             <div class="options-container">
-                <div class="check">✅</div>
-                <div>🙌🏻</div>
-                <div><mat-icon class="material-icons-outlined">add_reaction_outline</mat-icon></div>
-                <div><mat-icon class="material-icons-outlined">chat_outline</mat-icon></div>
+                <div><div class="check">✅</div></div>
+                <div class="hands-container"><div class="hands">🙌🏻</div></div>
+                <div><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
+                <div><mat-icon class="outlined">chat_outline</mat-icon></div>
             </div>
         </div>
     </div>

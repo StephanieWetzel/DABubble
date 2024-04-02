@@ -1,0 +1,38 @@
+@import './../../../../../styles.scss';
+
+
+section {
+    padding: 25px 45px;
+    box-shadow: 0px 0.5px 3px 0px rgba(0, 0, 0, 0.5);
+    @include dFlex($jc: space-between)
+}
+
+
+.group-name {
+    @include dFlex();
+    h2{
+        margin-block-start: 0;
+        margin-block-end: 0;
+        font-size: 24px;
+        font-weight: 700;
+        margin-right: 24px;
+    }
+    
+    span, mat-icon{
+        color: #797EF3;
+    }
+    
+}
+
+.close{
+    display: flex;
+    padding: 4px;
+    border-radius: 50%;
+    &:hover{
+        background-color: $bgPage;
+        cursor: pointer;
+        mat-icon{
+            color: #797EF3;
+        }
+    }
+}

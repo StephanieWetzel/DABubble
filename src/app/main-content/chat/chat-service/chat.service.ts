@@ -9,6 +9,8 @@ import { Message } from '../../../../assets/models/message.class';
 export class ChatService  {
   private firestore: Firestore = inject(Firestore);
 
+  showReply: boolean = true;
+
   unsubMessage;
 
   messages: Message[] = [];

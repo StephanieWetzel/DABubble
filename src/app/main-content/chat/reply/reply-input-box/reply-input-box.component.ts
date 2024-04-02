@@ -1,23 +1,20 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { EditorModule } from '@tinymce/tinymce-angular';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import tinymce, { RawEditorOptions } from 'tinymce';
-import { ChatService } from '../chat-service/chat.service';
-import { Message } from '../../../../assets/models/message.class';
+import { EditorModule } from '@tinymce/tinymce-angular';
+import { Message } from '../../../../../assets/models/message.class';
+import { ChatService } from '../../chat-service/chat.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-input-box',
+  selector: 'app-reply-input-box',
   standalone: true,
   imports: [EditorModule, CommonModule],
-  templateUrl: './input-box.component.html',
-  styleUrl: './input-box.component.scss'
+  templateUrl: './reply-input-box.component.html',
+  styleUrl: './reply-input-box.component.scss'
 })
-
-
-export class InputBoxComponent {
-  public editorInit: RawEditorOptions = {
-    selector: '#inputData',
-    id: 'inputData',
+export class ReplyInputBoxComponent {
+  public inputInit: RawEditorOptions = {
+    id: 'inputReply',
     base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
@@ -41,21 +38,17 @@ export class InputBoxComponent {
 
   isContentEmpty: boolean = true;
 
-
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {
 
   }
 
-  getInputContent(input: any): boolean {
-    const content = input.getContent({ format: 'text' }).trim();
-    console.log(content);
-    return content;
+  getInputContent(input: any) {
+    return input.getContent({ format: 'text' }).trim();
   }
 
   sendMessage() {
-    let data = tinymce.get("inputData")
-    console.log('my data: ', data?.getContent());
-    if (data && this.getInputContent(data)) {
+    let data = tinymce.get('inputReply');
+    if (data && this.getInputContent(data) >= 1) {
       let content = data.getContent({ format: 'text' });
       // content = this.decodeHtmlEntities(content);
       let message = new Message();

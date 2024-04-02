@@ -61,6 +61,13 @@ section {
     div{
         font-size: 20px;
         cursor: pointer;
+        padding: 8px;
+        border-radius: 50%;
+        @include dFlex();
+        transition: background-color .12s;
+        &:hover{
+            background-color: $bgPage;
+        }
     }
     
 }
@@ -71,7 +78,20 @@ section {
     height: 20px;
     overflow: hidden;
     @include dFlex();
-}   
+    padding: 0 !important;
+}
+
+
+
+.hands{
+    margin-bottom: 2px;
+    font-size: 22px !important;
+    padding: 0 !important;
+}
+
+.hands-container{
+    padding: 8px 4px !important;
+}
 
 .info {
     margin-bottom: 8px;
@@ -113,10 +133,19 @@ section {
         color: #535AF1;
         font-size: 18px;
         margin-right: 20px;
+        cursor: pointer;
+        &:hover{
+            font-weight: 600;
+        }
     }
 
     .last {
         font-size: 14px;
         color: #686868;
     }
+
+    
+}
+.outlined{
+    font-family: 'Material Icons Outlined';
 }
