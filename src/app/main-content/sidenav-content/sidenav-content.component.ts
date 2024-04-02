@@ -46,8 +46,13 @@ export class SidenavContentComponent {
   openSecondDialog(firstDialogData: any): void {
     const secondDialogRef = this.dialog.open(SecondAddChannelDialogComponent, {
       panelClass: 'custom-add-channel-dialog'
-    })
+    });
     console.log(firstDialogData);
+    secondDialogRef.afterClosed().subscribe(result => {
+      
+        console.log(result, firstDialogData);
+      
+    })
   }
 }
 

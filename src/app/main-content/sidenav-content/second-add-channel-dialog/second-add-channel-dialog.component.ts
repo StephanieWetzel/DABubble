@@ -21,8 +21,8 @@ export class SecondAddChannelDialogComponent {
   searchResults: any[] = [];
   //user: User = new User();
   users = [new User('Sebasstian','','',true,'./assets/img/avatar_clean2.png'), 
-  new User('Henrik','','',true,'./assets/img/avatar_clean1.png'), 
-  new User('Stephanei','','',true,'./assets/img/avatar_clean0.png')]
+  new User('Henrik','','',false,'./assets/img/avatar_clean1.png'), 
+  new User('Stephanei','','',false,'./assets/img/avatar_clean0.png')]
 
   constructor(public dialogRef: MatDialogRef<SecondAddChannelDialogComponent>) {
     this.secondDialogGroup = new FormGroup({
@@ -36,6 +36,10 @@ export class SecondAddChannelDialogComponent {
 
   private findResults(searchTerm: string): any[] {
     return this.users.filter(item => item.name?.toLowerCase().includes(searchTerm.toLowerCase()))
+  }
+
+  onClose(): void {
+    this.dialogRef.close(this.secondDialogGroup.value)
   }
 
 }

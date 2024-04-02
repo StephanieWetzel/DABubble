@@ -9,7 +9,7 @@
         <input
           formControlName="selectedOption"
           type="radio"
-          name="radio"
+          name="selectedOption"
           value="entireTeam"
         />
         <span class="checkmark"></span>
@@ -22,7 +22,7 @@
         <input
           formControlName="selectedOption"
           type="radio"
-          name="radio"
+          name="selectedOption"
           value="chooseUser"
         />
         <span class="checkmark"></span>
@@ -35,6 +35,7 @@
         <input formControlName="searchInput" type="text" placeholder="Namen eingeben" />
       </div>
       <div class="search-results" *ngIf="searchResults.length > 0">
+        <div>
         <div class="user-result-list" *ngFor="let user of searchResults">
           <div class="user-pair">
             <img [src]="user.avatar">
@@ -45,10 +46,11 @@
           <p>{{ user.name }}</p>
         </div>
       </div>
+      </div>
     </div>
 
     <div class="create-btn ts125">
-      <div><span>Erstellen</span></div>
+      <div (click)="onClose()"><span>Erstellen</span></div>
     </div>
   </form>
 </section>
