@@ -69,6 +69,18 @@
   position: relative;
 }
 
+.input-search {
+  width: 100%;
+  max-width: 100%;
+  @include dFlex(flex-start, center, 0px);
+  border: 1px solid #adb0d9;
+  > mat-icon {
+    padding-left: 20px;
+    font-style: italic;
+    opacity: 0.4;
+  }
+}
+
 .search-results {
   position: absolute;
   top: 80%;
@@ -121,8 +133,33 @@ p {
 
 input {
   margin-left: 27px !important;
+  margin-right: 27px !important;
 }
 
 .ml27 {
   margin-left: 27px;
+}
+
+.mdc-evolution-chip-set{
+  width: 100% !important;
+}
+
+.mdc-evolution-chip-set .mdc-evolution-chip {
+  margin-left: 20px !important;
+}
+/*selected user styling part*/
+
+mat-chip {
+  background-color: #eceefe !important;
+  height: 40px;
+}
+
+.selected-user-pair {
+  @include dFlex(flex-start, center, 15px);
+  position: relative;
+  height: 34px;
+  padding: 3px 0px;
+  > img {
+    height: 34px;
+  }
 }
