@@ -1,6 +1,5 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { MainContentComponent } from "./main-content/main-content.component";
 
 @Component({
@@ -11,7 +10,6 @@ import { MainContentComponent } from "./main-content/main-content.component";
   imports: [
     RouterOutlet,
     RouterLink,
-    LoginComponent,
     MainContentComponent
   ]
 })

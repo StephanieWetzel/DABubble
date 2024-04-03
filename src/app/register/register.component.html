@@ -1,3 +1,94 @@
 <div class="main-container">
+    <div class="header-container">
+        <img src="assets/img/logo-header_complete.svg" alt="">
+    </div>
 
+    <div class="signup-container">
+        <div class="signup-header">
+            <img routerLink="**" [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
+                (mouseover)="isHovered = true" (mouseout)="isHovered = false" src="assets/img/goBack_unfocused.svg"
+                alt="">
+            <h2>Konto erstellen</h2>
+        </div>
+
+        <span class="signup-text">Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</span>
+
+        <form [formGroup]="formData">
+            <div class="input-container">
+                <div>
+                    <!-- name -->
+                    <div (click)="isNameFocused = true" class="mail-and-pw tr-150ms br-32"
+                        [ngClass]="{'purple-border': isNameFocused}">
+                        <img
+                            [src]="isNameFocused ? 'assets/img/person_focused.svg' : 'assets/img/person_unfocused.svg'">
+                        <input formControlName="name" type="name" placeholder="Name und Nachnahme" required>
+                    </div>
+
+                    <div *ngIf="formData.get('name')?.invalid && formData.get('name')?.touched">
+                        <span class="invalid-text" *ngIf="formData.get('name')?.errors?.['required']">
+                            *Bitte Namen eingeben.
+                        </span>
+                        <span class="invalid-text" *ngIf="formData.get('name')?.errors?.['fullName']">
+                            *Bitte vollständigen Namen eingeben (Vor-/Nachname).
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- email -->
+                    <div (click)="isMailFocused = true" class="mail-and-pw tr-150ms br-32"
+                        [ngClass]="{'purple-border': isMailFocused}">
+                        <img [src]="isMailFocused ? 'assets/img/mail_focused.svg' : 'assets/img/mail_unfocused.svg'">
+                        <input formControlName="email" type="email" placeholder="E-Mail" required
+                            pattern="[^@]+@[^\.]+\..+">
+                    </div>
+
+                    <div *ngIf="formData.get('email')?.invalid && formData.get('email')?.touched">
+                        <span class="invalid-text" *ngIf="formData.get('email')?.errors?.['required']">
+                            *Bitte E-Mail-Adresse eingeben.
+                        </span>
+                        <span class="invalid-text" *ngIf="formData.get('email')?.errors?.['pattern']">
+                            *Diese E-Mail-Adresse ist leider ungültig.
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- password -->
+                    <div (click)="isPasswordFocused = true" [ngClass]="{'purple-border': isPasswordFocused}"
+                        class="mail-and-pw google-sign-in tr-150ms br-32">
+                        <img
+                            [src]="isPasswordFocused ? 'assets/img/lock_focused.svg' : 'assets/img/lock_unfocused.svg'">
+                        <input formControlName="password" type="password" placeholder="Passwort" required>
+                    </div>
+                    <div *ngIf="formData.get('password')?.invalid && formData.get('password')?.touched">
+                        <span class="invalid-text" *ngIf="formData.get('password')?.errors?.['required']">
+                            *Bitte Passwort eingeben.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="privacy-policy-container">
+                <label class="container">
+                    <input formControlName="checkbox" type="checkbox" checked="checked" required>
+                    <span class="checkmark"></span>
+                </label>
+                <p>Ich stimme der
+                    <a class="policy-link tr-150ms" routerLink="privacyPolicy">Datenschutzerklärung</a>
+                    zu.
+                </p>
+            </div>
+
+            <div class="btn-container">
+                <button class="br-32 tr-150ms">Weiter</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="footer-container">
+        <span class="footer-content tr-150ms">Impressum</span>
+        <span class="footer-content tr-150ms">Datenschutz</span>
+    </div>
 </div>

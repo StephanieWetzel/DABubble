@@ -16,7 +16,8 @@ body.mat-typography h2,
 p,
 span,
 input,
-mat-form-field {
+mat-form-field,
+button {
     font-family: 'Nunito', sans-serif;
     font-size: 16px;
 }
@@ -65,9 +66,10 @@ $bgPage: #ECEEFE;
 .custom-add-channel-dialog .mat-mdc-dialog-surface {
     border-radius: 30px !important;
 }
+
 // style for search container
 .mdc-dialog__surface {
-    overflow-y: visible !important; 
+    overflow-y: visible !important;
 }
 
 // FONTS

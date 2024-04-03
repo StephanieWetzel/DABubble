@@ -11,22 +11,22 @@ import { ChatComponent } from './chat/chat.component';
 
 
 @Component({
-    selector: 'app-main-content',
-    standalone: true,
-    templateUrl: './main-content.component.html',
-    styleUrl: './main-content.component.scss',
-    imports: [MatIconModule, 
-        MatButtonModule, 
-        MatToolbarModule, 
-        MatSidenavModule, 
-        MatAccordion, 
-        MatExpansionModule, 
-        HeaderComponent, 
-        RouterOutlet,
-        RouterLink,
-        ChatComponent,
-        SidenavContentComponent
-      ]
+  selector: 'app-main-content',
+  standalone: true,
+  templateUrl: './main-content.component.html',
+  styleUrl: './main-content.component.scss',
+  imports: [MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatAccordion,
+    MatExpansionModule,
+    HeaderComponent,
+    RouterOutlet,
+    RouterLink,
+    ChatComponent,
+    SidenavContentComponent
+  ]
 })
 export class MainContentComponent {
 

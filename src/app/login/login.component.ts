@@ -1,5 +1,5 @@
 import { CommonModule, NgIf, NgClass, NgStyle } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -37,7 +37,7 @@ import { User } from '../../assets/models/user.class';
 })
 export class LoginComponent {
 
-  firestore: Firestore = inject(Firestore)  
+  firestore: Firestore = inject(Firestore)
 
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -47,11 +47,16 @@ export class LoginComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
 
-  
+  // introPlayed: boolean = false;
+
+
   constructor(
     private fbuilder: FormBuilder,
     public authService: AuthenticationService
-  ) {}
+  ) {
+
+    // this.introPlayed = true;
+  }
 
 
   async login() {
@@ -81,11 +86,21 @@ export class LoginComponent {
           console.log(user)
           setDoc(userRef, user.toJSON());
           console.log('user signed up :D')
-        }) 
-      }catch (error){
+        })
+      } catch (error) {
         console.error(error);
       }
     }
   }
+
+
+  // @HostListener('window:beforeunload', ['$event'])
+  // beforeUnloadHandler(event: any) {
+
+  //   setTimeout(() => {
+  //     this.introPlayed = false;
+  //   }, 4000);
+  // }
+
 
 }

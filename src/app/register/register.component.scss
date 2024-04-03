@@ -1,4 +1,267 @@
 .main-container {
-    height: 100vh;
-    background-color: red;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .header-container {
+        padding: 64px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .signup-container {
+        padding: 48px;
+        width: 400px;
+        max-width: 60%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        text-align: center;
+        border-radius: 28px;
+        box-shadow: #C2C4E3 0px 2px 8px;
+        margin-top: 120px;
+        position: relative;
+
+        .signup-text {
+            padding: 32px 0;
+        }
+
+        .signup-header {
+            display: flex;
+            align-items: center;
+
+            img {
+                position: absolute;
+                left: 16px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            h2 {
+                color: #444DF2;
+                font-size: 40px;
+                font-weight: bold;
+            }
+
+        }
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+
+    .btn-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 32px;
+        padding-top: 32px;
+
+        button {
+            background-color: #444DF2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-weight: 600;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #797EF3;
+            }
+        }
+    }
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-bottom: 32px;
+
+    .invalid-text {
+        display: flex;
+        color: #ED1E79;
+        font-size: 14px;
+        text-align: start;
+    }
+}
+
+.privacy-policy-container {
+    display: flex;
+
+    .policy-link {
+        color: #797EF3;
+        border-radius: 32px;
+        text-decoration: none;
+
+        &:hover {
+            cursor: pointer;
+            background-color: #ECEEFE;
+            color: #444DF2;
+            font-weight: 600;
+        }
+    }
+}
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 32px;
+    gap: 32px;
+
+    .footer-content {
+        border: 1px solid;
+        border-radius: 24px;
+        border-color: transparent;
+        color: #797EF3;
+        padding: 8px;
+
+        &:hover {
+            cursor: pointer;
+            border-color: #CCCFEB;
+            color: #444DF2;
+        }
+    }
+}
+
+span {
+    font-weight: 600;
+}
+
+input {
+    border: none;
+    background-color: #ECEEFE;
+    width: 100%;
+    outline: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.mail-and-pw {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background-color: #ECEEFE;
+    border: 1px solid transparent;
+    padding: 16px 32px !important;
+
+    &:hover {
+        cursor: pointer;
+        border: 1px solid #757575 !important;
+    }
+}
+
+// CHECKBOX
+/* Customize the label (the container) */
+.container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 19px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 14px;
+    width: 14px;
+    border: 2px solid #797EF3;
+    border-radius: 2px;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input~.checkmark {
+    background-color: #ECEEFE;
+    border-color: #444DF2;
+
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked~.checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    left: 4px;
+    top: 0;
+    width: 3px;
+    height: 8px;
+    border: solid #797EF3;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.container .checkmark:hover:after {
+    border: solid #444DF2;
+    border-width: 0 3px 3px 0;
+}
+
+
+// generic classes
+.fs-15 {
+    font-size: 15px;
+}
+
+.br-32 {
+    border-radius: 32px;
+}
+
+.tr-150ms {
+    transition: all 150ms ease-in-out;
+}
+
+.purple-border {
+    border-color: #535AF1 !important;
+
+    &:hover {
+        border-color: #535AF1 !important;
+    }
+}
+
+h2 {
+    margin-block-start: 0;
+    margin-block-end: 0;
 }

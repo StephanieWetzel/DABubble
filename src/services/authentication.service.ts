@@ -20,7 +20,7 @@ export class AuthenticationService {
         return signInWithEmailAndPassword(this.auth, email, password);
     }
 
-    signUp(email:string, password: string){
+    signUp(email: string, password: string) {
         return createUserWithEmailAndPassword(this.auth, email, password);
     }
 }
