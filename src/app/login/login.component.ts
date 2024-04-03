@@ -74,7 +74,7 @@ export class LoginComponent {
       }
     }
   }
-
+// für testzwecke -> geht aber erst einmal
   async signUp() {
     if (this.formData.valid) {
       try {

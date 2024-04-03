@@ -31,16 +31,28 @@
     </div>
 
     <div class="channel-form ts125 search-input" *ngIf="secondDialogGroup.get('selectedOption').value === 'chooseUser'">
-      <div class="inputs br-32">
-        <input formControlName="searchInput" type="text" placeholder="Namen eingeben" />
-      </div>
+      
+      <mat-chip-listbox #chipList>
+        <div class="input-search br-32">
+          <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
+          <div class="selected-user-pair">
+            <img [src]="user.avatar">
+            <p>{{ user.name }}</p>
+          </div>
+          <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+        
+          <input formControlName="searchInput" type="text" placeholder="Namen eingeben" />
+        </div>
+      </mat-chip-listbox>
+      
       <div class="search-results" *ngIf="searchResults.length > 0">
         <div>
-        <div class="user-result-list" *ngFor="let user of searchResults">
+        <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
           <div class="user-pair">
             <img [src]="user.avatar">
             <div class="online-attribut">
-              <img [src]="user.state ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+              <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
             </div>
           </div>
           <p>{{ user.name }}</p>
