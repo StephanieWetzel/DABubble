@@ -21,7 +21,7 @@
                         [ngClass]="{'purple-border': isNameFocused}">
                         <img
                             [src]="isNameFocused ? 'assets/img/person_focused.svg' : 'assets/img/person_unfocused.svg'">
-                        <input formControlName="name" type="name" placeholder="Name und Nachnahme" required>
+                        <input formControlName="name" type="name" placeholder="Name und Nachname" required>
                     </div>
 
                     <div *ngIf="formData.get('name')?.invalid && formData.get('name')?.touched">
