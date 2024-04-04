@@ -11,6 +11,7 @@ section {
     box-sizing: border-box;
 
     p {
+        font-size: 18px;
         width: fit-content;
         padding: 15px;
         background-color: #ECEEFE;
@@ -128,8 +129,32 @@ section {
     }
 }
 
+.reactions{
+    @include dFlex($jc: flex-start, $g: 12px);
+    margin: 12px 0;
+    div{
+        @include dFlex($g: 8px);
+        padding: 4px 8px;
+        border: #ADB0D9 1px solid;
+        border-radius: 30px;
+        cursor: pointer;
+        background-color: white;
+    }
+    .emote {
+        font-size: 22px;
+    }
+    .r-count{
+        font-size: 18;
+    }
+    mat-icon{
+        &:hover{
+            cursor: pointer;
+        }
+    }
+}
+
 .answers {
-    .count {
+    .a-count {
         color: #535AF1;
         font-size: 18px;
         margin-right: 20px;
@@ -146,6 +171,23 @@ section {
 
     
 }
+
+ul{
+    @include dFlex($g: 12px);
+    flex-wrap: wrap;
+    max-width: 250px;
+    font-size: 30px;
+    li{
+        padding: 12px 4px;
+        &:hover{
+            background-color: $bgPage;
+            cursor: pointer;
+            border-radius: 50%;
+            
+        }
+    }
+}
+
 .outlined{
     font-family: 'Material Icons Outlined';
 }

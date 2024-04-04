@@ -1,15 +1,31 @@
+import { Reaction } from "./reactions.class";
+
 export class Message{
     sendId: string;
     getId: string;
     time: number;
     content: string;
-    id: string;
+    messageId : string;
+    reactions: Reaction[];
 
     constructor(obj?: any){
         this.sendId = obj ? obj.sendId : '';
         this.getId = obj ? obj.getId : '';
         this.time = obj ? obj.time :  new Date().getTime();
         this.content = obj ? obj.content : '';
-        this.id = obj ? obj.id : '';
+        this.messageId = obj ? obj.messageId : '';
+        this.reactions = obj ? obj.reactions : []
     }
+
+
+    toJSON(obj: Message) {
+    return {
+      sendId: obj.sendId,
+      getId: obj.getId,
+      time: obj.time,
+      content: obj.content,
+      messageId: obj.messageId,
+      reacrions: obj.reactions
+    }
+  }
 }

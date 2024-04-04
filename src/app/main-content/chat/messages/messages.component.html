@@ -11,14 +11,30 @@
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
             <p>{{ message.content }}</p>
+            <div class="reactions" *ngIf="message.reactions">
+                <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)">
+                    <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>
+                </div>
+                <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
+                <mat-menu #down_menu="matMenu" xPosition="before">
+                    <ul>
+                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}</li>
+                    </ul>
+                </mat-menu>
+            </div>
             <div class="answers">
-                <span class="count" (click)="showReply()">2 Antworten</span>
+                <span class="a-count" (click)="showReply()">2 Antworten</span>
                 <span class="last">Letzte Antwort 14:56</span>
             </div>
             <div class="options-container">
-                <div><div class="check">✅</div></div>
-                <div class="hands-container"><div class="hands">🙌🏻</div></div>
-                <div><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
+                <div (click)="addReaction(message.messageId, '✅')"><div class="check" >✅</div></div>
+                <div (click)="addReaction(message.messageId, '🙌🏻')" class="hands-container"><div class="hands" >🙌🏻</div></div>
+                <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
+                <mat-menu #menu="matMenu" xPosition="before">
+                    <ul>
+                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}</li>
+                    </ul>
+                </mat-menu>
                 <div><mat-icon class="outlined">chat_outline</mat-icon></div>
             </div>
         </div>
