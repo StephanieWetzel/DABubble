@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   FormGroup,
@@ -9,6 +9,9 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { User } from '../../../assets/models/user.class';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +26,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  firestore: Firestore = inject(Firestore)
+
   formData: FormGroup = this.fbuilder.group({
     name: ['', [Validators.required, this.fullNameValidator()]],
     email: ['', [Validators.required, Validators.email]],
@@ -35,7 +40,9 @@ export class RegisterComponent {
   isPasswordFocused: boolean = false;
   isHovered: boolean = false;
 
-  constructor(private fbuilder: FormBuilder,) {
+  constructor(
+    private fbuilder: FormBuilder,
+    public authService: AuthenticationService) {
 
   }
 
@@ -54,6 +61,25 @@ export class RegisterComponent {
 
       return null; // no error (fullName is given)
     };
+  }
+
+
+  async signUp() {
+    if (this.formData.valid) {
+      try {
+        await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
+          const userAuth = userCredential.user;
+          const user = new User(this.formData.value);
+          user.userId = userAuth.uid;
+          const userRef = doc(this.firestore, "user", userAuth.uid);
+          console.log(user)
+          setDoc(userRef, user.toJSON());
+          console.log('user signed up :D')
+        })
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
 }

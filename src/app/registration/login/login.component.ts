@@ -12,10 +12,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
-import { AuthenticationService } from '../../services/authentication.service';
 //import { getAuth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Firestore, addDoc, collection, doc, setDoc } from '@angular/fire/firestore';
-import { User } from '../../assets/models/user.class';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { User } from '../../../assets/models/user.class';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -69,24 +69,6 @@ export class LoginComponent {
           const user = userCredential.user;
           console.log(user.uid)
         });
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-// für testzwecke -> geht aber erst einmal
-  async signUp() {
-    if (this.formData.valid) {
-      try {
-        await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
-          const userAuth = userCredential.user;
-          const user = new User(this.formData.value);
-          user.userId = userAuth.uid;
-          const userRef = doc(this.firestore, "user", userAuth.uid);
-          console.log(user)
-          setDoc(userRef, user.toJSON());
-          console.log('user signed up :D')
-        })
       } catch (error) {
         console.error(error);
       }
