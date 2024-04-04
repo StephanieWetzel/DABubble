@@ -11,7 +11,7 @@
 <section class="nav-channels">
   <div style="position: relative;">
     <div class="add-channel-head">
-      <button (click)="addChannel()">
+      <button (click)="openAddChannel()">
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -26,11 +26,13 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <span class="list-enumeration channel-enumeration"><mat-icon style="font-style: italic;">tag</mat-icon> Allgemein</span>
-      <span class="list-enumeration channel-enumeration"><mat-icon style="font-style: italic;">tag</mat-icon> Entwicklerteam</span>
+      <span class="list-enumeration channel-enumeration" *ngFor="let channel of fetchedChannels" (click)="openChannel(channel.channelId)">
+        <mat-icon style="font-style: italic;">tag</mat-icon>
+         {{ channel.name }}
+      </span>
       <div class="list-enumeration add-effect">
         <mat-icon>add_circle_outline</mat-icon>
-        <span (click)="addChannel()">Channel hinzufügen</span>
+        <span (click)="openAddChannel()">Channel hinzufügen</span>
       </div>
     </div>
   </mat-expansion-panel>
@@ -52,14 +54,14 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <div *ngFor="let user of users" class="user-list">
+      <div *ngFor="let user of fetchedUser" class="user-list">
         <div class="user-pair">
           <img [src]="user.avatar">
           <div class="online-attribut">
-            <img [src]="user.isUserOnline ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+            <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
           </div>
         </div>
-        <p>{{ user.fullName }}</p>
+        <p>{{ user.name }}</p>
       </div>
     </div>
   </mat-expansion-panel>

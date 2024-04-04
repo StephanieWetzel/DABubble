@@ -53,7 +53,7 @@ export class SecondAddChannelDialogComponent {
         this.searchResults = searchTerm ? this.findResults(searchTerm) : [];
       });
 
-    this.unsubUser = this.firestore.fetchUser().subscribe((users) => {
+    this.unsubUser = this.firestore.fetchCollection('user').subscribe((users) => {
       this.fetchedUser = users;
     });
   }
