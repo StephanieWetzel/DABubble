@@ -17,7 +17,7 @@ export class AddChannelDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<AddChannelDialogComponent>) {
     this.firstDialogGroup = new FormGroup({
-      channel: new FormControl('', [Validators.required]),
+      channelName: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required])
     })
   }

@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { AddChannelDialogComponent } from "./add-channel-dialog/add-channel-dialog.component";
 import { SecondAddChannelDialogComponent } from './second-add-channel-dialog/second-add-channel-dialog.component';
 import { DialogRef } from '@angular/cdk/dialog';
+import { Channel } from '../../../assets/models/channel.class';
+import { FirebaseService } from './firebase-service';
 
 const EDIT_SQUARE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" 
   width="24"><path d="M232-172q-26 0-43-17t-17-43v-496q0-26 17-43t43-17h329l-28 28H232q-12 0-22 10t-10 22v496q0 12 10 22t22 10h496q12 0 22-10t10-22v-306l28-28v334q0 26-17 43t-43
@@ -23,11 +25,12 @@ const EDIT_SQUARE_ICON = `<svg xmlns="http://www.w3.org/2000/svg" height="24" vi
 })
 export class SidenavContentComponent {
   isUserOnline: boolean = true;
+  //dialogData: any[] = [];
   users: User[] = [new User(true, 'Stephanie','', './assets/img/avatar_clean0.png'), 
   new User(false, 'Henrik', '', './assets/img/avatar_clean1.png'),
   new User(false, 'Sebastian', '', './assets/img/avatar_clean2.png')
 ]
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private firestore: FirebaseService) {
     //const dialogRef = this.dialog.open(SecondAddChannelDialogComponent)
   }
 
@@ -48,11 +51,25 @@ export class SidenavContentComponent {
       panelClass: 'custom-add-channel-dialog'
     });
     console.log(firstDialogData);
-    secondDialogRef.afterClosed().subscribe(result => {
+    secondDialogRef.afterClosed().subscribe(secondDialogData => {
       
-        console.log(result, firstDialogData);
+    console.log('Data from 1 and 2. Dialog: ', this.cacheChannel(firstDialogData, secondDialogData))
+    this.firestore.saveChannel(this.cacheChannel(firstDialogData, secondDialogData))
       
-    })
+    });
   }
+
+  cacheChannel(firstDialogData:any, secondDialogData:any) {
+    const dialogData = {
+      name: firstDialogData.channelName,
+      channelId: '',
+      description: firstDialogData.description,
+      member: secondDialogData.selectedUsers,
+      messages: [],
+    }
+    const channel = new Channel(dialogData)
+    return channel;
+  }
+
 }
 
