@@ -1,6 +1,9 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { MainContentComponent } from "./main-content/main-content.component";
+import { IntroAnimationComponent } from './intro-animation/intro-animation.component';
+import { MainContentComponent } from "./main-content/main-content.component"
+
+
 
 @Component({
   selector: 'app-root',
@@ -10,6 +13,7 @@ import { MainContentComponent } from "./main-content/main-content.component";
   imports: [
     RouterOutlet,
     RouterLink,
+    IntroAnimationComponent,
     MainContentComponent
   ]
 })

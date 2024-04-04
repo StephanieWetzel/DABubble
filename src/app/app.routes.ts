@@ -7,5 +7,7 @@ export const routes: Routes = [
     { path: '', component: LoginComponent },
     { path: 'registration', component: RegisterComponent },
     { path: 'resetPassword', component: ResetPasswordComponent },
+    // { path: 'imprint', component: ... },
+    // { path: 'privacyPolicy', component: ... },
     { path: '**', redirectTo: '' }
 ];

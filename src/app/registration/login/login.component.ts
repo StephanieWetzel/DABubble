@@ -1,5 +1,5 @@
 import { CommonModule, NgIf, NgClass, NgStyle } from '@angular/common';
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -47,15 +47,9 @@ export class LoginComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
 
-  // introPlayed: boolean = false;
 
+  constructor(private fbuilder: FormBuilder, public authService: AuthenticationService) {
 
-  constructor(
-    private fbuilder: FormBuilder,
-    public authService: AuthenticationService
-  ) {
-
-    // this.introPlayed = true;
   }
 
 
@@ -76,13 +70,6 @@ export class LoginComponent {
   }
 
 
-  // @HostListener('window:beforeunload', ['$event'])
-  // beforeUnloadHandler(event: any) {
-
-  //   setTimeout(() => {
-  //     this.introPlayed = false;
-  //   }, 4000);
-  // }
 
 
 }
