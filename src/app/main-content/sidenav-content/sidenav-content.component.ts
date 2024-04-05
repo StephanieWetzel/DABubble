@@ -25,13 +25,13 @@ export class SidenavContentComponent {
   fetchedUser: User[] = [];
   unsubChannels: Subscription | undefined;
   unsubUsers: Subscription | undefined;
+  
   constructor(public dialog: MatDialog, private firestore: FirebaseService) {
-    this.fetchNavContent('channel', 'user');
-    
+    this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
   }
 
-  fetchNavContent(channelCollId: string, userColId: string){
-    this.unsubChannels = this.firestore.fetchCollection(channelCollId).subscribe((channels) => {
+  fetchNavContent(channelCollId: string, userColId: string, orderByField: string, orderDirection: 'asc' | 'desc'){
+    this.unsubChannels = this.firestore.fetchCollection(channelCollId, orderByField, orderDirection).subscribe((channels) => {
       this.fetchedChannels = channels;
       console.log(this.fetchedChannels)
     });
@@ -65,15 +65,20 @@ export class SidenavContentComponent {
     const members = secondDialogData.selectedUsers.map((user: any) => {
       return {id: user.userId, name: user.name}
     })
-    const dialogData = {
+    const dialogData = this.transformChannelData(firstDialogData, members)
+    const channel = new Channel(dialogData)
+    return channel;
+  }
+
+  transformChannelData(firstDialogData:any, members: any) {
+    return {
       name: firstDialogData.channelName,
       channelId: '',
       description: firstDialogData.description,
       member: members,
       messages: [{}],
+      createdAt: new Date().getTime(),
     }
-    const channel = new Channel(dialogData)
-    return channel;
   }
 
   openChannel(channelID: string) {

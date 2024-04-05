@@ -9,6 +9,7 @@ import {
   getFirestore,
   limit,
   onSnapshot,
+  orderBy,
   query,
   setDoc,
   updateDoc,
@@ -22,17 +23,25 @@ import { Channel } from '../../../assets/models/channel.class';
 export class FirebaseService {
   firestore: Firestore = inject(Firestore);
 
-  fetchCollection(colID: string): Observable<any[]> {
-    const collectionQuery = query(this.getColl(colID));
+  fetchCollection(colID: string, orderByField: string = '', orderDirection: 'asc' | 'desc' = 'asc'): Observable<any[]> {
+    let collectionQuery = query(this.getColl(colID));
+    
+    // if orderByFIeld is !empty do: 
+    if (orderByField) {
+      collectionQuery = query(this.getColl(colID), orderBy(orderByField, orderDirection));
+    }
+
     return new Observable((subscriber) => {
       const unsubscribe = onSnapshot(
-        collectionQuery, (list) => {
+        collectionQuery,
+        (list) => {
           const collectionArray = list.docs.map((doc) => doc.data());
-          subscriber.next(collectionArray)
-        }, (error) => subscriber.error(error)
+          subscriber.next(collectionArray);
+        },
+        (error) => subscriber.error(error)
       );
       return () => unsubscribe();
-    })
+    });
   }
 
   getColl(colId: string) {
@@ -46,17 +55,15 @@ export class FirebaseService {
         console.error(err);
       })
       .then((dockRef) => {
-        this.addIdToChannel(dockRef)
+        this.addIdToChannel(dockRef);
       });
   }
 
   addIdToChannel(dockRef: any) {
     console.log('Document written - ID: ', dockRef?.id);
-        const channelRef = doc(this.getColl('channel'), `${dockRef?.id}`);
-        updateDoc(channelRef, {
-          channelId: dockRef?.id,
-        });
+    const channelRef = doc(this.getColl('channel'), `${dockRef?.id}`);
+    updateDoc(channelRef, {
+      channelId: dockRef?.id,
+    });
   }
-
-
 }
