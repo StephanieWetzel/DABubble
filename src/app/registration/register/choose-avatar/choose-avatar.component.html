@@ -1,0 +1,44 @@
+<div class="main-container">
+    <div class="header-container">
+        <img src="assets/img/logo-header_complete.svg" alt="">
+    </div>
+
+    <div class="content-container">
+        <div class="content-header">
+            <img routerLink="" [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
+                (mouseover)="isHovered = true" (mouseout)="isHovered = false">
+            <h2>Wähle deinen Avatar</h2>
+        </div>
+
+        <form>
+            <div class="avatar">
+                <img src="assets/img/avatar_default.svg" (mousedown)="changeBackgroundColor()"
+                    (mouseup)="resetBackgroundColor()" [ngStyle]="{'background-color': isClicked ? '#ECEEFE' : ''}">
+                <span>Frederik Beck</span>
+            </div>
+
+            <div class="avatar-list-container">
+                <span>Aus der Liste wählen</span>
+
+                <div class="list"><img *ngFor="let avatar of allAvatars" src="assets/img/{{ avatar }}"></div>
+
+                <div class="upload-container">
+                    <span>eigenes Bild verwenden</span>
+                    <span class="upload tr-150ms">Datei hochladen</span>
+                </div>
+            </div>
+
+
+
+            <div class="btn-container">
+                <button class="br-32 tr-150ms">Weiter</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="footer-container">
+        <span class="footer-content tr-150ms">Impressum</span>
+        <span class="footer-content tr-150ms">Datenschutz</span>
+    </div>
+</div>

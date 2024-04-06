@@ -13,7 +13,7 @@
         right: 0;
     }
 
-    .signup-container {
+    .content-container {
         padding: 48px;
         width: 448px;
         max-width: 60%;
@@ -28,11 +28,7 @@
         margin-top: 120px;
         position: relative;
 
-        .signup-text {
-            padding: 32px 0;
-        }
-
-        .signup-header {
+        .content-header {
             display: flex;
             align-items: center;
 
@@ -59,7 +55,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    width: 100%;
+    // width: 100%;
     box-sizing: border-box;
 
     .btn-container {
@@ -67,7 +63,7 @@ form {
         justify-content: flex-end;
         align-items: center;
         gap: 32px;
-        padding-top: 32px;
+        padding-top: 16px;
 
         button {
             background-color: #444DF2;
@@ -84,36 +80,63 @@ form {
     }
 }
 
-.input-container {
+.avatar {
     display: flex;
     flex-direction: column;
-    gap: 32px;
-    margin-bottom: 32px;
+    align-items: center;
+    padding-bottom: 32px;
 
-    .invalid-text {
-        display: flex;
-        color: #ED1E79;
-        font-size: 14px;
-        text-align: start;
-    }
-}
-
-.privacy-policy-container {
-    display: flex;
-
-    .policy-link {
-        color: #797EF3;
-        border-radius: 32px;
-        text-decoration: none;
+    img {
+        padding: 8px;
+        border-radius: 50%;
+        margin: 16px 0 24px 0;
 
         &:hover {
             cursor: pointer;
-            background-color: #ECEEFE;
+            background-color: #E6E6E6;
+        }
+    }
+
+    span {
+        font-size: 32px;
+        font-weight: bold;
+    }
+}
+
+.avatar-list-container {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: flex-start;
+
+    .list {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+        padding: 16px 0 24px 0;
+    }
+
+    .upload-container {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+
+        .upload {
+            border: 1px solid;
+            border-radius: 24px;
+            border-color: #797EF3;
+            padding: 12px 20px;
             color: #444DF2;
-            font-weight: 600;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #444DF2;
+                color: white;
+            }
         }
     }
 }
+
 
 .footer-container {
     display: flex;
@@ -141,103 +164,7 @@ span {
     font-weight: 600;
 }
 
-input {
-    border: none;
-    background-color: #ECEEFE;
-    width: 100%;
-    outline: none;
 
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.mail-and-pw {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    background-color: #ECEEFE;
-    border: 1px solid transparent;
-    padding: 16px 32px !important;
-
-    &:hover {
-        cursor: pointer;
-        border: 1px solid #757575 !important;
-    }
-}
-
-// CHECKBOX
-/* Customize the label (the container) */
-.container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 19px;
-    cursor: pointer;
-    font-size: 22px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 14px;
-    width: 14px;
-    border: 2px solid #797EF3;
-    border-radius: 2px;
-}
-
-/* On mouse-over, add a grey background color */
-.container:hover input~.checkmark {
-    background-color: #ECEEFE;
-    border-color: #444DF2;
-
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-/* Show the checkmark when checked */
-.container input:checked~.checkmark:after {
-    display: block;
-}
-
-/* Style the checkmark/indicator */
-.container .checkmark:after {
-    left: 4px;
-    top: 0;
-    width: 3px;
-    height: 8px;
-    border: solid #797EF3;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.container .checkmark:hover:after {
-    border: solid #444DF2;
-    border-width: 0 3px 3px 0;
-}
 
 
 // generic classes
