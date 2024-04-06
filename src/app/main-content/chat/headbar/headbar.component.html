@@ -4,23 +4,21 @@
         <span>Entwicklerteam</span>
     </div>
     <div class="group-members">
-        <div #dropdownContainer>
-            <button class="add-member-btn" [matMenuTriggerFor]="menu">
+        <div #dropdownContainer class="dropdown-container">
+            <button class="add-member-btn" (click)="toggleMenu()">
                 <mat-icon class="outlined">person_add</mat-icon>
             </button>
-        </div>
-        
-        <mat-menu #menu="matMenu" xPosition="before">
-            <div class="add-person-menu">
-                    <h3>Leute hinzufügen</h3>
-                    <div class="group-def">
+
+            <div class="add-person-menu" [class.open-menu]="openMenu">
+                <h3>Leute hinzufügen</h3>
+                <div class="group-def">
                     <mat-icon>tag</mat-icon>
                     <span>Entwicklerteam</span>
                 </div>
                 <input type="text" placeholder="Name eingeben">
                 <button>Hinzufügen</button>
             </div>
-        </mat-menu>
-        
+            <div class="menu-bg" [class.open-menu-bg]="openMenu" (click)="toggleMenu()"></div>
+        </div>
     </div>
 </section>

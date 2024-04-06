@@ -34,7 +34,6 @@ export class ChatService  {
         let message = new Message({ ...doc.data() })
         this.createReactionArray(message);
         this.messages.push(message);
-        console.log(this.messages);
       });
     })
   }
