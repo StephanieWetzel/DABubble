@@ -79,10 +79,12 @@ export class ChatService  {
 
 
   checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote:string){
+    let addedEmote = emote;
     if (reactionIndex > -1) {
       let reaction = reactions[reactionIndex];
       this.checkIfUserReacted(reactions, reaction, user, emote, reactedEmote);
-    } else {
+    } 
+    if (reactionIndex === -1 && reactedEmote != addedEmote) {
       this.addTheNewReaction(reactions, user, emote);
     }
   }
@@ -96,7 +98,6 @@ export class ChatService  {
   }
 
   checkIfUserReacted(reactions: Reaction[], reaction: Reaction, user: string, emote: string, reactedEmote: string){
-    debugger
     if (this.userReactedWithEmote(reaction, user, emote, reactedEmote)) {
       // Benutzer hat noch nicht reagiert, füge ihn hinzu
       reaction.users.push(user);

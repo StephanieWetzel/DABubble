@@ -46,6 +46,6 @@ export class MessagesComponent {
   }
 
   addReaction(messageId: string, emote: string){
-    this.chatService.reactOnMessage(messageId, emote, 'Stephanie')
+    this.chatService.reactOnMessage(messageId, emote, 'Sebastian')
   }
 }

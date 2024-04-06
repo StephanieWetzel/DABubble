@@ -177,8 +177,10 @@ ul{
     flex-wrap: wrap;
     max-width: 250px;
     font-size: 30px;
+    
     li{
         padding: 12px 4px;
+        list-style-type: none;
         &:hover{
             background-color: $bgPage;
             cursor: pointer;
