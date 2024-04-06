@@ -1,73 +1,104 @@
-@import './../../styles.scss';
+@import "./../../styles.scss";
 
 .content {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .drawer-toggle-btn {
-    position: fixed;
-    left: 0;
-    top: 150px;
-    height: 50px;
-    z-index: 2;
-    background-color: rgba(0, 0, 0, .1);
+  position: fixed;
+  width: 347px;
+  height: 60px;
+  left: -149px;
+  top: 70%;
+  z-index: 2;
+  background-color: #FFFFFF;
+  box-shadow: 0px 4px 6px rgba($color: #000000, $alpha: 0.1);
+  transform: rotate(-90deg) scale(1.01);
+  transform-origin: center;
+  @include dFlex();
+  > .drawer-button-content {
+    margin: 23px 14px;
+    @include dFlex(center, center, 10px);
+    > span {
+        font-size: 20px;
+    }
+    > .hide-navigation-icon {
+        width: 32px;
+        height: 32px;
+        transform: rotate(90deg) scale(1.01);
+        > .svg-icon{ 
+            stroke: currentColor;
+        }
+    }
+  }
 }
 
+.drawer-toggle-btn:hover .svg-icon,
+.drawer-toggle-btn:hover span {
+    color: #444df2;
+}
+
+
 mat-toolbar {
-    width: 100%;
-    height: fit-content;
+  width: 100%;
+  height: fit-content;
 }
 
 app-header {
-    width: 100%;
+  width: 100%;
 }
 
 .mat-drawer-container {
-    height: 100%;
+  height: 100%;
 }
 
 .sidenav-container {
-    width: 350px;
-    padding: 12px;
-    box-sizing: border-box;
-    background-color: $bgPage;
-    border: none;
+  width: 350px;
+  padding: 12px;
+  box-sizing: border-box;
+  background-color: $bgPage;
+  border: none;
 }
 
 .sidenav {
-    background-color: $bgContent;
-    height: 100%;
-    box-sizing: border-box;
-    border-radius: 30px;
+  background-color: $bgContent;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 30px;
 }
 
 .main-content-container {
-    background-color: $bgPage ;
-    padding: 12px;
-    height: 100%;
-    box-sizing: border-box;
+  background-color: $bgPage;
+  padding: 12px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .main-content {
-    // padding: 16px 56px;
-    background-color: $bgContent;
-    height: 100%;
-    box-sizing: border-box;
-    border-radius: 30px;
-    overflow: hidden;
+  // padding: 16px 56px;
+  background-color: $bgContent;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 30px;
+  overflow: hidden;
 }
 
 .write-message {
-    width: 100%;
+  width: 100%;
 }
 
 .router-container {
-    height: 100%;
+  height: 100%;
 }
 
 app-chat {
-    display: block;
-    height: 100%;
+  display: block;
+  height: 100%;
+}
+
+.bottom-br32 {
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
 }

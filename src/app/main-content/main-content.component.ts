@@ -8,14 +8,16 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { SidenavContentComponent } from './sidenav-content/sidenav-content.component';
 import { ChatComponent } from './chat/chat.component';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main-content',
   standalone: true,
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss',
-  imports: [MatIconModule,
+  imports: [
+    CommonModule,
+    MatIconModule,
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -25,9 +27,13 @@ import { ChatComponent } from './chat/chat.component';
     RouterOutlet,
     RouterLink,
     ChatComponent,
-    SidenavContentComponent
-  ]
+    SidenavContentComponent,
+  ],
 })
 export class MainContentComponent {
+  isDrawerOpen: boolean = true;
 
+  toggleDrawerVar() {
+    this.isDrawerOpen = !this.isDrawerOpen;
+  }
 }
