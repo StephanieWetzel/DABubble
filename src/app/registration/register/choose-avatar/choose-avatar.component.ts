@@ -21,7 +21,7 @@ export class ChooseAvatarComponent {
   isClicked: boolean = false;
 
   allAvatars = ['avatar_clean0.png', 'avatar_clean1.png', 'avatar_clean2.png', 'avatar_clean3.png', 'avatar_clean4.png', 'avatar_clean5.png'];
-
+  clickedIndex: number = -1; // Index des zuletzt geklickten Elements
 
   changeBackgroundColor() {
     this.isClicked = true;
@@ -30,6 +30,11 @@ export class ChooseAvatarComponent {
 
   resetBackgroundColor() {
     this.isClicked = false;
+  }
+
+
+  toggleClicked(i: number) {
+    this.clickedIndex = (this.clickedIndex === i) ? -1 : i;
   }
 
 

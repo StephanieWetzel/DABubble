@@ -106,14 +106,23 @@ form {
 .avatar-list-container {
     display: flex;
     flex-direction: column;
-    // justify-content: center;
     align-items: flex-start;
 
     .list {
         display: flex;
         flex-direction: row;
-        gap: 16px;
-        padding: 16px 0 24px 0;
+        gap: 4px;
+        padding: 16px 0 32px 0;
+
+        img {
+            padding: 4px;
+            border-radius: 50%;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #ECEEFE;
+            }
+        }
     }
 
     .upload-container {
@@ -170,6 +179,10 @@ span {
 // generic classes
 .fs-15 {
     font-size: 15px;
+}
+
+.fs-18 {
+    font-size: 18px;
 }
 
 .br-32 {

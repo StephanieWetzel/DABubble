@@ -18,12 +18,16 @@
             </div>
 
             <div class="avatar-list-container">
-                <span>Aus der Liste wählen</span>
+                <span class="fs-18">Aus der Liste wählen</span>
 
-                <div class="list"><img *ngFor="let avatar of allAvatars" src="assets/img/{{ avatar }}"></div>
+                <div class="list">
+                    <img *ngFor="let avatar of allAvatars let i = index" src="assets/img/{{ avatar }}"
+                        (click)="toggleClicked(i)"
+                        [ngStyle]="{'background-color': (clickedIndex === i) ? '#ECEEFE' : ''}">
+                </div>
 
                 <div class="upload-container">
-                    <span>eigenes Bild verwenden</span>
+                    <span class="fs-18">eigenes Bild verwenden</span>
                     <span class="upload tr-150ms">Datei hochladen</span>
                 </div>
             </div>
