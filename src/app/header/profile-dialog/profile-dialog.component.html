@@ -1,6 +1,6 @@
 <section>
   <div class="p-head mrB45">
-    <span>Profil</span>
+    <span>{{ isEditing ? 'Dein Profil bearbeiten' : 'Profil'}}</span>
     <div class="close-btn">
       <mat-icon>close_outline</mat-icon>
     </div>
@@ -11,8 +11,8 @@
       <img src="../../../assets/img/avatar_clean0.png" alt="user-pic" />
     </div>
   </div>
-
-  <div class="p-name-cont mrB45">
+<!--profile oversight-->
+  <div *ngIf="!isEditing" class="p-name-cont mrB45">
     <div class="name-status">
       <span>Sofia Müller</span>
       <div>
@@ -23,7 +23,7 @@
     <div class="edit">Bearbeiten</div>
   </div>
 
-  <div class="p-mail-cont mrB45">
+  <div *ngIf="!isEditing" class="p-mail-cont mrB45">
     <div class="mail-content">
       <div>
         <mat-icon>mail_outline</mat-icon>
@@ -33,10 +33,12 @@
     <span class="mail"><b>sofia.muelatbeispiel.com</b></span>
   </div>
 
-  <div class="dm-btn">
+  <!-- <div *ngIf="!isEditing" class="dm-btn">
     <div>
-      <mat-icon>message</mat-icon>
+      <mat-icon>mode_comment</mat-icon>
       <span>Nachricht</span>
     </div>
-  </div>
+  </div> -->
+<!--profile oversight-->
+<app-profile-edit-dialog></app-profile-edit-dialog>
 </section>
