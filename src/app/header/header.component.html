@@ -1,20 +1,34 @@
 <section>
-    <div class="logo-container">
-        <img src="./../../assets/img/logo-header_complete.svg" alt="">
+  <div class="logo-container">
+    <img src="./../../assets/img/logo-header_complete.svg" alt="" />
+  </div>
+
+  <div class="search-and-profile">
+    <div class="search">
+      <input matInput placeholder="Search in Channel..." value="" />
+      <mat-icon>search</mat-icon>
     </div>
-
-    <div class="search-and-profile">
-        <div class="search">
-            <input matInput placeholder="Search in Channel..." value="">
-            <mat-icon>search</mat-icon>
-        </div>
-        <div class="profile">
-            <span>Frederik Beck</span>
-            <img src="./../../assets/img/avatar-frederik-beck.svg" alt="">
-            <mat-icon>keyboard_arrow_down</mat-icon>
-        </div>
+    <div class="profile" (click)="openProfileMenu()">
+      <span>Frederik Beck</span>
+      <img src="./../../assets/img/avatar-frederik-beck.svg" alt="" />
+      <mat-icon>keyboard_arrow_down</mat-icon>
     </div>
+  </div>
 
+  
 
-    <span class="example-spacer"></span>
+  <span class="example-spacer"></span>
 </section>
+
+<div *ngIf="isProfilMenuOpen" class="profile-menu-cont">
+    <div id="profileMenu" class="profile-menu brNoLeftTop32">
+      <span class="mb15 br32" (click)="openProfile()">Profil</span>
+      <span class="br32">Logout</span>
+    </div>
+</div>
+
+<div *ngIf="isProfileEditOpen" class="profile-menu-cont bgD">
+    <div class="profile-edit-info brNoLeftTop32">
+        <app-profile-dialog class="profile-content"></app-profile-dialog>
+    </div>
+</div>

@@ -1,0 +1,134 @@
+@import "./../../../styles.scss";
+
+section {
+  padding: 40px;
+  height: 625px;
+  > .p-head {
+    width: 100%;
+    @include dFlex(space-between);
+    > span {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    > .close-btn {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      @include dFlex();
+      &:hover {
+        cursor: pointer;
+        background-color: #eceffe;
+        mat-icon {
+          color: #535af1;
+        }
+      }
+    }
+  }
+
+  > .p-pic {
+    width: 100%;
+    @include dFlex(center, center);
+    > .pic-cont {
+      width: 200px;
+      height: 200px;
+      @include dFlex(center, center);
+      > img {
+        height: 200px;
+        width: 200px;
+      }
+    }
+  }
+
+  > .p-name-cont {
+    width: 100%;
+    @include dFlex(space-between, flex-start);
+    > .name-status {
+      @include dFlex(flex-start, flex-start, 0, column);
+      margin-bottom: 15px;
+      > span {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      > div {
+        @include dFlex(flex-start, center, 15px);
+        > img {
+          height: 16px;
+          width: 16px;
+        }
+        > span {
+          font-size: 18px;
+        }
+      }
+    }
+    > .edit {
+      width: 90px;
+      height: 25px;
+      font-size: 18px;
+      color: #535af1;
+      transition: all 175ms;
+      &:hover {
+        font-weight: bold;
+        font-size: 19px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  > .p-mail-cont {
+    width: 100%;
+    @include dFlex(flex-start, flex-start, 0, column);
+    > .mail-content {
+      @include dFlex(flex-start, center, 20px);
+      margin-bottom: 15px;
+      > div {
+        @include dFlex();
+        height: 20px;
+        width: 25px;
+        > mat-icon {
+          height: 20px;
+          width: 25px;
+        }
+      }
+      > span {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+    > .mail {
+        width: 100%;
+        > b {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1381FF;
+            padding-left: 50px;
+        }
+    }
+  }
+
+  > .dm-btn {
+    width: 100%;
+    @include dFlex(center, center);
+    > div {
+        @include dFlex(center,center, );
+        width: 164px;
+        height: 49px;
+        background-color: #1381FF;
+        border-radius: 32px;
+        gap: 10px;
+        > mat-icon {
+            color: #FFFFFF;
+        }
+        > span {
+            color: #FFFFFF;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    }
+
+  }
+
+}
+
+.mrB45 {
+  margin-bottom: 45px;
+}
