@@ -82,4 +82,15 @@ export class RegisterComponent {
     }
   }
 
+  transformSignUpData(formData:any, userId: string) {
+    return {
+      name: this.formData.value.name,
+      userId: userId,
+      email: this.formData.value.email,
+      state: 'true',
+      avatar: '',
+      password: this.formData.value.password
+    }
+  }
+
 }
