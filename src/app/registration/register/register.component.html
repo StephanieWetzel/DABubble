@@ -81,7 +81,8 @@
             </div>
 
             <div class="btn-container">
-                <button routerLink="../chooseAvatar" (click)="signUp()" class="br-32 tr-150ms">Weiter</button>
+                <button [disabled]="!formData.valid" routerLink="../chooseAvatar" (click)="signUp()"
+                    class="br-32 tr-150ms">Weiter</button>
             </div>
 
         </form>

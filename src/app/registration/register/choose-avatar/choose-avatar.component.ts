@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../../../services/authentication.service';
@@ -17,11 +17,13 @@ import { AuthenticationService } from '../../../../services/authentication.servi
   styleUrl: './choose-avatar.component.scss'
 })
 export class ChooseAvatarComponent {
+  @ViewChild('chosenAvatar') chosenAvatar: ElementRef | any;
+
   isHovered: boolean = false;
   isClicked: boolean = false;
-
   allAvatars = ['avatar_clean0.png', 'avatar_clean1.png', 'avatar_clean2.png', 'avatar_clean3.png', 'avatar_clean4.png', 'avatar_clean5.png'];
   clickedIndex: number = -1; // Index des zuletzt geklickten Elements
+
 
   changeBackgroundColor() {
     this.isClicked = true;
@@ -35,6 +37,11 @@ export class ChooseAvatarComponent {
 
   toggleClicked(i: number) {
     this.clickedIndex = (this.clickedIndex === i) ? -1 : i;
+    const chosenAvatar = this.allAvatars[this.clickedIndex];
+    if (this.clickedIndex !== -1) {
+      const chosenAvatarSrc = chosenAvatar;
+      // this.chosenAvatar.nativeElement.src = `assets/img/${chosenAvatarSrc}`;
+    }
   }
 
 
