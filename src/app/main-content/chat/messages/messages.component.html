@@ -19,8 +19,8 @@
                         <div>
                             <span *ngFor="let reactor of reaction.users">{{ reactor }}</span>
                         </div>
-                        <span *ngIf="reaction.users.length === 0">hat reagiert</span>
-                        <span *ngIf="reaction.users.length > 0">haben reagiert</span>
+                        <span *ngIf="reaction.users.length === 1">hat reagiert</span>
+                        <span *ngIf="reaction.users.length > 1">haben reagiert</span>
                     </div>
                 </div>
                 <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
