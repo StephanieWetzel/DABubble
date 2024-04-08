@@ -10,6 +10,6 @@ export const routes: Routes = [
     { path: 'resetPassword', component: ResetPasswordComponent },
     { path: 'chooseAvatar', component: ChooseAvatarComponent },
     // { path: 'imprint', component: ... },
-    // { path: 'privacyPolicy', component: ... },
+    // { path: 'privacyPolicy', component: ... },//
     { path: '**', redirectTo: '' }
 ];
