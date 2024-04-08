@@ -9,7 +9,7 @@ import { Reaction } from '../../../../assets/models/reactions.class';
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService  {
+export class ChatService {
   private firestore: Firestore = inject(Firestore);
 
   showReply: boolean = true;
@@ -23,9 +23,9 @@ export class ChatService  {
   }
 
   async addMessage(message: Message) {
-      const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
-      const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
+    const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
+    const docRefId = docRef.id;
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
   }
 
 
@@ -44,7 +44,7 @@ export class ChatService  {
   async uploadFile(file: File) {
     const storage = getStorage();
     const storageRef = ref(storage, `uploads/${file.name}_${Date.now()}`);
-    
+
     try {
       const snapshot = await uploadBytes(storageRef, file);
       const downloadURL = await getDownloadURL(snapshot.ref);
@@ -57,7 +57,7 @@ export class ChatService  {
   }
 
 
-  createReactionArray(message: Message){
+  createReactionArray(message: Message) {
     if (message.reactions) {
       for (let i = 0; i < message.reactions.length; i++) {
         message.reactions[i] = new Reaction(message.reactions[i])
@@ -66,10 +66,10 @@ export class ChatService  {
   }
 
 
-  async reactOnMessage(messageId: string , emote: string, user: string){
+  async reactOnMessage(messageId: string, emote: string, user: string) {
     const messageRef = doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId);
     const docSnap = await getDoc(messageRef);
-    
+
     if (docSnap.exists()) {
       let reactions = docSnap.data()['reactions'] || [];
       let reactedEmote = this.removeAllUserReactions(reactions, user);
@@ -97,19 +97,19 @@ export class ChatService  {
   }
 
 
-  checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote:string){
+  checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote: string) {
     let addedEmote = emote;
     if (reactionIndex > -1) {
       let reaction = reactions[reactionIndex];
       this.checkIfUserReacted(reactions, reaction, user, emote, reactedEmote);
-    } 
+    }
     if (reactionIndex === -1 && reactedEmote != addedEmote) {
       this.addTheNewReaction(reactions, user, emote);
     }
   }
 
 
-  addTheNewReaction(reactions: Object[], user: string, emote: string){
+  addTheNewReaction(reactions: Object[], user: string, emote: string) {
     reactions.push({
       users: [user],
       emote: emote,
@@ -118,29 +118,29 @@ export class ChatService  {
   }
 
 
-  checkIfUserReacted(reactions: Reaction[], reaction: Reaction, user: string, emote: string, reactedEmote: string){
+  checkIfUserReacted(reactions: Reaction[], reaction: Reaction, user: string, emote: string, reactedEmote: string) {
     if (this.userReactedWithEmote(reaction, user, emote, reactedEmote)) {
       // Benutzer hat noch nicht reagiert, füge ihn hinzu
       reaction.users.push(user);
-      reaction.count ++;
+      reaction.count++;
     }
   }
 
 
-  deleteReactionAtZero(reactions: Reaction[], reaction: Reaction, reactionIndex: number){
-    if (reaction.count === 0){
+  deleteReactionAtZero(reactions: Reaction[], reaction: Reaction, reactionIndex: number) {
+    if (reaction.count === 0) {
       reactions.splice(reactionIndex, 1);
     }
   }
 
 
-  userReactedWithEmote(reaction: Reaction, user: string, emote: string, reactedEmote: string){
+  userReactedWithEmote(reaction: Reaction, user: string, emote: string, reactedEmote: string) {
     let addedEmote = emote;
     return !reaction.users.includes(user) && reactedEmote != addedEmote;
   }
 
 
-  getReactionIndex(reactions: Reaction[], emote: string){
+  getReactionIndex(reactions: Reaction[], emote: string) {
     let reactionIndex = reactions.findIndex((r: Reaction) => r.emote === emote);
     return reactionIndex
   }
@@ -148,11 +148,11 @@ export class ChatService  {
 
 
 
-  getMessagesQ(){
+  getMessagesQ() {
     return query(this.getMessagesRef(), orderBy('time', 'asc'));
   }
 
-  
+
   getMessagesRef() {
     return collection(this.firestore, `channel/${this.currentChannel}/messages`)
   }

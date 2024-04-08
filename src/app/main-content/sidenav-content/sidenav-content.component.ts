@@ -10,6 +10,7 @@ import { Channel } from '../../../assets/models/channel.class';
 import { FirebaseService } from './firebase-service';
 import { Subscription } from 'rxjs';
 import { User } from '../../../assets/models/user.class';
+import { ChatService } from '../chat/chat-service/chat.service';
 
 @Component({
     selector: 'app-sidenav-content',
@@ -26,7 +27,7 @@ export class SidenavContentComponent {
   unsubChannels: Subscription | undefined;
   unsubUsers: Subscription | undefined;
   
-  constructor(public dialog: MatDialog, private firestore: FirebaseService) {
+  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService) {
     this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
   }
 
@@ -84,7 +85,8 @@ export class SidenavContentComponent {
   openChannel(channelID: string) {
     // logik open channel 
     console.log("Channel with ID:", channelID, ' opened.')
+    this.chatService.currentChannel = channelID;
+    this.chatService.getMessages();
   }
-
 }
 
