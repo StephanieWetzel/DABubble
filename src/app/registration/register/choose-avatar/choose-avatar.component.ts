@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { AuthenticationService } from '../../../../services/authentication.service';
+import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-choose-avatar',

@@ -9,9 +9,9 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthenticationService } from '../../../services/authentication.service';
 import { User } from '../../../assets/models/user.class';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -69,8 +69,8 @@ export class RegisterComponent {
       try {
         await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
           const userAuth = userCredential.user;
-          const vari = this.transformSignUpData(this.formData, userAuth.uid)
-          const user = new User(vari);
+          const user = new User(this.formData.value);
+          user.userId = userAuth.uid;
           const userRef = doc(this.firestore, "user", userAuth.uid);
           console.log(user)
           setDoc(userRef, user.toJSON());
@@ -82,7 +82,8 @@ export class RegisterComponent {
     }
   }
 
-  transformSignUpData(formData:any, userId: string) {
+
+  transformSignUpData(formData: any, userId: string) {
     return {
       name: this.formData.value.name,
       userId: userId,

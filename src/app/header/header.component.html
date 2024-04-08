@@ -15,20 +15,20 @@
     </div>
   </div>
 
-  
+
 
   <span class="example-spacer"></span>
 </section>
 
 <div *ngIf="isProfilMenuOpen" class="profile-menu-cont">
-    <div id="profileMenu" class="profile-menu brNoLeftTop32">
-      <span class="mb15 br32" (click)="openProfile()">Profil</span>
-      <span class="br32">Logout</span>
-    </div>
+  <div id="profileMenu" class="profile-menu brNoLeftTop32">
+    <span class="mb15 br32" (click)="openProfile()">Profil</span>
+    <span class="br32">Logout</span>
+  </div>
 </div>
 
 <div *ngIf="isProfileEditOpen" class="profile-menu-cont bgD">
-    <div class="profile-edit-info brNoLeftTop32">
-        <app-profile-dialog class="profile-content"></app-profile-dialog>
-    </div>
+  <div class="profile-edit-info brNoLeftTop32">
+    <app-profile-dialog class="profile-content"></app-profile-dialog>
+  </div>
 </div>
