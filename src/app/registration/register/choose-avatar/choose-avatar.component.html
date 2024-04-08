@@ -12,8 +12,9 @@
 
         <form>
             <div class="avatar">
-                <img src="assets/img/avatar_default.svg" (mousedown)="changeBackgroundColor()"
-                    (mouseup)="resetBackgroundColor()" [ngStyle]="{'background-color': isClicked ? '#ECEEFE' : ''}">
+                <img #chosenAvatar id="chosenAvatar" src="assets/img/avatar_default.svg"
+                    (mousedown)="changeBackgroundColor()" (mouseup)="resetBackgroundColor()"
+                    [ngStyle]="{'background-color': isClicked ? '#ECEEFE' : ''}">
                 <span>Frederik Beck</span>
             </div>
 
@@ -31,8 +32,6 @@
                     <span class="upload tr-150ms">Datei hochladen</span>
                 </div>
             </div>
-
-
 
             <div class="btn-container">
                 <button class="br-32 tr-150ms">Weiter</button>
