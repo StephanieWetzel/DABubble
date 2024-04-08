@@ -69,8 +69,8 @@ export class RegisterComponent {
       try {
         await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
           const userAuth = userCredential.user;
-          const user = new User(this.formData.value);
-          user.userId = userAuth.uid;
+          const vari = this.transformSignUpData(this.formData, userAuth.uid)
+          const user = new User(vari);
           const userRef = doc(this.firestore, "user", userAuth.uid);
           console.log(user)
           setDoc(userRef, user.toJSON());
