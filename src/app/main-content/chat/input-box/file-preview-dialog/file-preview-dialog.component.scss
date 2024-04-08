@@ -1,0 +1,12 @@
+img{
+    height: fit-content;
+    width: fit-content;
+}
+
+section{
+    min-width: 50vw;
+    min-height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

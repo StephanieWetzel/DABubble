@@ -1,8 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, arrayUnion, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
 import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Message } from '../../../../assets/models/message.class';
 import { Reaction } from '../../../../assets/models/reactions.class';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,10 @@ export class ChatService  {
   private firestore: Firestore = inject(Firestore);
 
   showReply: boolean = true;
-
   unsubMessage;
-
   messages: Message[] = [];
+
+  currentChannel = '5fHcCmtyJtEnYzrdngTd';
 
   constructor() {
     this.unsubMessage = this.getMessages();
@@ -23,7 +25,7 @@ export class ChatService  {
   async addMessage(message: Message) {
       const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
       const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, 'messages', docRefId), { messageId: docRefId });
+      await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
   }
 
 
@@ -38,6 +40,23 @@ export class ChatService  {
     })
   }
 
+
+  async uploadFile(file: File) {
+    const storage = getStorage();
+    const storageRef = ref(storage, `uploads/${file.name}_${Date.now()}`);
+    
+    try {
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      console.log('File uploaded and available at', downloadURL);
+      return downloadURL;
+    } catch (error) {
+      console.error("Upload failed", error);
+      throw new Error("Upload failed");
+    }
+  }
+
+
   createReactionArray(message: Message){
     if (message.reactions) {
       for (let i = 0; i < message.reactions.length; i++) {
@@ -46,8 +65,9 @@ export class ChatService  {
     }
   }
 
+
   async reactOnMessage(messageId: string , emote: string, user: string){
-    const messageRef = doc(this.firestore, 'messages', messageId);
+    const messageRef = doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId);
     const docSnap = await getDoc(messageRef);
     
     if (docSnap.exists()) {
@@ -88,6 +108,7 @@ export class ChatService  {
     }
   }
 
+
   addTheNewReaction(reactions: Object[], user: string, emote: string){
     reactions.push({
       users: [user],
@@ -96,6 +117,7 @@ export class ChatService  {
     });
   }
 
+
   checkIfUserReacted(reactions: Reaction[], reaction: Reaction, user: string, emote: string, reactedEmote: string){
     if (this.userReactedWithEmote(reaction, user, emote, reactedEmote)) {
       // Benutzer hat noch nicht reagiert, füge ihn hinzu
@@ -103,6 +125,7 @@ export class ChatService  {
       reaction.count ++;
     }
   }
+
 
   deleteReactionAtZero(reactions: Reaction[], reaction: Reaction, reactionIndex: number){
     if (reaction.count === 0){
@@ -122,11 +145,15 @@ export class ChatService  {
     return reactionIndex
   }
 
+
+
+
   getMessagesQ(){
     return query(this.getMessagesRef(), orderBy('time', 'asc'));
   }
 
+  
   getMessagesRef() {
-    return collection(this.firestore, 'messages')
+    return collection(this.firestore, `channel/${this.currentChannel}/messages`)
   }
 }

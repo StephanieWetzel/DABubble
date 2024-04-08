@@ -1,0 +1,84 @@
+<div class="intro-container fadeOut">
+    <div>
+        <img src="assets/img/logo-header.svg" alt="">
+        <span>DABubble</span>
+    </div>
+</div>
+
+
+<div class="main-container">
+    <div class="header-container">
+        <img src="assets/img/logo-header_complete.svg" alt="">
+
+        <div class="new-account-container">
+            <span class="fs-15">Neu bei DABubble?</span>
+            <a routerLink="registration" class="new-account tr-150ms">Konto erstellen</a>
+        </div>
+    </div>
+
+    <div class="login-container">
+        <h2 class="login">Anmeldung</h2>
+        <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
+
+        <form [formGroup]="formData">
+            <div class="input-container">
+                <div>
+                    <!-- email -->
+                    <div (click)="isMailFocused = true" class="mail-and-pw tr-150ms br-32"
+                        [ngClass]="{'purple-border': isMailFocused}">
+                        <img [src]="isMailFocused ? 'assets/img/mail_focused.svg' : 'assets/img/mail_unfocused.svg'">
+                        <input formControlName="email" type="email" placeholder="E-Mail" required
+                            pattern="[^@]+@[^\.]+\..+">
+                    </div>
+
+                    <div *ngIf="formData.get('email')?.invalid && formData.get('email')?.touched">
+                        <span class="invalid-text" *ngIf="formData.get('email')?.errors?.['required']">
+                            *Bitte E-Mail-Adresse eingeben.
+                        </span>
+                        <span class="invalid-text" *ngIf="formData.get('email')?.errors?.['pattern']">
+                            *Diese E-Mail-Adresse ist leider ungültig.
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <!-- password -->
+                    <div (click)="isPasswordFocused = true" [ngClass]="{'purple-border': isPasswordFocused}"
+                        class="mail-and-pw google-sign-in tr-150ms br-32">
+                        <img
+                            [src]="isPasswordFocused ? 'assets/img/lock_focused.svg' : 'assets/img/lock_unfocused.svg'">
+                        <input formControlName="password" type="password" placeholder="Passwort" required>
+                    </div>
+                    <div *ngIf="formData.get('password')?.invalid && formData.get('password')?.touched">
+                        <span class="invalid-text" *ngIf="formData.get('password')?.errors?.['required']">
+                            *Bitte Passwort eingeben.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div><span class="forgot-password tr-150ms">Passwort vergessen?</span></div>
+
+            <div class="or">
+                <div></div>
+                <span>ODER</span>
+                <div></div>
+            </div>
+
+            <div class="google-sign-in tr-150ms br-32">
+                <img src="assets/img/google.svg" alt="">
+                <span>Anmelden mit Google</span>
+            </div>
+
+            <div class="btn-container">
+                <button class="login-btn br-32 tr-150ms" mat-flat-button>Anmelden</button>
+                <button class="guest-login-btn br-32 tr-150ms" mat-flat-button>Gäste-Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="footer-container">
+        <span class="footer-content tr-150ms">Impressum</span>
+        <span class="footer-content tr-150ms">Datenschutz</span>
+    </div>
+</div>

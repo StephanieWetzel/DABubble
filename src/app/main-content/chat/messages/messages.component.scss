@@ -132,13 +132,14 @@ section {
 .reactions{
     @include dFlex($jc: flex-start, $g: 12px);
     margin: 12px 0;
-    div{
+    .reaction-container{
         @include dFlex($g: 8px);
         padding: 4px 8px;
         border: #ADB0D9 1px solid;
         border-radius: 30px;
         cursor: pointer;
         background-color: white;
+        position: relative;
     }
     .emote {
         font-size: 22px;
@@ -152,6 +153,21 @@ section {
         }
     }
 }
+
+.reaction-info{
+    position: absolute;
+    top: 0;
+    right: 0;
+    @include dFlex($fd:column);
+}
+
+// .reaction-container{
+//     &:hover{
+//         .reaction-info{
+//             display: unset;
+//         }
+//     }
+// }
 
 .answers {
     .a-count {

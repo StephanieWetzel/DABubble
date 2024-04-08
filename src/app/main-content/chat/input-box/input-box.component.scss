@@ -1,9 +1,19 @@
+@import './../../../../styles.scss';
+
 section{
     position: relative;
     max-height: 200px;
     overflow: hidden;
     margin: 30px;
     margin-top: 0;
+}
+
+.add-file{
+    cursor: pointer;
+    color: rgba($color: #000000, $alpha: .8);
+    &:hover{
+       color: rgba($color: #000000, $alpha: .7); 
+    }
 }
 
 .submit-btn{
@@ -24,4 +34,25 @@ section{
 .submit-btn.disabled {
     filter: grayscale(1); /* Graue Farbe für deaktivierten Zustand */
     cursor: not-allowed;
+}
+
+.attachment-container{
+    @include dFlex($jc: flex-start);
+}
+
+.attachment{
+    border: 1px solid $bgPage;
+    background-color: $bgPage;
+    padding: 8px;
+    border-radius: 16px;
+    @include dFlex();
+    p{
+        margin: 0;
+    }
+    mat-icon{
+        transform: scale(0.8);
+        &:hover{
+            cursor: pointer;
+        }
+    }
 }

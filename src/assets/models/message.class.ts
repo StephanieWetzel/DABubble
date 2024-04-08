@@ -25,7 +25,7 @@ export class Message{
       time: obj.time,
       content: obj.content,
       messageId: obj.messageId,
-      reacrions: obj.reactions
+      reactions: obj.reactions
     }
   }
 }
