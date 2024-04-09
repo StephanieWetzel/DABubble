@@ -42,7 +42,7 @@ export class RegisterComponent {
 
   constructor(
     private fbuilder: FormBuilder,
-    public authService: AuthenticationService) {
+    private authService: AuthenticationService) {
 
   }
 
@@ -69,8 +69,8 @@ export class RegisterComponent {
       try {
         await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
           const userAuth = userCredential.user;
-          const user = new User(this.formData.value);
-          user.userId = userAuth.uid;
+          const vari = this.transformSignUpData(this.formData, userAuth.uid)
+          const user = new User(vari);
           const userRef = doc(this.firestore, "user", userAuth.uid);
           console.log(user)
           setDoc(userRef, user.toJSON());
@@ -82,16 +82,14 @@ export class RegisterComponent {
     }
   }
 
-
-  transformSignUpData(formData: any, userId: string) {
+  transformSignUpData(formData:any, userId: string) {
     return {
-      name: this.formData.value.name,
+      name: formData.value.name,
       userId: userId,
-      email: this.formData.value.email,
-      state: 'true',
-      avatar: '',
+      email: formData.value.email,
+      state: "true",
+      avatar: "",
       password: this.formData.value.password
     }
   }
-
 }
