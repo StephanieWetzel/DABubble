@@ -5,6 +5,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -16,6 +17,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Channel } from '../../../assets/models/channel.class';
+import { User } from '../../../assets/models/user.class';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +61,18 @@ export class FirebaseService {
       .then((dockRef) => {
         this.addIdToChannel(dockRef);
       });
+  }
+
+  async getCurrentUser(userID: string) {
+    const dockRef = doc(this.getColl("user"), userID);
+    const docSnap = await getDoc(dockRef);
+    if (docSnap.exists()) {
+      console.log("I got this user for ya: ", docSnap.data());
+      return docSnap.data() as User;
+    } else {
+      console.log("No such document! lel");
+      return null
+    }
   }
 
 
