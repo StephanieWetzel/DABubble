@@ -7,21 +7,22 @@ section {
 .message {
     width: 100%;
     margin-bottom: 30px;
-
     box-sizing: border-box;
-
-    p {
-        font-size: 18px;
-        width: fit-content;
-        padding: 15px;
-        background-color: #ECEEFE;
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 30px;
-        border-bottom-left-radius: 30px;
-        margin-bottom: 8px;
-        transition: all .15s;
-    }
 }
+
+.message-content{
+    font-size: 18px;
+    width: fit-content;
+    padding: 15px;
+    background-color: #ECEEFE;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    margin-bottom: 8px;
+    transition: all .15s;
+}
+
+
 
 .custom-outline-icon {
     color: transparent;
@@ -32,11 +33,10 @@ section {
     padding: 10px 35px;
     transition: all .15s;
     position: relative;
-
+    @include dFlex($jc: flex-start, $fd:column, $ai: flex-start);
     &:hover {
         background-color: $bgPage;
-
-        p {
+        .message-content {
             background-color: $bgContent;
         }
 
@@ -70,7 +70,42 @@ section {
             background-color: $bgPage;
         }
     }
-    
+}
+
+
+.edit-message{
+    position: relative;
+    .edit-text{
+        background-color: white !important;
+        padding: 15px;
+        position: absolute;
+        top: 30px;
+        left: 20px;
+        border-radius: 30px 30px 30px 30px;
+        box-shadow: 0 0px 20px rgba(0,0,0,0.1);
+        &:hover{
+            background-color: inherit;
+        }
+        p{
+            margin-block-end: 0;
+            white-space: nowrap;
+            padding: 10px;
+            border-radius: 30px;
+            &:hover{
+                background-color: $bgPage;
+            }
+        }
+    }
+}
+
+.attached-file{
+    background-color: rgba(0,0,0,0.08);
+    padding: 4px 8px;
+    border-radius: 15px;
+    &:hover{
+        cursor: pointer;
+        background-color: rgba(0,0,0,0.1);
+    }
 }
 
 .check{
@@ -81,7 +116,6 @@ section {
     @include dFlex();
     padding: 0 !important;
 }
-
 
 
 .hands{
@@ -96,11 +130,10 @@ section {
 
 .info {
     margin-bottom: 8px;
-
+    @include dFlex($g:20px);
     .name {
         font-size: 18px;
         font-weight: 700;
-        margin-right: 20px;
     }
 
     .time {
@@ -166,13 +199,33 @@ section {
     border-radius: 30px 30px 30px 0;
 }
 
+.attached-file{
+    @include dFlex($g: 8px);
+    width: fit-content;
+    img{
+        height: 30px;
+    }
+}
+
 .reaction-container{
     &:hover{
         .reaction-info{
-            display: flex;
-            
+            @include dFlex($fd:column ,$g: 4px);
+            width: fit-content !important;
             span{
                 text-align: center;
+            }
+            > span:first-child{
+                font-size: 28px;
+                line-height: 30px;
+            }
+            .reactors {
+                font-weight: 700;
+                font-size: 18px;
+            }
+            > span:last-child{
+                white-space: nowrap;
+                font-size: 14px;
             }
         }
     }
@@ -193,8 +246,6 @@ section {
         font-size: 14px;
         color: #686868;
     }
-
-    
 }
 
 ul{
@@ -217,4 +268,33 @@ ul{
 
 .outlined{
     font-family: 'Material Icons Outlined';
+}
+
+
+.message-content{
+    background-color: #797EF3;
+    color: white;
+
+}
+
+.message-container{
+    align-items: flex-end;
+    &:hover{
+        .message-content{
+            background-color: #797EF3;
+        }
+    }
+}
+
+.info{
+    flex-direction: row-reverse;
+}
+
+.options-container{
+    left: 40px;
+    right: unset;
+}
+
+.edit-menu{
+    display: unset;
 }

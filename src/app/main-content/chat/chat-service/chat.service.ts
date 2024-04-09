@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, arrayUnion, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
 import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Message } from '../../../../assets/models/message.class';
 import { Reaction } from '../../../../assets/models/reactions.class';
 
@@ -43,16 +43,15 @@ export class ChatService {
 
   async uploadFile(file: File) {
     const storage = getStorage();
-    const storageRef = ref(storage, `uploads/${file.name}_${Date.now()}`);
-
+    const storageRef = ref(storage, `uploads/${new Date().getTime()}_${file.name}`);
     try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
+      const uploadFile = await uploadBytes(storageRef, file);
+      const downloadURL: string = await getDownloadURL(uploadFile.ref);
       console.log('File uploaded and available at', downloadURL);
       return downloadURL;
     } catch (error) {
       console.error("Upload failed", error);
-      throw new Error("Upload failed");
+      throw new Error("Upload failed"); 
     }
   }
 

@@ -42,7 +42,7 @@ export class RegisterComponent {
 
   constructor(
     private fbuilder: FormBuilder,
-    private authService: AuthenticationService) {
+    public auth: AuthenticationService) {
 
   }
 
@@ -67,10 +67,10 @@ export class RegisterComponent {
   async signUp() {
     if (this.formData.valid) {
       try {
-        await this.authService.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
+        await this.auth.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
           const userAuth = userCredential.user;
-          const vari = this.transformSignUpData(this.formData, userAuth.uid)
-          const user = new User(vari);
+          const transformedData = this.transformSignUpData(this.formData, userAuth.uid)
+          const user = new User(transformedData);
           const userRef = doc(this.firestore, "user", userAuth.uid);
           console.log(user)
           setDoc(userRef, user.toJSON());
@@ -85,12 +85,13 @@ export class RegisterComponent {
 
   transformSignUpData(formData: any, userId: string) {
     return {
-      name: formData.value.name,
+      name: this.formData.value.name,
       userId: userId,
-      email: formData.value.email,
-      state: "true",
-      avatar: "",
+      email: this.formData.value.email,
+      state: 'true',
+      avatar: '',
       password: this.formData.value.password
     }
   }
+
 }

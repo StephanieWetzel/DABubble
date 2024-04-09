@@ -5,7 +5,6 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -17,7 +16,6 @@ import {
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Channel } from '../../../assets/models/channel.class';
-import { User } from '../../../assets/models/user.class';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +25,7 @@ export class FirebaseService {
 
   fetchCollection(colID: string, orderByField: string = '', orderDirection: 'asc' | 'desc' = 'asc'): Observable<any[]> {
     let collectionQuery = query(this.getColl(colID));
-
+    
     // if orderByFIeld is !empty do: 
     if (orderByField) {
       collectionQuery = query(this.getColl(colID), orderBy(orderByField, orderDirection));
@@ -46,12 +44,10 @@ export class FirebaseService {
     });
   }
 
-
   getColl(colId: string) {
     let userRef = collection(this.firestore, colId);
     return userRef;
   }
-
 
   async saveChannel(channel: Channel) {
     await addDoc(this.getColl('channel'), channel.toJSON())
@@ -62,19 +58,6 @@ export class FirebaseService {
         this.addIdToChannel(dockRef);
       });
   }
-
-  async getCurrentUser(userID: string) {
-    const dockRef = doc(this.getColl("user"), userID);
-    const docSnap = await getDoc(dockRef);
-    if (docSnap.exists()) {
-      console.log("I got this user for ya: ", docSnap.data());
-      return docSnap.data() as User;
-    } else {
-      console.log("No such document! lel");
-      return null
-    }
-  }
-
 
   addIdToChannel(dockRef: any) {
     console.log('Document written - ID: ', dockRef?.id);
