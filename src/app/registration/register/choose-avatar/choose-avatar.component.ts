@@ -3,7 +3,6 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
-
 @Component({
   selector: 'app-choose-avatar',
   standalone: true,
@@ -25,6 +24,12 @@ export class ChooseAvatarComponent {
   clickedIndex: number = -1; // Index des zuletzt geklickten Elements
 
 
+  constructor(
+    public auth: AuthenticationService) {
+
+  }
+
+
   changeBackgroundColor() {
     this.isClicked = true;
   }
@@ -42,12 +47,6 @@ export class ChooseAvatarComponent {
       const chosenAvatarSrc = chosenAvatar;
       // this.chosenAvatar.nativeElement.src = `assets/img/${chosenAvatarSrc}`;
     }
-  }
-
-
-  constructor(
-    public authService: AuthenticationService) {
-
   }
 
 

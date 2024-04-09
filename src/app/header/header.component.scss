@@ -53,23 +53,6 @@ section {
         span{
             font-size: 28px;
         }
-        > .user-pair {
-            position: relative;
-            height: 70px;
-            width: 70px;
-            > img {
-                height: 70px;
-            }
-            > .online-attribut {
-                position: absolute;
-                bottom: -10px;
-                right: 0;
-                > img {
-                    height: 17px;
-                    width: 17px;
-                }
-            }
-        }
     }
 }
 

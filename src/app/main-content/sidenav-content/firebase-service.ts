@@ -5,7 +5,6 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -30,7 +29,7 @@ export class FirebaseService {
 
   fetchCollection(colID: string, orderByField: string = '', orderDirection: 'asc' | 'desc' = 'asc'): Observable<any[]> {
     let collectionQuery = query(this.getColl(colID));
-
+    
     // if orderByFIeld is !empty do: 
     if (orderByField) {
       collectionQuery = query(this.getColl(colID), orderBy(orderByField, orderDirection));
@@ -49,12 +48,10 @@ export class FirebaseService {
     });
   }
 
-
   getColl(colId: string) {
     let userRef = collection(this.firestore, colId);
     return userRef;
   }
-
 
   async saveChannel(channel: Channel) {
     await addDoc(this.getColl('channel'), channel.toJSON())

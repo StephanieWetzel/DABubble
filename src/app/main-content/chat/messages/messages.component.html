@@ -10,15 +10,22 @@
                 <span class="name">Noah Braun</span>
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
-            <p>{{ message.content }}</p>
+            <div class="message-content">
+                <p>{{ message.content }}</p>
+                <div class="files-container" *ngIf="message.fileUrls.length > 0" >
+                    <div *ngFor="let url of message.fileUrls" class="attached-file" (click)="downloadFile(url, urlToFileName(url))"><img  *ngIf="urlToFileName(url).endsWith('.pdf')" src="./../../../../assets/img/pdf.png" alt="pdf:"><span>{{ urlToFileName(url) }}</span></div>
+                </div>
+            </div>
+            
+            
             <div class="reactions" *ngIf="message.reactions">
                 <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)" class="reaction-container">
                     <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>
                     <div class="reaction-info">
                         <span>{{ reaction.emote }}</span>
-                        <div>
-                            <span *ngFor="let reactor of reaction.users">{{ reactor }}</span>
-                        </div>
+                        <span class="reactors">
+                            {{ formatUsernames(reaction.users) }}
+                        </span>
                         <span *ngIf="reaction.users.length === 1">hat reagiert</span>
                         <span *ngIf="reaction.users.length > 1">haben reagiert</span>
                     </div>
@@ -44,6 +51,12 @@
                     </ul>
                 </mat-menu>
                 <div><mat-icon class="outlined">chat_outline</mat-icon></div>
+                <div class="edit-message">
+                    <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
+                    <div class="edit-text" *ngIf="menuEditMessage == true">
+                        <p>Nachricht bearbeiten</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -10,9 +10,5 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './profile-edit-dialog.component.scss'
 })
 export class ProfileEditDialogComponent {
-  @Output() closeEvent = new EventEmitter<void>();
 
-  closeEditDialog() {
-    this.closeEvent.emit();
-  }
 }
