@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ProfileEditDialogComponent } from './profile-edit-dialog/profile-edit-dialog.component';
 
@@ -11,15 +11,5 @@ import { ProfileEditDialogComponent } from './profile-edit-dialog/profile-edit-d
   styleUrl: './profile-dialog.component.scss'
 })
 export class ProfileDialogComponent {
-  isEditing: boolean = false;
-  @Output() closeEvent = new EventEmitter<boolean>();
-
-  closeProfileMenu() {
-    this.closeEvent.emit(true);
-  }
-
-  userIsEditing() {
-    this.isEditing = !this.isEditing;
-  }
-
+  isEditing: boolean = true;
 }

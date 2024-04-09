@@ -22,6 +22,7 @@ export class MessagesComponent {
   time: any;
   date: any;
   emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
+  menuEditMessage = false;
 
   constructor(private chatService: ChatService) {
     this.messages = this.chatService.messages;
@@ -46,6 +47,55 @@ export class MessagesComponent {
   }
 
   addReaction(messageId: string, emote: string){
-    this.chatService.reactOnMessage(messageId, emote, 'Stefanie')
+    this.chatService.reactOnMessage(messageId, emote, 'Sebastian')
+  }
+
+  formatUsernames(users: string[]): string {
+    if (users.length <= 2) {
+      return users.join(' und ');
+    } else {
+      return `${users.slice(0, -1).join(', ')} und ${users[users.length - 1]}`;
+    }
+  }
+
+  urlToFileName(url: string): string {
+    const decodedUrl = decodeURIComponent(url);
+  
+    const parts = decodedUrl.split('/');
+    let fileName = parts[parts.length - 1];
+  
+    fileName = fileName.split('?')[0];
+    return fileName;
+  }
+
+  openEditMessage(){
+    this.menuEditMessage = !this.menuEditMessage;
+  }
+
+  async downloadFile(url: string, filename: string): Promise<void> {
+    // try {
+    //   // Die Datei als Blob abrufen
+    //   const response = await fetch(url);
+    //   if (!response.ok) throw new Error('Netzwerkantwort war nicht ok.');
+    //   const blob = await response.blob();
+  
+    //   // Eine temporäre URL aus dem Blob erstellen
+    //   const blobUrl = window.URL.createObjectURL(blob);
+  
+    //   // Ein temporäres <a>-Element für den Download erzeugen
+    //   const a = document.createElement('a');
+    //   a.href = blobUrl;
+    //   a.download = filename || 'downloaded-file';
+  
+    //   // Den Download auslösen
+    //   document.body.appendChild(a);
+    //   a.click();
+  
+    //   // Aufräumen
+    //   window.URL.revokeObjectURL(blobUrl);
+    //   document.body.removeChild(a);
+    // } catch (error) {
+    //   console.error('Fehler beim Herunterladen der Datei:', error);
+    // }
   }
 }

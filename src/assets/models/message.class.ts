@@ -7,6 +7,7 @@ export class Message{
     content: string;
     messageId : string;
     reactions: Reaction[];
+    fileUrls: string[];
 
     constructor(obj?: any){
         this.sendId = obj ? obj.sendId : '';
@@ -14,7 +15,8 @@ export class Message{
         this.time = obj ? obj.time :  new Date().getTime();
         this.content = obj ? obj.content : '';
         this.messageId = obj ? obj.messageId : '';
-        this.reactions = obj ? obj.reactions : []
+        this.reactions = obj ? obj.reactions : [];
+        this.fileUrls = obj ? obj.fileUrls : []
     }
 
 
@@ -25,7 +27,8 @@ export class Message{
       time: obj.time,
       content: obj.content,
       messageId: obj.messageId,
-      reactions: obj.reactions
+      reactions: obj.reactions,
+      fileUrls: obj.fileUrls
     }
   }
 }

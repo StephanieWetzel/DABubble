@@ -65,20 +65,22 @@ export class InputBoxComponent {
   }
 
 
-  sendMessage() {
+  async sendMessage() {
     let data = tinymce.get("inputData")
     console.log('my data: ', data?.getContent());
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
-      // content = this.decodeHtmlEntities(content);
       let message = new Message();
       message.content = content;
-      this.chatService.addMessage(message);
+      for (const file of this.selectedFiles) {
+        const fileUrl = await this.chatService.uploadFile(file);
+        message.fileUrls.push(fileUrl);
+      }
+      await this.chatService.addMessage(message);
       data.setContent('');
+      this.selectedFileNames = [];
+      this.selectedFiles = [];
     }
-    this.selectedFiles.forEach(file => {
-      this.chatService.uploadFile(file)
-    });
   }
 
 

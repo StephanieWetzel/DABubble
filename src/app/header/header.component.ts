@@ -1,79 +1,27 @@
 import { Component, HostListener } from '@angular/core';
 
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
-import { User } from '../../assets/models/user.class';
-import { FirebaseService } from '../main-content/sidenav-content/firebase-service';
-import { AuthenticationService } from '../registration/authentication.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatIcon,
-    ProfileDialogComponent,
-  ],
+  imports: [CommonModule, MatInputModule, MatFormFieldModule, MatIcon, ProfileDialogComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   isProfilMenuOpen: boolean = false;
   isProfileEditOpen: boolean = false;
-  user: User | null = new User();
-  currentUserID: string | any;
+  constructor() {}
 
-  constructor(
-    private firestore: FirebaseService,
-    private auth: AuthenticationService
-  ) {}
-
-  ngOnInit() {
-    this.fetchUserFromFirestore();
-  }
-
-  async fetchUserFromFirestore() {
-    try {
-      const userId = await this.fetchUserFromAuthentication(); // fetch id from auth
-      console.log('Fetching user from Firestore with ID: ', userId);
-      this.user = await this.firestore.getCurrentUser(userId); // with previous fetched id get the current user from firestore
-      console.log('Current user: ', this.user);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  }
-
-  fetchUserFromAuthentication(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      // a promise which gives a resolve back, if there is a current user
-      //logged in -> gives uid back, and a reject back if
-      //no user is currently logged in
-      this.auth
-        .fetchLoggedUser()
-        .then((userId: string | any) => {
-          console.log('Current user:', userId);
-          resolve(userId);
-        })
-        .catch((error) => {
-          console.error('No user to fetch', error);
-          reject(error);
-        });
-    });
-  }
-
-
-
-  
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const profileMenuElement = document.getElementById('profileMenu');
-    const clickedInsideMenu =
-      profileMenuElement && profileMenuElement.contains(event.target as Node);
+    const clickedInsideMenu = profileMenuElement && profileMenuElement.contains(event.target as Node);
     if (this.isProfilMenuOpen && !clickedInsideMenu) {
       this.isProfilMenuOpen = false;
     }
@@ -94,10 +42,4 @@ export class HeaderComponent {
     this.isProfilMenuOpen = false;
   }
 
-  userWantsBackEvent(profileMenu: boolean) {
-    this.isProfileEditOpen = false;
-    setTimeout(() => {
-      this.isProfilMenuOpen = profileMenu;
-    }, 20);
-  }
 }

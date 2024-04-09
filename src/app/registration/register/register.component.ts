@@ -9,9 +9,9 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthenticationService } from '../../../services/authentication.service';
 import { User } from '../../../assets/models/user.class';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
-import { AuthenticationService } from '../authentication.service';
 
 @Component({
   selector: 'app-register',
@@ -42,7 +42,7 @@ export class RegisterComponent {
 
   constructor(
     private fbuilder: FormBuilder,
-    private authService: AuthenticationService) {
+    public authService: AuthenticationService) {
 
   }
 
@@ -84,12 +84,13 @@ export class RegisterComponent {
 
   transformSignUpData(formData:any, userId: string) {
     return {
-      name: formData.value.name,
+      name: this.formData.value.name,
       userId: userId,
-      email: formData.value.email,
-      state: "true",
-      avatar: "",
+      email: this.formData.value.email,
+      state: 'true',
+      avatar: '',
       password: this.formData.value.password
     }
   }
+
 }
