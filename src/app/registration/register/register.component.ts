@@ -82,7 +82,8 @@ export class RegisterComponent {
     }
   }
 
-  transformSignUpData(formData:any, userId: string) {
+
+  transformSignUpData(formData: any, userId: string) {
     return {
       name: formData.value.name,
       userId: userId,

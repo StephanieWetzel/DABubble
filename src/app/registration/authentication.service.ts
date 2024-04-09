@@ -1,8 +1,8 @@
 // import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, GoogleAuthProvider } from "firebase/auth";
 import { Firestore } from "@angular/fire/firestore/firebase";
 import { inject, Injectable } from "@angular/core";
-import { Auth, signInAnonymously, signOut } from "@angular/fire/auth";
+import { Auth, signInAnonymously, signInWithPopup, signOut } from "@angular/fire/auth";
 import { User } from "../../assets/models/user.class";
 
 @Injectable({
@@ -34,6 +34,11 @@ export class AuthenticationService {
     signInAnonymously() {
         const auth = getAuth();
         return signInAnonymously(auth);
+    }
+
+    signInWithGoogle() {
+        const provider = new GoogleAuthProvider();
+        return signInWithPopup(this.auth, provider);
     }
 
 

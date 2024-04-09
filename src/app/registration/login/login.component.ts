@@ -112,6 +112,21 @@ export class LoginComponent {
   }
 
 
+  googleLogin() {
+    this.auth.signInWithGoogle().then((result) => {
+      this.auth.currentUser = result.user;
+      this.user.email = result.user.email ? result.user.email : "Keine E-Mail";
+      this.user.name = result.user.displayName ? result.user.displayName : "Unbekannt";
+      this.user.userId = result.user.uid;
+      this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c';
+      this.saveUserToLocal(this.auth.currentUser);
+      this.router.navigate(['/main-section']);
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
+
+
   saveUserToLocal(user: any) {
     const userAsString = JSON.stringify(user);
     localStorage.setItem('dabubble/user', userAsString);
