@@ -83,6 +83,7 @@ export class LoginComponent {
           console.log('Sign up success');
           const user = userCredential.user;
           console.log(user.uid)
+          this.router.navigate(['/main']);
         });
       } catch (error) {
         console.error(error);
