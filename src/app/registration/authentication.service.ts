@@ -41,7 +41,11 @@ export class AuthenticationService {
         return signInWithPopup(this.auth, provider);
     }
 
-<<<<<<< HEAD
+
+    fetchCurrentUser() {
+        return this.currentUser;
+    }
+
   fetchLoggedUser() {
     const auth = getAuth();
     return new Promise((resolve, reject) => {
@@ -54,7 +58,6 @@ export class AuthenticationService {
       });
     });
   }
-
   fetchCUser(callback: (userID: string | null) => void): void {
     this.auth.onAuthStateChanged((cUser) => {
         if (cUser) {
@@ -62,29 +65,9 @@ export class AuthenticationService {
         } else {
             console.log("kein Benutzer angemeldet");
             callback(null)
-        }
-        
+        }  
     });
     
   }
 
-=======
-
-    fetchCurrentUser() {
-        return this.currentUser;
-    }
-
-    fetchLoggedUser() {
-        const auth = getAuth();
-        return new Promise((resolve, reject) => {
-            onAuthStateChanged(auth, (user) => {
-                if (user?.uid) {
-                    resolve(user.uid); // gives the user id back if user is logged in
-                } else {
-                    reject(new Error('No user logged in'));
-                }
-            });
-        });
-    }
->>>>>>> 58c9a4b4af6a9c407baf76005d8bab1e473b1d60
 }

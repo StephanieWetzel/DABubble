@@ -5,6 +5,9 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
+import { User } from '../../assets/models/user.class';
+import { FirebaseService } from '../main-content/sidenav-content/firebase-service';
+import { AuthenticationService } from '../registration/authentication.service';
 
 @Component({
   selector: 'app-header',
