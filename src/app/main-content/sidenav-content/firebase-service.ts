@@ -18,12 +18,15 @@ import {
 import { Observable } from 'rxjs';
 import { Channel } from '../../../assets/models/channel.class';
 import { User } from '../../../assets/models/user.class';
+import { AuthenticationService } from '../../registration/authentication.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseService {
   firestore: Firestore = inject(Firestore);
+
+  constructor(private auth: AuthenticationService){};
 
   fetchCollection(colID: string, orderByField: string = '', orderDirection: 'asc' | 'desc' = 'asc'): Observable<any[]> {
     let collectionQuery = query(this.getColl(colID));
@@ -63,16 +66,18 @@ export class FirebaseService {
       });
   }
 
-  async getCurrentUser(userID: string) {
+  async subscribeCurrentUser(userID: string, setUserCallback: (user: User | null) => void) {
     const dockRef = doc(this.getColl("user"), userID);
-    const docSnap = await getDoc(dockRef);
-    if (docSnap.exists()) {
-      console.log("I got this user for ya: ", docSnap.data());
-      return docSnap.data() as User;
-    } else {
-      console.log("No such document! lel");
-      return null
-    }
+    return onSnapshot(dockRef, (docSnap) => {
+      if (docSnap.exists()) {
+        console.log("I got this user for ya: ", docSnap.data());
+        setUserCallback(docSnap.data() as User);
+      } else {
+        console.log("No such document! lel");
+        setUserCallback(null)
+      }
+    })
+    
   }
 
 

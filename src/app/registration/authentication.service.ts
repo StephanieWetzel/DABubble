@@ -51,4 +51,18 @@ export class AuthenticationService {
       });
     });
   }
+
+  fetchCUser(callback: (userID: string | null) => void): void {
+    this.auth.onAuthStateChanged((cUser) => {
+        if (cUser) {
+            callback(cUser.uid)
+        } else {
+            console.log("kein Benutzer angemeldet");
+            callback(null)
+        }
+        
+    });
+    
+  }
+
 }

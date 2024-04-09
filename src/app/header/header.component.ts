@@ -31,7 +31,19 @@ export class HeaderComponent {
   constructor(
     private firestore: FirebaseService,
     private auth: AuthenticationService
-  ) {}
+  ) {
+    console.log("da bitte",this.displayCuser());
+  }
+
+  displayCuser() {
+    this.auth.fetchCUser((userID) => {
+      if (userID) {
+        return userID;
+      } else {
+        return null
+      }
+    });
+  }
 
   ngOnInit() {
     this.fetchUserFromFirestore();
@@ -40,9 +52,12 @@ export class HeaderComponent {
   async fetchUserFromFirestore() {
     try {
       const userId = await this.fetchUserFromAuthentication(); // fetch id from auth
-      console.log('Fetching user from Firestore with ID: ', userId);
-      this.user = await this.firestore.getCurrentUser(userId); // with previous fetched id get the current user from firestore
-      console.log('Current user: ', this.user);
+      if (userId) {
+        console.log('Fetching user from Firestore with ID: ', userId);
+        this.firestore.subscribeCurrentUser(userId, (user) => {
+          this.user = user;
+        })
+      }
     } catch (error) {
       console.error('Error fetching user:', error);
     }
@@ -68,7 +83,7 @@ export class HeaderComponent {
 
 
 
-  
+
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const profileMenuElement = document.getElementById('profileMenu');
