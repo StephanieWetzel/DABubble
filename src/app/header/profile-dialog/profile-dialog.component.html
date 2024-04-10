@@ -1,7 +1,7 @@
 <section>
   <div class="p-head mrB45">
     <span>{{ isEditing ? 'Dein Profil bearbeiten' : 'Profil'}}</span>
-    <div class="close-btn">
+    <div (click)="closeProfileMenu()" class="close-btn">
       <mat-icon>close_outline</mat-icon>
     </div>
   </div>
@@ -11,7 +11,7 @@
       <img src="../../../assets/img/avatar_clean0.png" alt="user-pic" />
     </div>
   </div>
-<!--profile oversight-->
+  <!--profile oversight-->
   <div *ngIf="!isEditing" class="p-name-cont mrB45">
     <div class="name-status">
       <span>Sofia Müller</span>
@@ -20,7 +20,7 @@
         <span>Aktiv</span>
       </div>
     </div>
-    <div class="edit">Bearbeiten</div>
+    <div (click)="userIsEditing()" class="edit">Bearbeiten</div>
   </div>
 
   <div *ngIf="!isEditing" class="p-mail-cont mrB45">
@@ -39,6 +39,6 @@
       <span>Nachricht</span>
     </div>
   </div> -->
-<!--profile oversight-->
-<app-profile-edit-dialog></app-profile-edit-dialog>
+  <!--profile oversight-->
+  <app-profile-edit-dialog *ngIf="isEditing" (closeEvent)="isEditing = false"></app-profile-edit-dialog>
 </section>

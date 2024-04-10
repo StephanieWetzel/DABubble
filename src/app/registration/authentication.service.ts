@@ -1,10 +1,10 @@
 // import { initializeApp } from "firebase/app";
 import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    GoogleAuthProvider
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  GoogleAuthProvider
 } from 'firebase/auth';
 import { Firestore } from '@angular/fire/firestore/firebase';
 import { inject, Injectable } from '@angular/core';
@@ -12,39 +12,45 @@ import { Auth, signInAnonymously, signInWithPopup, signOut } from '@angular/fire
 import { User } from '../../assets/models/user.class';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class AuthenticationService {
-    currentUser: any;
+  currentUser: any;
 
-    constructor(public auth: Auth) { }
-
-    signIn(email: string, password: string) {
-        return signInWithEmailAndPassword(this.auth, email, password);
-    }
-
-    signUp(email: string, password: string) {
-        return createUserWithEmailAndPassword(this.auth, email, password);
-    }
-
-    signOut() {
-        return signOut(this.auth);
-    }
-
-    signInAnonymously() {
-        const auth = getAuth();
-        return signInAnonymously(auth);
-    }
-
-    signInWithGoogle() {
-        const provider = new GoogleAuthProvider();
-        return signInWithPopup(this.auth, provider);
-    }
+  constructor(public auth: Auth) { }
 
 
-    fetchCurrentUser() {
-        return this.currentUser;
-    }
+  signIn(email: string, password: string) {
+    return signInWithEmailAndPassword(this.auth, email, password);
+  }
+
+
+  signUp(email: string, password: string) {
+    return createUserWithEmailAndPassword(this.auth, email, password);
+  }
+
+
+  signOut() {
+    return signOut(this.auth);
+  }
+
+
+  signInAnonymously() {
+    const auth = getAuth();
+    return signInAnonymously(auth);
+  }
+
+
+  signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(this.auth, provider);
+  }
+
+
+  fetchCurrentUser() {
+    return this.currentUser;
+  }
+
 
   fetchLoggedUser() {
     const auth = getAuth();
@@ -58,16 +64,6 @@ export class AuthenticationService {
       });
     });
   }
-  fetchCUser(callback: (userID: string | null) => void): void {
-    this.auth.onAuthStateChanged((cUser) => {
-        if (cUser) {
-            callback(cUser.uid)
-        } else {
-            console.log("kein Benutzer angemeldet");
-            callback(null)
-        }  
-    });
-    
-  }
+
 
 }

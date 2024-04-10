@@ -5,6 +5,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   limit,
@@ -25,15 +26,16 @@ import { AuthenticationService } from '../../registration/authentication.service
 export class FirebaseService {
   firestore: Firestore = inject(Firestore);
 
-  constructor(private auth: AuthenticationService){};
+  constructor(private auth: AuthenticationService) { };
 
   fetchCollection(colID: string, orderByField: string = '', orderDirection: 'asc' | 'desc' = 'asc'): Observable<any[]> {
     let collectionQuery = query(this.getColl(colID));
-    
+
     // if orderByFIeld is !empty do: 
     if (orderByField) {
       collectionQuery = query(this.getColl(colID), orderBy(orderByField, orderDirection));
     }
+
 
     return new Observable((subscriber) => {
       const unsubscribe = onSnapshot(
@@ -48,10 +50,12 @@ export class FirebaseService {
     });
   }
 
+
   getColl(colId: string) {
     let userRef = collection(this.firestore, colId);
     return userRef;
   }
+
 
   async saveChannel(channel: Channel) {
     await addDoc(this.getColl('channel'), channel.toJSON())
@@ -63,18 +67,17 @@ export class FirebaseService {
       });
   }
 
-  async subscribeCurrentUser(userID: string, setUserCallback: (user: User | null) => void) {
+
+  async getCurrentUser(userID: string) {
     const dockRef = doc(this.getColl("user"), userID);
-    return onSnapshot(dockRef, (docSnap) => {
-      if (docSnap.exists()) {
-        console.log("I got this user for ya: ", docSnap.data());
-        setUserCallback(docSnap.data() as User);
-      } else {
-        console.log("No such document! lel");
-        setUserCallback(null)
-      }
-    })
-    
+    const docSnap = await getDoc(dockRef);
+    if (docSnap.exists()) {
+      console.log("I got this user for ya: ", docSnap.data());
+      return docSnap.data() as User;
+    } else {
+      console.log("No such document! lel");
+      return null
+    }
   }
 
 

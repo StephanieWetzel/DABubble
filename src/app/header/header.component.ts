@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
@@ -12,7 +12,12 @@ import { AuthenticationService } from '../registration/authentication.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, MatInputModule, MatFormFieldModule, MatIcon, ProfileDialogComponent],
+  imports: [
+    CommonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIcon,
+    ProfileDialogComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -25,37 +30,25 @@ export class HeaderComponent {
   constructor(
     private firestore: FirebaseService,
     private auth: AuthenticationService
-  ) {
-    console.log("da bitte",this.displayCuser());
-  }
+  ) { }
 
-  displayCuser() {
-    this.auth.fetchCUser((userID) => {
-      if (userID) {
-        return userID;
-      } else {
-        return null
-      }
-    });
-  }
 
   ngOnInit() {
     this.fetchUserFromFirestore();
   }
 
+
   async fetchUserFromFirestore() {
     try {
       const userId = await this.fetchUserFromAuthentication(); // fetch id from auth
-      if (userId) {
-        console.log('Fetching user from Firestore with ID: ', userId);
-        this.firestore.subscribeCurrentUser(userId, (user) => {
-          this.user = user;
-        })
-      }
+      console.log('Fetching user from Firestore with ID: ', userId);
+      this.user = await this.firestore.getCurrentUser(userId); // with previous fetched id get the current user from firestore
+      console.log('Current user: ', this.user);
     } catch (error) {
       console.error('Error fetching user:', error);
     }
   }
+
 
   fetchUserFromAuthentication(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -76,16 +69,16 @@ export class HeaderComponent {
   }
 
 
-
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const profileMenuElement = document.getElementById('profileMenu');
-    const clickedInsideMenu = profileMenuElement && profileMenuElement.contains(event.target as Node);
+    const clickedInsideMenu =
+      profileMenuElement && profileMenuElement.contains(event.target as Node);
     if (this.isProfilMenuOpen && !clickedInsideMenu) {
       this.isProfilMenuOpen = false;
     }
   }
+
 
   openProfileMenu() {
     if (this.isProfilMenuOpen) {
@@ -97,9 +90,19 @@ export class HeaderComponent {
     }
   }
 
+
   openProfile() {
     this.isProfileEditOpen = true;
     this.isProfilMenuOpen = false;
   }
+
+
+  userWantsBackEvent(profileMenu: boolean) {
+    this.isProfileEditOpen = false;
+    setTimeout(() => {
+      this.isProfilMenuOpen = profileMenu;
+    }, 20);
+  }
+
 
 }
