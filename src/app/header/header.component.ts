@@ -1,13 +1,11 @@
 import { Component, HostListener } from '@angular/core';
-
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 import { User } from '../../assets/models/user.class';
-import { FirebaseService } from '../main-content/sidenav-content/firebase-service';
-import { AuthenticationService } from '../registration/authentication.service';
+import { ProfileAuthentication } from '../../assets/services/profileAuth.service';
 
 @Component({
   selector: 'app-header',
@@ -24,50 +22,21 @@ import { AuthenticationService } from '../registration/authentication.service';
 export class HeaderComponent {
   isProfilMenuOpen: boolean = false;
   isProfileEditOpen: boolean = false;
-  user: User | null = new User();
+  user: User | null = null;
   currentUserID: string | any;
 
   constructor(
-    private firestore: FirebaseService,
-    private auth: AuthenticationService
+    private profileAuth: ProfileAuthentication
   ) { }
 
 
   ngOnInit() {
-    this.fetchUserFromFirestore();
+    this.profileAuth.initializeUser();
+    this.profileAuth.user$.subscribe((user) => {
+      this.user = user;
+      this.profileAuth.refreshState(this.user)
+    })
   }
-
-
-  async fetchUserFromFirestore() {
-    try {
-      const userId = await this.fetchUserFromAuthentication(); // fetch id from auth
-      console.log('Fetching user from Firestore with ID: ', userId);
-      this.user = await this.firestore.getCurrentUser(userId); // with previous fetched id get the current user from firestore
-      console.log('Current user: ', this.user);
-    } catch (error) {
-      console.error('Error fetching user:', error);
-    }
-  }
-
-
-  fetchUserFromAuthentication(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      // a promise which gives a resolve back, if there is a current user
-      //logged in -> gives uid back, and a reject back if
-      //no user is currently logged in
-      this.auth
-        .fetchLoggedUser()
-        .then((userId: string | any) => {
-          console.log('Current user:', userId);
-          resolve(userId);
-        })
-        .catch((error) => {
-          console.error('No user to fetch', error);
-          reject(error);
-        });
-    });
-  }
-
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {

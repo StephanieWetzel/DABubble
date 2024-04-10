@@ -76,7 +76,7 @@ export class RegisterComponent {
           console.log(user)
           setDoc(userRef, user.toJSON());
           console.log('user signed up :D')
-          this.router.navigate(['/chooseAvatar']);
+          this.router.navigate(['/chooseAvatar/' + userAuth.uid]);
         })
       } catch (error) {
         console.error(error);

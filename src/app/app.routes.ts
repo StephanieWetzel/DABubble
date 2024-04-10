@@ -10,7 +10,7 @@ export const routes: Routes = [
     { path: 'main', component: MainContentComponent },
     { path: 'registration', component: RegisterComponent },
     { path: 'resetPassword', component: ResetPasswordComponent },
-    { path: 'chooseAvatar', component: ChooseAvatarComponent },
+    { path: 'chooseAvatar/:id', component: ChooseAvatarComponent },
     // { path: 'imprint', component: ... },
     // { path: 'privacyPolicy', component: ... },
     { path: '**', redirectTo: '' }
