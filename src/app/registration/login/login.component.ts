@@ -82,7 +82,7 @@ export class LoginComponent {
         await this.auth.signIn(email, password).then((userCredential) => {
           console.log('Sign up success');
           const user = userCredential.user;
-          console.log(user.uid)
+          console.log(user.uid);
           this.router.navigate(['/main']);
         });
       } catch (error) {

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormGroup,
   Validators,
@@ -42,7 +42,8 @@ export class RegisterComponent {
 
   constructor(
     private fbuilder: FormBuilder,
-    public auth: AuthenticationService) {
+    public auth: AuthenticationService,
+    private router: Router) {
 
   }
 
@@ -64,7 +65,7 @@ export class RegisterComponent {
   }
 
 
-  async signUp() {
+  async pushUserDataToFirebase() {
     if (this.formData.valid) {
       try {
         await this.auth.signUp(this.formData.value.email, this.formData.value.password).then((userCredential) => {
@@ -75,6 +76,7 @@ export class RegisterComponent {
           console.log(user)
           setDoc(userRef, user.toJSON());
           console.log('user signed up :D')
+          this.router.navigate(['/chooseAvatar']);
         })
       } catch (error) {
         console.error(error);

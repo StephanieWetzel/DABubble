@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+
 @Component({
   selector: 'app-choose-avatar',
   standalone: true,
@@ -23,9 +25,15 @@ export class ChooseAvatarComponent {
   allAvatars = ['avatar_clean0.png', 'avatar_clean1.png', 'avatar_clean2.png', 'avatar_clean3.png', 'avatar_clean4.png', 'avatar_clean5.png'];
   clickedIndex: number = -1; // Index des zuletzt geklickten Elements
 
+  selectedAvatarURL: string | any = '';
+  userId: string | any = '';
+
+  firestore: Firestore = inject(Firestore)
+
 
   constructor(
-    public auth: AuthenticationService) {
+    private auth: AuthenticationService,
+    private router: Router) {
 
   }
 
@@ -44,10 +52,27 @@ export class ChooseAvatarComponent {
     this.clickedIndex = (this.clickedIndex === i) ? -1 : i;
     const chosenAvatar = this.allAvatars[this.clickedIndex];
     if (this.clickedIndex !== -1) {
-      const chosenAvatarSrc = chosenAvatar;
-      // this.chosenAvatar.nativeElement.src = `assets/img/${chosenAvatarSrc}`;
+      this.selectedAvatarURL = `assets/img/${chosenAvatar}`;
+      // Setzen Sie die src-Eigenschaft des chosenAvatar-Elements
+      this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
     }
   }
+
+
+
+  async signUp(userId: string) {
+    try {
+      const userRef = doc(this.firestore, "user", userId);
+      console.log(userId)
+      await setDoc(userRef, { avatar: this.selectedAvatarURL }, { merge: true });
+      console.log('Avatar saved to Firebase:', this.selectedAvatarURL);
+      // Navigieren Sie zur nächsten Ansicht oder führen Sie andere Aktionen aus
+    } catch (error) {
+      console.error('Error saving avatar to Firebase:', error);
+      // Handle error
+    }
+  }
+
 
 
 }
