@@ -16,8 +16,9 @@ import {
     setDoc,
     updateDoc,
   } from '@angular/fire/firestore';
-import { getAuth, onAuthStateChanged } from "@angular/fire/auth";
+import { getAuth, onAuthStateChanged, signOut } from "@angular/fire/auth";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 
 
 @Injectable({
@@ -29,7 +30,7 @@ export class ProfileAuthentication {
     private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
     public user$ = this.userSubject.asObservable();
 
-    constructor(private firestore: Firestore){}
+    constructor(private firestore: Firestore, private router: Router){}
 
     initializeUser() {
         this.fetchLoggedUser().then((userID) => {
@@ -40,7 +41,6 @@ export class ProfileAuthentication {
             console.log('No such user lul', error);
         })
     }
-
 
     async fetchLoggedUser(): Promise<string> {
         const auth = getAuth();
@@ -58,6 +58,7 @@ export class ProfileAuthentication {
     async fetchUserFromFirestore(userID:string) {
         console.log('Now fetching user from database: ', userID);
         const docRef = doc(this.firestore, 'user', userID);
+        this.refreshState(userID, 'true');
         onSnapshot(docRef, (userSnap) => {
             if (userSnap.exists()) {
                 const user = userSnap.data() as User;
@@ -68,11 +69,11 @@ export class ProfileAuthentication {
         })
     }
 
-    async refreshState(user: User | null) {
-        if (user) {
-            const docRef = doc(this.firestore, 'user', user.userId)
+    async refreshState(userID: string | undefined, uState:string) {
+        if (userID) {
+            const docRef = doc(this.firestore, 'user', userID)
             await updateDoc(docRef, {
-                state: 'true'
+                state: uState
             })
         } else {
             console.log(new Error("User not found !"))
@@ -82,6 +83,15 @@ export class ProfileAuthentication {
     async getColl() {
         const colRef = await doc(this.firestore, 'user');
         return colRef
+    }
+
+    async userLogout() {
+        const auth = getAuth();
+        this.refreshState(auth.currentUser?.uid, 'false');
+        signOut(auth).then(() => {
+            console.log("Logout successful !")
+            this.router.navigate(['/']);
+        })
     }
 
 }

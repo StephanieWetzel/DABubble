@@ -34,8 +34,11 @@ export class HeaderComponent {
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
       this.user = user;
-      this.profileAuth.refreshState(this.user)
     })
+  }
+
+  logout() {
+    this.profileAuth.userLogout();
   }
 
   @HostListener('document:click', ['$event'])

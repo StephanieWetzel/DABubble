@@ -14,7 +14,7 @@
   <!--profile oversight-->
   <div *ngIf="!isEditing" class="p-name-cont mrB45">
     <div class="name-status">
-      <span>Sofia Müller</span>
+      <span>{{ user?.name }}</span>
       <div>
         <img src="../../../assets/icons/Online.png" />
         <span>Aktiv</span>
@@ -30,7 +30,7 @@
       </div>
       <span>E-Mail-Adresse</span>
     </div>
-    <span class="mail"><b>sofia.muelatbeispiel.com</b></span>
+    <span class="mail"><b>{{ user?.email }}</b></span>
   </div>
 
   <!-- <div *ngIf="!isEditing" class="dm-btn">
