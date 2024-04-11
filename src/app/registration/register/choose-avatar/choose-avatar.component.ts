@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 
@@ -33,8 +33,13 @@ export class ChooseAvatarComponent {
 
   constructor(
     private auth: AuthenticationService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute) {
 
+    this.route.params.subscribe((params) => {
+      this.userId = params['id'];
+      console.log(this.userId)
+    });
   }
 
 
@@ -53,23 +58,21 @@ export class ChooseAvatarComponent {
     const chosenAvatar = this.allAvatars[this.clickedIndex];
     if (this.clickedIndex !== -1) {
       this.selectedAvatarURL = `assets/img/${chosenAvatar}`;
-      // Setzen Sie die src-Eigenschaft des chosenAvatar-Elements
       this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
+      console.log(this.selectedAvatarURL)
     }
   }
 
 
-
-  async signUp(userId: string) {
+  async signUp(userId: string, selectedAvatarURL: string) {
     try {
       const userRef = doc(this.firestore, "user", userId);
-      console.log(userId)
       await setDoc(userRef, { avatar: this.selectedAvatarURL }, { merge: true });
       console.log('Avatar saved to Firebase:', this.selectedAvatarURL);
-      // Navigieren Sie zur nächsten Ansicht oder führen Sie andere Aktionen aus
+      // Hier können Sie weitere Aktionen ausführen, z. B. eine Benachrichtigung anzeigen oder zur nächsten Ansicht navigieren
     } catch (error) {
       console.error('Error saving avatar to Firebase:', error);
-      // Handle error
+      // Hier können Sie Fehlerbehandlung durchführen, z. B. eine Fehlermeldung anzeigen
     }
   }
 
