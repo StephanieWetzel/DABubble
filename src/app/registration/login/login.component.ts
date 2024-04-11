@@ -40,6 +40,7 @@ export class LoginComponent {
   user: User = new User;
   email: string = '';
   password: string = '';
+  guestUser: User = new User;
 
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -58,23 +59,6 @@ export class LoginComponent {
 
 
   async login() {
-    // const auth = getAuth();
-    // try {
-    //   const cred = await this.auth.signIn(this.email, this.password);
-    //   const userId = cred.user.uid;
-    //   const userDocRef = doc(this.firestore, 'user', userId);
-    //   const docSnap = await getDoc(userDocRef);
-
-    //   if (docSnap.exists()) {
-    //     const userDetails = docSnap.data();
-    //     this.auth.currentUser = userDetails;
-    //     this.saveUserToLocal(this.auth.currentUser);
-    //     this.router.navigate(['/main']);
-    //   }
-
-    // } catch (error) { }
-
-
     if (this.formData.valid) {
       const email = this.formData.value.email;
       const password = this.formData.value.password;
@@ -91,6 +75,18 @@ export class LoginComponent {
     }
   }
 
+  async guestLogin2() {
+    const guestData = await this.auth.fetchGuestData();
+    if (guestData) {
+      try{
+        await this.auth.signIn(guestData.email, guestData.password);
+        console.log('Sign up success');
+        this.router.navigate(['/main']);
+      } catch(error) {
+        console.error(error);
+      }
+    }
+  }
 
   guestLogin() {
     this.auth.signInAnonymously()

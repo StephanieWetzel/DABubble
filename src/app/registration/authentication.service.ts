@@ -6,7 +6,22 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider
 } from 'firebase/auth';
-import { Firestore } from '@angular/fire/firestore/firebase';
+import {
+  Firestore,
+  Unsubscribe,
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { inject, Injectable } from '@angular/core';
 import { Auth, signInAnonymously, signInWithPopup, signOut } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
@@ -17,7 +32,7 @@ import { User } from '../../assets/models/user.class';
 export class AuthenticationService {
   currentUser: any;
 
-  constructor(public auth: Auth) { }
+  constructor(public auth: Auth, private firestore: Firestore) { }
 
 
   signIn(email: string, password: string) {
@@ -65,5 +80,15 @@ export class AuthenticationService {
     });
   }
 
+  async fetchGuestData() {
+    const guestID = 'ayR9W8EYekbzZJb8xTMdraJaE0s2';
+    const docRef = doc(this.firestore, 'user', guestID)
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data() as User;
+    } else {
+      return null;
+    }
+  }
 
 }
