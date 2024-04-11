@@ -5,7 +5,8 @@
 
     <div class="content-container">
         <div class="content-header">
-            <img routerLink="" [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
+            <img routerLink="../../registration"
+                [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
                 (mouseover)="isHovered = true" (mouseout)="isHovered = false">
             <h2>Wähle deinen Avatar</h2>
         </div>
@@ -34,7 +35,8 @@
             </div>
 
             <div class="btn-container">
-                <button (click)="signUp(userId)" class="br-32 tr-150ms">Weiter</button>
+                <button [ngClass]="{'btnDisabled': selectedAvatarURL === ''}" [disabled]="selectedAvatarURL === ''"
+                    (click)="signUp(userId)" class="br-32 tr-150ms">Weiter</button>
             </div>
 
         </form>
