@@ -16,7 +16,7 @@ import {
     setDoc,
     updateDoc,
   } from '@angular/fire/firestore';
-import { getAuth, onAuthStateChanged, signOut } from "@angular/fire/auth";
+import { getAuth, onAuthStateChanged, signOut, updateEmail } from "@angular/fire/auth";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 
@@ -73,10 +73,30 @@ export class ProfileAuthentication {
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID)
             await updateDoc(docRef, {
-                state: uState
+                state: uState 
             })
         } else {
             console.log(new Error("User not found !"))
+        }
+    }
+
+    async updateUserEdit(userID: string | undefined, editName: string | any, editMail:string | any) {
+        const auth = getAuth();
+        if (userID) {
+            const docRef = doc(this.firestore, 'user', userID);
+            await updateDoc(docRef, {
+                name: editName,
+                email: editMail
+            });
+        } else {
+            console.log(new Error("User not found"));
+        }
+        if (auth.currentUser) {
+            updateEmail(auth.currentUser, editMail).then(() => {
+                console.log("Mail was updated");
+            }).catch((error) => {
+                console.log("Something happend: ", error)
+            })
         }
     }
 

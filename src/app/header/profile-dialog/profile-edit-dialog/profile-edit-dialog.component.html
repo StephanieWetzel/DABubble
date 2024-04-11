@@ -1,4 +1,4 @@
-<form action="">
+<form [formGroup]="editGroup">
 
   <div class="cont mb16">
     <div class="head-content">
@@ -6,7 +6,7 @@
       <span>Vollständiger Name</span>
     </div>
     <div class="input-cont">
-      <input type="text" placeholder="{{ user?.name }}" />
+      <input formControlName="profileName" type="text" placeholder="{{ user?.name }}" />
     </div>
   </div>
 
@@ -16,13 +16,13 @@
       <span>E-Mail-Adresse</span>
     </div>
     <div class="input-cont">
-      <input type="text" placeholder="{{ user?.email }}" />
+      <input formControlName="profileMail" type="text" placeholder="{{ user?.email }}" />
     </div>
   </div>
 
   <div class="btns">
     <div (click)="closeEditDialog()" class="cancel"><span>Abbrechen</span></div>
-    <div class="accept"><span>Speichern</span></div>
+    <div (click)="safeUserEdit()" class="accept"><span>Speichern</span></div>
   </div>
 
 </form>
