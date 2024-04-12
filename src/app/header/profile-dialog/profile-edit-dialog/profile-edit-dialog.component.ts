@@ -15,6 +15,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class ProfileEditDialogComponent {
   @Output() closeEvent = new EventEmitter<void>();
   user: User | null = null;
+  isSaving: boolean = false;
   editGroup = new FormGroup({
     profileName: new FormControl(''),
     profileMail: new FormControl('')
@@ -39,6 +40,10 @@ export class ProfileEditDialogComponent {
 
   safeUserEdit() {
     this.profileAuth.updateUserEdit(this.user?.userId, this.editGroup.value.profileName, this.editGroup.value.profileMail);
+    this.isSaving = true;
+    setTimeout(() => {
+      this.closeEvent.emit();
+    }, 2005);
   }
 
   closeEditDialog() {

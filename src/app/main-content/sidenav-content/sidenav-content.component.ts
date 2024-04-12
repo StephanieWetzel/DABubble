@@ -11,6 +11,7 @@ import { FirebaseService } from './firebase-service';
 import { Subscription } from 'rxjs';
 import { User } from '../../../assets/models/user.class';
 import { ChatService } from '../chat/chat-service/chat.service';
+import { ProfileAuthentication } from '../../../assets/services/profileAuth.service';
 
 @Component({
     selector: 'app-sidenav-content',
@@ -26,9 +27,12 @@ export class SidenavContentComponent {
   fetchedUser: User[] = [];
   unsubChannels: Subscription | undefined;
   unsubUsers: Subscription | undefined;
+  currentUser: string = '';
   
-  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService) {
+  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication) {
+    this.getAuthUserId();
     this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
+
   }
 
   fetchNavContent(channelCollId: string, userColId: string, orderByField: string, orderDirection: 'asc' | 'desc'){
@@ -36,10 +40,26 @@ export class SidenavContentComponent {
       this.fetchedChannels = channels;
       console.log(this.fetchedChannels)
     });
-    this.unsubUsers = this.firestore.fetchCollection(userColId).subscribe((user) => {
-      this.fetchedUser = user;
+    this.unsubUsers = this.firestore.fetchCollection(userColId).subscribe((users) => {
+      this.fetchedUser = this.prioritizeCurrentUser(users, this.currentUser)
       console.log(this.fetchedUser)
     });
+  }
+
+  getAuthUserId() {
+    this.auth.fetchLoggedUser().then((userID) => {
+      this.currentUser = userID;
+      console.log("Current User: ", this.currentUser)
+    })
+  }
+
+  prioritizeCurrentUser(users: any[], currentUserID: string): any[] {
+    const index = users.findIndex( user => user.userId === currentUserID);
+    if (index > -1) {
+      const currentUser = users.splice(index, 1)[0];
+      users.unshift(currentUser);
+    }
+    return users
   }
 
   openAddChannel() {

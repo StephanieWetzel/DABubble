@@ -1,5 +1,4 @@
 <form [formGroup]="editGroup">
-
   <div class="cont mb16">
     <div class="head-content">
       <img src="../../../../assets/icons/account_circle-icon.svg" alt="person">
@@ -24,5 +23,5 @@
     <div (click)="closeEditDialog()" class="cancel"><span>Abbrechen</span></div>
     <div (click)="safeUserEdit()" class="accept"><span>Speichern</span></div>
   </div>
-
+  <div *ngIf="isSaving" class="safe-message">Änderungen gespeichert !</div>
 </form>
