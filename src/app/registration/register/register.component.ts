@@ -11,7 +11,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { User } from '../../../assets/models/user.class';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
-import { AuthenticationService } from '../authentication.service';
+import { AuthenticationService } from '../../../assets/services/authentication.service';
 
 @Component({
   selector: 'app-register',

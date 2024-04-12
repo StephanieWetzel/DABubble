@@ -18,7 +18,7 @@ import {
 import { Observable } from 'rxjs';
 import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
-import { AuthenticationService } from '../../app/registration/authentication.service';
+import { AuthenticationService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',

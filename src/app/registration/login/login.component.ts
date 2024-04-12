@@ -14,8 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { Firestore, addDoc, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
-import { AuthenticationService } from '../authentication.service';
 import { getAuth } from '@angular/fire/auth';
+import { AuthenticationService } from '../../../assets/services/authentication.service';
 @Component({
   selector: 'app-login',
   standalone: true,
