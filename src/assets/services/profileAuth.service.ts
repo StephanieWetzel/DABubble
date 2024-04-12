@@ -15,7 +15,7 @@ import {
     query,
     setDoc,
     updateDoc,
-  } from '@angular/fire/firestore';
+} from '@angular/fire/firestore';
 import { getAuth, onAuthStateChanged, signOut, updateEmail } from "@angular/fire/auth";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
@@ -23,14 +23,14 @@ import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root',
-  })
+})
 
 
 export class ProfileAuthentication {
     private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
     public user$ = this.userSubject.asObservable();
 
-    constructor(private firestore: Firestore, private router: Router){}
+    constructor(private firestore: Firestore, private router: Router) { }
 
     initializeUser() {
         this.fetchLoggedUser().then((userID) => {
@@ -48,14 +48,14 @@ export class ProfileAuthentication {
             onAuthStateChanged(auth, (user) => {
                 if (user?.uid) {
                     resolve(user.uid)
-                }else {
+                } else {
                     reject(new Error('There is currently no user logged in!'))
                 }
             })
         })
     }
 
-    async fetchUserFromFirestore(userID:string) {
+    async fetchUserFromFirestore(userID: string) {
         console.log('Now fetching user from database: ', userID);
         const docRef = doc(this.firestore, 'user', userID);
         this.refreshState(userID, 'true');
@@ -69,18 +69,18 @@ export class ProfileAuthentication {
         })
     }
 
-    async refreshState(userID: string | undefined, uState:string) {
+    async refreshState(userID: string | undefined, uState: string) {
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID)
             await updateDoc(docRef, {
-                state: uState 
+                state: uState
             })
         } else {
             console.log(new Error("User not found !"))
         }
     }
 
-    async updateUserEdit(userID: string | undefined, editName: string | any, editMail:string | any) {
+    async updateUserEdit(userID: string | undefined, editName: string | any, editMail: string | any) {
         const auth = getAuth();
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID);

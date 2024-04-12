@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { Firestore, arrayUnion, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
 import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { Message } from '../../../../assets/models/message.class';
-import { Reaction } from '../../../../assets/models/reactions.class';
+import { Message } from '../../models/message.class';
+import { Reaction } from '../../models/reactions.class';
 
 
 @Injectable({
@@ -51,7 +51,7 @@ export class ChatService {
       return downloadURL;
     } catch (error) {
       console.error("Upload failed", error);
-      throw new Error("Upload failed"); 
+      throw new Error("Upload failed");
     }
   }
 

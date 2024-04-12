@@ -4,7 +4,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { HeadbarComponent } from './headbar/headbar.component';
 import { ReplyComponent } from './reply/reply.component';
 import { CommonModule } from '@angular/common';
-import { ChatService } from './chat-service/chat.service';
+import { ChatService } from '../../../assets/services/chat-service/chat.service';
 
 
 
@@ -17,7 +17,7 @@ import { ChatService } from './chat-service/chat.service';
 })
 export class ChatComponent {
 
-  constructor(public chatService: ChatService){
+  constructor(public chatService: ChatService) {
 
   }
 

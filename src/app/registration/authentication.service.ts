@@ -67,4 +67,17 @@ export class AuthenticationService {
   }
 
 
+  async ensureDocumentExistsInFirebase(userId: string, user: User) {
+    const userDocRef = doc(this.firestore, 'user', userId);
+    const docSnap = await getDoc(userDocRef);
+    if (!docSnap.exists()) {
+      await setDoc(userDocRef, {
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar
+      });
+    }
+  }
+
+
 }

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ReplyHeadbarComponent } from './reply-headbar/reply-headbar.component';
 import { ReplyInputBoxComponent } from './reply-input-box/reply-input-box.component';
 import { ReplyMessagesComponent } from './reply-messages/reply-messages.component';
-import { ChatService } from '../chat-service/chat.service';
+import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-reply',
@@ -13,7 +13,7 @@ import { ChatService } from '../chat-service/chat.service';
 })
 export class ReplyComponent {
 
-  constructor(public chatService: ChatService){
+  constructor(public chatService: ChatService) {
 
   }
 }

@@ -16,9 +16,9 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Channel } from '../../../assets/models/channel.class';
-import { User } from '../../../assets/models/user.class';
-import { AuthenticationService } from '../../registration/authentication.service';
+import { Channel } from '../models/channel.class';
+import { User } from '../models/user.class';
+import { AuthenticationService } from '../../app/registration/authentication.service';
 
 @Injectable({
   providedIn: 'root',

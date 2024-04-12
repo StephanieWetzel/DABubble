@@ -11,8 +11,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { User } from '../../../../assets/models/user.class';
-import { FirebaseService } from '../firebase-service';
 import { MatChipsModule } from '@angular/material/chips';
+import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-second-add-channel-dialog',

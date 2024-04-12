@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ChatService } from '../../chat-service/chat.service';
+import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-reply-headbar',
@@ -10,11 +10,11 @@ import { ChatService } from '../../chat-service/chat.service';
   styleUrl: './reply-headbar.component.scss'
 })
 export class ReplyHeadbarComponent {
-  constructor(private chatService: ChatService){
+  constructor(private chatService: ChatService) {
 
   }
 
-  closeReply(){
+  closeReply() {
     this.chatService.showReply = false;
   }
 }

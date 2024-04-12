@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { Message } from '../../../../../assets/models/message.class';
-import { ChatService } from '../../chat-service/chat.service';
 import { CommonModule } from '@angular/common';
+import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-reply-input-box',

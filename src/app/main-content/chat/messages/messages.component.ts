@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ChatService } from '../chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
 import { KeyValuePipe, NgFor, NgIf } from '@angular/common';
 import { CustomDatePipe } from './date-pipe/custom-date.pipe';
@@ -7,6 +6,7 @@ import { CustomTimePipe } from './time-pipe/custom-time.pipe';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Reaction } from '../../../../assets/models/reactions.class';
+import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-messages',
@@ -30,11 +30,11 @@ export class MessagesComponent {
 
   customDatePipe = new CustomDatePipe();
 
-  isDateDifferent(index: number){
-  if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
-  const currentDateFormatted = this.customDatePipe.transform(this.messages[index].time);
-  const previousDateFormatted = this.customDatePipe.transform(this.messages[index - 1].time);
-  return currentDateFormatted !== previousDateFormatted;
+  isDateDifferent(index: number) {
+    if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
+    const currentDateFormatted = this.customDatePipe.transform(this.messages[index].time);
+    const previousDateFormatted = this.customDatePipe.transform(this.messages[index - 1].time);
+    return currentDateFormatted !== previousDateFormatted;
   }
 
   getList(): Message[] {
@@ -42,11 +42,11 @@ export class MessagesComponent {
     return this.chatService.messages;
   }
 
-  showReply(){
+  showReply() {
     this.chatService.showReply = true;
   }
 
-  addReaction(messageId: string, emote: string){
+  addReaction(messageId: string, emote: string) {
     this.chatService.reactOnMessage(messageId, emote, 'Sebastian')
   }
 
@@ -60,15 +60,15 @@ export class MessagesComponent {
 
   urlToFileName(url: string): string {
     const decodedUrl = decodeURIComponent(url);
-  
+
     const parts = decodedUrl.split('/');
     let fileName = parts[parts.length - 1];
-  
+
     fileName = fileName.split('?')[0];
     return fileName;
   }
 
-  openEditMessage(){
+  openEditMessage() {
     this.menuEditMessage = !this.menuEditMessage;
   }
 
@@ -78,19 +78,19 @@ export class MessagesComponent {
     //   const response = await fetch(url);
     //   if (!response.ok) throw new Error('Netzwerkantwort war nicht ok.');
     //   const blob = await response.blob();
-  
+
     //   // Eine temporäre URL aus dem Blob erstellen
     //   const blobUrl = window.URL.createObjectURL(blob);
-  
+
     //   // Ein temporäres <a>-Element für den Download erzeugen
     //   const a = document.createElement('a');
     //   a.href = blobUrl;
     //   a.download = filename || 'downloaded-file';
-  
+
     //   // Den Download auslösen
     //   document.body.appendChild(a);
     //   a.click();
-  
+
     //   // Aufräumen
     //   window.URL.revokeObjectURL(blobUrl);
     //   document.body.removeChild(a);

@@ -86,7 +86,7 @@ export class LoginComponent {
       this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
       this.auth.currentUser = this.user;
       this.saveUserToLocal(this.auth.currentUser);
-      await this.ensureGuestDocumentExists(credUser.uid, this.user);
+      await this.auth.ensureDocumentExistsInFirebase(credUser.uid, this.user);
       this.router.navigate(['/main']);
       console.log(this.auth.currentUser);
     } catch (error) {
@@ -95,31 +95,40 @@ export class LoginComponent {
   }
 
 
-  async ensureGuestDocumentExists(userId: string, user: User) {
-    const userDocRef = doc(this.firestore, 'user', userId);
-    const docSnap = await getDoc(userDocRef);
-    if (!docSnap.exists()) {
-      await setDoc(userDocRef, {
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar
-      });
+  // async ensureGuestDocumentExists(userId: string, user: User) {
+  //   const userDocRef = doc(this.firestore, 'user', userId);
+  //   const docSnap = await getDoc(userDocRef);
+  //   if (!docSnap.exists()) {
+  //     await setDoc(userDocRef, {
+  //       name: user.name,
+  //       email: user.email,
+  //       avatar: user.avatar
+  //     });
+  //   }
+  // }
+
+
+  async googleLogin() {
+    if (!this.auth.currentUser) { // if user isn´t logged in yet, login
+      try {
+        // await this.auth.ensureDocumentExistsInFirebase(this.auth.currentUser.uid, this.user);
+        await this.auth.signInWithGoogle().then((result) => {
+          this.auth.currentUser = result.user;
+          this.user.email = result.user.email ? result.user.email : "Keine E-Mail";
+          this.user.name = result.user.displayName ? result.user.displayName : "Unbekannt";
+          this.user.userId = result.user.uid;
+          this.user.avatar = result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c';
+          this.saveUserToLocal(this.auth.currentUser);
+          this.router.navigate(['/main']);
+        }).catch((error) => {
+          console.log(error)
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      console.log('Benutzer ist bereits angemeldet.');
     }
-  }
-
-
-  googleLogin() {
-    this.auth.signInWithGoogle().then((result) => {
-      this.auth.currentUser = result.user;
-      this.user.email = result.user.email ? result.user.email : "Keine E-Mail";
-      this.user.name = result.user.displayName ? result.user.displayName : "Unbekannt";
-      this.user.userId = result.user.uid;
-      this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c';
-      this.saveUserToLocal(this.auth.currentUser);
-      this.router.navigate(['/main']);
-    }).catch((error) => {
-      console.log(error)
-    });
   }
 
 
