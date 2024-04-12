@@ -37,7 +37,7 @@ export class SidenavContentComponent {
 
   fetchNavContent(channelCollId: string, userColId: string, orderByField: string, orderDirection: 'asc' | 'desc'){
     this.unsubChannels = this.firestore.fetchCollection(channelCollId, orderByField, orderDirection).subscribe((channels) => {
-      this.fetchedChannels = channels;
+      this.fetchedChannels = channels.filter(channel => channel.member.some((member: { id: string; }) => member.id === this.currentUser));
       console.log(this.fetchedChannels)
     });
     this.unsubUsers = this.firestore.fetchCollection(userColId).subscribe((users) => {
@@ -56,8 +56,8 @@ export class SidenavContentComponent {
   prioritizeCurrentUser(users: any[], currentUserID: string): any[] {
     const index = users.findIndex( user => user.userId === currentUserID);
     if (index > -1) {
-      const currentUser = users.splice(index, 1)[0];
-      users.unshift(currentUser);
+      const currentUser = users.splice(index, 1)[0]; 
+      users.unshift(currentUser); //füge den user an die erste stelle des arrays
     }
     return users
   }
@@ -83,9 +83,15 @@ export class SidenavContentComponent {
   }
 
   cacheChannel(firstDialogData:any, secondDialogData:any) {
-    const members = secondDialogData.selectedUsers.map((user: any) => {
-      return {id: user.userId, name: user.name}
-    })
+    let members;
+    if (secondDialogData.selectedUsers) {
+      members = secondDialogData.selectedUsers.map((user: any) => {
+        return {id: user.userId, name: user.name}
+      })
+    }else {
+      members = this.fetchedUser.map((user: any) => {
+        return {id: user.userId, name: user.name}
+      })}
     const dialogData = this.transformChannelData(firstDialogData, members)
     const channel = new Channel(dialogData)
     return channel;
