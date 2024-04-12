@@ -73,7 +73,7 @@ export class RegisterComponent {
           const transformedData = this.transformSignUpData(this.formData, userAuth.uid)
           const user = new User(transformedData);
           const userRef = doc(this.firestore, "user", userAuth.uid);
-          console.log(user)
+          console.log(user);
           setDoc(userRef, user.toJSON());
           console.log('user signed up :D')
           this.router.navigate(['/chooseAvatar/' + userAuth.uid]);

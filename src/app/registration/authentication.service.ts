@@ -67,28 +67,4 @@ export class AuthenticationService {
   }
 
 
-  fetchLoggedUser() {
-    const auth = getAuth();
-    return new Promise((resolve, reject) => {
-      onAuthStateChanged(auth, (user) => {
-        if (user?.uid) {
-          resolve(user.uid); // gives the user id back if user is logged in
-        } else {
-          reject(new Error('No user logged in'));
-        }
-      });
-    });
-  }
-
-  async fetchGuestData() {
-    const guestID = 'JeOm5LKhKGOzRJ3uWys29CuIkdv1';
-    const docRef = doc(this.firestore, 'user', guestID)
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return docSnap.data() as User;
-    } else {
-      return null;
-    }
-  }
-
 }

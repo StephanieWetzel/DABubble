@@ -4,7 +4,7 @@ export class User {
     email: string;
     state: string; //online / offline state
     avatar: string;
-    password: string ;
+    password: string;
 
     constructor(obj?: any) {
         this.name = obj ? obj.name : '';
@@ -13,18 +13,17 @@ export class User {
         this.state = obj ? obj.state : '';
         this.avatar = obj ? obj.avatar : '';
         this.password = obj ? obj.password : '';
-    }  
+    }
 
-   
 
     toJSON() {
         return {
-        name: this.name,
-        userId: this.userId,
-        email: this.email,
-        state: this.state,
-        avatar: this.avatar,
-        password: this.password
+            name: this.name,
+            userId: this.userId,
+            email: this.email,
+            state: this.state,
+            avatar: this.avatar,
+            password: this.password
+        }
     }
-}
 }
