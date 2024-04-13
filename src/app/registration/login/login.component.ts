@@ -77,22 +77,48 @@ export class LoginComponent {
 
 
   async guestLogin() {
-    try {
-      const userCredential = await this.auth.signInAnonymously();
-      const credUser = userCredential.user;
-      this.user.name = credUser.displayName ? credUser.displayName : "Gast";
-      this.user.userId = credUser.uid
-      this.user.email = credUser.email ? credUser.email : "Keine E-Mail";
-      this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
-      this.auth.currentUser = this.user;
-      // this.saveUserToLocal(this.auth.currentUser);
-      await this.auth.ensureDocumentExistsInFirebase(credUser.uid, this.user);
-      this.router.navigate(['/main']);
-      console.log(this.auth.currentUser);
-    } catch (error) {
-      console.error(error);
+    const guestData = await this.auth.fetchGuestData();
+    if (guestData) {
+      try {
+        await this.auth.signIn(guestData.email, guestData.password);
+        console.log('Sign up success');
+        this.router.navigate(['/main']);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
+
+
+
+  // async guestLogin() {
+  //   try {
+  //     const userCredential = await this.auth.signInAnonymously();
+  //     const credUser = userCredential.user;
+
+  //     // Überprüfen, ob das Gastnutzer-Dokument bereits existiert
+  //     const guestDocRef = doc(this.firestore, 'user', credUser.uid);
+  //     const guestDocSnap = await getDoc(guestDocRef);
+
+
+  //     this.user.name = credUser.displayName ? credUser.displayName : "Gast";
+  //     this.user.userId = credUser.uid;
+  //     this.user.email = credUser.email ? credUser.email : "Keine E-Mail";
+  //     this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
+  //     this.auth.currentUser = this.user;
+  //     // await this.auth.ensureDocumentExistsInFirebase(credUser.uid, this.user);
+
+
+
+
+  //     // this.saveUserToLocal(this.auth.currentUser);
+  //     // await this.auth.ensureDocumentExistsInFirebase(credUser.uid, this.user);
+  //     this.router.navigate(['/main']);
+  //     console.log(this.auth.currentUser);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
 
   async googleLogin() {

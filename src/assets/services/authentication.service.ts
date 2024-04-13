@@ -67,17 +67,29 @@ export class AuthenticationService {
   }
 
 
-  async ensureDocumentExistsInFirebase(userId: string, user: User) {
-    const userDocRef = doc(this.firestore, 'user', userId);
-    const docSnap = await getDoc(userDocRef);
-    if (!docSnap.exists()) {
-      await setDoc(userDocRef, {
-        name: user.name,
-        email: user.email,
-        avatar: user.avatar
-      });
+  async fetchGuestData() {
+    const guestID = 'YYAJ716GPnfVu2fC2KS3Y8UFuDi1';
+    const docRef = doc(this.firestore, 'user', guestID)
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data() as User;
+    } else {
+      return null;
     }
   }
+
+
+  // async ensureDocumentExistsInFirebase(userId: string, user: User) {
+  //   const userDocRef = doc(this.firestore, 'user', userId);
+  //   const docSnap = await getDoc(userDocRef);
+  //   if (!docSnap.exists()) {
+  //     await setDoc(userDocRef, {
+  //       name: user.name,
+  //       email: user.email,
+  //       avatar: user.avatar
+  //     });
+  //   }
+  // }
 
 
 }
