@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, arrayUnion, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
+import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
 import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Message } from '../../models/message.class';
@@ -12,7 +12,7 @@ import { Reaction } from '../../models/reactions.class';
 export class ChatService {
   private firestore: Firestore = inject(Firestore);
 
-  showReply: boolean = true;
+  showReply: boolean = false;
   unsubMessage;
   messages: Message[] = [];
 
@@ -21,6 +21,7 @@ export class ChatService {
   constructor() {
     this.unsubMessage = this.getMessages();
   }
+
 
   async addMessage(message: Message) {
     const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
@@ -36,10 +37,17 @@ export class ChatService {
         let message = new Message({ ...doc.data() })
         this.createReactionArray(message);
         this.messages.push(message);
+        // xxxxx
       });
+
     })
   }
 
+  async editMessage(messageId: string, input: string){
+    console.log(input); 
+    
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId), { content: input });
+  }
 
   async uploadFile(file: File) {
     const storage = getStorage();

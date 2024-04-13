@@ -5,21 +5,35 @@
             <span>{{ message.time | customDate }}</span>
             <div></div>
         </div>
-        <div class="message-container">
+        <div class="edit-message-container">
+            <div class="edit-message" *ngIf="editingMessageId === message.messageId">
+                <editor id="editData" [init]="editEditorInit"></editor>
+                <div class="edit-btns">
+                    <button (click)="safeMessage(false)" class="break-btn">Abbrechen</button>
+                    <button (click)="safeMessage(true, message.messageId)" class="safe-btn">Speichern</button>
+                </div>
+                
+            </div>
+        </div>
+        <div class="message-container" *ngIf="editingMessageId != message.messageId">
             <div class="info">
                 <span class="name">Noah Braun</span>
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
             <div class="message-content">
                 <p>{{ message.content }}</p>
-                <div class="files-container" *ngIf="message.fileUrls.length > 0" >
-                    <div *ngFor="let url of message.fileUrls" class="attached-file" (click)="downloadFile(url, urlToFileName(url))"><img  *ngIf="urlToFileName(url).endsWith('.pdf')" src="./../../../../assets/img/pdf.png" alt="pdf:"><span>{{ urlToFileName(url) }}</span></div>
+                <div class="files-container" *ngIf="message.fileUrls.length > 0">
+                    <div *ngFor="let url of message.fileUrls" class="attached-file"
+                        (click)="downloadFile(url, urlToFileName(url))"><img *ngIf="urlToFileName(url).endsWith('.pdf')"
+                            src="./../../../../assets/img/pdf.png" alt="pdf:"><span>{{ urlToFileName(url) }}</span>
+                    </div>
                 </div>
             </div>
-            
-            
+
+
             <div class="reactions" *ngIf="message.reactions">
-                <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)" class="reaction-container">
+                <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)"
+                    class="reaction-container">
                     <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>
                     <div class="reaction-info">
                         <span>{{ reaction.emote }}</span>
@@ -33,7 +47,8 @@
                 <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
                 <mat-menu #down_menu="matMenu" xPosition="before">
                     <ul>
-                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}</li>
+                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
+                        </li>
                     </ul>
                 </mat-menu>
             </div>
@@ -42,18 +57,23 @@
                 <span class="last">Letzte Antwort 14:56</span>
             </div>
             <div class="options-container">
-                <div (click)="addReaction(message.messageId, '✅')"><div class="check" >✅</div></div>
-                <div (click)="addReaction(message.messageId, '🙌🏻')" class="hands-container"><div class="hands" >🙌🏻</div></div>
+                <div (click)="addReaction(message.messageId, '✅')">
+                    <div class="check">✅</div>
+                </div>
+                <div (click)="addReaction(message.messageId, '🙌🏻')" class="hands-container">
+                    <div class="hands">🙌🏻</div>
+                </div>
                 <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
                 <mat-menu #menu="matMenu" xPosition="before">
                     <ul>
-                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}</li>
+                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
+                        </li>
                     </ul>
                 </mat-menu>
                 <div><mat-icon class="outlined">chat_outline</mat-icon></div>
                 <div class="edit-message">
                     <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
-                    <div class="edit-text" *ngIf="menuEditMessage == true">
+                    <div class="edit-text" *ngIf="menuEditMessage == true" (click)="editMessage(message.messageId)">
                         <p>Nachricht bearbeiten</p>
                     </div>
                 </div>
