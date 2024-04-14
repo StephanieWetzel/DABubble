@@ -12,7 +12,7 @@
         <h2 class="login">Anmeldung</h2>
         <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
 
-        <form [formGroup]="formData">
+        <form onsubmit="login()" [formGroup]="formData">
             <div class="input-container">
                 <div>
                     <!-- email -->
@@ -63,8 +63,8 @@
             </div>
 
             <div class="btn-container">
-                <button (click)="login()" class="login-btn br-32 tr-150ms" mat-flat-button>Anmelden</button>
-                <button (click)="guestLogin()" class="guest-login-btn br-32 tr-150ms"
+                <button type="submit" class="login-btn br-32 tr-150ms" mat-flat-button>Anmelden</button>
+                <button type="button" (click)="guestLogin()" class="guest-login-btn br-32 tr-150ms"
                     mat-flat-button>Gäste-Login</button>
             </div>
         </form>

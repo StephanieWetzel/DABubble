@@ -66,6 +66,7 @@ export class LoginComponent {
         await this.auth.signIn(email, password).then((userCredential) => {
           console.log('Sign up success');
           const user = userCredential.user;
+          this.auth.currentUser = user;
           console.log(user.uid);
           this.router.navigate(['/main']);
         });
@@ -91,21 +92,17 @@ export class LoginComponent {
 
 
   guestLogin() {
-    this.auth.signInAnonymously()
-      .then((userCredential) => {
-        // const credUser = userCredential.user;
-        // this.user.name = credUser.displayName ? credUser.displayName : "Gast";
-        // this.user.userId = credUser.uid
-        // this.user.email = credUser.email ? credUser.email : "Keine E-Mail";
-        // this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
-        this.auth.currentUser = this.user;
-        // this.saveUserToLocal(this.auth.currentUser);
-        this.router.navigate(['/main']);
-        console.log(this.auth.currentUser);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    this.auth.signInAnonymously().then(cred => {
+      this.user.email = cred.user.email ? cred.user.email : "Keine E-Mail";
+      this.user.name = cred.user.displayName ? cred.user.displayName : "Gast";
+      this.user.userId = cred.user.uid;
+      this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
+      this.auth.currentUser = this.user;
+      this.saveUserToLocal(this.auth.currentUser);
+      // this.router.navigate(['/main']);
+    }).catch(error => {
+      console.error(error);
+    });
   }
 
 
