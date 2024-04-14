@@ -30,7 +30,7 @@ import { AuthenticationService } from '../../../assets/services/authentication.s
     NgIf,
     NgClass,
     NgStyle,
-    RouterLink,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -66,7 +66,7 @@ export class LoginComponent {
         await this.auth.signIn(email, password).then((userCredential) => {
           console.log('Sign up success');
           const user = userCredential.user;
-          this.auth.currentUser = user;
+          // this.auth.currentUser = user;
           console.log(user.uid);
           this.router.navigate(['/main']);
         });
@@ -99,7 +99,7 @@ export class LoginComponent {
       this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
       this.auth.currentUser = this.user;
       this.saveUserToLocal(this.auth.currentUser);
-      // this.router.navigate(['/main']);
+      this.router.navigate(['/main']);
     }).catch(error => {
       console.error(error);
     });
@@ -114,7 +114,7 @@ export class LoginComponent {
         this.user.name = result.user.displayName ? result.user.displayName : "Unbekannt";
         this.user.userId = result.user.uid;
         this.user.avatar = result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c';
-        // this.saveUserToLocal(this.auth.currentUser);
+        this.saveUserToLocal(this.auth.currentUser);
         this.router.navigate(['/main']);
       }).catch((error) => {
         console.log(error)
@@ -122,7 +122,6 @@ export class LoginComponent {
     } catch (error) {
       console.error(error);
     }
-
   }
 
 

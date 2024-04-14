@@ -12,7 +12,7 @@
         <h2 class="login">Anmeldung</h2>
         <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
 
-        <form onsubmit="login()" [formGroup]="formData">
+        <form (ngSubmit)="login()" [formGroup]="formData">
             <div class="input-container">
                 <div>
                     <!-- email -->
