@@ -12,6 +12,7 @@ import { User } from '../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../assets/services/profileAuth.service';
 import { ChatService } from '../../../assets/services/chat-service/chat.service';
 import { FirebaseService } from '../../../assets/services/firebase-service';
+import { onValue, ref } from '@angular/fire/database';
 
 @Component({
   selector: 'app-sidenav-content',
@@ -41,7 +42,8 @@ export class SidenavContentComponent {
       console.log(this.fetchedChannels)
     });
     this.unsubUsers = this.firestore.fetchCollection(userColId).subscribe((users) => {
-      this.fetchedUser = this.prioritizeCurrentUser(users, this.currentUser)
+      this.fetchedUser = this.prioritizeCurrentUser(users, this.currentUser);
+      this.attachStateToUsers(this.fetchedUser);
       console.log(this.fetchedUser)
     });
   }
@@ -52,6 +54,20 @@ export class SidenavContentComponent {
       console.log("Current User: ", this.currentUser)
     })
   }
+
+  attachStateToUsers(users: User[]) {
+    users.forEach(user => {
+      const stateRef = ref(this.auth.realTimeDB, `state/${user.userId}`); //ref for realtime db
+      onValue(stateRef, (snapshot) => { // listener for realtime db -> is called if the state is changing (through logout, or connection lost i.e clsoing tab or window)
+        const state = snapshot.val(); // state value from user
+        const userToUpdate = this.fetchedUser.find(u => u.userId === user.userId); // search for specific user with the on top given user.userId at -> const stateRef; checks if the user in fetchedUser-Array matches the user whose status has updated 
+        if (userToUpdate) { // if a user has found, the state will be updated with the state from the realtime db
+          userToUpdate.state = state?.state || false;  
+        }
+      })
+    })
+}
+ 
 
   prioritizeCurrentUser(users: any[], currentUserID: string): any[] {
     const index = users.findIndex(user => user.userId === currentUserID);

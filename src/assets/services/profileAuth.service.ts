@@ -2,24 +2,14 @@ import { BehaviorSubject } from "rxjs";
 import { User } from "../models/user.class";
 import {
     Firestore,
-    Unsubscribe,
-    addDoc,
-    collection,
     doc,
-    getDoc,
-    getDocs,
-    getFirestore,
-    limit,
     onSnapshot,
-    orderBy,
-    query,
-    setDoc,
     updateDoc,
 } from '@angular/fire/firestore';
 import { getAuth, onAuthStateChanged, signOut, updateEmail } from "@angular/fire/auth";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-
+import { Database, ref, set, onDisconnect } from '@angular/fire/database';
 
 @Injectable({
     providedIn: 'root',
@@ -29,8 +19,7 @@ import { Router } from "@angular/router";
 export class ProfileAuthentication {
     private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
     public user$ = this.userSubject.asObservable();
-
-    constructor(private firestore: Firestore, private router: Router) { }
+    constructor(private firestore: Firestore, private router: Router, public realTimeDB: Database) { }
 
     initializeUser() {
         this.fetchLoggedUser().then((userID) => {
@@ -59,6 +48,7 @@ export class ProfileAuthentication {
         console.log('Now fetching user from database: ', userID);
         const docRef = doc(this.firestore, 'user', userID);
         this.refreshState(userID, 'true');
+        this.setUserState(userID, 'true');
         onSnapshot(docRef, (userSnap) => {
             if (userSnap.exists()) {
                 const user = userSnap.data() as User;
@@ -67,6 +57,18 @@ export class ProfileAuthentication {
                 this.userSubject.next(null);
             }
         })
+    }
+
+    
+
+    setUserState(userID: string, userState:string) {
+        if (userID) {
+            const stateRef = ref(this.realTimeDB,`state/${userID}`);
+            set(stateRef,{ state: userState});
+            if (userState === 'true') {
+                onDisconnect(stateRef).set({ state: 'false'})    
+            }   
+        }
     }
 
     async refreshState(userID: string | undefined, uState: string) {
@@ -108,8 +110,10 @@ export class ProfileAuthentication {
     async userLogout() {
         const auth = getAuth();
         this.refreshState(auth.currentUser?.uid, 'false');
+        const stateRef = ref(this.realTimeDB, `state/${auth.currentUser?.uid}`)
+        set(stateRef, {state: 'false'})
         signOut(auth).then(() => {
-            console.log("Logout successful !")
+            console.log("Logout successful !") 
             this.router.navigate(['/']);
         })
     }
