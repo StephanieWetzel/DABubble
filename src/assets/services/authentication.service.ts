@@ -23,17 +23,31 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { inject, Injectable } from '@angular/core';
-import { Auth, signInAnonymously, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Auth, confirmPasswordReset, signInAnonymously, signInWithPopup, signOut } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
+
+  // passwordReset = async (email: string) => {
+  //   return await sendPasswordResetEmail(getAuth(), email)
+  // }
+
+
+  // confirmThePasswordReset = async (
+  //   oobCode: string, newPassword: string
+  // ) => {
+  //   if (!oobCode && !newPassword) return;
+
+  //   return await confirmPasswordReset(getAuth(), oobCode, newPassword)
+  // }
+
+
   currentUser: any;
 
   constructor(public auth: Auth, private firestore: Firestore) { }
-
 
   signIn(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password);
