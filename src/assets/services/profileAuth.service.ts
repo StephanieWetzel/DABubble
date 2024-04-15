@@ -2,6 +2,7 @@ import { BehaviorSubject } from "rxjs";
 import { User } from "../models/user.class";
 import {
     Firestore,
+    deleteDoc,
     doc,
     onSnapshot,
     updateDoc,
@@ -59,15 +60,15 @@ export class ProfileAuthentication {
         })
     }
 
-    
 
-    setUserState(userID: string, userState:string) {
+
+    setUserState(userID: string, userState: string) {
         if (userID) {
-            const stateRef = ref(this.realTimeDB,`state/${userID}`);
-            set(stateRef,{ state: userState});
+            const stateRef = ref(this.realTimeDB, `state/${userID}`);
+            set(stateRef, { state: userState });
             if (userState === 'true') {
-                onDisconnect(stateRef).set({ state: 'false'})    
-            }   
+                onDisconnect(stateRef).set({ state: 'false' })
+            }
         }
     }
 
@@ -108,14 +109,34 @@ export class ProfileAuthentication {
     }
 
     async userLogout() {
+        await this.deleteAnonUsers();
+
         const auth = getAuth();
         this.refreshState(auth.currentUser?.uid, 'false');
         const stateRef = ref(this.realTimeDB, `state/${auth.currentUser?.uid}`)
-        set(stateRef, {state: 'false'})
+        set(stateRef, { state: 'false' })
         signOut(auth).then(() => {
-            console.log("Logout successful !") 
+            console.log("Logout successful !")
             this.router.navigate(['/']);
         })
+    }
+
+
+    async deleteAnonUsers() {
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+
+        if (currentUser && currentUser.isAnonymous) {
+            // delete user from auth
+            await currentUser.delete().catch(error => {
+                console.error('Fehler beim Löschen des anonymen Benutzers:', error);
+            });
+            // delete user from firebase
+            const userRef = doc(this.firestore, "user", currentUser.uid);
+            await deleteDoc(userRef).catch(error => {
+                console.error('Fehler beim Löschen des anonymen Benutzerdokuments aus der Firestore-Datenbank:', error);
+            });
+        }
     }
 
 }

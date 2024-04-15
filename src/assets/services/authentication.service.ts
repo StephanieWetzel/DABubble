@@ -66,7 +66,6 @@ export class AuthenticationService {
 
   signInAnonymously() {
     const auth = getAuth();
-    console.log(auth, 'test auth');
     return signInAnonymously(auth);
   }
 
@@ -82,16 +81,16 @@ export class AuthenticationService {
   }
 
 
-  async fetchGuestData() {
-    const guestID = 'YYAJ716GPnfVu2fC2KS3Y8UFuDi1';
-    const docRef = doc(this.firestore, 'user', guestID)
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return docSnap.data() as User;
-    } else {
-      return null;
-    }
-  }
+  // async fetchGuestData() {
+  //   const guestID = 'YYAJ716GPnfVu2fC2KS3Y8UFuDi1';
+  //   const docRef = doc(this.firestore, 'user', guestID)
+  //   const docSnap = await getDoc(docRef);
+  //   if (docSnap.exists()) {
+  //     return docSnap.data() as User;
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
 
 }

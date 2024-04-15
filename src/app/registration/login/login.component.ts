@@ -14,7 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { Firestore, addDoc, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
-import { getAuth } from '@angular/fire/auth';
+import { Auth, getAuth } from '@angular/fire/auth';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
 @Component({
   selector: 'app-login',
@@ -66,7 +66,6 @@ export class LoginComponent {
         await this.auth.signIn(email, password).then((userCredential) => {
           console.log('Sign up success');
           const user = userCredential.user;
-          // this.auth.currentUser = user;
           console.log(user.uid);
           this.router.navigate(['/main']);
         });
@@ -91,45 +90,52 @@ export class LoginComponent {
   // }
 
 
-  guestLogin() {
-    this.auth.signInAnonymously().then(cred => {
-      this.user.email = cred.user.email ? cred.user.email : "Keine E-Mail";
-      this.user.name = cred.user.displayName ? cred.user.displayName : "Gast";
-      this.user.userId = cred.user.uid;
-      this.user.avatar = 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=eeb62c9a-4de5-4061-a61c-09d125cc27c4';
-      this.auth.currentUser = this.user;
-      this.saveUserToLocal(this.auth.currentUser);
-      this.router.navigate(['/main']);
-    }).catch(error => {
-      console.error(error);
-    });
-  }
-
-
-  async googleLogin() {
+  async guestLogin() {
     try {
-      await this.auth.signInWithGoogle().then((result) => {
-        this.auth.currentUser = result.user;
-        this.user.email = result.user.email ? result.user.email : "Keine E-Mail";
-        this.user.name = result.user.displayName ? result.user.displayName : "Unbekannt";
-        this.user.userId = result.user.uid;
-        this.user.avatar = result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c';
-        this.saveUserToLocal(this.auth.currentUser);
-        this.router.navigate(['/main']);
-      }).catch((error) => {
-        console.log(error)
-      });
+      const result = await this.auth.signInAnonymously();
+      const transformedData = this.transformGuestSignInData(result);
+      const userRef = doc(this.firestore, "user", result.user.uid);
+      await setDoc(userRef, transformedData);
+      console.log()
+      this.router.navigate(['/main']);
     } catch (error) {
       console.error(error);
     }
   }
 
 
-  saveUserToLocal(user: any) {
-    const userAsString = JSON.stringify(user);
-    localStorage.setItem('dabubble/user', userAsString);
+  transformGuestSignInData(result: any) {
+    return {
+      email: result.user.email ? result.user.email : "Keine E-Mail",
+      name: result.user.displayName ? result.user.displayName : "Gast",
+      userId: result.user.uid,
+      avatar: 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c'
+    };
   }
 
+
+  async googleLogin() {
+    try {
+      const result = await this.auth.signInWithGoogle();
+      const transformedData = this.transformGoogleSignInData(result);
+      const userRef = doc(this.firestore, "user", result.user.uid);
+      await setDoc(userRef, transformedData);
+      console.log()
+      this.router.navigate(['/main']);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  transformGoogleSignInData(result: any) {
+    return {
+      email: result.user.email ? result.user.email : "Keine E-Mail",
+      name: result.user.displayName ? result.user.displayName : "Unbekannt",
+      userId: result.user.uid,
+      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c'
+    };
+  }
 
 
 }
