@@ -131,5 +131,16 @@ export class SidenavContentComponent {
     this.chatService.currentChannel = channelID;
     this.chatService.getMessages();
   }
+
+  openDM(userId:string) {
+    const roomId = this.generateRoomId(this.currentUser, userId);
+    this.firestore.checkIfRoomExists(roomId, this.currentUser, userId);
+
+  }
+
+  generateRoomId(userId1:string, userId2: string) {
+    //sort the userId's aplhabetical then add them together seperated with a _
+    return [userId1, userId2].sort().join('_');
+  }
 }
 

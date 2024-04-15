@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import {
+  DocumentSnapshot,
   Firestore,
   Unsubscribe,
   addDoc,
@@ -19,6 +20,7 @@ import { Observable } from 'rxjs';
 import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
 import { AuthenticationService } from './authentication.service';
+import { DirectMessage } from '../models/directMessage.class';
 
 @Injectable({
   providedIn: 'root',
@@ -88,4 +90,32 @@ export class FirebaseService {
       channelId: dockRef?.id,
     });
   }
+
+  createRoomRef(roomId: string) {
+    return doc(this.getColl("directMessages"), roomId);
+  }
+
+  checkIfRoomExists(roomId: string, currentUserID:string, otherUserID: string) {
+    const roomRef = doc(this.getColl("directMessages"), roomId)
+    onSnapshot(roomRef,(docSnap) => {
+      if (docSnap.exists()) {
+        console.log('Room exists: ', docSnap.data())
+      }else {
+        console.log('Room doesnt exist, will be created soon');
+        const transformedRoomData = new DirectMessage(this.transformDmRoom(currentUserID, otherUserID, roomId));
+        setDoc(roomRef, transformedRoomData.toJSON());
+        console.log('Room created');
+      }
+    })
+  }
+
+  transformDmRoom(currentUserID: string, otherUserID: string, roomId: string) {
+    return {
+      member: [currentUserID, otherUserID],
+      id: roomId,
+      messages: []
+    }
+  }
+
+
 }

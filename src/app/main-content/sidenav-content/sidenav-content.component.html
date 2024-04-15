@@ -54,7 +54,7 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <div *ngFor="let user of fetchedUser" class="user-list">
+      <div *ngFor="let user of fetchedUser" class="user-list" (click)="openDM(user.userId)">
         <div class="user-pair">
           <img [src]="user.avatar">
           <div class="online-attribut">
