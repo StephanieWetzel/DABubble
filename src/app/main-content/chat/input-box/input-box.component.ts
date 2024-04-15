@@ -1,6 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import tinymce, { RawEditorOptions } from 'tinymce';
+import { ChatService } from './../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-input-box',
@@ -22,8 +22,6 @@ import { ChatService } from '../../../../assets/services/chat-service/chat.servi
 
 export class InputBoxComponent {
   public editorInit: RawEditorOptions = {
-    selector: '#inputData',
-    id: 'inputData',
     base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
@@ -54,7 +52,6 @@ export class InputBoxComponent {
 
 
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer) {
-
   }
 
 
@@ -84,7 +81,7 @@ export class InputBoxComponent {
   }
 
 
-  openSelectedFile(event: Event) {
+  openSelectedFile(event: Event){
     console.log(event);
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
@@ -96,24 +93,24 @@ export class InputBoxComponent {
 
   openFilePreview(index: number) {
     const file = this.selectedFiles[index];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
-      this.dialog.open(FilePreviewDialogComponent, {
-        data: { fileUrl: this.safeUrl, fileType: file.type }
-      });
-    };
-    reader.readAsDataURL(file);
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+          this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
+          this.dialog.open(FilePreviewDialogComponent, {
+              data: { fileUrl: this.safeUrl, fileType: file.type }
+          });
+      };
+      reader.readAsDataURL(file);
+    }
+   
+  removeFile(index: number){
+    this.selectedFiles.splice(index,1)
+    this.selectedFileNames.splice(index,1);
   }
 
-  removeFile(index: number) {
-    this.selectedFiles.splice(index, 1)
-    this.selectedFileNames.splice(index, 1);
-  }
-
-  decodeHtmlEntities(encodedString: string) {
-    const textArea = document.createElement('textarea');
-    textArea.innerHTML = encodedString;
-    return textArea.value;
-  }
+    decodeHtmlEntities(encodedString: string) {
+      const textArea = document.createElement('textarea');
+      textArea.innerHTML = encodedString;
+      return textArea.value;
+    }
 }

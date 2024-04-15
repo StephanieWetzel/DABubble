@@ -5,9 +5,9 @@
             <span>{{ message.time | customDate }}</span>
             <div></div>
         </div>
-        <div class="edit-message-container">
-            <div class="edit-message" *ngIf="editingMessageId === message.messageId">
-                <editor id="editData" [init]="editEditorInit"></editor>
+        <div class="edit-message-container" *ngIf="editingMessageId === message.messageId">
+            <div class="edit-message" >
+                <editor [init]="editEditorInit" [id]="'editData-' + message.messageId"></editor>
                 <div class="edit-btns">
                     <button (click)="safeMessage(false)" class="break-btn">Abbrechen</button>
                     <button (click)="safeMessage(true, message.messageId)" class="safe-btn">Speichern</button>
@@ -21,7 +21,7 @@
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
             <div class="message-content">
-                <p>{{ message.content }}</p>
+                <p (ngModel)="currentContent">{{ message.content }}</p>
                 <div class="files-container" *ngIf="message.fileUrls.length > 0">
                     <div *ngFor="let url of message.fileUrls" class="attached-file"
                         (click)="downloadFile(url, urlToFileName(url))"><img *ngIf="urlToFileName(url).endsWith('.pdf')"
@@ -71,9 +71,9 @@
                     </ul>
                 </mat-menu>
                 <div><mat-icon class="outlined">chat_outline</mat-icon></div>
-                <div class="edit-message">
+                <div class="edit-message-options">
                     <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
-                    <div class="edit-text" *ngIf="menuEditMessage == true" (click)="editMessage(message.messageId)">
+                    <div class="edit-text" *ngIf="menuEditMessage == true" (click)="editMessage(message.messageId, message.content)">
                         <p>Nachricht bearbeiten</p>
                     </div>
                 </div>

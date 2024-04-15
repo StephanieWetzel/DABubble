@@ -1,7 +1,7 @@
-import { AfterViewChecked, Component, ElementRef, ViewChild } from '@angular/core';
+import { OnInit, Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
-import { CommonModule, KeyValuePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { CustomDatePipe } from './date-pipe/custom-date.pipe';
 import { CustomTimePipe } from './time-pipe/custom-time.pipe';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,7 @@ import tinymce, { RawEditorOptions  } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,13 +27,14 @@ import { MatButtonModule } from '@angular/material/button';
     KeyValuePipe, 
     EditorModule,
     FormsModule, 
-    MatButtonModule
+    MatButtonModule,
+    NgClass
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
 })
 
-export class MessagesComponent implements AfterViewChecked {
+export class MessagesComponent implements AfterViewInit {
   @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLDivElement>;
 
   messages;
@@ -41,10 +43,13 @@ export class MessagesComponent implements AfterViewChecked {
   emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
   menuEditMessage = false;
   customDatePipe = new CustomDatePipe();
-  editingMessageId: string = 'nRtnAZLQh2Z0ZDOi9ISd';
+  editingMessageId: string = '';
+  currentContent!: string;
+  currentEditingContent: string = '';
+  subscription = new Subscription();
 
   public editEditorInit: RawEditorOptions = {
-    selector: '#editData',
+
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -52,17 +57,17 @@ export class MessagesComponent implements AfterViewChecked {
     plugins: 'autoresize emoticons link',
     autoresize_bottom_margin: 0,
     max_height: 500,
-    // height: 100,
     placeholder: 'Nachricht an Chat ... ',
     statusbar: false,
     toolbar: 'emoticons',
     entity_encoding: 'raw',
-    setup: function (editor) {
-    editor.on('init', function () {
-      // Du kannst hier auch direkt den Stil anpassen
-      editor.getBody().style.borderColor = 'white';
-    });
-  }
+    setup: editor => {
+      editor.on('init', () => {
+        if (this.menuEditMessage) {
+          editor.setContent(this.currentEditingContent);
+        }
+      });
+    }
   };
 
   constructor(private chatService: ChatService) {
@@ -70,30 +75,48 @@ export class MessagesComponent implements AfterViewChecked {
   }
 
 
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
+  ngAfterViewInit() {
+    this.subscription.add(this.chatService.messageCount$.subscribe({
+      next: (count) => {
+        console.log('Aktualisierte Nachrichtenanzahl:', count);
+        this.scrollToBottom();
+      }
+    }));
   }
-
   
   scrollToBottom(): void {
-    const lastMessageElement = this.chatContainer.nativeElement.lastElementChild;
-    if (lastMessageElement) {
-      lastMessageElement.scrollIntoView({ block: 'end' });
-    }
+    requestAnimationFrame(() => {
+      if (this.chatContainer && this.chatContainer.nativeElement) {
+        const lastMessageElement = this.chatContainer.nativeElement.lastElementChild;
+        if (lastMessageElement) {
+          lastMessageElement.scrollIntoView({ block: 'end', behavior: 'auto' });
+        }
+      }
+    });
   }
 
-  editMessage(id:string){
+  editMessage(id:string, content: string){
+    this.closeEditor();
+    debugger
     this.editingMessageId = id;
-    console.log(this.editingMessageId);
+    this.currentEditingContent = content
+    console.log(this.editingMessageId);    
+  }
+
+  closeEditor(){
+    debugger
+    const editorInstance = tinymce.get('editData-' + this.editingMessageId);
+    if(editorInstance){
+      editorInstance.remove();
+    }
+    this.editingMessageId = '';
   }
 
   safeMessage(safe: boolean, messageId: string = ''){
     if (safe){
-      this.chatService.editMessage(messageId, this.getInputContent(tinymce.get("editData")));
+      this.chatService.editMessage(messageId, this.getInputContent(tinymce.get('editData-' + messageId)));
     }
-    
-    this.editingMessageId = '';
-    
+    this.closeEditor();
   }
 
   getInputContent(input: any){

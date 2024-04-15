@@ -23,8 +23,17 @@ button {
 
 $bgContent: #FFFFFF;
 $bgPage: #ECEEFE;
-// brauchen wir diese Variable hier, wenn wir im body einfach die background-color setzen? Die ist ja für jede Seite gleich oder? - Steffi
-// --> dieser mat-drawer container benutzt als background color weiß (vermutlich standard von angular material)... deswegen habe ich das über die Variablen gelöst... - Henrik
+
+
+// tiny mce anpassungen
+editor div{
+    border: none !important;
+}
+
+app-input-box div .tox-toolbar__primary{
+    padding-left: 40px !important;
+}
+
 
 .btnDisabled {
     background-color: #797EF3 !important;
