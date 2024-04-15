@@ -97,14 +97,12 @@ export class MessagesComponent implements AfterViewInit {
 
   editMessage(id:string, content: string){
     this.closeEditor();
-    debugger
     this.editingMessageId = id;
     this.currentEditingContent = content
     console.log(this.editingMessageId);    
   }
 
   closeEditor(){
-    debugger
     const editorInstance = tinymce.get('editData-' + this.editingMessageId);
     if(editorInstance){
       editorInstance.remove();
@@ -175,29 +173,26 @@ export class MessagesComponent implements AfterViewInit {
 
   
   async downloadFile(url: string, filename: string): Promise<void> {
-    // try {
-    //   // Die Datei als Blob abrufen
-    //   const response = await fetch(url);
-    //   if (!response.ok) throw new Error('Netzwerkantwort war nicht ok.');
-    //   const blob = await response.blob();
-  
-    //   // Eine temporäre URL aus dem Blob erstellen
-    //   const blobUrl = window.URL.createObjectURL(blob);
-  
-    //   // Ein temporäres <a>-Element für den Download erzeugen
-    //   const a = document.createElement('a');
-    //   a.href = blobUrl;
-    //   a.download = filename || 'downloaded-file';
-  
-    //   // Den Download auslösen
-    //   document.body.appendChild(a);
-    //   a.click();
-  
-    //   // Aufräumen
-    //   window.URL.revokeObjectURL(blobUrl);
-    //   document.body.removeChild(a);
-    // } catch (error) {
-    //   console.error('Fehler beim Herunterladen der Datei:', error);
-    // }
-  }
-}
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok. Status: ${response.status}`);
+      }
+      const blob = await response.blob();
+
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename || 'downloaded-file';
+
+      document.body.appendChild(a);
+      a.click();
+
+      window.URL.revokeObjectURL(blobUrl);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+      // Additional debugging information
+      console.error('Failed URL:', url);
+    }
+  }}
