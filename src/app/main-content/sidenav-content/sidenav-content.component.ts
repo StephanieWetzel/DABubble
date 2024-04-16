@@ -13,6 +13,7 @@ import { ProfileAuthentication } from '../../../assets/services/profileAuth.serv
 import { ChatService } from '../../../assets/services/chat-service/chat.service';
 import { FirebaseService } from '../../../assets/services/firebase-service';
 import { onValue, ref } from '@angular/fire/database';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-sidenav-content',
@@ -130,12 +131,16 @@ export class SidenavContentComponent {
     console.log("Channel with ID:", channelID, ' opened.')
     this.chatService.currentChannel = channelID;
     this.chatService.getMessages();
+    this.chatService.setIsDmRoom(false);
   }
 
   openDM(userId:string) {
     const roomId = this.generateRoomId(this.currentUser, userId);
     this.firestore.checkIfRoomExists(roomId, this.currentUser, userId);
-
+    this.chatService.currentChannel = roomId;
+    this.chatService.setCurrenDmPartner(userId);
+    this.chatService.setIsDmRoom(true);
+    //this.chatService.getMessages();
   }
 
   generateRoomId(userId1:string, userId2: string) {

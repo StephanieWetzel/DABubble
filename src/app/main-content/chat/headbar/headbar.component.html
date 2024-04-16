@@ -1,4 +1,4 @@
-<section>
+<section *ngIf="!isDmRoomOpen">
     <div class="group-name">
         <mat-icon>tag</mat-icon>
         <span>Entwicklerteam</span>
@@ -20,5 +20,17 @@
             </div>
             <div class="menu-bg" [class.open-menu-bg]="openMenu" (click)="toggleMenu()"></div>
         </div>
+    </div>
+</section>
+
+<section class="dm-head" *ngIf="isDmRoomOpen">
+    <div class="user-cont">
+        <div class="user-pair">
+            <img [src]="currentPartnerUser?.avatar">
+            <div class="online-attribut">
+                <img [src]="currentPartnerUser?.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+            </div>
+        </div>
+        <span>{{currentPartnerUser?.name}}</span>
     </div>
 </section>

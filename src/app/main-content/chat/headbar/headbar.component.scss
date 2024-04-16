@@ -100,3 +100,29 @@ section {
 .outlined{
     font-family: 'Material Icons Outlined';
 }
+
+
+/*DM Head*/
+
+.user-cont {
+    @include dFlex(center, center, 15px);
+    > .user-pair {
+        @include dFlex(center,center);
+        position: relative;
+        > img {
+            height: 50px;
+        }
+        > .online-attribut {
+            position: absolute;
+            bottom: -6px;
+            right: 0;
+            > img {
+                height: 14px;
+            }
+        }
+    }
+    > span {
+        font-size: 24px;
+        font-weight: bold;
+    }
+}

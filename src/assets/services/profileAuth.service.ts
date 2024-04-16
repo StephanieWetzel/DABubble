@@ -3,6 +3,7 @@ import { User } from "../models/user.class";
 import {
     Firestore,
     doc,
+    getDoc,
     onSnapshot,
     updateDoc,
 } from '@angular/fire/firestore';
@@ -59,7 +60,21 @@ export class ProfileAuthentication {
         })
     }
 
-
+    async fetchPartnerFromFirestore(userID: string): Promise<User | null> {
+        const docRef = doc(this.firestore, 'user', userID);
+        try {
+          const userSnap = await getDoc(docRef);
+          if (userSnap.exists()) {
+            return userSnap.data() as User;
+          } else {
+            console.log('no user found');
+            return null;
+          }
+        } catch (error) {
+          console.error('error ', error);
+          return null;
+        }
+    }
 
     setUserState(userID: string, userState: string) {
         if (userID) {
@@ -109,7 +124,7 @@ export class ProfileAuthentication {
 
     async userLogout() {
         const auth = getAuth();
-        this.refreshState(auth.currentUser?.uid, 'false');
+        await this.refreshState(auth.currentUser?.uid, 'false');
         const stateRef = ref(this.realTimeDB, `state/${auth.currentUser?.uid}`)
         set(stateRef, { state: 'false' })
         signOut(auth).then(() => {

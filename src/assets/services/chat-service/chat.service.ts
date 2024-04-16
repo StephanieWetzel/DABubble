@@ -19,12 +19,22 @@ export class ChatService {
   currentChannel = '5fHcCmtyJtEnYzrdngTd';
   messageCount = new BehaviorSubject<number>(0); // initialer Wert
   messageCount$ = this.messageCount.asObservable(); // Veröffentlichtes Observable
+  dmPartnerID = new BehaviorSubject<string>('');
+  dmPartnerID$ = this.dmPartnerID.asObservable();
+  isDmRoom = new BehaviorSubject<boolean>(false);
+  isDmRoom$ = this.isDmRoom.asObservable();
 
   constructor() {
     this.unsubMessage = this.getMessages();
   }
 
+  setCurrenDmPartner(value: string) {
+    this.dmPartnerID.next(value);
+  }
 
+  setIsDmRoom(value: boolean) {
+    this.isDmRoom.next(value);
+  }
 
   async addMessage(message: Message) {
     const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
