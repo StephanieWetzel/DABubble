@@ -34,39 +34,21 @@ export class ResetPasswordComponent {
   auth = getAuth();
 
 
-
-
   constructor(private fbuilder: FormBuilder,) {
-    sendPasswordResetEmail(this.auth, this.email)
-      .then(() => {
-        // Password reset email sent!
-
-        alert("email sent");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-      })
-
-
-
   }
 
 
-  // const actionCodeSettings = {
-  //   // URL you want to redirect back to. The domain (www.example.com) for
-  //   // this URL must be whitelisted in the Firebase Console.
-  //   url: 'https://www.example.com/checkout?cartId=1234',
-  //   // This must be true for email link sign-in.
-  //   handleCodeInApp: true,
-  //   iOS: {
-  //     bundleId: 'com.example.ios',
-  //   },
-  //   android: {
-  //     packageName: 'com.example.android',
-  //     installApp: true,
-  //     minimumVersion: '12',
-  //   },
-  //   // FDL custom domain.
-  //   dynamicLinkDomain: 'coolapp.page.link',
-  // };
+  async resetPassword() {
+    const email = this.formData.value.email;
+
+    try {
+      await sendPasswordResetEmail(getAuth(), email);
+      alert('Password reset email sent!');
+    } catch (error: any) {
+      const errorMessage = error.message;
+      alert(errorMessage);
+    }
+  }
+
+
 }

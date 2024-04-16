@@ -31,9 +31,7 @@ import { User } from '../../assets/models/user.class';
 })
 export class AuthenticationService {
 
-  // passwordReset = async (email: string) => {
-  //   return await sendPasswordResetEmail(getAuth(), email)
-  // }
+
 
 
   // confirmThePasswordReset = async (
@@ -82,7 +80,7 @@ export class AuthenticationService {
 
 
   async fetchGuestData() {
-    const guestID = 'y46QRXuSPPhwKumc7qoZiTFjaGi1';
+    const guestID = 'ck4vudalTaUgOYeatRsBQhoCqr12';
     const docRef = doc(this.firestore, 'user', guestID)
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {

@@ -109,7 +109,7 @@ export class LoginComponent {
       email: result.user.email ? result.user.email : "Keine E-Mail",
       name: result.user.displayName ? result.user.displayName : "Unbekannt",
       userId: result.user.uid,
-      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c'
+      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
     };
   }
 
