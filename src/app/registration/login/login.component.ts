@@ -76,41 +76,17 @@ export class LoginComponent {
   }
 
 
-  // async guestLogin() {
-  //   const guestData = await this.auth.fetchGuestData();
-  //   if (guestData) {
-  //     try {
-  //       await this.auth.signIn(guestData.email, guestData.password);
-  //       console.log('Sign up success');
-  //       this.router.navigate(['/main']);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-  // }
-
-
   async guestLogin() {
-    try {
-      const result = await this.auth.signInAnonymously();
-      const transformedData = this.transformGuestSignInData(result);
-      const userRef = doc(this.firestore, "user", result.user.uid);
-      await setDoc(userRef, transformedData);
-      console.log()
-      this.router.navigate(['/main']);
-    } catch (error) {
-      console.error(error);
+    const guestData = await this.auth.fetchGuestData();
+    if (guestData) {
+      try {
+        await this.auth.signIn(guestData.email, guestData.password);
+        console.log('Sign up success');
+        this.router.navigate(['/main']);
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
-
-
-  transformGuestSignInData(result: any) {
-    return {
-      email: result.user.email ? result.user.email : "Keine E-Mail",
-      name: result.user.displayName ? result.user.displayName : "Gast",
-      userId: result.user.uid,
-      avatar: 'https://firebasestorage.googleapis.com/v0/b/dabubble-7d65b.appspot.com/o/profilImg.svg?alt=media&token=ac23c639-088b-4347-aa3e-83e0967d382c'
-    };
   }
 
 

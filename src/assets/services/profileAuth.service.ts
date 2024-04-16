@@ -2,7 +2,6 @@ import { BehaviorSubject } from "rxjs";
 import { User } from "../models/user.class";
 import {
     Firestore,
-    deleteDoc,
     doc,
     onSnapshot,
     updateDoc,
@@ -109,8 +108,6 @@ export class ProfileAuthentication {
     }
 
     async userLogout() {
-        await this.deleteAnonUsers();
-
         const auth = getAuth();
         this.refreshState(auth.currentUser?.uid, 'false');
         const stateRef = ref(this.realTimeDB, `state/${auth.currentUser?.uid}`)
@@ -121,22 +118,5 @@ export class ProfileAuthentication {
         })
     }
 
-
-    async deleteAnonUsers() {
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
-
-        if (currentUser && currentUser.isAnonymous) {
-            // delete user from auth
-            await currentUser.delete().catch(error => {
-                console.error('Fehler beim Löschen des anonymen Benutzers:', error);
-            });
-            // delete user from firebase
-            const userRef = doc(this.firestore, "user", currentUser.uid);
-            await deleteDoc(userRef).catch(error => {
-                console.error('Fehler beim Löschen des anonymen Benutzerdokuments aus der Firestore-Datenbank:', error);
-            });
-        }
-    }
 
 }
