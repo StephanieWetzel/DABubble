@@ -1,5 +1,5 @@
 <section>
-    <div *ngIf="selectedFiles.length > 0" class="attachment-container">
+    <div  *ngIf="selectedFiles.length > 0" class="attachment-container">
         <div class="attachment" *ngFor="let fileName of selectedFileNames; let i = index">
             <p  (click)="openFilePreview(i)">{{ fileName }}</p>
             <mat-icon (click)="removeFile(i)">close</mat-icon>

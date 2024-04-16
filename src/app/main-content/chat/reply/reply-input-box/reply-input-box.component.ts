@@ -47,14 +47,17 @@ export class ReplyInputBoxComponent {
   }
 
   sendMessage() {
-    let data = tinymce.get('inputReply');
-    if (data && this.getInputContent(data) >= 1) {
-      let content = data.getContent({ format: 'text' });
-      // content = this.decodeHtmlEntities(content);
+    debugger
+    let replyData = tinymce.get('inputReply');
+
+    if (replyData && this.getInputContent(replyData)) {
+      let content = replyData.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
-      this.chatService.addMessage(message);
-      data.setContent('');
+      message.sendId = this.chatService.currentUser.userId;
+      this.chatService.addReply(message);
+      replyData.setContent('');
+
     }
   }
 
