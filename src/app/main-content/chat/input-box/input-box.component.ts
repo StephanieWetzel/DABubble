@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
+import { User } from '../../../../assets/models/user.class';
 
 @Component({
   selector: 'app-input-box',
@@ -45,13 +47,24 @@ export class InputBoxComponent {
   };
 
   isContentEmpty: boolean = true;
-
   selectedFiles: File[] = []; // Speichert mehrere Dateien
   selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
   safeUrl: any;
+  currentUser!: User;
 
 
-  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer) {
+  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer, private profileAuth: ProfileAuthentication) {
+  }
+
+
+  ngOnInit() {
+    this.profileAuth.initializeUser();
+    this.profileAuth.user$.subscribe((user) => {
+      if(user){
+        this.currentUser = new User(user);
+      }
+      console.log(this.currentUser);
+    })
   }
 
 
@@ -69,6 +82,9 @@ export class InputBoxComponent {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
+      message.sendId = this.currentUser.userId;
+      console.log(message);
+      
       for (const file of this.selectedFiles) {
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
@@ -113,4 +129,5 @@ export class InputBoxComponent {
       textArea.innerHTML = encodedString;
       return textArea.value;
     }
+
 }

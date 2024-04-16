@@ -12,7 +12,8 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
-
+import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
+import { User } from '../../../../assets/models/user.class';
 
 @Component({
   selector: 'app-messages',
@@ -40,7 +41,6 @@ export class MessagesComponent implements AfterViewInit {
   messages;
   time: any;
   date: any;
-  emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
   menuEditMessage = false;
   customDatePipe = new CustomDatePipe();
   editingMessageId: string = '';
@@ -48,8 +48,10 @@ export class MessagesComponent implements AfterViewInit {
   currentEditingContent: string = '';
   subscription = new Subscription();
 
-  public editEditorInit: RawEditorOptions = {
+  currentUser!: User;
+  
 
+  public editEditorInit: RawEditorOptions = {
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -70,7 +72,8 @@ export class MessagesComponent implements AfterViewInit {
     }
   };
 
-  constructor(private chatService: ChatService) {
+
+  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication) {
     this.messages = this.chatService.messages;
   }
 
@@ -82,6 +85,15 @@ export class MessagesComponent implements AfterViewInit {
         this.scrollToBottom();
       }
     }));
+  }
+
+  ngOnInit() {
+    this.profileAuth.initializeUser();
+    this.profileAuth.user$.subscribe((user) => {
+      if(user){
+        this.currentUser = new User(user);
+      }
+    })
   }
   
   scrollToBottom(): void {
@@ -124,10 +136,10 @@ export class MessagesComponent implements AfterViewInit {
   }
   
   isDateDifferent(index: number){
-  if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
-  const currentDateFormatted = this.customDatePipe.transform(this.messages[index].time);
-  const previousDateFormatted = this.customDatePipe.transform(this.messages[index - 1].time);
-  return currentDateFormatted !== previousDateFormatted;
+    if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
+    const currentDateFormatted = this.customDatePipe.transform(this.messages[index].time);
+    const previousDateFormatted = this.customDatePipe.transform(this.messages[index - 1].time);
+    return currentDateFormatted !== previousDateFormatted;
   }
 
 
@@ -137,13 +149,20 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
-  showReply(){
+  isCurrentUserSender(sender: string){
+    return sender === this.currentUser.userId;
+  }
+
+
+  showReply(messageId: string){
     this.chatService.showReply = true;
+    this.chatService.messageIdReply = messageId;
+    this.chatService.getReplies();
   }
 
 
   addReaction(messageId: string, emote: string){
-    this.chatService.reactOnMessage(messageId, emote, 'Sebastian')
+    this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, false)
   }
 
 
@@ -195,4 +214,11 @@ export class MessagesComponent implements AfterViewInit {
       // Additional debugging information
       console.error('Failed URL:', url);
     }
-  }}
+
+
+    
+  }
+  // sendIdToName(id: string){
+  //   this.chatService.getUser(id);
+  // }
+  }

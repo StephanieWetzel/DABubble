@@ -5,6 +5,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } fr
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reactions.class';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ProfileAuthentication } from '../profileAuth.service';
+import { User } from '../../models/user.class';
 
 
 @Injectable({
@@ -12,19 +14,34 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ChatService {
   private firestore: Firestore = inject(Firestore);
-
+  emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
   showReply: boolean = false;
-  unsubMessage;
+  messageIdReply = '';
   messages: Message[] = [];
+  replies: Message[] = [];
   currentChannel = '5fHcCmtyJtEnYzrdngTd';
   messageCount = new BehaviorSubject<number>(0); // initialer Wert
   messageCount$ = this.messageCount.asObservable(); // Veröffentlichtes Observable
 
-  constructor() {
-    this.unsubMessage = this.getMessages();
+  replyCount = new BehaviorSubject<number>(0); // initialer Wert
+  replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
+  currentUser! : User;
+  userInitialized = new BehaviorSubject<boolean>(false);
+
+  constructor( private profileAuth: ProfileAuthentication) {
+    this.initializeUserAndMessages();
   }
 
 
+  initializeUserAndMessages() {
+    this.profileAuth.user$.subscribe(user => {
+      if (user) {
+        this.currentUser = new User(user);
+        this.userInitialized.next(true);
+        this.getMessages();
+      }
+    });
+  }
 
   async addMessage(message: Message) {
     const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
@@ -45,11 +62,31 @@ export class ChatService {
     })
   }
 
+  getReplies() {
+    onSnapshot(this.getReplyRef(), (list) => {
+      this.replies = [];
+      list.forEach(doc => {
+        let message = new Message({ ...doc.data() })
+        this.createReactionArray(message);
+        this.replies.push(message);
+      });
+      this.replyCount.next(this.messages.length)
+      console.log('replies on message:', this.replies);
+    })
+  }
+
   async editMessage(messageId: string, input: string){
     console.log(input); 
-    
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId), { content: input });
   }
+
+
+  async addReply(message: Message){
+    const docRef = await addDoc(this.getReplyRef(), message.toJSON(message));
+    const docRefId = docRef.id;
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`, docRefId), { messageId: docRefId });
+  }
+
 
   async uploadFile(file: File) {
     const storage = getStorage();
@@ -75,8 +112,15 @@ export class ChatService {
   }
 
 
-  async reactOnMessage(messageId: string, emote: string, user: string) {
-    const messageRef = doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId);
+  async reactOnMessage(messageId: string, emote: string, user: string, reply:boolean) {
+    debugger
+    let path;
+    if(reply){
+      path = `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`
+    } else {
+      path = `channel/${this.currentChannel}/messages`
+    }
+    const messageRef = doc(this.firestore, path, messageId);
     const docSnap = await getDoc(messageRef);
 
     if (docSnap.exists()) {
@@ -154,9 +198,6 @@ export class ChatService {
     return reactionIndex
   }
 
-
-
-
   getMessagesQ() {
     return query(this.getMessagesRef(), orderBy('time', 'asc'));
   }
@@ -164,5 +205,9 @@ export class ChatService {
 
   getMessagesRef() {
     return collection(this.firestore, `channel/${this.currentChannel}/messages`)
+  }
+
+  getReplyRef(){
+    return collection(this.firestore, `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`)
   }
 }

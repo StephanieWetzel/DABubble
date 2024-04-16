@@ -344,13 +344,12 @@ ul {
 }
 
 
-.message-content {
+.message-content-sender {
     background-color: #797EF3;
     color: white;
-
 }
 
-.message-container {
+.message-container-sender {
     align-items: flex-end;
 
     &:hover {
@@ -360,18 +359,18 @@ ul {
     }
 }
 
-.info {
+.info-sender {
     flex-direction: row-reverse;
 }
 
-.options-container {
+.options-container-sender {
     left: 40px;
     right: unset;
 }
 
-.edit-menu {
-    display: unset;
-}
+// .edit-menu-sender {
+//     display: unset;
+// }
 
 .d-none{
     display: none;

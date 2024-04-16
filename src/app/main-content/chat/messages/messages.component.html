@@ -15,12 +15,12 @@
                 
             </div>
         </div>
-        <div class="message-container" *ngIf="editingMessageId != message.messageId">
-            <div class="info">
-                <span class="name">Noah Braun</span>
+        <div class="message-container" *ngIf="editingMessageId != message.messageId" [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
+            <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
+                <span class="name">{{ message.sendId }} </span>
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
-            <div class="message-content">
+            <div class="message-content" [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
                 <p (ngModel)="currentContent">{{ message.content }}</p>
                 <div class="files-container" *ngIf="message.fileUrls.length > 0">
                     <div *ngFor="let url of message.fileUrls" class="attached-file"
@@ -47,16 +47,16 @@
                 <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
                 <mat-menu #down_menu="matMenu" xPosition="before">
                     <ul>
-                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
+                        <li *ngFor="let emote of chatService.emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
                         </li>
                     </ul>
                 </mat-menu>
             </div>
             <div class="answers">
-                <span class="a-count" (click)="showReply()">2 Antworten</span>
+                <span class="a-count" (click)="showReply(message.messageId)">2 Antworten</span>
                 <span class="last">Letzte Antwort 14:56</span>
             </div>
-            <div class="options-container">
+            <div class="options-container" [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
                 <div (click)="addReaction(message.messageId, '✅')">
                     <div class="check">✅</div>
                 </div>
@@ -66,7 +66,7 @@
                 <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
                 <mat-menu #menu="matMenu" xPosition="before">
                     <ul>
-                        <li *ngFor="let emote of emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
+                        <li *ngFor="let emote of chatService.emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
                         </li>
                     </ul>
                 </mat-menu>
