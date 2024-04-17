@@ -63,7 +63,8 @@ export class SidenavContentComponent {
         const state = snapshot.val(); // state value from user
         const userToUpdate = this.fetchedUser.find(u => u.userId === user.userId); // search for specific user with the on top given user.userId at -> const stateRef; checks if the user in fetchedUser-Array matches the user whose status has updated 
         if (userToUpdate) { // if a user has found, the state will be updated with the state from the realtime db
-          userToUpdate.state = state?.state || false;  
+          userToUpdate.state = state?.state || false; 
+          this.auth.refreshState(userToUpdate.userId, userToUpdate.state); 
         }
       })
     })
