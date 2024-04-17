@@ -48,23 +48,32 @@ export class RegisterComponent {
   }
 
 
+  /**
+ * Validator function for ensuring that a full name input contains both a first name and a last name.
+ * Key is either an error-object or null (null = full name is given = no error).
+ * Returns either 'required' error or 'fullName' error or no error.
+ * @returns A validator function that checks if the full name input contains both a first name and a last name.
+ */
   fullNameValidator() {
-    return (control: AbstractControl): { [key: string]: any } | null => { // parameter is either an error-object or null (null = full name is given = no error)
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const value: string = control.value;
       if (!value) {
-        return { 'required': true }; // required error is shown
+        return { 'required': true };
       }
 
-      const fullName: string[] = value.trim().split(' '); // array that contains first and last name
+      const fullName: string[] = value.trim().split(' ');
       if (fullName.length < 2) {
-        return { 'fullName': true }; // fullName error is shown (field contains only one value, but needs two)
+        return { 'fullName': true }
       }
 
-      return null; // no error (fullName is given)
+      return null;
     };
   }
 
 
+  /**
+ * Pushes user data to Firebase if the form data is valid.
+ */
   async pushUserDataToFirebase() {
     if (this.formData.valid) {
       try {
@@ -73,18 +82,22 @@ export class RegisterComponent {
           const transformedData = this.transformSignUpData(this.formData, userAuth.uid)
           const user = new User(transformedData);
           const userRef = doc(this.firestore, "user", userAuth.uid);
-          console.log(user);
           setDoc(userRef, user.toJSON());
-          console.log('user signed up :D')
           this.router.navigate(['/chooseAvatar/' + userAuth.uid]);
         })
       } catch (error) {
-        console.error(error);
       }
     }
   }
 
 
+  /**
+ * Transforms the sign-up form data and user ID into a format suitable for storing in the database.
+ * 
+ * @param formData - The sign-up form data.
+ * @param userId - The ID of the user.
+ * @returns An object containing the transformed user data.
+ */
   transformSignUpData(formData: any, userId: string) {
     return {
       name: this.formData.value.name,

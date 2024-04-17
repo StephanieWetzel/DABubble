@@ -12,9 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
-import { Firestore, addDoc, collection, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, doc, setDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
-import { Auth, getAuth } from '@angular/fire/auth';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
 @Component({
   selector: 'app-login',
@@ -58,52 +57,69 @@ export class LoginComponent {
   ) { }
 
 
+  /**
+ * Attempts to log in a user.
+ * @returns {Promise<void>} A Promise object that resolves when the login process is completed.
+ * @throws {Error} An error that occurs if the login process fails.
+ */
   async login() {
     if (this.formData.valid) {
       const email = this.formData.value.email;
       const password = this.formData.value.password;
       try {
         await this.auth.signIn(email, password).then((userCredential) => {
-          console.log('Sign up success');
           const user = userCredential.user;
-          console.log(user.uid);
           this.router.navigate(['/main']);
         });
       } catch (error) {
-        console.error(error);
       }
     }
   }
 
 
+  /**
+ * Attempts to log in a guest user using fetched guest data.
+ * If guest data is available, it tries to sign in the user using the retrieved email and password.
+ * If the sign-in is successful, it navigates the user to the main page.
+ * @returns {Promise<void>} A promise that resolves when the login process is completed.
+ * @throws {Error} An error that occurs if the login process fails.
+ */
   async guestLogin() {
     const guestData = await this.auth.fetchGuestData();
     if (guestData) {
       try {
         await this.auth.signIn(guestData.email, guestData.password);
-        console.log('Sign up success');
         this.router.navigate(['/main']);
       } catch (error) {
-        console.error(error);
       }
     }
   }
 
 
+  /**
+ * Attempts to log in the user using Google authentication.
+ * If the sign-in is successful, it retrieves user data, transforms it, and stores it in the Firestore database.
+ * Finally, it navigates the user to the main page.
+ * @returns {Promise<void>} A promise that resolves when the login process is completed.
+ * @throws {Error} An error that occurs if the login process fails.
+ */
   async googleLogin() {
     try {
       const result = await this.auth.signInWithGoogle();
       const transformedData = this.transformGoogleSignInData(result);
       const userRef = doc(this.firestore, "user", result.user.uid);
       await setDoc(userRef, transformedData);
-      console.log()
       this.router.navigate(['/main']);
     } catch (error) {
-      console.error(error);
     }
   }
 
 
+  /**
+ * Transforms the user data obtained after a successful Google sign-in.
+ * @param {any} result - The result object containing user data.
+ * @returns {Object} An object containing transformed user data, including email, name, user ID, and avatar URL.
+ */
   transformGoogleSignInData(result: any) {
     return {
       email: result.user.email ? result.user.email : "Keine E-Mail",
