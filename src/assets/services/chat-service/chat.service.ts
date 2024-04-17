@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
-import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe } from "firebase/firestore";
+import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reactions.class';
@@ -62,28 +62,29 @@ export class ChatService {
 
 
   getMessages() {
-    onSnapshot(this.getMessagesQ(), (queryCollection) => {
+    onSnapshot(this.getMessagesQ(), (list) => {
       this.messages = [];
-      queryCollection.forEach(doc => {
-        let message = new Message({ ...doc.data() })
-        this.createReactionArray(message);
-        this.messages.push(message);
-      });
+      this.messages = this.loadMessages(list);
       this.messageCount.next(this.messages.length)
     })
   }
 
   getReplies() {
-    onSnapshot(this.getReplyRef(), (list) => {
+    onSnapshot(this.getRepliesQ(), (list) => {
       this.replies = [];
-      list.forEach(doc => {
-        let message = new Message({ ...doc.data() })
-        this.createReactionArray(message);
-        this.replies.push(message);
-      });
-      this.replyCount.next(this.messages.length)
-      console.log('replies on message:', this.replies);
+      this.replies = this.loadMessages(list);
+      this.replyCount.next(this.replies.length)
     })
+  }
+
+  loadMessages(list: QuerySnapshot<DocumentData>){
+    let temporaryMessages: Message[] = [];
+    list.forEach(doc => {
+      let message = new Message({ ...doc.data() })
+      this.createReactionArray(message);
+      temporaryMessages.push(message);
+    });
+    return temporaryMessages
   }
 
   async editMessage(messageId: string, input: string){
@@ -213,6 +214,17 @@ export class ChatService {
     return query(this.getMessagesRef(), orderBy('time', 'asc'));
   }
 
+  getDirectMessagesQ() {
+    return query(this.getDirectMessagesRef(), orderBy('time', 'asc'));
+  }
+
+  getRepliesQ() {
+    return query(this.getReplyRef(), orderBy('time', 'asc'));
+  }
+
+  getDirectMessagesRef() {
+    return collection(this.firestore, `channel/${this.currentChannel}/messages`)
+  }
 
   getMessagesRef() {
     return collection(this.firestore, `channel/${this.currentChannel}/messages`)

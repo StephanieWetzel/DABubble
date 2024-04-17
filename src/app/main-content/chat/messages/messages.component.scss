@@ -279,7 +279,9 @@ section {
         .reaction-info {
             @include dFlex($fd: column, $g: 4px);
             width: fit-content !important;
-
+            &:hover{
+                cursor: unset;
+            }
             span {
                 text-align: center;
             }
