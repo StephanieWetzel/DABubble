@@ -1,5 +1,19 @@
 @import './../../../../styles.scss';
 
+// input[type="file"] {
+//     display: none;
+// }
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+
+
+
 .main-container {
     height: 100%;
     display: flex;
@@ -92,6 +106,8 @@ form {
         padding: 8px;
         border-radius: 50%;
         margin: 16px 0 24px 0;
+        width: 144px;
+        height: 144px;
 
         &:hover {
             cursor: pointer;

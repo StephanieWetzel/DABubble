@@ -11,7 +11,7 @@
             <h2>Wähle deinen Avatar</h2>
         </div>
 
-        <form>
+        <form (ngSubmit)="signUp(userId)">
             <div class="avatar">
                 <img #chosenAvatar id="chosenAvatar" src="assets/img/avatar_default.svg"
                     (mousedown)="changeBackgroundColor()" (mouseup)="resetBackgroundColor()"
@@ -30,15 +30,20 @@
 
                 <div class="upload-container">
                     <span class="fs-18">eigenes Bild verwenden</span>
-                    <span class="upload tr-150ms">Datei hochladen</span>
+
+                    <!-- upload own image -->
+                    <label for="file-upload" class="upload tr-150ms" (click)="openFileInput()">
+                        Datei hochladen
+                    </label>
+                    <input #file id="file" type="file" style="display: none;" (change)="onFileSelected($event)">
+
                 </div>
             </div>
 
             <div class="btn-container">
-                <button [ngClass]="{'btnDisabled': selectedAvatarURL === ''}" [disabled]="selectedAvatarURL === ''"
-                    (click)="signUp(userId)" class="br-32 tr-150ms">Weiter</button>
+                <button type="submit" [ngClass]="{'btnDisabled': selectedAvatarURL === ''}"
+                    [disabled]="selectedAvatarURL === ''" class="br-32 tr-150ms">Weiter</button>
             </div>
-
         </form>
     </div>
 
