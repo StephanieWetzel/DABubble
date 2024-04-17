@@ -3,46 +3,21 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   GoogleAuthProvider
 } from 'firebase/auth';
 import {
   Firestore,
-  Unsubscribe,
-  addDoc,
-  collection,
   doc,
-  getDoc,
-  getDocs,
-  getFirestore,
-  limit,
-  onSnapshot,
-  orderBy,
-  query,
-  setDoc,
-  updateDoc,
+  getDoc
 } from '@angular/fire/firestore';
-import { inject, Injectable } from '@angular/core';
-import { Auth, confirmPasswordReset, signInAnonymously, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Injectable } from '@angular/core';
+import { Auth, signInAnonymously, signInWithPopup, signOut } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
-
-
-
-
-  // confirmThePasswordReset = async (
-  //   oobCode: string, newPassword: string
-  // ) => {
-  //   if (!oobCode && !newPassword) return;
-
-  //   return await confirmPasswordReset(getAuth(), oobCode, newPassword)
-  // }
-
-
   currentUser: any;
 
   constructor(public auth: Auth, private firestore: Firestore) { }

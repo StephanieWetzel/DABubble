@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormGroup,
   Validators,
@@ -30,20 +30,22 @@ export class ResetPasswordComponent {
   isMailFocused: boolean = false;
   isHovered: boolean = false;
 
-  email: string = this.formData.value.email;
-  auth = getAuth();
 
-
-  constructor(private fbuilder: FormBuilder,) {
+  constructor(
+    private fbuilder: FormBuilder,
+    private router: Router
+  ) {
   }
 
 
   async resetPassword() {
+    const auth = getAuth();
     const email = this.formData.value.email;
 
     try {
-      await sendPasswordResetEmail(getAuth(), email);
+      await sendPasswordResetEmail(auth, email);
       alert('Password reset email sent!');
+      this.router.navigate(['']);
     } catch (error: any) {
       const errorMessage = error.message;
       alert(errorMessage);
