@@ -12,7 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, arrayUnion, doc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
 @Component({
@@ -40,6 +40,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   guestUser: User = new User;
+  developerChannelId: string = 'pSBwciqiaOgtUayZaIgj'
 
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -108,6 +109,10 @@ export class LoginComponent {
       const result = await this.auth.signInWithGoogle();
       const transformedData = this.transformGoogleSignInData(result);
       const userRef = doc(this.firestore, "user", result.user.uid);
+      const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
+      await updateDoc(channelRef, {
+        member: arrayUnion({ id: transformedData.userId, name: transformedData.name})
+      })
       await setDoc(userRef, transformedData);
       this.router.navigate(['/main']);
     } catch (error) {
