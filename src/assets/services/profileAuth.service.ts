@@ -23,6 +23,9 @@ export class ProfileAuthentication {
     public user$ = this.userSubject.asObservable();
     constructor(private firestore: Firestore, private router: Router, public realTimeDB: UserSync) { }
 
+    /**
+     * Initializes the user by checking if a user is logged in and then fetching that user's details from firestore.
+     */
     initializeUser() {
         this.fetchLoggedUser().then((userID) => {
             if (userID) {
@@ -32,7 +35,10 @@ export class ProfileAuthentication {
             console.log('No such user lul', error);
         })
     }
-
+    /**
+     * Checks for the current authenticated user and returns their user ID.
+     * @returns {Promise<string>} - A promise that resolves with the user ID of the currently logged-in user.
+     */
     async fetchLoggedUser(): Promise<string> {
         const auth = getAuth();
         return new Promise((resolve, reject) => {
@@ -46,6 +52,11 @@ export class ProfileAuthentication {
         })
     }
 
+    /**
+     * Fetches user data from Firestore and updates user state to 'true' for being active.
+     * @param {string} userID - The user ID to fetch.
+     * 
+     */
     async fetchUserFromFirestore(userID: string) {
         console.log('Now fetching user from database: ', userID);
         const docRef = doc(this.firestore, 'user', userID);
@@ -61,6 +72,11 @@ export class ProfileAuthentication {
         })
     }
 
+    /**
+     * Fetches partner data from Firestore.
+     * @param {string} userID - The user ID of the partner to fetch.
+     * @returns {Promise<User | null>} - A promise that resolves with the user data or null if not found.
+     */
     async fetchPartnerFromFirestore(userID: string): Promise<User | null> {
         const docRef = doc(this.firestore, 'user', userID);
         try {
@@ -87,6 +103,12 @@ export class ProfileAuthentication {
     //     }
     // }
 
+    /**
+     * Updates the user's state in Firestore to the specified state.
+     * @param {string | undefined} userID - The user ID for whom the state is updated.
+     * @param {string} uState - The new state to set.
+     * 
+     */
     async refreshState(userID: string | undefined, uState: string) {
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID)
@@ -98,6 +120,13 @@ export class ProfileAuthentication {
         }
     }
 
+    /**
+     * Updates user's name and email in Firestore and authentication service.
+     * @param {string | undefined} userID - The user ID to update.
+     * @param {any} editName - The new name for the user.
+     * @param {any} editMail - The new email for the user.
+     * 
+     */
     async updateUserEdit(userID: string | undefined, editName: string | any, editMail: string | any) {
         const auth = getAuth();
         if (userID) {
@@ -118,11 +147,9 @@ export class ProfileAuthentication {
         }
     }
 
-    async getColl() {
-        const colRef = await doc(this.firestore, 'user');
-        return colRef
-    }
-
+    /**
+     * Logs out the current user, updates their state to 'false', and navigates to the login screen.
+     */
     async userLogout() {
         const auth = getAuth();
         await this.refreshState(auth.currentUser?.uid, 'false');

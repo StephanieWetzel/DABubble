@@ -19,6 +19,10 @@ export class ProfileDialogComponent {
 
   constructor(private profileAuth: ProfileAuthentication){}
 
+  /**
+   * Initializes the component by setting up user authentication and subscribing to user data changes.
+   * This method subscribes to the user observable to reactively update the component with the user's data.
+   */
   ngOnInit() {
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
@@ -26,10 +30,18 @@ export class ProfileDialogComponent {
     })
   }
 
+  /**
+   * Emits an event to close the profile menu. This method can be tied to UI elements to close the profile menu
+   * through an event binding, improving component interaction.
+   */
   closeProfileMenu() {
     this.closeEvent.emit(true);
   }
 
+  /**
+   * Toggles the editing state of the user's profile. This method switches the state of `isEditing`,
+   * allowing the component to react dynamically to user actions for editing the profile.
+   */
   userIsEditing() {
     this.isEditing = !this.isEditing;
   }
