@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { ChatService } from '../../../assets/services/chat-service/chat.service'
 import { FirebaseService } from '../../../assets/services/firebase-service';
 import { onValue, ref } from '@angular/fire/database';
 import { user } from '@angular/fire/auth';
+import { UserSync } from '../../../assets/services/userSync.service';
 
 @Component({
   selector: 'app-sidenav-content',
@@ -31,11 +32,18 @@ export class SidenavContentComponent {
   unsubUsers: Subscription | undefined;
   currentUser: string = '';
 
-  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication) {
+  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync) {
     this.getAuthUserId();
     this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
-
+    this.realTimeDB.startMonitoringActivity(this.currentUser);
   }
+
+  @HostListener('window:mousemove')
+  @HostListener('window:keydown')
+  onUserActivity() {
+    this.realTimeDB.resetTimer(this.currentUser)
+  }
+
 
   fetchNavContent(channelCollId: string, userColId: string, orderByField: string, orderDirection: 'asc' | 'desc') {
     this.unsubChannels = this.firestore.fetchCollection(channelCollId, orderByField, orderDirection).subscribe((channels) => {
@@ -58,7 +66,7 @@ export class SidenavContentComponent {
 
   attachStateToUsers(users: User[]) {
     users.forEach(user => {
-      const stateRef = ref(this.auth.realTimeDB, `state/${user.userId}`); //ref for realtime db
+      const stateRef = this.realTimeDB.getDbRef(user.userId); //ref for realtime db
       onValue(stateRef, (snapshot) => { // listener for realtime db -> is called if the state is changing (through logout, or connection lost i.e clsoing tab or window)
         const state = snapshot.val(); // state value from user
         const userToUpdate = this.fetchedUser.find(u => u.userId === user.userId); // search for specific user with the on top given user.userId at -> const stateRef; checks if the user in fetchedUser-Array matches the user whose status has updated 

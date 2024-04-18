@@ -13,7 +13,13 @@
       <div class="user-pair">
         <img [src]="user?.avatar" />
         <div class="online-attribut">
-          <img [src]="user?.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+          <img *ngIf="user?.state === 'true'; else awayOrOffline" src="./assets/icons/Online.png">
+            <ng-template #awayOrOffline>
+              <img *ngIf="user?.state === 'away'; else offline" src="./assets/icons/Away.png">
+              <ng-template #offline>
+                <img src="./assets/icons/Offline.png">
+              </ng-template>
+            </ng-template>
         </div>
       </div>
       <mat-icon>keyboard_arrow_down</mat-icon>

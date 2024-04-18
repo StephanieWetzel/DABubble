@@ -28,7 +28,13 @@
         <div class="user-pair">
             <img [src]="currentPartnerUser?.avatar">
             <div class="online-attribut">
-                <img [src]="currentPartnerUser?.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+                <img *ngIf="currentPartnerUser?.state === 'true'; else awayOrOffline" src="./assets/icons/Online.png">
+                    <ng-template #awayOrOffline>
+                        <img *ngIf="currentPartnerUser?.state === 'away'; else offline" src="./assets/icons/Away.png">
+                        <ng-template #offline>
+                            <img src="./assets/icons/Offline.png">
+                        </ng-template>
+                    </ng-template>
             </div>
         </div>
         <span>{{currentPartnerUser?.name}}</span>

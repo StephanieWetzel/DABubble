@@ -15,10 +15,22 @@
   <div *ngIf="!isEditing" class="p-name-cont mrB45">
     <div class="name-status">
       <span>{{ user?.name }}</span>
-      <div>
+      <div *ngIf="user?.state === 'true'; else awayOrOffline">
         <img src="../../../assets/icons/Online.png" />
         <span>Aktiv</span>
       </div>
+      <ng-template #awayOrOffline>
+        <div *ngIf="user?.state === 'away'; else offline">
+          <img src="../../../assets/icons/Away.png" />
+          <span>Abwesend</span>
+        </div>
+        <ng-template #offline>
+          <div #offline>
+            <img src="../../../assets/icons/Away.png" />
+            <span>Offline</span>
+          </div>
+        </ng-template>
+      </ng-template>
     </div>
     <div (click)="userIsEditing()" class="edit">Bearbeiten</div>
   </div>
@@ -32,13 +44,5 @@
     </div>
     <span class="mail"><b>{{ user?.email }}</b></span>
   </div>
-
-  <!-- <div *ngIf="!isEditing" class="dm-btn">
-    <div>
-      <mat-icon>mode_comment</mat-icon>
-      <span>Nachricht</span>
-    </div>
-  </div> -->
-  <!--profile oversight-->
   <app-profile-edit-dialog *ngIf="isEditing" (closeEvent)="isEditing = false"></app-profile-edit-dialog>
 </section>

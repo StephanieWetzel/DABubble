@@ -26,7 +26,7 @@ section {
     }
 }
 
-.group-members {}
+// .group-members {}
 
 .add-member-btn {
     background-color: $bgPage;
@@ -111,6 +111,8 @@ section {
         position: relative;
         > img {
             height: 50px;
+            width: 50px;
+            border-radius: 50%;
         }
         > .online-attribut {
             position: absolute;
