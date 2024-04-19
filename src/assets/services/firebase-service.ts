@@ -21,6 +21,7 @@ import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
 import { AuthenticationService } from './authentication.service';
 import { DirectMessage } from '../models/directMessage.class';
+import { ChatService } from './chat-service/chat.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ import { DirectMessage } from '../models/directMessage.class';
 export class FirebaseService {
   firestore: Firestore = inject(Firestore);
 
-  constructor(private auth: AuthenticationService) { };
+  constructor(private auth: AuthenticationService, private chatService: ChatService) { };
 
   fetchCollection(colID: string, orderByField: string = '', orderDirection: 'asc' | 'desc' = 'asc'): Observable<any[]> {
     let collectionQuery = query(this.getColl(colID));
@@ -100,12 +101,14 @@ export class FirebaseService {
     onSnapshot(roomRef,(docSnap) => {
       if (docSnap.exists()) {
         console.log('Room exists: ', docSnap.data())
+        this.chatService.currentChannel = docSnap.data()['id'];
       }else {
         console.log('Room doesnt exist, will be created soon');
         const transformedRoomData = new DirectMessage(this.transformDmRoom(currentUserID, otherUserID, roomId));
         setDoc(roomRef, transformedRoomData.toJSON());
         console.log('Room created');
       }
+      
     })
   }
 
