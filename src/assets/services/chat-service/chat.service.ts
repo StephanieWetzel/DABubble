@@ -32,6 +32,10 @@ export class ChatService {
   currentUser! : User;
   userInitialized = new BehaviorSubject<boolean>(false);
 
+  unsubChannels!: Unsubscribe;
+  unsubDirectMessages!: Unsubscribe;
+  unsubReplies!: Unsubscribe;
+
   constructor( private profileAuth: ProfileAuthentication) {
     this.initializeUserAndMessages();
   }
@@ -42,10 +46,11 @@ export class ChatService {
       if (user) {
         this.currentUser = new User(user);
         this.userInitialized.next(true);
-        this.getMessages();
+        this.getChannelMessages();
       }
     });
   }  
+
   setCurrenDmPartner(value: string) {
     this.dmPartnerID.next(value);
   }
@@ -61,12 +66,28 @@ export class ChatService {
   }
 
 
-  getMessages() {
-    onSnapshot(this.getMessagesQ(), (list) => {
+  getChannelMessages() {
+    this.destroyAllSnaps();
+    this.unsubChannels = onSnapshot(this.getMessagesQ(), (list) => {
       this.messages = [];
       this.messages = this.loadMessages(list);
       this.messageCount.next(this.messages.length)
     })
+  }
+
+  getDirectMessages() {
+    this.destroyAllSnaps();
+    this.unsubDirectMessages = onSnapshot(this.getMessagesQ(), (list) => {
+      this.messages = [];
+      this.messages = this.loadMessages(list);
+      this.messageCount.next(this.messages.length)
+    })
+  }
+
+  destroyAllSnaps(){
+    this.unsubChannels();
+    this.unsubDirectMessages();
+    this.unsubReplies();
   }
 
   getReplies() {
