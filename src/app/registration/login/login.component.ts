@@ -1,5 +1,5 @@
 import { CommonModule, NgIf, NgClass, NgStyle } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, HostListener } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -49,12 +49,26 @@ export class LoginComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
 
+  containerWidth: number;
+
 
   constructor(
     private fbuilder: FormBuilder,
     private auth: AuthenticationService,
     private router: Router
-  ) { }
+  ) {
+    this.containerWidth = window.innerWidth;
+  }
+
+
+  /**
+ * Updates the container width on window resize.
+ * @param event - The event object for the resize event.
+ */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.containerWidth = event.target.innerWidth;
+  }
 
 
   /**

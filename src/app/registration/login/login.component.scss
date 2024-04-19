@@ -8,7 +8,7 @@
     flex-direction: column;
 
     .header-container {
-        padding: 64px;
+        padding: 48px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -17,25 +17,9 @@
         left: 0;
         right: 0;
 
-        .new-account-container {
-            display: flex;
-            flex-direction: column;
-            text-align: end;
-            gap: 8px;
-
-            .new-account {
-                color: #797EF3;
-                border: 1px solid;
-                border-radius: 24px;
-                border-color: transparent;
-                padding: 8px;
-
-                &:hover {
-                    cursor: pointer;
-                    border-color: #CCCFEB;
-                    color: #444DF2;
-                }
-            }
+        @media (max-width: 600px) {
+            justify-content: center;
+            padding: 32px;
         }
     }
 
@@ -53,11 +37,37 @@
         box-shadow: #C2C4E3 0px 2px 8px;
         margin-top: 120px;
 
+        @media (max-width: 600px) {
+            padding: 32px;
+            max-width: 70%;
+        }
+
         .login {
             color: #444DF2;
             font-size: 40px;
             font-weight: bold;
             padding-bottom: 16px;
+        }
+    }
+}
+
+.new-account-container {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    gap: 8px;
+
+    .new-account {
+        color: #797EF3;
+        border: 1px solid;
+        border-radius: 24px;
+        border-color: transparent;
+        padding: 8px;
+
+        &:hover {
+            cursor: pointer;
+            border-color: #CCCFEB;
+            color: #444DF2;
         }
     }
 }
@@ -106,8 +116,16 @@ form {
         background-color: #ECEEFE;
         border: 1px solid transparent;
 
+        @media (max-width: 600px) {
+            gap: 8px;
+        }
+
         span {
             color: #444DF2;
+
+            @media (max-width: 600px) {
+                font-size: 15px;
+            }
         }
 
         &:hover {
@@ -127,10 +145,13 @@ form {
         gap: 32px;
         padding-top: 32px;
 
+        @media(max-width: 600px) {
+            gap: 8px;
+        }
+
         .login-btn {
             background-color: #444DF2;
             color: white;
-            padding: 20px;
 
             &:hover {
                 background-color: #797EF3;
@@ -141,7 +162,6 @@ form {
             border: 1px solid #797EF3;
             color: #444DF2;
             font-weight: bold;
-            padding: 20px;
 
             &:hover {
                 background-color: #797EF3;
@@ -236,5 +256,13 @@ input {
 
     &:hover {
         border-color: #535AF1 !important;
+    }
+}
+
+.btn-padding-20 {
+    padding: 20px;
+
+    @media(max-width: 600px) {
+        padding: 20px 60px;
     }
 }
