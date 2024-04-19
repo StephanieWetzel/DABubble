@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormGroup,
@@ -30,11 +30,27 @@ export class ResetPasswordComponent {
   isMailFocused: boolean = false;
   isHovered: boolean = false;
 
+  containerWidth: number;
+  containerHeight: number;
+
 
   constructor(
     private fbuilder: FormBuilder,
     private router: Router
   ) {
+    this.containerWidth = window.innerWidth;
+    this.containerHeight = window.innerHeight;
+  }
+
+
+  /**
+* Updates the container width on window resize.
+* @param event - The event object for the resize event.
+*/
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.containerWidth = event.target.innerWidth;
+    this.containerHeight = event.target.innerHeight;
   }
 
 
