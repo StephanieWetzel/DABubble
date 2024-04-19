@@ -51,6 +51,7 @@ export class LoginComponent {
   isPasswordFocused: boolean = false;
 
   containerWidth: number;
+  containerHeight: number;
 
 
   constructor(
@@ -59,6 +60,7 @@ export class LoginComponent {
     private router: Router
   ) {
     this.containerWidth = window.innerWidth;
+    this.containerHeight = window.innerHeight;
   }
 
 
@@ -69,6 +71,7 @@ export class LoginComponent {
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.containerWidth = event.target.innerWidth;
+    this.containerHeight = event.target.innerHeight;
   }
 
 
@@ -125,7 +128,7 @@ export class LoginComponent {
       const userRef = doc(this.firestore, "user", result.user.uid);
       const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
       await updateDoc(channelRef, {
-        member: arrayUnion({ id: transformedData.userId, name: transformedData.name})
+        member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
       })
       await setDoc(userRef, transformedData);
       this.router.navigate(['/main']);
