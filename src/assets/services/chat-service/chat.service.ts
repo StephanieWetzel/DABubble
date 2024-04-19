@@ -19,7 +19,7 @@ export class ChatService {
   messageIdReply = '';
   messages: Message[] = [];
   replies: Message[] = [];
-  currentChannel = '5fHcCmtyJtEnYzrdngTd';
+  currentChannel$: BehaviorSubject<string> = new BehaviorSubject<string>('5fHcCmtyJtEnYzrdngTd');
   messageCount = new BehaviorSubject<number>(0); // initialer Wert
   messageCount$ = this.messageCount.asObservable(); // Veröffentlichtes Observable
   dmPartnerID = new BehaviorSubject<string>('');
@@ -36,7 +36,7 @@ export class ChatService {
 
 
 
-  // unsubChannels!: Unsubscribe;
+  unsubscribe!: Unsubscribe;
   // unsubDirectMessages!: Unsubscribe;
   // unsubReplies!: Unsubscribe;
 
@@ -55,8 +55,12 @@ export class ChatService {
       if (user) {
         this.currentUser = new User(user);
         this.userInitialized.next(true);
-        this.getChannelMessages();
+        this.updateMessages();
       }
+    });
+
+    this.currentChannel$.subscribe(channel => {
+      this.updateMessages();
     });
   }
 
@@ -72,31 +76,50 @@ export class ChatService {
     if(this.isChannel){
       const docRef = await addDoc(this.getChannelMessagesRef(), message.toJSON(message));
       const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
+      await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages`, docRefId), { messageId: docRefId });
     }else{
       const docRef = await addDoc(this.getDirectMessagesRef(), message.toJSON(message));
       const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `directMessages/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
+      await updateDoc(doc(this.firestore, `directMessages/${this.currentChannel$.value}/messages`, docRefId), { messageId: docRefId });
     }
   }
 
 
-  getChannelMessages() {
-    let ref;
-    if (this.isChannel) {
-      ref = this.getChannelMessagesQ();
-    } else {
-      ref = this.getDirectMessagesQ();
+  // getChannelMessages() {
+  //   let ref;
+  //   if (this.currentChannel.length <= 25) {
+  //     ref = this.getChannelMessagesQ();
+  //   } else {
+  //     ref = this.getDirectMessagesQ();
+  //   }
+  //   onSnapshot(ref, (list) => {
+  //     this.messages = [];
+  //     this.messages = this.loadMessages(list);
+  //     console.log(this.currentChannel);
+  //     console.log(this.messages);
+  //     this.messageCount.next(this.messages.length);
+  //   })
+  // }
+
+
+  updateMessages() {
+    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
+    if (!this.currentChannel$.value) {
+      console.error("currentChannel$ ist undefined.");
+      return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
     }
-    onSnapshot(ref, (list) => {
-      this.messages = [];
-      this.messages = this.loadMessages(list);
-      console.log(this.currentChannel);
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+    this.unsubscribe = onSnapshot(ref, (snapshot) => {
+      this.messages = snapshot.docs.map(doc => doc.data() as Message);
+      console.log(this.currentChannel$.value);
       console.log(this.messages);
       this.messageCount.next(this.messages.length);
-    })
+    }, error => {
+      console.error("Fehler beim Abrufen der Nachrichten:", error);
+    });
   }
-
 
   getReplies() {
     onSnapshot(this.getRepliesQ(), (list) => {
@@ -118,14 +141,14 @@ export class ChatService {
 
   async editMessage(messageId: string, input: string) {
     console.log(input);
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId), { content: input });
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages`, messageId), { content: input });
   }
 
 
   async addReply(message: Message) {
     const docRef = await addDoc(this.getReplyRef(), message.toJSON(message));
     const docRefId = docRef.id;
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`, docRefId), { messageId: docRefId });
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`, docRefId), { messageId: docRefId });
   }
 
 
@@ -157,9 +180,9 @@ export class ChatService {
     debugger
     let path;
     if (reply) {
-      path = `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`
+      path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
     } else {
-      path = `channel/${this.currentChannel}/messages`
+      path = `channel/${this.currentChannel$.value}/messages`
     }
     const messageRef = doc(this.firestore, path, messageId);
     const docSnap = await getDoc(messageRef);
@@ -245,7 +268,7 @@ export class ChatService {
   }
 
   getChannelMessagesRef() {
-    return collection(this.firestore, `channel/${this.currentChannel}/messages`)
+    return collection(this.firestore, `channel/${this.currentChannel$.value}/messages`)
   }
 
 
@@ -254,7 +277,7 @@ export class ChatService {
   }
 
   getDirectMessagesRef() {
-    return collection(this.firestore, `directMessages/${this.currentChannel}/messages`)
+    return collection(this.firestore, `directMessages/${this.currentChannel$.value}/messages`)
   }
 
 
@@ -263,6 +286,6 @@ export class ChatService {
   }
 
   getReplyRef() {
-    return collection(this.firestore, `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`)
+    return collection(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`)
   }
 }

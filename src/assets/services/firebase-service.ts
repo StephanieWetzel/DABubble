@@ -101,7 +101,8 @@ export class FirebaseService {
     onSnapshot(roomRef,(docSnap) => {
       if (docSnap.exists()) {
         console.log('Room exists: ', docSnap.data())
-        this.chatService.currentChannel = docSnap.data()['id'];
+        this.chatService.isChannel = false;
+        this.chatService.currentChannel$.next(docSnap.data()['id']);
       }else {
         console.log('Room doesnt exist, will be created soon');
         const transformedRoomData = new DirectMessage(this.transformDmRoom(currentUserID, otherUserID, roomId));

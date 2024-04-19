@@ -185,8 +185,7 @@ export class SidenavContentComponent {
   openChannel(channelID: string) {
     // logik open channel 
     console.log("Channel with ID:", channelID, ' opened.')
-    this.chatService.currentChannel = channelID;
-    this.chatService.getChannelMessages();
+    this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
   }
 
@@ -197,7 +196,7 @@ export class SidenavContentComponent {
   openDM(userId:string) {
     const roomId = this.generateRoomId(this.currentUser, userId);
     this.firestore.checkIfRoomExists(roomId, this.currentUser, userId);
-    this.chatService.currentChannel = roomId;
+    this.chatService.currentChannel$.next(roomId);
     this.chatService.setCurrenDmPartner(userId);
     this.chatService.setIsDmRoom(true);
     //this.chatService.getMessages();
