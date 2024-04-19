@@ -1,5 +1,5 @@
 import { CommonModule, NgIf, NgClass, NgStyle } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, HostListener } from '@angular/core';
 import {
   FormGroup,
   Validators,
@@ -50,12 +50,29 @@ export class LoginComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
 
+  containerWidth: number;
+  containerHeight: number;
+
 
   constructor(
     private fbuilder: FormBuilder,
     private auth: AuthenticationService,
     private router: Router
-  ) { }
+  ) {
+    this.containerWidth = window.innerWidth;
+    this.containerHeight = window.innerHeight;
+  }
+
+
+  /**
+ * Updates the container width on window resize.
+ * @param event - The event object for the resize event.
+ */
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.containerWidth = event.target.innerWidth;
+    this.containerHeight = event.target.innerHeight;
+  }
 
 
   /**
@@ -111,7 +128,7 @@ export class LoginComponent {
       const userRef = doc(this.firestore, "user", result.user.uid);
       const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
       await updateDoc(channelRef, {
-        member: arrayUnion({ id: transformedData.userId, name: transformedData.name})
+        member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
       })
       await setDoc(userRef, transformedData);
       this.router.navigate(['/main']);
