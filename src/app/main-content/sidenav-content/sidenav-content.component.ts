@@ -186,7 +186,7 @@ export class SidenavContentComponent {
     // logik open channel 
     console.log("Channel with ID:", channelID, ' opened.')
     this.chatService.currentChannel = channelID;
-    this.chatService.getMessages();
+    this.chatService.getChannelMessages();
     this.chatService.setIsDmRoom(false);
   }
 

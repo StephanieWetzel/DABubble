@@ -29,11 +29,24 @@ export class ChatService {
 
   replyCount = new BehaviorSubject<number>(0); // initialer Wert
   replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
-  currentUser! : User;
+  currentUser!: User;
   userInitialized = new BehaviorSubject<boolean>(false);
 
-  constructor( private profileAuth: ProfileAuthentication) {
+  isChannel = true;
+
+
+
+  // unsubChannels!: Unsubscribe;
+  // unsubDirectMessages!: Unsubscribe;
+  // unsubReplies!: Unsubscribe;
+
+  constructor(private profileAuth: ProfileAuthentication) {
     this.initializeUserAndMessages();
+    this.safeUsers();
+  }
+
+  safeUsers() {
+
   }
 
 
@@ -42,10 +55,11 @@ export class ChatService {
       if (user) {
         this.currentUser = new User(user);
         this.userInitialized.next(true);
-        this.getMessages();
+        this.getChannelMessages();
       }
     });
-  }  
+  }
+
   setCurrenDmPartner(value: string) {
     this.dmPartnerID.next(value);
   }
@@ -55,19 +69,34 @@ export class ChatService {
   }
 
   async addMessage(message: Message) {
-    const docRef = await addDoc(this.getMessagesRef(), message.toJSON(message));
-    const docRefId = docRef.id;
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
+    if(this.isChannel){
+      const docRef = await addDoc(this.getChannelMessagesRef(), message.toJSON(message));
+      const docRefId = docRef.id;
+      await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
+    }else{
+      const docRef = await addDoc(this.getDirectMessagesRef(), message.toJSON(message));
+      const docRefId = docRef.id;
+      await updateDoc(doc(this.firestore, `directMessages/${this.currentChannel}/messages`, docRefId), { messageId: docRefId });
+    }
   }
 
 
-  getMessages() {
-    onSnapshot(this.getMessagesQ(), (list) => {
+  getChannelMessages() {
+    let ref;
+    if (this.isChannel) {
+      ref = this.getChannelMessagesQ();
+    } else {
+      ref = this.getDirectMessagesQ();
+    }
+    onSnapshot(ref, (list) => {
       this.messages = [];
       this.messages = this.loadMessages(list);
-      this.messageCount.next(this.messages.length)
+      console.log(this.currentChannel);
+      console.log(this.messages);
+      this.messageCount.next(this.messages.length);
     })
   }
+
 
   getReplies() {
     onSnapshot(this.getRepliesQ(), (list) => {
@@ -77,7 +106,7 @@ export class ChatService {
     })
   }
 
-  loadMessages(list: QuerySnapshot<DocumentData>){
+  loadMessages(list: QuerySnapshot<DocumentData>) {
     let temporaryMessages: Message[] = [];
     list.forEach(doc => {
       let message = new Message({ ...doc.data() })
@@ -87,13 +116,13 @@ export class ChatService {
     return temporaryMessages
   }
 
-  async editMessage(messageId: string, input: string){
-    console.log(input); 
+  async editMessage(messageId: string, input: string) {
+    console.log(input);
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages`, messageId), { content: input });
   }
 
 
-  async addReply(message: Message){
+  async addReply(message: Message) {
     const docRef = await addDoc(this.getReplyRef(), message.toJSON(message));
     const docRefId = docRef.id;
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`, docRefId), { messageId: docRefId });
@@ -124,10 +153,10 @@ export class ChatService {
   }
 
 
-  async reactOnMessage(messageId: string, emote: string, user: string, reply:boolean) {
+  async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
     debugger
     let path;
-    if(reply){
+    if (reply) {
       path = `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`
     } else {
       path = `channel/${this.currentChannel}/messages`
@@ -210,27 +239,30 @@ export class ChatService {
     return reactionIndex
   }
 
-  getMessagesQ() {
-    return query(this.getMessagesRef(), orderBy('time', 'asc'));
+
+  getChannelMessagesQ() {
+    return query(this.getChannelMessagesRef(), orderBy('time', 'asc'));
   }
+
+  getChannelMessagesRef() {
+    return collection(this.firestore, `channel/${this.currentChannel}/messages`)
+  }
+
 
   getDirectMessagesQ() {
     return query(this.getDirectMessagesRef(), orderBy('time', 'asc'));
   }
 
+  getDirectMessagesRef() {
+    return collection(this.firestore, `directMessages/${this.currentChannel}/messages`)
+  }
+
+
   getRepliesQ() {
     return query(this.getReplyRef(), orderBy('time', 'asc'));
   }
 
-  getDirectMessagesRef() {
-    return collection(this.firestore, `channel/${this.currentChannel}/messages`)
-  }
-
-  getMessagesRef() {
-    return collection(this.firestore, `channel/${this.currentChannel}/messages`)
-  }
-
-  getReplyRef(){
+  getReplyRef() {
     return collection(this.firestore, `channel/${this.currentChannel}/messages/${this.messageIdReply}/replies`)
   }
 }
