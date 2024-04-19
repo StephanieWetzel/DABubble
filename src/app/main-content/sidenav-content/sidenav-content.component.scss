@@ -79,6 +79,10 @@
 }
 .mat-expansion-panel-body {
   padding: 0px !important;
+  height: auto;
+  max-height: 600px;
+  padding-bottom: 24px;
+  overflow-y: auto;
 }
 
 .list {

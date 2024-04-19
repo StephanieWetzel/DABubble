@@ -7,6 +7,11 @@ export class Channel {
     messages: any[];
     createdAt: any;
 
+    /**
+     * Constructs a new instance of the channel class
+     * @param {any} obj - An object containing values used to initialize the channel properties.
+     *                    if not provided, defaults will be set.
+     */
     constructor(obj?:any){
         this.name = obj ? obj.name : '',
         this.channelId = obj ? obj.channelId: '',
@@ -16,6 +21,10 @@ export class Channel {
         this.createdAt = obj ? obj.createdAt: new Date().getTime();
     }
 
+    /**
+     * Converts the channel instance to a JSON representation.
+     * @returns {object} An object containing the properties of the channel.
+     */
     toJSON() {
         return {
             name: this.name,

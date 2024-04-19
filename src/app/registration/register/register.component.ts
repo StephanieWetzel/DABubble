@@ -10,7 +10,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from '../../../assets/models/user.class';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, arrayUnion, doc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
 
 @Component({
@@ -39,6 +39,7 @@ export class RegisterComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
   isHovered: boolean = false;
+  developerChannelId: string = 'pSBwciqiaOgtUayZaIgj'
 
   constructor(
     private fbuilder: FormBuilder,
@@ -82,6 +83,10 @@ export class RegisterComponent {
           const transformedData = this.transformSignUpData(this.formData, userAuth.uid)
           const user = new User(transformedData);
           const userRef = doc(this.firestore, "user", userAuth.uid);
+          const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
+          updateDoc(channelRef, {
+            member: arrayUnion({ id: user.userId , name: user.name})
+          })
           setDoc(userRef, user.toJSON());
           this.router.navigate(['/chooseAvatar/' + userAuth.uid]);
         })

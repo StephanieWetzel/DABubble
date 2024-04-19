@@ -15,9 +15,10 @@ import { ProfileAuthentication } from '../../assets/services/profileAuth.service
     MatInputModule,
     MatFormFieldModule,
     MatIcon,
-    ProfileDialogComponent],
+    ProfileDialogComponent,
+  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   isProfilMenuOpen: boolean = false;
@@ -25,22 +26,29 @@ export class HeaderComponent {
   user: User | null = null;
   currentUserID: string | any;
 
-  constructor(
-    private profileAuth: ProfileAuthentication
-  ) { }
+  constructor(private profileAuth: ProfileAuthentication) {}
 
-
+  /**
+   * Initializes the component by fetching and subscribing to the user data from the authentication service.
+   */
   ngOnInit() {
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
       this.user = user;
-    })
+    });
   }
 
+  /**
+   * Logs out the current user using the authentication service.
+   */  
   logout() {
     this.profileAuth.userLogout();
   }
 
+  /**
+   * Closes the profile menu if a click occurs outside of it.
+   * @param {MouseEvent} event - The mouse event that triggered this method.
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const profileMenuElement = document.getElementById('profileMenu');
@@ -51,7 +59,9 @@ export class HeaderComponent {
     }
   }
 
-
+  /**
+   * Toggles the visibility of the profile menu.
+   */
   openProfileMenu() {
     if (this.isProfilMenuOpen) {
       this.isProfilMenuOpen = false;
@@ -62,19 +72,22 @@ export class HeaderComponent {
     }
   }
 
-
+   /**
+   * Opens the profile edit view and closes the profile menu.
+   */
   openProfile() {
     this.isProfileEditOpen = true;
     this.isProfilMenuOpen = false;
   }
 
-
+  /**
+   * Handles navigation back from the profile edit view to the profile menu.
+   * @param {boolean} profileMenu - Indicates whether to open the profile menu after closing the edit view.
+   */
   userWantsBackEvent(profileMenu: boolean) {
     this.isProfileEditOpen = false;
     setTimeout(() => {
       this.isProfilMenuOpen = profileMenu;
     }, 20);
   }
-
-
 }

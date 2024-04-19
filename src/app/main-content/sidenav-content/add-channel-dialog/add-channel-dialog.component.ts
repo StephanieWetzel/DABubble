@@ -22,6 +22,9 @@ export class AddChannelDialogComponent {
     })
   }
 
+  /**
+   * Handles the closure of the dialog, returning the selected option.
+   */   
   onClose(): void {
     if (this.firstDialogGroup.valid) {
       this.dialogRef.close(this.firstDialogGroup.value)
