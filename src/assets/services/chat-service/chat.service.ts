@@ -32,6 +32,8 @@ export class ChatService {
   currentUser!: User;
   userInitialized = new BehaviorSubject<boolean>(false);
 
+  users: User[] = [];
+
   isChannel = true;
 
 
@@ -104,13 +106,15 @@ export class ChatService {
 
   updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
-    if (!this.currentChannel$.value) {
+    if (!this.currentChannel$.value && this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
     }
     if (this.unsubscribe) {
       this.unsubscribe();
     }
+    console.log('users in the chat service:', this.users);
+    
     this.unsubscribe = onSnapshot(ref, (snapshot) => {
       this.messages = snapshot.docs.map(doc => doc.data() as Message);
       console.log(this.currentChannel$.value);

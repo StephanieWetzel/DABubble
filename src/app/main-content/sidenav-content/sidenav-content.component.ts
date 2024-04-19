@@ -7,7 +7,7 @@ import { AddChannelDialogComponent } from "./add-channel-dialog/add-channel-dial
 import { SecondAddChannelDialogComponent } from './second-add-channel-dialog/second-add-channel-dialog.component';
 import { DialogRef } from '@angular/cdk/dialog';
 import { Channel } from '../../../assets/models/channel.class';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject  } from 'rxjs';
 import { User } from '../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../assets/services/profileAuth.service';
 import { ChatService } from '../../../assets/services/chat-service/chat.service';
@@ -57,12 +57,14 @@ export class SidenavContentComponent {
   fetchNavContent(channelCollId: string, userColId: string, orderByField: string, orderDirection: 'asc' | 'desc') {
     this.unsubChannels = this.firestore.fetchCollection(channelCollId, orderByField, orderDirection).subscribe((channels) => {
       this.fetchedChannels = channels.filter(channel => channel.member.some((member: { id: string; }) => member.id === this.currentUser));
-      console.log(this.fetchedChannels)
+      console.log(this.fetchedChannels);
+      
     });
     this.unsubUsers = this.firestore.fetchCollection(userColId).subscribe((users) => {
       this.fetchedUser = this.prioritizeCurrentUser(users, this.currentUser);
       this.attachStateToUsers(this.fetchedUser);
       console.log(this.fetchedUser)
+      this.chatService.users = this.fetchedUser
     });
   }
 

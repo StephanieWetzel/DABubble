@@ -17,7 +17,7 @@
         </div>
         <div class="message-container" *ngIf="editingMessageId != message.messageId" [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
             <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
-                <span class="name">{{ message.sendId }} </span>
+                <span class="name">{{ getUserName(message.sendId) }} </span>
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
             <div class="message-content" [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">

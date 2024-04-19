@@ -214,9 +214,11 @@ export class MessagesComponent implements AfterViewInit {
       // Additional debugging information
       console.error('Failed URL:', url);
     }
+  }
 
-
-    
+  getUserName(sendId: string): string {
+    const user = this.chatService.users.find(user => user.userId === sendId);
+    return user ? user.name : 'Noah Braun'; 
   }
   // sendIdToName(id: string){
   //   this.chatService.getUser(id);

@@ -35,6 +35,7 @@ export class ProfileAuthentication {
             console.log('No such user lul', error);
         })
     }
+
     /**
      * Checks for the current authenticated user and returns their user ID.
      * @returns {Promise<string>} - A promise that resolves with the user ID of the currently logged-in user.
@@ -66,6 +67,8 @@ export class ProfileAuthentication {
             if (userSnap.exists()) {
                 const user = userSnap.data() as User;
                 this.userSubject.next(user);
+                console.log(user);
+                
             } else {
                 this.userSubject.next(null);
             }
