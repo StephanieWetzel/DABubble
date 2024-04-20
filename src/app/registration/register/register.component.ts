@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormGroup,
@@ -41,11 +41,27 @@ export class RegisterComponent {
   isHovered: boolean = false;
   developerChannelId: string = 'pSBwciqiaOgtUayZaIgj'
 
+  containerWidth: number;
+  containerHeight: number;
+
   constructor(
     private fbuilder: FormBuilder,
     public auth: AuthenticationService,
-    private router: Router) {
+    private router: Router
+  ) {
+    this.containerWidth = window.innerWidth;
+    this.containerHeight = window.innerHeight;
+  }
 
+
+  /**
+* Updates the container width on window resize.
+* @param event - The event object for the resize event.
+*/
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.containerWidth = event.target.innerWidth;
+    this.containerHeight = event.target.innerHeight;
   }
 
 
@@ -85,7 +101,7 @@ export class RegisterComponent {
           const userRef = doc(this.firestore, "user", userAuth.uid);
           const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
           updateDoc(channelRef, {
-            member: arrayUnion({ id: user.userId , name: user.name})
+            member: arrayUnion({ id: user.userId, name: user.name })
           })
           setDoc(userRef, user.toJSON());
           this.router.navigate(['/chooseAvatar/' + userAuth.uid]);

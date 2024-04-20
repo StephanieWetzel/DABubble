@@ -22,15 +22,25 @@
             animation: textAnimation 2s forwards;
             animation-delay: 1s;
             opacity: 0;
+
+            @media (max-width: 600px) {
+                font-size: 48px;
+            }
         }
 
         img {
             height: 200px;
             width: auto;
+            // position: absolute;
             animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
+
+            @media (max-width: 600px) {
+                height: 88px;
+            }
         }
     }
 }
+
 
 @keyframes imageAnimation {
     0% {
@@ -45,6 +55,8 @@
         transform: translateX(0%); // Bild bleibt an der linken Position stehen
     }
 }
+
+
 
 @keyframes imageUpAnimation {
     0% {
