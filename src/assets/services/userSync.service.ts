@@ -9,7 +9,7 @@ import { Firestore } from "@angular/fire/firestore";
 export class UserSync {
 
     private timeOutID: any;
-    private inactivityTime: number = 0.5 * 10 * 1000; // 0,5 min inactivity
+    private inactivityTime: number = 100 * 10 * 1000; // 5 sec inactivity
 
     constructor(private firestore: Firestore, public realTimeDB: Database ){}
     /**

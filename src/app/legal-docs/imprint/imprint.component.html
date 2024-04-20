@@ -1,0 +1,25 @@
+<div class="main-container">
+    <div class="header-container">
+        <img src="assets/img/logo-header_complete.svg" alt=""
+            [ngStyle]="{'height': containerHeight <= 700 ? '48px' : ''}">
+    </div>
+
+    <div class="imprint-container">
+        <div class="imprint-content">
+            <img (click)="goBack()" [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
+                (mouseover)="isHovered = true" (mouseout)="isHovered = false" src="assets/img/goBack_unfocused.svg"
+                alt="">
+            <div class="imprint">
+                <h2 class="headline">Impressum:</h2>
+                <span>Stephanie Wetzel, Henrik Sorg, Sebastian Wolff</span>
+                <span>Klosterberg 2</span>
+                <span>06577 An der Schmücke</span>
+            </div>
+            <div class="contact">
+                <h2 class="headline">Kontakt:</h2>
+                <span>E-Mail: bastiwolff432&#64;gmail.com</span>
+            </div>
+
+        </div>
+    </div>
+</div>
