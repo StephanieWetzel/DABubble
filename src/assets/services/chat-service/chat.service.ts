@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
 import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
@@ -12,7 +12,7 @@ import { User } from '../../models/user.class';
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService {
+export class ChatService implements OnDestroy {
   private firestore: Firestore = inject(Firestore);
   emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
   showReply: boolean = false;
@@ -39,12 +39,17 @@ export class ChatService {
 
 
   unsubscribe!: Unsubscribe;
+  unsubreplies!: Unsubscribe;
   // unsubDirectMessages!: Unsubscribe;
   // unsubReplies!: Unsubscribe;
 
   constructor(private profileAuth: ProfileAuthentication) {
     this.initializeUserAndMessages();
     this.safeUsers();
+  }
+  ngOnDestroy(): void {
+    this.unsubreplies();
+    this.unsubscribe();
   }
 
   safeUsers() {
@@ -86,27 +91,9 @@ export class ChatService {
     }
   }
 
-
-  // getChannelMessages() {
-  //   let ref;
-  //   if (this.currentChannel.length <= 25) {
-  //     ref = this.getChannelMessagesQ();
-  //   } else {
-  //     ref = this.getDirectMessagesQ();
-  //   }
-  //   onSnapshot(ref, (list) => {
-  //     this.messages = [];
-  //     this.messages = this.loadMessages(list);
-  //     console.log(this.currentChannel);
-  //     console.log(this.messages);
-  //     this.messageCount.next(this.messages.length);
-  //   })
-  // }
-
-
   updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
-    if (!this.currentChannel$.value && this.users) {
+    if (!this.currentChannel$.value && !this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
     }
@@ -120,13 +107,11 @@ export class ChatService {
       console.log(this.currentChannel$.value);
       console.log(this.messages);
       this.messageCount.next(this.messages.length);
-    }, error => {
-      console.error("Fehler beim Abrufen der Nachrichten:", error);
-    });
+    },);
   }
 
   getReplies() {
-    onSnapshot(this.getRepliesQ(), (list) => {
+    this.unsubreplies = onSnapshot(this.getRepliesQ(), (list) => {
       this.replies = [];
       this.replies = this.loadMessages(list);
       this.replyCount.next(this.replies.length)
