@@ -4,6 +4,8 @@ import { RegisterComponent } from './registration/register/register.component';
 import { ResetPasswordComponent } from './registration/reset-password/reset-password.component';
 import { ChooseAvatarComponent } from './registration/register/choose-avatar/choose-avatar.component';
 import { MainContentComponent } from './main-content/main-content.component';
+import { ImprintComponent } from './legal-docs/imprint/imprint.component';
+import { PPolicyComponent } from './legal-docs/p-policy/p-policy.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -11,7 +13,7 @@ export const routes: Routes = [
     { path: 'registration', component: RegisterComponent },
     { path: 'resetPassword', component: ResetPasswordComponent },
     { path: 'chooseAvatar/:id', component: ChooseAvatarComponent },
-    // { path: 'imprint', component: ... },
-    // { path: 'privacyPolicy', component: ... },
+    { path: 'imprint', component: ImprintComponent },
+    { path: 'privacyPolicy', component: PPolicyComponent},
     { path: '**', redirectTo: '' }
 ];
