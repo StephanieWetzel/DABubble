@@ -4,6 +4,16 @@
   @include dFlex(space-between);
   padding: 32px 30px 0px 30px;
   margin-bottom: 25px;
+  @media(max-width: 820px) {
+    // padding-left: 4px;
+    // padding-right: 0;
+    // justify-content: flex-start;
+  }
+  > img {
+    @media(max-width: 820px) {
+      // margin-left: 46px;
+    }
+  }
   > div {
     @include dFlex(flex-start, center, 16px, row);
     > h3 {
@@ -19,6 +29,9 @@
 .nav-channels {
   @include dFlex(space-between, flex-start);
   padding: 0px 0px 0px 30px;
+  @media(max-width: 820px) {
+    // padding-left: 4px;
+  }
 }
 
 .add-channel-head {
@@ -164,6 +177,10 @@
 .nav-direct-messages {
   @include dFlex(space-between, center);
   padding: 20px 30px 0px 30px;
+  @media(max-width: 820px) {
+    // padding-right: 0;
+    // padding-left: 4px;
+  }
 }
 
 /*Material Icons CSS*/

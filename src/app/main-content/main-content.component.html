@@ -1,5 +1,5 @@
 <div class="content">
-  <div class="drawer-toggle-btn bottom-br32" type="button" (click)="drawer.toggle(); toggleDrawerVar()">
+  <div *ngIf="screenWidth > 820" class="drawer-toggle-btn bottom-br32" type="button" (click)="drawer.toggle(); toggleDrawerVar()">
     <div class="drawer-button-content bottom-br32">
       <span>{{ isDrawerOpen ? 'Workspace-Menü schließen' : 'Workspace-Menü öffnen'}}</span>
       <div class="hide-navigation-icon">
@@ -24,12 +24,12 @@
     <app-header></app-header>
   </mat-toolbar>
   <mat-drawer-container class="mat-drawer-container" autosize>
-    <mat-drawer #drawer class="sidenav-container" mode="side" [opened]=true>
-      <div class="sidenav">
-        <app-sidenav-content></app-sidenav-content>
+    <mat-drawer #drawer class="sidenav-container" mode="side" [opened]="isDrawerOpen">
+      <div *ngIf="!isChannelOpen || screenWidth > 820" class="sidenav">
+        <app-sidenav-content (closeSidenav)="toggleDrawer(false)"></app-sidenav-content>
       </div>
     </mat-drawer>
-    <div class="main-content-container">
+    <div *ngIf="isChannelOpen || screenWidth > 820" class="main-content-container">
       <div class="main-content">
         <div class="router-container">
           <app-chat></app-chat>
