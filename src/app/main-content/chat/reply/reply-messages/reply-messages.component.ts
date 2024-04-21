@@ -14,7 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
     selector: 'app-reply-messages',
     standalone: true,
     templateUrl: './reply-messages.component.html',
-    styleUrl: './reply-messages.component.scss',
+    styleUrl: './../../messages/messages.component.scss',
     imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule]
 })
 export class ReplyMessagesComponent implements AfterViewInit, OnInit{

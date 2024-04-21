@@ -235,6 +235,10 @@ section {
 
 }
 
+.initial-message{
+    @include dFlex($fd: column)
+}
+
 .info {
     margin-bottom: 8px;
     @include dFlex($g: 20px);
@@ -272,7 +276,7 @@ section {
 
 .reactions {
     @include dFlex($jc: flex-start, $g: 12px);
-    margin: 12px 0;
+    margin: 12px 90px;
 
     .reaction-container {
         @include dFlex($g: 8px);
@@ -377,7 +381,9 @@ ul {
     li {
         padding: 12px 4px;
         list-style-type: none;
-
+        padding-inline-start: 40px;
+        margin-block-start: 0;
+        margin-block-end: 0;
         &:hover {
             background-color: $bgPage;
             cursor: pointer;
