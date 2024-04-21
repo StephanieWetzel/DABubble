@@ -2,7 +2,38 @@
 
 section {
     padding: 20px 0;
-    max-height: 400px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.no-message-container{
+    height: 100%;
+    box-sizing: border-box;
+    padding: 0 40px;
+    @include dFlex($ai: flex-start, $jc: flex-end, $g: 16px, $fd:column);
+    p{
+        margin-top: 24px;
+        margin-bottom: 16px;
+        color: #686868;
+        span{
+            color: #535AF1;
+        }
+    }
+}
+
+.other-user-container{
+    img{
+        height: 100px;
+        width: 100px;
+        border-radius: 100px;
+        margin-right: 16px;
+    }    
+    span{
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    
 }
 
 .message {
@@ -177,7 +208,6 @@ section {
     @include dFlex();
     padding: 0 !important;
 }
-
 
 .hands {
     margin-bottom: 2px;

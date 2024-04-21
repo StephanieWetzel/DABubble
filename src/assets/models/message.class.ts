@@ -8,6 +8,7 @@ export class Message{
     messageId : string;
     reactions: Reaction[];
     fileUrls: string[];
+    replies: Message[];
 
     constructor(obj?: any){
         this.sendId = obj ? obj.sendId : '';
@@ -17,6 +18,7 @@ export class Message{
         this.messageId = obj ? obj.messageId : '';
         this.reactions = obj ? obj.reactions : [];
         this.fileUrls = obj ? obj.fileUrls : []
+        this.replies = obj ? obj.replies : []
     }
 
 

@@ -1,4 +1,13 @@
 <section #chatContainer>
+    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.users.length > 0">
+        <div class="other-user-container">
+            <img [src]="getOtherUserImg()" alt="">
+            <span>{{ getOtherUserName() }}</span>
+        </div>
+        <p>
+            Diese Unterhaltung findet nur zwischen <span>&#64;{{ getOtherUserName() }}</span> und dir statt.
+        </p>
+    </div>
     <div *ngFor="let message of getList(); let i = index" class="message">
         <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
@@ -12,7 +21,6 @@
                     <button (click)="safeMessage(false)" class="break-btn">Abbrechen</button>
                     <button (click)="safeMessage(true, message.messageId)" class="safe-btn">Speichern</button>
                 </div>
-                
             </div>
         </div>
         <div class="message-container" *ngIf="editingMessageId != message.messageId" [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
@@ -29,8 +37,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="reactions" *ngIf="message.reactions">
                 <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)"
                     class="reaction-container">
@@ -52,9 +58,11 @@
                     </ul>
                 </mat-menu>
             </div>
-            <div class="answers">
-                <span class="a-count" (click)="showReply(message.messageId)">2 Antworten</span>
-                <span class="last">Letzte Antwort 14:56</span>
+            <div class="answers" *ngIf="message.replies.length != 0">
+                <span class="a-count" (click)="showReply(message.messageId)">
+                    {{ message.replies.length }} Antwort{{ message.replies.length === 1 ? '' : 'en' }}
+                </span>
+                <span class="last">Letzte Antwort {{ getLastReplyTime(message.replies) | customTime }}</span>
             </div>
             <div class="options-container" [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
                 <div (click)="addReaction(message.messageId, '✅')">

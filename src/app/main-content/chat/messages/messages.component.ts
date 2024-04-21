@@ -107,6 +107,14 @@ export class MessagesComponent implements AfterViewInit {
     });
   }
 
+  getLastReplyTime(replies: any[]): number {
+    if (!replies || replies.length === 0) return 0;
+    const lastReply = replies.reduce((latest, reply) => {
+      return latest.time > reply.time ? latest : reply;
+    });
+    return lastReply.time;  
+  }
+
   editMessage(id:string, content: string){
     this.closeEditor();
     this.editingMessageId = id;
@@ -220,6 +228,27 @@ export class MessagesComponent implements AfterViewInit {
     const user = this.chatService.users.find(user => user.userId === sendId);
     return user ? user.name : 'Noah Braun'; 
   }
+
+  getOtherUserImg(){
+    if(this.chatService.currentUser.userId){
+      const ids = this.chatService.currentChannel$.value.split('_')
+      const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
+      const user = this.chatService.users.find(user => user.userId === userId);
+      return user ? user.avatar : 'Noah Braun';
+    } else{
+      return 'Sebastian Braun'
+    }
+    
+  }
+
+  getOtherUserName(){
+    const ids = this.chatService.currentChannel$.value.split('_')
+    const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
+    const user = this.chatService.users.find(user => user.userId === userId);
+    return user ? user.name : 'Noah Braun';
+  }
+
+
   // sendIdToName(id: string){
   //   this.chatService.getUser(id);
   // }

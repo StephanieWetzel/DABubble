@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
 import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
-import { getFirestore, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
+import { getFirestore, getDocs, DocumentReference, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reactions.class';
@@ -17,7 +17,7 @@ export class ChatService implements OnDestroy {
   emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
   showReply: boolean = false;
   messageIdReply = '';
-  messages: Message[] = [];
+  messages: any[] = [];
   replies: Message[] = [];
   currentChannel$: BehaviorSubject<string> = new BehaviorSubject<string>('5fHcCmtyJtEnYzrdngTd');
   messageCount = new BehaviorSubject<number>(0); // initialer Wert
@@ -52,6 +52,7 @@ export class ChatService implements OnDestroy {
     this.unsubscribe();
   }
 
+
   safeUsers() {
 
   }
@@ -71,13 +72,16 @@ export class ChatService implements OnDestroy {
     });
   }
 
+
   setCurrenDmPartner(value: string) {
     this.dmPartnerID.next(value);
   }
 
+
   setIsDmRoom(value: boolean) {
     this.isDmRoom.next(value);
   }
+
 
   async addMessage(message: Message) {
     if(this.isChannel){
@@ -91,6 +95,29 @@ export class ChatService implements OnDestroy {
     }
   }
 
+  async getRepliesLength(){
+    await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
+  }
+
+  // updateMessages() {
+  //   const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
+  //   if (!this.currentChannel$.value && !this.users) {
+  //     console.error("currentChannel$ ist undefined.");
+  //     return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
+  //   }
+  //   if (this.unsubscribe) {
+  //     this.unsubscribe();
+  //   }
+  //   console.log('users in the chat service:', this.users);
+  //   this.unsubscribe = onSnapshot(ref, (snapshot) => {
+  //     this.messages = snapshot.docs.map(doc => doc.data() as Message);
+  //     console.log(this.currentChannel$.value);
+  //     console.log(this.messages);
+  //     this.messageCount.next(this.messages.length);
+  //   },);
+  // }
+
+
   updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
     if (!this.currentChannel$.value && !this.users) {
@@ -101,14 +128,21 @@ export class ChatService implements OnDestroy {
       this.unsubscribe();
     }
     console.log('users in the chat service:', this.users);
-    
-    this.unsubscribe = onSnapshot(ref, (snapshot) => {
-      this.messages = snapshot.docs.map(doc => doc.data() as Message);
+    this.unsubscribe = onSnapshot(ref, async (snapshot) => {
+      const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
+        const messageData = new Message(doc.data() as Message);
+        const repliesRef = collection(doc.ref, 'replies'); // Verwende die collection Methode von Firestore direkt
+        const repliesSnapshot = await getDocs(repliesRef);
+        const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
+        return { ...messageData, replies };  // Fügt die Replies zur Message hinzu
+      }));
+      this.messages = messagesWithReplies ;
       console.log(this.currentChannel$.value);
       console.log(this.messages);
       this.messageCount.next(this.messages.length);
-    },);
+    });
   }
+
 
   getReplies() {
     this.unsubreplies = onSnapshot(this.getRepliesQ(), (list) => {
