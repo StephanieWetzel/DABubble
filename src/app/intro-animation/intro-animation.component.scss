@@ -27,11 +27,9 @@
             animation-delay: 1s;
             opacity: 0;
 
-            @media (max-width: 700px) {
-                font-size: 56px;
-            }
-
-            @media (max-width: 500px) {
+            @media (max-width: 600px) {
+                animation: textAnimationMobile 2s forwards;
+                animation-delay: 1s;
                 font-size: 40px;
             }
         }
@@ -42,14 +40,9 @@
             // position: absolute;
             animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
 
-            @media (max-width: 700px) {
-                height: 120px;
-                animation: imageUpAnimationMax600 0.6s 2.4s;
-            }
-
-            @media (max-width: 500px) {
+            @media (max-width: 600px) {
+                animation: imageAnimation 1s, imageUpAnimationMobile 0.6s 2.4s;
                 height: 80px;
-                animation: imageUpAnimationMax600 0.6s 2.4s;
             }
         }
     }
@@ -62,15 +55,15 @@
 
 @keyframes imageAnimation {
     0% {
-        transform: translateX(100%); // Startposition des Bildes (nicht verschoben)
+        transform: translateX(100%); // starting position
     }
 
     50% {
-        transform: translateX(100%); // Startposition des Bildes (nicht verschoben)
+        transform: translateX(100%); // starting position
     }
 
     100% {
-        transform: translateX(0%); // Bild bleibt an der linken Position stehen
+        transform: translateX(0%); // img stops left
     }
 }
 
@@ -88,26 +81,22 @@
 
 @keyframes imageUpAnimation {
     0% {
-        /* Startposition des Bildes */
-        transform: translateX(0) translateY(0) scale(1);
+        transform: translateX(0) translateY(0) scale(1); // starting position
     }
 
     100% {
-        /* Endposition des Bildes (links oben) */
-        transform: translateX(-300%) translateY(-180%) scale(0.3);
+        transform: translateX(-300%) translateY(-180%) scale(0.3); // final position (upper left)
 
     }
 }
 
-@keyframes imageUpAnimationMax600 {
+@keyframes imageUpAnimationMobile {
     0% {
-        /* Startposition des Bildes */
-        transform: translateY(0) scale(1);
+        transform: translateY(0) scale(1); // starting position
     }
 
     100% {
-        /* Endposition des Bildes (oben) */
-        transform: translateY(-400%) scale(1);
+        transform: translateY(-450%) scale(1); // final position (top center)
     }
 }
 
@@ -124,17 +113,33 @@
 
 @keyframes textAnimation {
     0% {
-        transform: translateX(-100%) scale(1); // Text außerhalb des Bildschirms auf der linken Seite
+        transform: translateX(-100%) scale(1); // text out of sight to the left
     }
 
     70% {
-        opacity: 1; // Text bleibt sichtbar
-        transform: translateX(0%) scale(1); // Text befindet sich hinter dem Bild
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
     }
 
     100% {
-        opacity: 1; // Text bleibt sichtbar
-        transform: translateX(-180%) translateY(-1800%) scale(0.4); // Text schwebt nach links oben zur Ausgangsposition und wird kleiner
+        opacity: 1;
+        transform: translateX(-180%) translateY(-1800%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMobile {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-1800%) scale(0.7); // zooms to final position upper left and gets smaller
     }
 }
 
