@@ -31,7 +31,6 @@ export class ReplyInputBoxComponent {
         const content = this.getInputContent(editor)
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
-        console.log(this.isContentEmpty);
       });
     }
   };

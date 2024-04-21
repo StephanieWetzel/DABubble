@@ -41,7 +41,6 @@ export class InputBoxComponent {
         const content = this.getInputContent(editor)
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
-        console.log(this.isContentEmpty);
       });
     }
   };
@@ -63,28 +62,23 @@ export class InputBoxComponent {
       if(user){
         this.currentUser = new User(user);
       }
-      console.log(this.currentUser);
     })
   }
 
 
   getInputContent(input: any): boolean {
     const content = input.getContent({ format: 'text' }).trim();
-    console.log(content);
     return content;
   }
 
 
   async sendMessage() {
     let data = tinymce.get("inputData")
-    console.log('my data: ', data?.getContent());
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
-      message.sendId = this.currentUser.userId;
-      console.log(message);
-      
+      message.sendId = this.currentUser.userId;      
       for (const file of this.selectedFiles) {
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
@@ -98,7 +92,6 @@ export class InputBoxComponent {
 
 
   openSelectedFile(event: Event){
-    console.log(event);
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       this.selectedFiles.push(input.files[0]);
