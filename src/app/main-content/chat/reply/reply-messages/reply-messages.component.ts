@@ -44,7 +44,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
     ngAfterViewInit() {
         this.subscription.add(this.chatService.messageCount$.subscribe({
           next: (count) => {
-            console.log('Aktualisierte Nachrichtenanzahl:', count);
             this.scrollToBottom();
 
           }

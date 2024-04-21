@@ -64,6 +64,7 @@ export class SidenavContentComponent {
   fetchNavContent(channelCollId: string, userColId: string, orderByField: string, orderDirection: 'asc' | 'desc') {
     this.unsubChannels = this.firestore.fetchCollection(channelCollId, orderByField, orderDirection).subscribe((channels) => {
       this.fetchedChannels = channels.filter(channel => channel.member.some((member: { id: string; }) => member.id === this.currentUser));
+      this.chatService.allChannels = this.fetchedChannels
       console.log(this.fetchedChannels);
       
     });

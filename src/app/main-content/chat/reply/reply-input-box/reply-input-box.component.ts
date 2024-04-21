@@ -31,7 +31,6 @@ export class ReplyInputBoxComponent {
         const content = this.getInputContent(editor)
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
-        console.log(this.isContentEmpty);
       });
     }
   };
@@ -47,7 +46,6 @@ export class ReplyInputBoxComponent {
   }
 
   sendMessage() {
-    debugger
     let replyData = tinymce.get('inputReply');
 
     if (replyData && this.getInputContent(replyData)) {

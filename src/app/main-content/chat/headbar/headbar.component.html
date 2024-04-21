@@ -1,7 +1,7 @@
 <section *ngIf="!isDmRoomOpen">
     <div class="group-name">
         <mat-icon>tag</mat-icon>
-        <span>Entwicklerteam</span>
+        <span>{{ chatService.getChannelName() }}</span>
     </div>
     <div class="group-members">
         <div #dropdownContainer class="dropdown-container">
@@ -16,10 +16,13 @@
                 </div>
                 <div class="group-def">
                     <mat-icon>tag</mat-icon>
-                    <span>Entwicklerteam</span>
+                    <span>{{ chatService.getChannelName() }}</span>
                 </div>
                 <input type="text" placeholder="Name eingeben">
-                <button>Hinzufügen</button>
+                <div class="add-btn-container">
+                    <button>Hinzufügen</button>
+                </div>
+                
             </div>
             <div class="menu-bg" [class.open-menu-bg]="openMenu" (click)="toggleMenu()"></div>
         </div>

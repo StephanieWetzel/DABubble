@@ -22,7 +22,7 @@ export class HeadbarComponent  {
   currentPartner: string = '';
   currentPartnerUser: User | null = null;
 
-  constructor(private chatService: ChatService, private auth: ProfileAuthentication){}
+  constructor(public chatService: ChatService, private auth: ProfileAuthentication){}
 
   ngOnInit() {
     this.chatService.isDmRoom$.subscribe(isOpen => {

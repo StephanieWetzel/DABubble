@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, inject, HostListener } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Firestore, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -26,8 +26,9 @@ export class ChooseAvatarComponent {
   clickedIndex: number = -1;
   selectedAvatarURL: string | any = '';
   userId: string | any = '';
+  name: string | any = '';
 
-  firestore: Firestore = inject(Firestore)
+  firestore: Firestore = inject(Firestore);
 
   containerWidth: number;
   containerHeight: number;
@@ -39,6 +40,7 @@ export class ChooseAvatarComponent {
   ) {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
+      this.getNameFromFirebase(this.userId);
     });
 
     this.containerWidth = window.innerWidth;
@@ -110,6 +112,22 @@ export class ChooseAvatarComponent {
     if (this.clickedIndex !== -1) {
       this.selectedAvatarURL = `assets/img/${chosenAvatar}`;
       this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
+    }
+  }
+
+
+  /**
+ * Retrieves the user name from Firebase based on the provided user ID.
+ * @param {string} userId - The ID of the user whose name is to be retrieved from Firebase.
+ * @returns {Promise<void>} - A promise that resolves when the user name is successfully retrieved.
+ */
+  async getNameFromFirebase(userId: string) {
+    try {
+      const userDoc = await getDoc(doc(this.firestore, "user", userId));
+      if (userDoc.exists()) {
+        this.name = userDoc.data()['name'];
+      }
+    } catch (error) {
     }
   }
 

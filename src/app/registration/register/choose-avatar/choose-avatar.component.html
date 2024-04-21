@@ -16,7 +16,7 @@
                 <img #chosenAvatar id="chosenAvatar" src="assets/img/avatar_default.svg"
                     (mousedown)="changeBackgroundColor()" (mouseup)="resetBackgroundColor()"
                     [ngStyle]="{'background-color': isClicked ? '#ECEEFE' : ''}">
-                <span>Frederik Beck</span>
+                <span>{{name}}</span>
             </div>
 
             <div class="avatar-list-container">

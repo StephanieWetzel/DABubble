@@ -5,6 +5,10 @@ section {
     max-height: 400px;
 }
 
+.initial-message{
+    padding: 30px;
+}
+
 .message {
     width: 100%;
     margin-bottom: 30px;
@@ -22,8 +26,6 @@ section {
     margin-bottom: 8px;
     transition: all .15s;
 }
-
-
 
 .custom-outline-icon {
     color: transparent;
@@ -189,9 +191,11 @@ section {
     padding: 8px 4px !important;
 }
 
+
+
 .info {
     margin-bottom: 8px;
-    @include dFlex($g: 20px);
+    @include dFlex($jc: flex-start, $g: 20px);
 
     .name {
         font-size: 18px;
@@ -367,6 +371,7 @@ ul {
     left: 40px;
     right: unset;
 }
+
 
 // .edit-menu-sender {
 //     display: unset;

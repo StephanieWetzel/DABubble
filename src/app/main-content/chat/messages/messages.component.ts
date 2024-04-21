@@ -81,7 +81,6 @@ export class MessagesComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.subscription.add(this.chatService.messageCount$.subscribe({
       next: (count) => {
-        console.log('Aktualisierte Nachrichtenanzahl:', count);
         this.scrollToBottom();
       }
     }));
@@ -123,7 +122,6 @@ export class MessagesComponent implements AfterViewInit {
     this.closeEditor();
     this.editingMessageId = id;
     this.currentEditingContent = content
-    console.log(this.editingMessageId);    
   }
 
   closeEditor(){
@@ -143,7 +141,6 @@ export class MessagesComponent implements AfterViewInit {
 
   getInputContent(input: any){
     const content = input.getContent({ format: 'text' });
-    console.log(content);
     return content;
   }
   
@@ -166,9 +163,10 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
-  showReply(messageId: string){
+  showReply(message: Message){
+    this.chatService.initialMessageForThread = message;
     this.chatService.showReply = true;
-    this.chatService.messageIdReply = messageId;
+    this.chatService.messageIdReply = message.messageId;
     this.chatService.getReplies();
   }
 
@@ -228,16 +226,13 @@ export class MessagesComponent implements AfterViewInit {
     }
   }
 
-  getUserName(sendId: string): string {
-    const user = this.chatService.users.find(user => user.userId === sendId);
-    return user ? user.name : 'Noah Braun'; 
-  }
+  
 
   getOtherUserImg(){
     const ids = this.chatService.currentChannel$.value.split('_')
     const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
     const user = this.chatService.users.find(user => user.userId === userId);
-    return user ? user.avatar : 'Noah Braun';
+    return user ? user.avatar : 'assets/img/avatar_clean1.png';
   }
 
   getOtherUserName(){

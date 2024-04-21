@@ -7,6 +7,7 @@ import { Reaction } from '../../models/reactions.class';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProfileAuthentication } from '../profileAuth.service';
 import { User } from '../../models/user.class';
+import { Channel } from '../../models/channel.class';
 
 
 @Injectable({
@@ -26,6 +27,7 @@ export class ChatService implements OnDestroy {
   dmPartnerID$ = this.dmPartnerID.asObservable();
   isDmRoom = new BehaviorSubject<boolean>(false);
   isDmRoom$ = this.isDmRoom.asObservable();
+  allChannels: Channel[] = [];
 
   replyCount = new BehaviorSubject<number>(0); // initialer Wert
   replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
@@ -35,6 +37,8 @@ export class ChatService implements OnDestroy {
   users: User[] = [];
 
   isChannel = true;
+
+  initialMessageForThread!: Message;
 
 
 
@@ -70,6 +74,12 @@ export class ChatService implements OnDestroy {
     this.currentChannel$.subscribe(channel => {
       this.updateMessages();
     });
+  }
+
+
+  getUserAvatar(sendId: string){
+    const user = this.users.find(user => user.userId === sendId);
+    return user ? user.avatar : 'assets/img/avatar_clean1.png';
   }
 
 
@@ -127,7 +137,6 @@ export class ChatService implements OnDestroy {
     if (this.unsubscribe) {
       this.unsubscribe();
     }
-    console.log('users in the chat service:', this.users);
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
       const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
         const messageData = new Message(doc.data() as Message);
@@ -137,8 +146,6 @@ export class ChatService implements OnDestroy {
         return { ...messageData, replies };  // Fügt die Replies zur Message hinzu
       }));
       this.messages = messagesWithReplies ;
-      console.log(this.currentChannel$.value);
-      console.log(this.messages);
       this.messageCount.next(this.messages.length);
     });
   }
@@ -163,7 +170,6 @@ export class ChatService implements OnDestroy {
   }
 
   async editMessage(messageId: string, input: string) {
-    console.log(input);
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages`, messageId), { content: input });
   }
 
@@ -181,7 +187,6 @@ export class ChatService implements OnDestroy {
     try {
       const uploadFile = await uploadBytes(storageRef, file);
       const downloadURL: string = await getDownloadURL(uploadFile.ref);
-      console.log('File uploaded and available at', downloadURL);
       return downloadURL;
     } catch (error) {
       console.error("Upload failed", error);
@@ -200,7 +205,6 @@ export class ChatService implements OnDestroy {
 
 
   async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
-    debugger
     let path;
     if (reply) {
       path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
@@ -282,6 +286,11 @@ export class ChatService implements OnDestroy {
   getUserName(sendId: string): string {
     const user = this.users.find(user => user.userId === sendId);
     return user ? user.name : 'Noah Braun'; 
+  }
+
+  getChannelName(){
+    const channel = this.allChannels.find(channel => channel.channelId === this.currentChannel$.value);
+    return channel ? channel.name : 'abc'; 
   }
 
 
