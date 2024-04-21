@@ -47,7 +47,6 @@ export class ReplyInputBoxComponent {
   }
 
   sendMessage() {
-    debugger
     let replyData = tinymce.get('inputReply');
 
     if (replyData && this.getInputContent(replyData)) {

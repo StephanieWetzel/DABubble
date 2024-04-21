@@ -25,7 +25,7 @@
         </div>
         <div class="message-container" *ngIf="editingMessageId != message.messageId" [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
             <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
-                <span class="name">{{ getUserName(message.sendId) }} </span>
+                <span class="name">{{ chatService.getUserName(message.sendId) }} </span>
                 <span class="time">{{ message.time | customTime }}</span>
             </div>
             <div class="message-content" [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
@@ -59,7 +59,7 @@
                 </mat-menu>
             </div>
             <div class="answers" *ngIf="message.replies.length != 0">
-                <span class="a-count" (click)="showReply(message.messageId)">
+                <span class="a-count" (click)="showReply(message)">
                     {{ message.replies.length }} Antwort{{ message.replies.length === 1 ? '' : 'en' }}
                 </span>
                 <span class="last">Letzte Antwort {{ getLastReplyTime(message.replies) | customTime }}</span>
@@ -78,8 +78,8 @@
                         </li>
                     </ul>
                 </mat-menu>
-                <div><mat-icon class="outlined">chat_outline</mat-icon></div>
-                <div class="edit-message-options">
+                <div (click)="showReply(message)"><mat-icon class="outlined">chat_outline</mat-icon></div>
+                <div class="edit-message-options"  *ngIf="isCurrentUserSender(message.sendId)">
                     <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
                     <div class="edit-text" *ngIf="menuEditMessage == true" (click)="editMessage(message.messageId, message.content)">
                         <p>Nachricht bearbeiten</p>

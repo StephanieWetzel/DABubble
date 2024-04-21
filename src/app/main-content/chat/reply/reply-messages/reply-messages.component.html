@@ -1,9 +1,19 @@
 <section #replyContainer>
+    <div class="initial-message" *ngIf="chatService.initialMessageForThread">
+        <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
+            <span class="name">{{ chatService.getUserName(chatService.initialMessageForThread.sendId)  }}</span>
+            <span class="time">{{ chatService.initialMessageForThread.time | customTime }}</span>
+        </div>
+        <div class="message-content" [ngClass]="{'message-content-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
+            <p (ngModel)="currentContent">{{ chatService.initialMessageForThread.content }}</p>
+        </div>
+    </div>
     <div *ngFor="let message of getList(); let i = index" class="message">
         <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
             <span>{{ message.time | customDate }}</span>
-            <div></div>
+            <div>
+            </div>
         </div>
         <!-- <div class="edit-message-container" *ngIf="editingMessageId === message.messageId">
             <div class="edit-message" >
@@ -27,7 +37,7 @@
             </div>
 
 
-            <div class="reactions" *ngIf="message.reactions">
+            <div class="reactions" *ngIf="message.reactions.length > 0">
                 <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)"
                     class="reaction-container">
                     <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>

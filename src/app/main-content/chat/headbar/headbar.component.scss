@@ -78,7 +78,23 @@ section {
         padding: 10px 15px;
         border: #ADB0D9 1px solid;
         border-radius: 30px;
-        width: 100%;
+        width: 90%;
+        margin-top: 16px;
+    }
+}
+
+.add-btn-container{
+    width: 100%;
+    text-align: end;
+    button{
+        color: white;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-size: 18px;
+        background-color: #686868;
     }
 }
 

@@ -166,9 +166,10 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
-  showReply(messageId: string){
+  showReply(message: Message){
+    this.chatService.initialMessageForThread = message;
     this.chatService.showReply = true;
-    this.chatService.messageIdReply = messageId;
+    this.chatService.messageIdReply = message.messageId;
     this.chatService.getReplies();
   }
 
@@ -228,10 +229,7 @@ export class MessagesComponent implements AfterViewInit {
     }
   }
 
-  getUserName(sendId: string): string {
-    const user = this.chatService.users.find(user => user.userId === sendId);
-    return user ? user.name : 'Noah Braun'; 
-  }
+  
 
   getOtherUserImg(){
     const ids = this.chatService.currentChannel$.value.split('_')
