@@ -1,5 +1,5 @@
 <section #chatContainer>
-    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.users.length > 0">
+    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.users.length > 0 && isDirectMessage()">
         <div class="other-user-container">
             <img [src]="getOtherUserImg()" alt="">
             <span>{{ getOtherUserName() }}</span>
@@ -37,11 +37,11 @@
                     </div>
                 </div>
             </div>
-            <div class="reactions" *ngIf="message.reactions">
+            <div class="reactions" *ngIf="message.reactions.length > 0">
                 <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)"
                     class="reaction-container">
                     <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>
-                    <div class="reaction-info">
+                    <div class="reaction-info" [ngClass]="{'reaction-info-sender': isCurrentUserSender(message.sendId)}">
                         <span>{{ reaction.emote }}</span>
                         <span class="reactors">
                             {{ formatUsernames(reaction.users) }}

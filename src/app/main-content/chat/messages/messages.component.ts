@@ -95,6 +95,10 @@ export class MessagesComponent implements AfterViewInit {
       }
     })
   }
+
+  isDirectMessage(){
+    return this.chatService.currentChannel$.value.length > 25
+  }
   
   scrollToBottom(): void {
     requestAnimationFrame(() => {
@@ -230,15 +234,10 @@ export class MessagesComponent implements AfterViewInit {
   }
 
   getOtherUserImg(){
-    if(this.chatService.currentUser.userId){
-      const ids = this.chatService.currentChannel$.value.split('_')
-      const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
-      const user = this.chatService.users.find(user => user.userId === userId);
-      return user ? user.avatar : 'Noah Braun';
-    } else{
-      return 'Sebastian Braun'
-    }
-    
+    const ids = this.chatService.currentChannel$.value.split('_')
+    const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
+    const user = this.chatService.users.find(user => user.userId === userId);
+    return user ? user.avatar : 'Noah Braun';
   }
 
   getOtherUserName(){

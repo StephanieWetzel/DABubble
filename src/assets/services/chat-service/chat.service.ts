@@ -279,6 +279,11 @@ export class ChatService implements OnDestroy {
     return !reaction.users.includes(user) && reactedEmote != addedEmote;
   }
 
+  getUserName(sendId: string): string {
+    const user = this.users.find(user => user.userId === sendId);
+    return user ? user.name : 'Noah Braun'; 
+  }
+
 
   getReactionIndex(reactions: Reaction[], emote: string) {
     let reactionIndex = reactions.findIndex((r: Reaction) => r.emote === emote);
