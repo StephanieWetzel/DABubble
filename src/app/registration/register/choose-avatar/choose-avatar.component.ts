@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, HostListener } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Firestore, doc, setDoc } from '@angular/fire/firestore';
@@ -29,6 +29,9 @@ export class ChooseAvatarComponent {
 
   firestore: Firestore = inject(Firestore)
 
+  containerWidth: number;
+  containerHeight: number;
+
 
   constructor(
     private router: Router,
@@ -37,6 +40,20 @@ export class ChooseAvatarComponent {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
     });
+
+    this.containerWidth = window.innerWidth;
+    this.containerHeight = window.innerHeight;
+  }
+
+
+  /**
+* Updates the container width on window resize.
+* @param event - The event object for the resize event.
+*/
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.containerWidth = event.target.innerWidth;
+    this.containerHeight = event.target.innerHeight;
   }
 
 

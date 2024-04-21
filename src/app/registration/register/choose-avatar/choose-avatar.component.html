@@ -47,7 +47,7 @@
         </form>
     </div>
 
-    <div class="footer-container">
+    <div class="footer-container" [ngStyle]="{'display': containerWidth <= 600 ? 'none' : 'flex'}">
         <span class="footer-content tr-150ms">Impressum</span>
         <span class="footer-content tr-150ms">Datenschutz</span>
     </div>

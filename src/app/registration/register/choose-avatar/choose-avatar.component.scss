@@ -13,6 +13,17 @@
         top: 0;
         left: 0;
         right: 0;
+        display: flex;
+
+        @media (max-width: 600px) {
+            justify-content: center;
+            padding: 40px;
+        }
+
+        @media (max-height: 750px) {
+            justify-content: center;
+            padding: 16px;
+        }
     }
 
     .content-container {
@@ -29,6 +40,14 @@
         box-shadow: #C2C4E3 0px 2px 8px;
         margin-top: 120px;
         position: relative;
+
+        @media(max-width: 600px), (max-height: 800px) {
+            padding: 16px 48px;
+        }
+
+        @media(max-height: 750px) {
+            margin-top: 88px;
+        }
 
         .content-header {
             display: flex;
@@ -47,6 +66,10 @@
                 color: #444DF2;
                 font-size: 40px;
                 font-weight: bold;
+
+                @media(max-height: 750px) {
+                    font-size: 32px;
+                }
             }
 
         }
@@ -66,6 +89,10 @@ form {
         align-items: center;
         gap: 32px;
         padding-top: 16px;
+
+        @media(max-height: 750px) {
+            padding-top: 8px;
+        }
 
         button {
             background-color: #444DF2;
@@ -88,6 +115,10 @@ form {
     align-items: center;
     padding-bottom: 32px;
 
+    @media(max-height: 750px) {
+        padding-bottom: 16px;
+    }
+
     img {
         padding: 8px;
         border-radius: 50%;
@@ -98,6 +129,17 @@ form {
         &:hover {
             cursor: pointer;
             background-color: #E6E6E6;
+        }
+
+        @media(max-width: 600px) {
+            width: 120px;
+            height: 120px;
+        }
+
+        @media(max-height: 750px) {
+            width: 80px;
+            height: 80px;
+            margin: 8px 0 8px 0;
         }
     }
 
@@ -118,6 +160,15 @@ form {
         gap: 4px;
         padding: 16px 0 32px 0;
 
+        @media(max-width: 600px) {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media(max-height: 750px) {
+            padding: 8px 0 8px 0;
+        }
+
         img {
             padding: 4px;
             border-radius: 50%;
@@ -125,6 +176,14 @@ form {
             &:hover {
                 cursor: pointer;
                 background-color: #ECEEFE;
+            }
+
+            @media(max-width: 600px) {
+                width: 64px;
+            }
+
+            @media(max-height: 750px) {
+                width: 48px;
             }
         }
     }
