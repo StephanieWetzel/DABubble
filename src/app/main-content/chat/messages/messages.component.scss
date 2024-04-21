@@ -6,34 +6,37 @@ section {
     box-sizing: border-box;
 }
 
-.no-message-container{
+.no-message-container {
     height: 100%;
     box-sizing: border-box;
     padding: 0 40px;
-    @include dFlex($ai: flex-start, $jc: flex-end, $g: 16px, $fd:column);
-    p{
+    @include dFlex($ai: flex-start, $jc: flex-end, $g: 16px, $fd: column);
+
+    p {
         margin-top: 24px;
         margin-bottom: 16px;
         color: #686868;
-        span{
+
+        span {
             color: #535AF1;
         }
     }
 }
 
-.other-user-container{
-    img{
+.other-user-container {
+    img {
         height: 100px;
         width: 100px;
         border-radius: 100px;
         margin-right: 16px;
-    }    
-    span{
+    }
+
+    span {
         font-size: 24px;
         font-weight: 700;
         margin-bottom: 8px;
     }
-    
+
 }
 
 .message {
@@ -78,6 +81,7 @@ section {
     padding: 16px;
     border-radius: 20px;
     border: 1px solid #ADB0D9;
+
     button {
         font: inherit;
         cursor: pointer;
@@ -88,8 +92,8 @@ section {
     }
 }
 
-.edit-btns{
-    @include dFlex($jc:flex-end, $g: 16px);
+.edit-btns {
+    @include dFlex($jc: flex-end, $g: 16px);
     position: absolute;
     bottom: 16px;
     right: 16px;
@@ -217,26 +221,26 @@ section {
     padding: 8px 4px !important;
 }
 
-.avatar-and-message{
+.avatar-and-message {
     @include dFlex($ai: flex-start, $g: 24px);
 }
 
-.avatar-container{
+.avatar-container {
     border-radius: 100%;
 
-    img{
+    img {
         height: 70px;
         width: 70px;
         border-radius: 100%;
     }
 }
 
-.info-and-content{
-
+.info-and-content {
+    @include dFlex($ai: flex-start, $fd: column);
 }
 
-.initial-message{
-    @include dFlex($fd: column)
+.initial-message {
+    @include dFlex($fd: column);
 }
 
 .info {
@@ -274,9 +278,28 @@ section {
     }
 }
 
+.answer-count-border{
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    @include dFlex();
+    div {
+        height: 1px;
+        flex: 1;
+        background-color: #ADB0D9;
+    }
+
+    span {
+        padding: 5px 15px;
+        border-radius: 30px;
+        color: #8c91dd;
+    }
+}
+
 .reactions {
     @include dFlex($jc: flex-start, $g: 12px);
-    margin: 12px 90px;
+    margin: 4px 0 16px 0;
 
     .reaction-container {
         @include dFlex($g: 8px);
@@ -313,6 +336,7 @@ section {
     background-color: #444DF2;
     color: white;
     border-radius: 30px 30px 30px 0;
+    z-index: 10;
 }
 
 .attached-file {
@@ -329,9 +353,11 @@ section {
         .reaction-info {
             @include dFlex($fd: column, $g: 4px);
             width: fit-content !important;
-            &:hover{
+
+            &:hover {
                 cursor: unset;
             }
+
             span {
                 text-align: center;
             }
@@ -377,13 +403,14 @@ ul {
     flex-wrap: wrap;
     max-width: 250px;
     font-size: 30px;
+    padding-inline-start: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
 
     li {
         padding: 12px 4px;
         list-style-type: none;
-        padding-inline-start: 40px;
-        margin-block-start: 0;
-        margin-block-end: 0;
+
         &:hover {
             background-color: $bgPage;
             cursor: pointer;
@@ -397,7 +424,11 @@ ul {
     font-family: 'Material Icons Outlined';
 }
 
-.avatar-and-message-sender{
+.info-and-content-sender{
+    align-items: flex-end;
+}
+
+.avatar-and-message-sender {
     flex-direction: row-reverse;
 }
 
@@ -427,7 +458,7 @@ ul {
     right: unset;
 }
 
-.reaction-info-sender{
+.reaction-info-sender {
     left: unset;
     right: 30px;
     border-radius: 30px 30px 0 30px;
@@ -437,6 +468,6 @@ ul {
     right: 20px;
 }
 
-.d-none{
+.d-none {
     display: none;
 }

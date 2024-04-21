@@ -18,16 +18,21 @@
                 </div>
             </div>
         </div>
+        <div class="answer-count-border"> 
+            <span>{{ chatService.initialMessageForThread.replies.length }} Antworten</span>
+            <div>
+            </div>
+        </div>
 
 
     </div>
     <div *ngFor="let message of getList(); let i = index" class="message">
-        <div class="date" *ngIf="isDateDifferent(i)">
+        <!-- <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
             <span>{{ message.time | customDate }}</span>
             <div>
             </div>
-        </div>
+        </div> -->
 
         <!-- <div class="edit-message-container" *ngIf="editingMessageId === message.messageId">
             <div class="edit-message" >
