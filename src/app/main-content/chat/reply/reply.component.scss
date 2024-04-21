@@ -24,9 +24,12 @@ section {
     app-reply-input-box {
         width: 100%;
     }
-    max-width: 0;
     overflow: hidden;
-    transition: max-width 0.12s ease-out
+    transition: max-width 0.12s ease-out;
+    @media(max-width: 820px) {
+        width: 100%;
+        max-width: 100% !important;
+    } 
 }
 
 .show-reply{

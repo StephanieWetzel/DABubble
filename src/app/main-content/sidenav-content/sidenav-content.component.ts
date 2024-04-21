@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output, ViewEncapsulation } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -13,8 +13,8 @@ import { ProfileAuthentication } from '../../../assets/services/profileAuth.serv
 import { ChatService } from '../../../assets/services/chat-service/chat.service';
 import { FirebaseService } from '../../../assets/services/firebase-service';
 import { onValue, ref } from '@angular/fire/database';
-import { user } from '@angular/fire/auth';
 import { UserSync } from '../../../assets/services/userSync.service';
+import { MobileService } from '../../../assets/services/mobile.service';
 
 @Component({
   selector: 'app-sidenav-content',
@@ -31,10 +31,13 @@ export class SidenavContentComponent {
   unsubChannels: Subscription | undefined;
   unsubUsers: Subscription | undefined;
   currentUser: string = '';
+  screenWidth: number;
+  @Output() closeSidenav = new EventEmitter<void>();
 
-  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync) {
+  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync, private mobilService: MobileService) {
     this.getAuthUserId();
     this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
+    this.screenWidth = window.innerWidth;
     this.realTimeDB.startMonitoringActivity(this.currentUser);
   }
   /**
@@ -46,6 +49,10 @@ export class SidenavContentComponent {
     this.realTimeDB.resetTimer(this.currentUser)
   }
 
+  @HostListener('window:resize')
+  checkScreenWisth() {
+    this.screenWidth = window.innerWidth;
+  }
   /**
    * Fetches navigation content for channels and users from Firestore.
    * @param {string} channelCollId - Firestore collection ID for channels.
@@ -180,6 +187,17 @@ export class SidenavContentComponent {
     }
   }
 
+  checkScreenWidth() {
+    if (this.screenWidth < 820) {
+      this.mobilService.openChannel(true);
+      this.closeSidenav.emit()
+    }
+  }
+
+  onChannelClick() {
+    this.mobilService.openChannel(true);
+  }
+
   /**
    * Opens a chat channel or DM based on the given channel ID.
    * @param {string} channelID - The ID of the channel to open.
@@ -190,6 +208,7 @@ export class SidenavContentComponent {
     console.log("Channel with ID:", channelID, ' opened.')
     this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
+    this.checkScreenWidth();
   }
 
   /**

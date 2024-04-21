@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { InputBoxComponent } from './input-box/input-box.component';
 import { MessagesComponent } from './messages/messages.component';
 import { HeadbarComponent } from './headbar/headbar.component';
@@ -17,9 +17,17 @@ import { ChatService } from '../../../assets/services/chat-service/chat.service'
 })
 export class ChatComponent {
 
-  constructor(public chatService: ChatService) {
+  screenWidth: number = window.innerWidth;
 
+  constructor(public chatService: ChatService) {
   }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth = window.innerWidth
+  };
+
+
 
   // scrollToBottom(): void {
   //   try {

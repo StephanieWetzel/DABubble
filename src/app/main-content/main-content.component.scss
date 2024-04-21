@@ -18,8 +18,16 @@
   transform: rotate(-90deg) scale(1.01);
   transform-origin: center;
   @include dFlex();
+  @media(max-width: 820px) {
+    width: 324px;
+    height: 40px;
+    left: -144px;
+  }
   > .drawer-button-content {
     margin: 23px 14px;
+    @media(max-width: 820px) {
+      margin: 0;
+    }
     @include dFlex(center, center, 10px);
     > span {
         font-size: 20px;
@@ -45,6 +53,9 @@ mat-toolbar {
   width: 100%;
   height: fit-content;
 }
+mat-toolbar, .mat-toolbar-single-row {
+  padding: 0;
+}
 
 app-header {
   width: 100%;
@@ -52,6 +63,7 @@ app-header {
 
 .mat-drawer-container {
   height: 100%;
+  background-color: #ebeefe;
 }
 
 .sidenav-container {
@@ -60,6 +72,9 @@ app-header {
   box-sizing: border-box;
   background-color: $bgPage;
   border: none;
+  @media(max-width: 820px) {
+    width: 400px;
+  }
 }
 
 .sidenav {
@@ -67,6 +82,9 @@ app-header {
   height: 100%;
   box-sizing: border-box;
   border-radius: 30px;
+  @media(max-width: 820px) {
+    
+  }
 }
 
 .main-content-container {
@@ -74,6 +92,10 @@ app-header {
   padding: 12px;
   height: 100%;
   box-sizing: border-box;
+  @media(max-width: 1000px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
 
 .main-content {
