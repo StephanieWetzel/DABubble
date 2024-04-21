@@ -1,7 +1,7 @@
 @import './../../../../../styles.scss';
 
 section {
-    padding: 20px 0;
+    padding: 25px 0;
     max-height: 400px;
 }
 
@@ -69,6 +69,23 @@ section {
     z-index: 3;
 }
 
+.avatar-and-message{
+    @include dFlex($ai: flex-start, $g: 24px);
+}
+
+.avatar-container{
+    border-radius: 100%;
+
+    img{
+        height: 70px;
+        width: 70px;
+        border-radius: 100%;
+    }
+}
+
+.info-and-content{
+    
+}
 
 
 .safe-btn {

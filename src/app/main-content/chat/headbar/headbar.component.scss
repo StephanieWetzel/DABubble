@@ -3,7 +3,7 @@
 
 section {
     padding: 25px 45px;
-    box-shadow: 0px 0.5px 3px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.2);
     @include dFlex($jc: space-between);
     z-index: 10;
 }
@@ -34,8 +34,9 @@ section {
     border-radius: 50%;
     border: none;
     @include dFlex();
-    mat-icon{
-        &:hover{
+
+    mat-icon {
+        &:hover {
             color: #535AF1;
             cursor: pointer;
         }
@@ -43,9 +44,9 @@ section {
 }
 
 
-.add-person-menu{
+.add-person-menu {
     padding: 40px;
-    @include dFlex($fd: column, $jc: flex-start,  $ai: flex-start, $g: 8px);
+    @include dFlex($fd: column, $jc: flex-start, $ai: flex-start, $g: 8px);
     overflow: hidden;
     border-radius: 30px 0 30px 30px;
     border: #797EF3 1px solid;
@@ -57,19 +58,22 @@ section {
     background: white;
     transition: opacity .125s ease-in-out;
     box-sizing: border-box;
+
     // display: none;
-    h3{
+    h3 {
         font-size: 20px;
         font-weight: bold;
         margin-block-start: 0;
         margin-block-end: 0;
         margin-right: 100px;
     }
-    div:first-child{
+
+    div:first-child {
         @include dFlex($jc: space-between);
         text-wrap: nowrap;
     }
-    input{
+
+    input {
         font-size: 16px;
         border: none;
         outline: none;
@@ -83,10 +87,11 @@ section {
     }
 }
 
-.add-btn-container{
+.add-btn-container {
     width: 100%;
     text-align: end;
-    button{
+
+    button {
         color: white;
         cursor: pointer;
         outline: none;
@@ -98,13 +103,13 @@ section {
     }
 }
 
-.open-menu{
+.open-menu {
     opacity: 1;
     z-index: 999;
     // display: flex !important;
 }
 
-.menu-bg{
+.menu-bg {
     z-index: 1;
     position: fixed;
     top: 0;
@@ -118,22 +123,22 @@ section {
     transition: opacity .125s ease-in-out;
 }
 
-.open-menu-bg{
+.open-menu-bg {
     visibility: visible;
     opacity: 1 !important;
 }
 
-.dropdown-container{
+.dropdown-container {
     position: relative;
 }
 
-.group-def{
+.group-def {
     width: 100%;
     @include dFlex($jc: flex-start, $g: 16px);
-    color: #797EF3;    
+    color: #797EF3;
 }
 
-.outlined{
+.outlined {
     font-family: 'Material Icons Outlined';
 }
 
@@ -142,24 +147,29 @@ section {
 
 .user-cont {
     @include dFlex(center, center, 15px);
-    > .user-pair {
-        @include dFlex(center,center);
+
+    >.user-pair {
+        @include dFlex(center, center);
         position: relative;
-        > img {
+
+        >img {
             height: 50px;
             width: 50px;
             border-radius: 50%;
         }
-        > .online-attribut {
+
+        >.online-attribut {
             position: absolute;
             bottom: -6px;
             right: 0;
-            > img {
+
+            >img {
                 height: 14px;
             }
         }
     }
-    > span {
+
+    >span {
         font-size: 24px;
         font-weight: bold;
     }

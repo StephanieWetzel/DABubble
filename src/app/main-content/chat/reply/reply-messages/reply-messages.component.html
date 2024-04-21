@@ -1,12 +1,25 @@
 <section #replyContainer>
+
     <div class="initial-message" *ngIf="chatService.initialMessageForThread">
-        <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
-            <span class="name">{{ chatService.getUserName(chatService.initialMessageForThread.sendId)  }}</span>
-            <span class="time">{{ chatService.initialMessageForThread.time | customTime }}</span>
+        <div class="avatar-and-message">
+
+            <div class="avatar-container">
+                <img [src]="chatService.getUserAvatar(chatService.initialMessageForThread.sendId)">
+            </div>
+            <div class="info-and-content">
+                <div class="info"
+                    [ngClass]="{'info-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
+                    <span class="name">{{ chatService.getUserName(chatService.initialMessageForThread.sendId) }}</span>
+                    <span class="time">{{ chatService.initialMessageForThread.time | customTime }}</span>
+                </div>
+                <div class="message-content"
+                    [ngClass]="{'message-content-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
+                    <p (ngModel)="currentContent">{{ chatService.initialMessageForThread.content }}</p>
+                </div>
+            </div>
         </div>
-        <div class="message-content" [ngClass]="{'message-content-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
-            <p (ngModel)="currentContent">{{ chatService.initialMessageForThread.content }}</p>
-        </div>
+
+
     </div>
     <div *ngFor="let message of getList(); let i = index" class="message">
         <div class="date" *ngIf="isDateDifferent(i)">
@@ -15,6 +28,7 @@
             <div>
             </div>
         </div>
+
         <!-- <div class="edit-message-container" *ngIf="editingMessageId === message.messageId">
             <div class="edit-message" >
                 <editor [init]="editEditorInit" [id]="'editData-' + message.messageId"></editor>
@@ -25,15 +39,24 @@
                 
             </div>
         </div> -->
-        
+
         <!--  -->
-        <div class="message-container"  [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}"> <!-- *ngIf="editingMessageId != message.messageId" -->
-            <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
-                <span class="name">{{ chatService.getUserName(message.sendId) }}</span>
-                <span class="time">{{ message.time | customTime }}</span>
-            </div>
-            <div class="message-content" [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
-                <p (ngModel)="currentContent">{{ message.content }}</p>
+        <div class="message-container" [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
+            <div class="avatar-and-message"
+                [ngClass]="{'avatar-and-message-sender': isCurrentUserSender(message.sendId)}">
+                <div class="avatar-container">
+                    <img [src]="chatService.getUserAvatar(message.sendId)">
+                </div>
+                <div class="info-and-content">
+                    <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
+                        <span class="name">{{ chatService.getUserName(message.sendId) }} </span>
+                        <span class="time">{{ message.time | customTime }}</span>
+                    </div>
+                    <div class="message-content"
+                        [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
+                        <p (ngModel)="currentContent">{{ message.content }}</p>
+                    </div>
+                </div>
             </div>
 
 
@@ -53,12 +76,15 @@
                 <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
                 <mat-menu #down_menu="matMenu" xPosition="before">
                     <ul>
-                        <li *ngFor="let emote of chatService.emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
+                        <li *ngFor="let emote of chatService.emoticons" (click)="addReaction(message.messageId, emote)">
+                            {{
+                            emote }}
                         </li>
                     </ul>
                 </mat-menu>
             </div>
-            <div class="options-container" [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
+            <div class="options-container"
+                [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
                 <div (click)="addReaction(message.messageId, '✅')">
                     <div class="check">✅</div>
                 </div>
@@ -68,7 +94,9 @@
                 <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
                 <mat-menu #menu="matMenu" xPosition="before">
                     <ul>
-                        <li *ngFor="let emote of chatService.emoticons" (click)="addReaction(message.messageId, emote)">{{ emote }}
+                        <li *ngFor="let emote of chatService.emoticons" (click)="addReaction(message.messageId, emote)">
+                            {{
+                            emote }}
                         </li>
                     </ul>
                 </mat-menu>
