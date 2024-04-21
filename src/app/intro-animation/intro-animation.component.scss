@@ -42,6 +42,12 @@
 }
 
 
+
+
+
+
+
+
 @keyframes imageAnimation {
     0% {
         transform: translateX(100%); // Startposition des Bildes (nicht verschoben)
@@ -58,33 +64,65 @@
 
 
 
+
+
 @keyframes imageUpAnimation {
     0% {
         /* Startposition des Bildes */
         transform: translateX(0) translateY(0) scale(1);
+
+        @media (max-width: 600px) {
+            transform: translateY(0);
+        }
     }
 
     100% {
         /* Endposition des Bildes (links oben) */
         transform: translateX(-300%) translateY(-180%) scale(0.3);
+
+        @media (max-width: 600px) {
+            transform: translateY(-100%);
+        }
     }
 }
+
+
+
+
 
 @keyframes textAnimation {
     0% {
         transform: translateX(-100%) scale(1); // Text außerhalb des Bildschirms auf der linken Seite
+
+        @media (max-width: 600px) {
+            transform: translateY(0);
+        }
     }
 
     70% {
         opacity: 1; // Text bleibt sichtbar
         transform: translateX(0%) scale(1); // Text befindet sich hinter dem Bild
+
+        @media (max-width: 600px) {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     100% {
         opacity: 1; // Text bleibt sichtbar
         transform: translateX(-180%) translateY(-1800%) scale(0.4); // Text schwebt nach links oben zur Ausgangsposition und wird kleiner
+
+        @media (max-width: 600px) {
+            opacity: 1;
+            transform: translateY(-100%);
+        }
     }
 }
+
+
+
+
 
 @keyframes backgroundFadeOut {
     0% {
