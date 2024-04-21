@@ -29,13 +29,17 @@ section {
     width: 100%;
     @include dFlex(center, center);
     > .pic-cont {
-      width: 200px;
-      height: 200px;
+      width: 120px;
+      height: 120px;
       @include dFlex(center, center);
       > img {
-        height: 200px;
-        width: 200px;
+        height: 120px;
+        width: 120px;
         border-radius: 50%;
+        @media(max-width: 820px) {
+          height: 120px;
+          width: 120px;
+        }
       }
     }
   }

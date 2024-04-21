@@ -93,6 +93,10 @@ app-input-box div .tox-toolbar__primary {
     overflow-y: visible !important;
 }
 
+.mat-drawer-inner-container {
+    overflow: hidden !important;
+}
+
 // FONTS
 /* nunito-200 - latin */
 @font-face {
