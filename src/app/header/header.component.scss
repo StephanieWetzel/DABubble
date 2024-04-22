@@ -192,6 +192,7 @@ section {
             height: 206px;
             align-items: flex-start;
         }
+        
         > span {
             font-size: 24px;
             padding: 10px 70px 10px 70px;
@@ -209,6 +210,12 @@ section {
                 cursor: pointer;
                 background-color: #ECEFFE;
                 color: #535af1;
+            }
+            > img {
+                display: none;
+                @media(max-width: 520px) {
+                    display: flex;
+                }
             }
         }
     }

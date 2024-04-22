@@ -30,4 +30,7 @@ export class AddChannelDialogComponent {
       this.dialogRef.close(this.firstDialogGroup.value)
     }
   }
+  cancelCreation() {
+    this.dialogRef.close();
+  }
 }

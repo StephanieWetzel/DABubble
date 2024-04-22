@@ -93,6 +93,10 @@ export class SecondAddChannelDialogComponent {
     }
   }
 
+  cancelCreation() {
+    this.dialogRef.close();
+  }
+
   /**
    * Adds a user to the list of selected users and updates the search results.
    * @param {any} user - The user to add to the selected list.
