@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild, inject, HostListener } from '@angular
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { trigger, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -14,14 +15,26 @@ import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
     RouterLink
   ],
   templateUrl: './choose-avatar.component.html',
-  styleUrl: './choose-avatar.component.scss'
+  styleUrl: './choose-avatar.component.scss',
+
+  animations: [
+    trigger('slideInFromRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('500ms ease-out', style({ transform: 'translateX(0)' })),
+      ])
+    ])
+  ]
 })
+
 export class ChooseAvatarComponent {
   @ViewChild('chosenAvatar') chosenAvatar: ElementRef | any;
   @ViewChild('file') file: ElementRef | any;
 
   isHovered: boolean = false;
   isClicked: boolean = false;
+  showOverlay: boolean = false;
+
   allAvatars = ['avatar_clean0.png', 'avatar_clean1.png', 'avatar_clean2.png', 'avatar_clean3.png', 'avatar_clean4.png', 'avatar_clean5.png'];
   clickedIndex: number = -1;
   selectedAvatarURL: string | any = '';
@@ -141,7 +154,10 @@ export class ChooseAvatarComponent {
     try {
       const userRef = doc(this.firestore, "user", userId);
       await setDoc(userRef, { avatar: this.selectedAvatarURL }, { merge: true });
-      this.router.navigate(['/main']);
+      this.showOverlay = true;
+      setTimeout(() => {
+        this.router.navigate(['/main']);
+      }, 2000);
     } catch (error) {
     }
   }

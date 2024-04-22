@@ -15,6 +15,8 @@ import { Router, RouterLink } from '@angular/router';
 import { Firestore, arrayUnion, doc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
+import { trigger, transition, animate, style } from '@angular/animations';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -33,7 +35,17 @@ import { AuthenticationService } from '../../../assets/services/authentication.s
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+
+  animations: [
+    trigger('slideInFromRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('500ms ease-out', style({ transform: 'translateX(0)' })),
+      ])
+    ])
+  ]
 })
+
 export class LoginComponent {
   firestore: Firestore = inject(Firestore)
   user: User = new User;
@@ -49,6 +61,7 @@ export class LoginComponent {
 
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
+  showOverlay: boolean = false;
 
   containerWidth: number;
   containerHeight: number;
@@ -85,9 +98,11 @@ export class LoginComponent {
       const email = this.formData.value.email;
       const password = this.formData.value.password;
       try {
-        await this.auth.signIn(email, password).then((userCredential) => {
-          const user = userCredential.user;
-          this.router.navigate(['/main']);
+        await this.auth.signIn(email, password).then(() => {
+          this.showOverlay = true;
+          setTimeout(() => {
+            this.router.navigate(['/main']);
+          }, 2000);
         });
       } catch (error) {
       }
@@ -107,7 +122,10 @@ export class LoginComponent {
     if (guestData) {
       try {
         await this.auth.signIn(guestData.email, guestData.password);
-        this.router.navigate(['/main']);
+        this.showOverlay = true;
+        setTimeout(() => {
+          this.router.navigate(['/main']);
+        }, 2000);
       } catch (error) {
       }
     }
