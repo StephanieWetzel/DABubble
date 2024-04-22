@@ -184,6 +184,7 @@ export class SidenavContentComponent {
       member: members,
       messages: [{}],
       createdAt: new Date().getTime(),
+      creator: this.currentUser
     }
   }
 

@@ -90,6 +90,10 @@
     margin-left: 0;
     right: -14px;
   }
+  @media(max-width: 450px) {
+    right: auto;
+    left: 274px;
+  }
   > button {
     border: none;
     background-color: white;
