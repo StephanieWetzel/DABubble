@@ -22,10 +22,55 @@
 
         span {
             color: white;
-            font-size: 96px;
+            font-size: 80px;
             animation: textAnimation 2s forwards;
             animation-delay: 1s;
             opacity: 0;
+
+            @media (max-width: 1920px) {
+                animation: textAnimationMax1920 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 1800px) {
+                animation: textAnimationMax1800 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 1650px) {
+                animation: textAnimationMax1650 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 1500px) {
+                animation: textAnimationMax1500 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 1350px) {
+                animation: textAnimationMax1350 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 1200px) {
+                animation: textAnimationMax1200 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 1050px) {
+                animation: textAnimationMax1050 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 900px) {
+                animation: textAnimationMax900 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-width: 750px) {
+                animation: textAnimationMax750 2s forwards;
+                animation-delay: 1s;
+            }
 
             @media (max-width: 600px) {
                 animation: textAnimationMobile 2s forwards;
@@ -35,10 +80,45 @@
         }
 
         img {
-            height: 200px;
+            height: 160px;
             width: auto;
-            // position: absolute;
             animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
+
+            @media (max-width: 1920px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1920 0.6s 2.4s;
+            }
+
+            @media (max-width: 1800px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1800 0.6s 2.4s;
+            }
+
+            @media (max-width: 1650px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1650 0.6s 2.4s;
+            }
+
+            @media (max-width: 1500px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1500 0.6s 2.4s;
+            }
+
+            @media (max-width: 1350px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1350 0.6s 2.4s;
+            }
+
+            @media (max-width: 1200px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1200 0.6s 2.4s;
+            }
+
+            @media (max-width: 1050px) {
+                animation: imageAnimation 1s, imageUpAnimationMax1050 0.6s 2.4s;
+            }
+
+            @media (max-width: 900px) {
+                animation: imageAnimation 1s, imageUpAnimationMax900 0.6s 2.4s;
+            }
+
+            @media (max-width: 750px) {
+                animation: imageAnimation 1s, imageUpAnimationMax750 0.6s 2.4s;
+            }
 
             @media (max-width: 600px) {
                 animation: imageAnimation 1s, imageUpAnimationMobile 0.6s 2.4s;
@@ -49,10 +129,20 @@
 }
 
 
+// BACKGROUND ANIMATION
+@keyframes backgroundFadeOut {
+    0% {
+        opacity: 1; // background visible
+    }
+
+    100% {
+        opacity: 0; // background hidden (fading)
+        z-index: -1;
+    }
+}
 
 
-
-
+// IMAGE ANIMATION
 @keyframes imageAnimation {
     0% {
         transform: translateX(100%); // starting position
@@ -68,24 +158,14 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
+// IMAGE UP ANIMATION
 @keyframes imageUpAnimation {
     0% {
         transform: translateX(0) translateY(0) scale(1); // starting position
     }
 
     100% {
-        transform: translateX(-300%) translateY(-180%) scale(0.3); // final position (upper left)
+        transform: translateX(-300%) translateY(-240%) scale(0.3); // final position (upper left)
 
     }
 }
@@ -100,17 +180,109 @@
     }
 }
 
+@keyframes imageUpAnimationMax750 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-50%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax900 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-80%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1050 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-120%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1200 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-170%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1350 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-210%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1500 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-270%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1650 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-320%) translateY(-240%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1800 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-360%) translateY(-220%) scale(0.4); // final position (upper left)
+
+    }
+}
+
+@keyframes imageUpAnimationMax1920 {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-400%) translateY(-220%) scale(0.4); // final position (upper left)
+
+    }
+}
 
 
 
 
-
-
-
-
-
-
-
+// TEXT ANIMATION
 @keyframes textAnimation {
     0% {
         transform: translateX(-100%) scale(1); // text out of sight to the left
@@ -143,20 +315,146 @@
     }
 }
 
-
-
-
-
-
-
-
-@keyframes backgroundFadeOut {
+@keyframes textAnimationMax750 {
     0% {
-        opacity: 1; // Anfangsopazität des Hintergrunds
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
     }
 
     100% {
-        opacity: 0; // Endopazität des Hintergrunds (komplett verblassen)
-        z-index: -1;
+        opacity: 1;
+        transform: translateX(-60%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax900 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-80%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1050 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-100%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1200 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-120%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1350 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-140%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1500 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-160%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1650 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-180%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1800 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-200%) translateY(-1700%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationMax1920 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-220%) translateY(-1700%) scale(0.4); // zooms to final position upper left and gets smaller
     }
 }
