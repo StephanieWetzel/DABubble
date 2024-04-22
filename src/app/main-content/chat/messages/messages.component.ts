@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { User } from '../../../../assets/models/user.class';
+import { UserDetailComponent } from './user-detail/user-detail.component';
 
 @Component({
   selector: 'app-messages',
@@ -29,7 +30,8 @@ import { User } from '../../../../assets/models/user.class';
     EditorModule,
     FormsModule, 
     MatButtonModule,
-    NgClass
+    NgClass,
+    UserDetailComponent
   ],
   templateUrl: './messages.component.html',
   styleUrl: './messages.component.scss'
@@ -47,6 +49,8 @@ export class MessagesComponent implements AfterViewInit {
   currentContent!: string;
   currentEditingContent: string = '';
   subscription = new Subscription();
+  isShowingProfile: boolean = false;
+  selectedProfileId: string = '';
 
   currentUser!: User;
   
@@ -77,6 +81,14 @@ export class MessagesComponent implements AfterViewInit {
     this.messages = this.chatService.messages;
   }
 
+  showID(id:string) {
+    this.selectedProfileId = id;
+    this.isShowingProfile = true
+  }
+
+  handleProfile(hasClosed: boolean) {
+    this.isShowingProfile = !hasClosed;
+  }
 
   ngAfterViewInit() {
     this.subscription.add(this.chatService.messageCount$.subscribe({
