@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { User } from '../../../../../assets/models/user.class';
 import { FirebaseService } from '../../../../../assets/services/firebase-service';
 import { MatIconModule } from '@angular/material/icon';
+import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-user-detail',
@@ -14,12 +15,10 @@ import { MatIconModule } from '@angular/material/icon';
 export class UserDetailComponent {
 
   pUser: User | null = null;
-  @Input() userID: string | undefined;
+  @Input() userID: string | any;
   @Output() hasClosed = new EventEmitter<boolean>();
 
-  constructor(private firestore: FirebaseService) {
-    console.log(this.userID)
-  }
+  constructor(private firestore: FirebaseService, private chatService: ChatService) {}
 
   closeProfile(value: boolean) {
     this.hasClosed.emit(value);
@@ -34,7 +33,6 @@ export class UserDetailComponent {
     }
   }
 
-  
   async loadUser(userId: string):Promise<void> {
     this.pUser = await this.firestore.getCurrentUser(userId);
     if (this.pUser) {
@@ -43,5 +41,19 @@ export class UserDetailComponent {
       console.log("Failed to load user.");
     }
   }
+
+  openDM() {
+    const roomId = this.generateRoomId(this.chatService.currentUser.userId, this.userID);
+    this.firestore.checkIfRoomExists(roomId, this.chatService.currentUser.userId, this.userID);
+    this.chatService.currentChannel$.next(roomId);
+    this.chatService.setCurrenDmPartner(this.userID);
+    this.chatService.setIsDmRoom(true);
+    this.closeProfile(true);
+  }
+
+  generateRoomId(userId1: string, userId2: string) {
+    return [userId1, userId2].sort().join('_');
+  }
+
 
 }
