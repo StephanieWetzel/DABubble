@@ -6,6 +6,7 @@ export class Channel {
     member: string[];
     messages: any[];
     createdAt: any;
+    creator: string;
 
     /**
      * Constructs a new instance of the channel class
@@ -18,7 +19,8 @@ export class Channel {
         this.description = obj ? obj.description: '',
         this.member = obj ? obj.member: [],
         this.messages = obj ? obj.messages: [],
-        this.createdAt = obj ? obj.createdAt: new Date().getTime();
+        this.createdAt = obj ? obj.createdAt: new Date().getTime(),
+        this.creator = obj ? obj.creator : ''
     }
 
     /**
@@ -32,7 +34,8 @@ export class Channel {
             description: this.description,
             member: this.member,
             messages: this.messages,
-            createdAt: this.createdAt
+            createdAt: this.createdAt,
+            creator: this.creator
         }
     }
 }

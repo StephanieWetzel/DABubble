@@ -30,6 +30,7 @@ export class HeaderComponent {
   screenWidth: number = window.innerWidth;
   isChannelOpen!: boolean;
   isChannelOpenSub!: Subscription;
+  keepMenuOpen: boolean = window.innerWidth <= 520;
   @Output() openSidenav = new EventEmitter<void>();
 
   constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService) {
@@ -39,6 +40,10 @@ export class HeaderComponent {
   @HostListener('window:resize')
   checkScreenWidth() {
     this.screenWidth = window.innerWidth
+    if (window.innerWidth < 520) {
+      this.keepMenuOpen = true;
+      console.log(this.keepMenuOpen)
+    }
   }
 
   getBackToNav() {
@@ -78,7 +83,8 @@ export class HeaderComponent {
     const profileMenuElement = document.getElementById('profileMenu');
     const clickedInsideMenu =
       profileMenuElement && profileMenuElement.contains(event.target as Node);
-    if (this.isProfilMenuOpen && !clickedInsideMenu) {
+    if (this.isProfilMenuOpen && !clickedInsideMenu && !this.keepMenuOpen || !this.isProfileEditOpen) {
+      console.log('Menü wird geschlossen', this.keepMenuOpen)
       this.isProfilMenuOpen = false;
     }
   }
@@ -87,7 +93,7 @@ export class HeaderComponent {
    * Toggles the visibility of the profile menu.
    */
   openProfileMenu() {
-    if (this.isProfilMenuOpen) {
+    if (this.isProfilMenuOpen && !this.keepMenuOpen) {
       this.isProfilMenuOpen = false;
     } else {
       setTimeout(() => {
@@ -100,8 +106,13 @@ export class HeaderComponent {
    * Opens the profile edit view and closes the profile menu.
    */
   openProfile() {
-    this.isProfileEditOpen = true;
-    this.isProfilMenuOpen = false;
+    if (this.keepMenuOpen) {
+      this.isProfileEditOpen = true;
+    } else {
+      this.isProfileEditOpen = true;
+      this.isProfilMenuOpen = false;
+    }
+    
   }
 
   /**
