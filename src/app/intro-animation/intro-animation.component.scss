@@ -27,6 +27,7 @@
             animation-delay: 1s;
             opacity: 0;
 
+            // desktop
             @media (max-width: 1920px) {
                 animation: textAnimationMax1920 2s forwards;
                 animation-delay: 1s;
@@ -72,10 +73,48 @@
                 animation-delay: 1s;
             }
 
+            // mobile
             @media (max-width: 600px) {
-                animation: textAnimationMobile 2s forwards;
+                animation: textAnimationMax600 2s forwards;
                 animation-delay: 1s;
                 font-size: 40px;
+            }
+
+            // tablet
+            @media (min-height: 1200px) and (max-height: 1400px) {
+                animation: textAnimationHeight1400 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (min-height: 1050px) and (max-height: 1200px) {
+                animation: textAnimationHeight1200 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (min-height: 950px) and (max-height: 1050px) {
+                animation: textAnimationHeight1050 2s forwards;
+                animation-delay: 1s;
+            }
+
+            // mobile dimensions
+            @media (min-height: 800px) and (max-height: 900px) {
+                animation: textAnimationHeight900 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (min-height: 740px) and (max-height: 800px) {
+                animation: textAnimationHeight800 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (min-height: 600px) and (max-height: 740px) {
+                animation: textAnimationHeight740 2s forwards;
+                animation-delay: 1s;
+            }
+
+            @media (max-height: 600px) {
+                animation: textAnimationHeight600 2s forwards;
+                animation-delay: 1s;
             }
         }
 
@@ -84,6 +123,7 @@
             width: auto;
             animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
 
+            // desktop
             @media (max-width: 1920px) {
                 animation: imageAnimation 1s, imageUpAnimationMax1920 0.6s 2.4s;
             }
@@ -120,13 +160,52 @@
                 animation: imageAnimation 1s, imageUpAnimationMax750 0.6s 2.4s;
             }
 
+            // mobile
             @media (max-width: 600px) {
-                animation: imageAnimation 1s, imageUpAnimationMobile 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax600 0.6s 2.4s;
                 height: 80px;
+            }
+
+            // tablet
+            @media (min-height: 1200px) and (max-height: 1400px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight1400 0.6s 2.4s;
+            }
+
+            @media (min-height: 1050px) and (max-height: 1200px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight1200 0.6s 2.4s;
+            }
+
+            @media (min-height: 950px) and (max-height: 1050px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight1050 0.6s 2.4s;
+            }
+
+            // mobile dimensions
+            @media (min-height: 800px) and (max-height: 900px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight900 0.6s 2.4s;
+            }
+
+            @media (min-height: 740px) and (max-height: 800px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight800 0.6s 2.4s;
+            }
+
+            @media (min-height: 600px) and (max-height: 740px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight740 0.6s 2.4s;
+            }
+
+            @media (max-height: 600px) {
+                animation: imageAnimation 1s,
+                    imageUpAnimationHeight600 0.6s 2.4s;
             }
         }
     }
 }
+
 
 
 // BACKGROUND ANIMATION
@@ -140,6 +219,7 @@
         z-index: -1;
     }
 }
+
 
 
 // IMAGE ANIMATION
@@ -158,6 +238,7 @@
 }
 
 
+
 // IMAGE UP ANIMATION
 @keyframes imageUpAnimation {
     0% {
@@ -170,7 +251,51 @@
     }
 }
 
-@keyframes imageUpAnimationMobile {
+
+// for mobile dimensions
+@keyframes imageUpAnimationHeight600 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-170%) translateY(-150%) scale(0.3); // final position (top center)
+    }
+}
+
+@keyframes imageUpAnimationHeight740 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(50%) translateY(-370%) scale(0.5); // final position (top center)
+    }
+}
+
+@keyframes imageUpAnimationHeight800 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-210%) translateY(-200%) scale(0.3); // final position (top center)
+    }
+}
+
+@keyframes imageUpAnimationHeight900 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(20%) translateY(-450%) scale(0.7); // final position (top center)
+    }
+}
+
+
+// mobile
+@keyframes imageUpAnimationMax600 {
     0% {
         transform: translateY(0) scale(1); // starting position
     }
@@ -180,6 +305,40 @@
     }
 }
 
+
+// tablet
+@keyframes imageUpAnimationHeight1050 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-70%) translateY(-270%) scale(0.3); // final position (top center)
+    }
+}
+
+@keyframes imageUpAnimationHeight1200 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-80%) translateY(-320%) scale(0.3); // final position (top center)
+    }
+}
+
+@keyframes imageUpAnimationHeight1400 {
+    0% {
+        transform: translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-120%) translateY(-350%) scale(0.3); // final position (top center)
+    }
+}
+
+
+// desktop
 @keyframes imageUpAnimationMax750 {
     0% {
         transform: translateX(0) translateY(0) scale(1); // starting position
@@ -281,7 +440,6 @@
 
 
 
-
 // TEXT ANIMATION
 @keyframes textAnimation {
     0% {
@@ -299,7 +457,75 @@
     }
 }
 
-@keyframes textAnimationMobile {
+
+// for mobile dimensions
+@keyframes textAnimationHeight600 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-120%) translateY(-1200%) scale(0.3); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationHeight740 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-10%) translateY(-1500%) scale(0.5); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationHeight800 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-140%) translateY(-1600%) scale(0.3); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationHeight900 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-1750%) scale(0.8); // zooms to final position upper left and gets smaller
+    }
+}
+
+
+// mobile
+@keyframes textAnimationMax600 {
     0% {
         transform: translateX(-100%) scale(1); // text out of sight to the left
     }
@@ -315,6 +541,58 @@
     }
 }
 
+
+// tablet
+@keyframes textAnimationHeight1050 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-80%) translateY(-2200%) scale(0.3); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationHeight1200 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-80%) translateY(-2500%) scale(0.3); // zooms to final position upper left and gets smaller
+    }
+}
+
+@keyframes textAnimationHeight1400 {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-100%) translateY(-2800%) scale(0.3); // zooms to final position upper left and gets smaller
+    }
+}
+
+
+// desktop
 @keyframes textAnimationMax750 {
     0% {
         transform: translateX(-100%) scale(1); // text out of sight to the left
@@ -455,6 +733,6 @@
 
     100% {
         opacity: 1;
-        transform: translateX(-220%) translateY(-1700%) scale(0.4); // zooms to final position upper left and gets smaller
+        transform: translateX(-220%) translateY(-1800%) scale(0.4); // zooms to final position upper left and gets smaller
     }
 }
