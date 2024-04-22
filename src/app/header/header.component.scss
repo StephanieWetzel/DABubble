@@ -23,10 +23,26 @@ section {
             height: 48px;
         }
     }
+    > .back-arrow {
+        height: 25px;
+        width: 25px;
+    }
 
     span {
         font-size: 30px;
         margin-left: 16px;
+    }
+    > .mobile-cont {
+        @include dFlex(center, center, 10px);
+        > img {
+            height: 50px;
+            width: 50px;
+        }
+        > h3 {
+            font-size: 24px;
+            font-weight: 800;
+            font-family: 'Nunito';
+        }
     }
 }
 
@@ -38,10 +54,11 @@ section {
         padding-left: 0px;
     }
     @media(max-width: 600px) {
-        justify-content: flex-end;    
+        justify-content: space-between;    
     }
-    @media(max-width: 600px) {
-        cursor: auto;      
+    @media(max-width: 550px) {
+        justify-content: flex-end;
+        cursor: auto;
     }
     cursor: pointer;
     .search {
@@ -60,7 +77,10 @@ section {
             margin-left: 20px;
         }
         @media(max-width: 600px) {
-            display: none;      
+            width: 60%;
+        }
+        @media(max-width: 550px) {
+            display: none;
         }
         input {
             font-size: 16px;
@@ -101,6 +121,9 @@ section {
                 border-radius: 50%;
                 @media(max-width: 820px) {
                     height: 48px;
+                }
+                @media(max-width: 550px) {
+                    height: 50px;
                 }
             }
             > .online-attribut {

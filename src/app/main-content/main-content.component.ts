@@ -34,13 +34,19 @@ import { MobileService } from '../../assets/services/mobile.service';
   ],
 })
 export class MainContentComponent {
-  isDrawerOpen: boolean = true;
+  //isDrawerOpen: boolean = true;
   isChannelOpen!: boolean;
   isChannelOpenSub!: Subscription;
   screenWidth: number;
+  isDrawerOpen: boolean = true;
+  drawerSub!: Subscription;
 
   constructor(private mobileService: MobileService){
     this.screenWidth = window.innerWidth;
+    this.drawerSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
+      this.isDrawerOpen = isOpen;
+    })
+    this.mobileService.toggleDrawe(true);
   }
 
   @HostListener('window:resize')
@@ -58,6 +64,7 @@ export class MainContentComponent {
 
   ngOnDestroy() {
     this.isChannelOpenSub.unsubscribe();
+    this.drawerSub.unsubscribe();
   }
 
   toggleDrawer(isOpen: boolean) {

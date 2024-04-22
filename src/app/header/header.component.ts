@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { ProfileDialogComponent } from './profile-dialog/profile-dialog.component';
 import { User } from '../../assets/models/user.class';
 import { ProfileAuthentication } from '../../assets/services/profileAuth.service';
+import { MobileService } from '../../assets/services/mobile.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -25,8 +27,25 @@ export class HeaderComponent {
   isProfileEditOpen: boolean = false;
   user: User | null = null;
   currentUserID: string | any;
+  screenWidth: number = window.innerWidth;
+  isChannelOpen!: boolean;
+  isChannelOpenSub!: Subscription;
+  @Output() openSidenav = new EventEmitter<void>();
 
-  constructor(private profileAuth: ProfileAuthentication) {}
+  constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService) {
+  }
+
+
+  @HostListener('window:resize')
+  checkScreenWidth() {
+    this.screenWidth = window.innerWidth
+  }
+
+  getBackToNav() {
+    this.mobileService.openChannel(false);
+    this.mobileService.toggleDrawe(true);
+  }
+
 
   /**
    * Initializes the component by fetching and subscribing to the user data from the authentication service.
@@ -36,6 +55,11 @@ export class HeaderComponent {
     this.profileAuth.user$.subscribe((user) => {
       this.user = user;
     });
+    this.isChannelOpenSub = this.mobileService.channelOpened$.subscribe(
+      (isChannelOpen) => {
+        this.isChannelOpen = isChannelOpen;
+      }
+    )
   }
 
   /**
