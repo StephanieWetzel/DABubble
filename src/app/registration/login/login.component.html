@@ -1,9 +1,4 @@
 <div class="main-container">
-    <!-- OVERLAY -->
-    <div [@slideInFromRight] *ngIf="showOverlay" class="overlay">
-        <img src="assets/img/signInOverlay.svg" alt="">
-    </div>
-
     <div class="header-container">
         <img src="assets/img/logo-header_complete.svg" alt=""
             [ngStyle]="{'height': containerHeight <= 700 ? '48px' : ''}">
@@ -86,7 +81,7 @@
         </span>
     </div>
 
-    <div class="footer-container" [ngStyle]="{'display': containerWidth <= 600 ? 'none' : 'flex'}">
+    <div class="footer-container">
         <span routerLink="imprint" class="footer-content tr-150ms">Impressum</span>
         <span routerLink="privacyPolicy" class="footer-content tr-150ms">Datenschutz</span>
     </div>

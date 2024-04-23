@@ -15,7 +15,6 @@ import { Router, RouterLink } from '@angular/router';
 import { Firestore, arrayUnion, doc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
-import { trigger, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
@@ -34,16 +33,7 @@ import { trigger, transition, animate, style } from '@angular/animations';
     RouterLink
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
-
-  animations: [
-    trigger('slideInFromRight', [
-      transition(':enter', [
-        style({ transform: 'translateX(100%)' }),
-        animate('500ms ease-out', style({ transform: 'translateX(0)' })),
-      ])
-    ])
-  ]
+  styleUrl: './login.component.scss'
 })
 
 export class LoginComponent {
@@ -61,7 +51,6 @@ export class LoginComponent {
 
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
-  showOverlay: boolean = false;
 
   containerWidth: number;
   containerHeight: number;
@@ -99,10 +88,7 @@ export class LoginComponent {
       const password = this.formData.value.password;
       try {
         await this.auth.signIn(email, password).then(() => {
-          this.showOverlay = true;
-          setTimeout(() => {
-            this.router.navigate(['/main']);
-          }, 2000);
+          this.router.navigate(['/main']);
         });
       } catch (error) {
       }
@@ -122,10 +108,7 @@ export class LoginComponent {
     if (guestData) {
       try {
         await this.auth.signIn(guestData.email, guestData.password);
-        this.showOverlay = true;
-        setTimeout(() => {
-          this.router.navigate(['/main']);
-        }, 2000);
+        this.router.navigate(['/main']);
       } catch (error) {
       }
     }

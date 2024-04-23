@@ -71,7 +71,7 @@ export class ResetPasswordComponent {
  * 
  * @returns {Promise<void>} A promise that resolves when the password reset email is sent successfully.
  */
-  async resetPassword() {
+  async sendLinkAndNavigateToLogin() {
     const auth = getAuth();
     const email = this.formData.value.email;
 
