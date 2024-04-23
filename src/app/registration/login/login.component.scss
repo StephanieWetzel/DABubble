@@ -11,6 +11,17 @@
         height: 90%;
     }
 
+    .overlay {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 999;
+
+        >img {
+            width: 256px;
+        }
+    }
+
     .header-container {
         padding: 48px;
         display: flex;
@@ -25,14 +36,16 @@
             justify-content: center;
         }
 
+        @media (max-height: 900px) {
+            padding: 32px;
+        }
+
         // height for Nest Hub
         @media (max-height: 750px) {
             padding: 8px;
         }
 
-        @media (max-height: 600px) {
-            padding: 32px;
-        }
+
     }
 
     .login-container {
@@ -52,7 +65,7 @@
         // height for Nest Hub
         @media (max-width: 600px),
         (max-height: 600px) {
-            padding: 24px 32px;
+            padding: 16px 32px;
             max-width: 70%;
         }
 
@@ -152,6 +165,7 @@ form {
 
         @media (max-width: 600px) {
             gap: 8px;
+            padding: 0;
         }
 
         @media (max-height: 600px) {
@@ -236,6 +250,14 @@ form {
     align-items: center;
     padding-top: 32px;
     gap: 32px;
+
+    @media (min-height: 700px) and (max-height: 731px) {
+        padding-top: 0;
+    }
+
+    @media (min-width: 360px) and (max-width: 380px) {
+        padding-top: 0;
+    }
 
     .footer-content {
         border: 1px solid;

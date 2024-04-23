@@ -2,10 +2,11 @@ html,
 body {
     height: 100%;
     max-width: 1920px;
+    margin: 0;
+    overflow: hidden;
 }
 
 body {
-    margin: 0;
     background-color: #ECEEFE;
     font-family: 'Nunito', sans-serif;
     font-size: 16px;

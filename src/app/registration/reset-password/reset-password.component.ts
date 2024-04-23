@@ -9,6 +9,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
+import { trigger, transition, animate, style } from '@angular/animations';
 
 @Component({
   selector: 'app-reset-password',
@@ -20,8 +21,18 @@ import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
     RouterLink
   ],
   templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.scss'
+  styleUrl: './reset-password.component.scss',
+
+  animations: [
+    trigger('slideInFromRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)' }),
+        animate('500ms ease-out', style({ transform: 'translateX(0)' })),
+      ])
+    ])
+  ]
 })
+
 export class ResetPasswordComponent {
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]]
@@ -29,6 +40,7 @@ export class ResetPasswordComponent {
 
   isMailFocused: boolean = false;
   isHovered: boolean = false;
+  showOverlay: boolean = false;
 
   containerWidth: number;
   containerHeight: number;
@@ -59,17 +71,17 @@ export class ResetPasswordComponent {
  * 
  * @returns {Promise<void>} A promise that resolves when the password reset email is sent successfully.
  */
-  async resetPassword() {
+  async sendLinkAndNavigateToLogin() {
     const auth = getAuth();
     const email = this.formData.value.email;
 
     try {
       await sendPasswordResetEmail(auth, email);
-      alert('Password reset email sent!');
-      this.router.navigate(['']);
-    } catch (error: any) {
-      const errorMessage = error.message;
-      alert(errorMessage);
+      this.showOverlay = true;
+      setTimeout(() => {
+        this.router.navigate(['']);
+      }, 2000);
+    } catch (error) {
     }
   }
 
