@@ -4,17 +4,29 @@ import { ReplyInputBoxComponent } from './reply-input-box/reply-input-box.compon
 import { ReplyMessagesComponent } from './reply-messages/reply-messages.component';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { CommonModule } from '@angular/common';
+import { UserDetailComponent } from '../messages/user-detail/user-detail.component';
 
 @Component({
   selector: 'app-reply',
   standalone: true,
-  imports: [ReplyHeadbarComponent, ReplyInputBoxComponent, ReplyMessagesComponent, CommonModule],
+  imports: [ReplyHeadbarComponent, ReplyInputBoxComponent, ReplyMessagesComponent, CommonModule, UserDetailComponent],
   templateUrl: './reply.component.html',
   styleUrl: './reply.component.scss'
 })
 export class ReplyComponent {
 
-  constructor(public chatService: ChatService) {
+  isShowingProfile: boolean = false;
+  selectedProfileId: string = '';
 
+  constructor(public chatService: ChatService) {}
+
+  handleProfile(event: {opened: boolean, userId: string}) {
+    this.isShowingProfile = event.opened;
+    this.selectedProfileId = event.userId;   
   }
+
+  closeProfile(event: boolean) {
+    this.isShowingProfile = false;
+  }
+
 }

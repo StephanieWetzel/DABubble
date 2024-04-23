@@ -94,6 +94,10 @@
     right: auto;
     left: 274px;
   }
+  @media(max-width: 400px) {
+    right: auto;
+    left: 256px;
+  }
   > button {
     border: none;
     background-color: white;
@@ -246,6 +250,9 @@
   }
   @media(max-width: 500px) {
     padding-left: 20px;
+  }
+  @media(max-width: 400px) {
+    padding-right: 0px;
   }
 }
 
