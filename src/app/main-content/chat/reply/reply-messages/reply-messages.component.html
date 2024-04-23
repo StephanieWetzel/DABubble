@@ -4,7 +4,7 @@
         <div class="avatar-and-message">
 
             <div class="avatar-container">
-                <img (click)="openProfile(chatService.initialMessageForThread.sendId)" [src]="chatService.getUserAvatar(chatService.initialMessageForThread.sendId)">
+                <img [src]="chatService.getUserAvatar(chatService.initialMessageForThread.sendId)">
             </div>
             <div class="info-and-content">
                 <div class="info"

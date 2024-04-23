@@ -1,4 +1,100 @@
-@import './../../../styles.scss';
+@import './../../styles.scss';
+
+.intro-container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 999;
+    overflow: hidden;
+    background: linear-gradient(1.46deg, #313AE6 1.22%, #797EF3 98.76%);
+    animation: backgroundFadeOut 1s 2.4s forwards;
+
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+
+        span {
+            color: white;
+            font-size: 96px;
+            animation: textAnimation 2s forwards;
+            animation-delay: 1s;
+            opacity: 0;
+        }
+
+        img {
+            height: 200px;
+            width: auto;
+            animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
+        }
+    }
+}
+
+@keyframes imageAnimation {
+    0% {
+        transform: translateX(100%); // Startposition des Bildes (nicht verschoben)
+    }
+
+    50% {
+        transform: translateX(100%); // Startposition des Bildes (nicht verschoben)
+    }
+
+    100% {
+        transform: translateX(0%); // Bild bleibt an der linken Position stehen
+    }
+}
+
+@keyframes imageUpAnimation {
+    0% {
+        /* Startposition des Bildes */
+        transform: translateX(0) translateY(0) scale(1);
+    }
+
+    100% {
+        /* Endposition des Bildes (links oben) */
+        transform: translateX(-300%) translateY(-180%) scale(0.3);
+    }
+}
+
+@keyframes textAnimation {
+    0% {
+        transform: translateX(-100%) scale(1); // Text außerhalb des Bildschirms auf der linken Seite
+    }
+
+    70% {
+        opacity: 1; // Text bleibt sichtbar
+        transform: translateX(0%) scale(1); // Text befindet sich hinter dem Bild
+    }
+
+    100% {
+        opacity: 1; // Text bleibt sichtbar
+        transform: translateX(-180%) translateY(-1800%) scale(0.4); // Text schwebt nach links oben zur Ausgangsposition und wird kleiner
+    }
+}
+
+@keyframes backgroundFadeOut {
+    0% {
+        opacity: 1; // Anfangsopazität des Hintergrunds
+    }
+
+    100% {
+        opacity: 0; // Endopazität des Hintergrunds (komplett verblassen)
+        z-index: -1;
+    }
+}
+
+
+
+
+
+
+
+
+
 
 .main-container {
     height: 100%;
@@ -7,12 +103,8 @@
     align-items: center;
     flex-direction: column;
 
-    @media (max-width: 600px) {
-        height: 90%;
-    }
-
     .header-container {
-        padding: 48px;
+        padding: 64px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -21,23 +113,31 @@
         left: 0;
         right: 0;
 
-        @media (max-width: 600px) {
-            justify-content: center;
-        }
+        .new-account-container {
+            display: flex;
+            flex-direction: column;
+            text-align: end;
+            gap: 8px;
 
-        // height for Nest Hub
-        @media (max-height: 750px) {
-            padding: 8px;
-        }
+            .new-account {
+                color: #797EF3;
+                border: 1px solid;
+                border-radius: 24px;
+                border-color: transparent;
+                padding: 8px;
 
-        @media (max-height: 600px) {
-            padding: 32px;
+                &:hover {
+                    cursor: pointer;
+                    border-color: #CCCFEB;
+                    color: #444DF2;
+                }
+            }
         }
     }
 
     .login-container {
         padding: 48px;
-        width: 448px;
+        width: 400px;
         max-width: 60%;
         display: flex;
         flex-direction: column;
@@ -49,49 +149,11 @@
         box-shadow: #C2C4E3 0px 2px 8px;
         margin-top: 120px;
 
-        // height for Nest Hub
-        @media (max-width: 600px),
-        (max-height: 600px) {
-            padding: 24px 32px;
-            max-width: 70%;
-        }
-
-        @media (min-width: 1024px) and (min-height: 600px) {
-            margin-top: 16px;
-        }
-
         .login {
             color: #444DF2;
             font-size: 40px;
             font-weight: bold;
             padding-bottom: 16px;
-
-            // height for Nest Hub
-            @media (max-width: 600px),
-            (max-height: 600px) {
-                padding-bottom: 0;
-            }
-        }
-    }
-}
-
-.new-account-container {
-    display: flex;
-    flex-direction: column;
-    text-align: end;
-    gap: 8px;
-
-    .new-account {
-        color: #797EF3;
-        border: 1px solid;
-        border-radius: 24px;
-        border-color: transparent;
-        padding: 8px;
-
-        &:hover {
-            cursor: pointer;
-            border-color: #CCCFEB;
-            color: #444DF2;
         }
     }
 }
@@ -103,12 +165,6 @@ form {
     gap: 8px;
     width: 100%;
     box-sizing: border-box;
-
-    @media (max-width: 600px),
-    (max-height: 600px) {
-        gap: 0;
-        padding-top: 16px;
-    }
 
     .forgot-password {
         color: #797EF3;
@@ -130,10 +186,6 @@ form {
         gap: 8px;
         padding: 24px 0;
 
-        @media(max-width: 600px), (max-height: 600px) {
-            padding: 16px 0;
-        }
-
         div {
             width: 100%;
             height: 2px;
@@ -150,20 +202,8 @@ form {
         background-color: #ECEEFE;
         border: 1px solid transparent;
 
-        @media (max-width: 600px) {
-            gap: 8px;
-        }
-
-        @media (max-height: 600px) {
-            padding: 4px;
-        }
-
         span {
             color: #444DF2;
-
-            @media (max-width: 600px) {
-                font-size: 15px;
-            }
         }
 
         &:hover {
@@ -183,14 +223,10 @@ form {
         gap: 32px;
         padding-top: 32px;
 
-        @media(max-width: 600px) {
-            gap: 8px;
-            padding-top: 24px;
-        }
-
         .login-btn {
             background-color: #444DF2;
             color: white;
+            padding: 20px;
 
             &:hover {
                 background-color: #797EF3;
@@ -201,6 +237,7 @@ form {
             border: 1px solid #797EF3;
             color: #444DF2;
             font-weight: bold;
+            padding: 20px;
 
             &:hover {
                 background-color: #797EF3;
@@ -215,12 +252,6 @@ form {
     flex-direction: column;
     gap: 32px;
     margin-bottom: 32px;
-
-    @media (max-width: 600px),
-    (max-height: 600px) {
-        gap: 16px;
-        margin-bottom: 24px;
-    }
 
     .invalid-text {
         display: flex;
@@ -276,11 +307,6 @@ input {
     border: 1px solid transparent;
     padding: 16px 32px !important;
 
-    @media (max-width: 600px),
-    (max-height: 600px) {
-        padding: 8px 32px !important;
-    }
-
     &:hover {
         cursor: pointer;
         border: 1px solid #757575 !important;
@@ -306,13 +332,5 @@ input {
 
     &:hover {
         border-color: #535AF1 !important;
-    }
-}
-
-.btn-padding-20 {
-    padding: 20px;
-
-    @media(max-width: 600px) {
-        padding: 20px 60px;
     }
 }

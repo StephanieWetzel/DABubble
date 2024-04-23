@@ -1,6 +1,5 @@
 <section class="show-reply">
     <app-reply-headbar></app-reply-headbar>
-    <app-reply-messages (hasOpened)="handleProfile($event)"></app-reply-messages>
+    <app-reply-messages></app-reply-messages>
     <app-reply-input-box></app-reply-input-box>
-    <app-user-detail (hasClosed)="closeProfile($event)" *ngIf="isShowingProfile" [userID]="selectedProfileId"></app-user-detail>
 </section>

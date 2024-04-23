@@ -15,7 +15,6 @@ import { Router, RouterLink } from '@angular/router';
 import { Firestore, arrayUnion, doc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { User } from '../../../assets/models/user.class';
 import { AuthenticationService } from '../../../assets/services/authentication.service';
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -33,9 +32,8 @@ import { AuthenticationService } from '../../../assets/services/authentication.s
     RouterLink
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
-
 export class LoginComponent {
   firestore: Firestore = inject(Firestore)
   user: User = new User;
@@ -87,7 +85,8 @@ export class LoginComponent {
       const email = this.formData.value.email;
       const password = this.formData.value.password;
       try {
-        await this.auth.signIn(email, password).then(() => {
+        await this.auth.signIn(email, password).then((userCredential) => {
+          const user = userCredential.user;
           this.router.navigate(['/main']);
         });
       } catch (error) {

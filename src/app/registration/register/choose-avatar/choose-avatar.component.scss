@@ -7,17 +7,6 @@
     align-items: center;
     flex-direction: column;
 
-    .overlay {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        z-index: 999;
-
-        >img {
-            width: 320px;
-        }
-    }
-
     .header-container {
         padding: 64px;
         position: absolute;
@@ -28,7 +17,7 @@
 
         @media (max-width: 600px) {
             justify-content: center;
-            padding: 32px;
+            padding: 40px;
         }
 
         @media (max-height: 750px) {
@@ -112,10 +101,6 @@ form {
             border: none;
             font-weight: 600;
 
-            @media (max-width: 600px) {
-                padding: 4px 20px;
-            }
-
             &:hover {
                 cursor: pointer;
                 background-color: #797EF3;
@@ -149,11 +134,6 @@ form {
         @media(max-width: 600px) {
             width: 120px;
             height: 120px;
-        }
-
-        @media(max-width: 380px) {
-            width: 64px;
-            height: 64px;
         }
 
         @media(max-height: 750px) {
@@ -220,10 +200,6 @@ form {
             padding: 12px 20px;
             color: #444DF2;
 
-            @media (max-width: 600px) {
-                padding: 4px 20px;
-            }
-
             &:hover {
                 cursor: pointer;
                 background-color: #444DF2;
@@ -240,10 +216,6 @@ form {
     align-items: center;
     padding-top: 32px;
     gap: 32px;
-
-    @media (max-width: 600px) {
-        padding-top: 0;
-    }
 
     .footer-content {
         border: 1px solid;
