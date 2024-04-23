@@ -49,7 +49,6 @@ export class UserDetailComponent {
     this.chatService.setCurrenDmPartner(this.userID);
     this.chatService.setIsDmRoom(true);
     this.closeProfile(true);
-    this.chatService.showReply = false;
   }
 
   generateRoomId(userId1: string, userId2: string) {

@@ -1,11 +1,18 @@
+<div class="intro-container fadeOut">
+    <div>
+        <img src="assets/img/logo-header.svg" alt="">
+        <span>DABubble</span>
+    </div>
+</div>
+
+
 <div class="main-container">
     <div class="header-container">
-        <img src="assets/img/logo-header_complete.svg" alt=""
-            [ngStyle]="{'height': containerHeight <= 700 ? '48px' : ''}">
+        <img src="assets/img/logo-header_complete.svg" alt="">
 
-        <div class="new-account-container" [ngStyle]="{'display': containerWidth <= 600 ? 'none' : 'flex'}">
+        <div class="new-account-container">
             <span class="fs-15">Neu bei DABubble?</span>
-            <span routerLink="registration" class="new-account tr-150ms">Konto erstellen</span>
+            <a routerLink="registration" class="new-account tr-150ms">Konto erstellen</a>
         </div>
     </div>
 
@@ -13,11 +20,11 @@
         <h2 class="login">Anmeldung</h2>
         <span>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</span>
 
-        <form (ngSubmit)="login()" [formGroup]="formData">
+        <form [formGroup]="formData">
             <div class="input-container">
                 <div>
                     <!-- email -->
-                    <div (click)="isMailFocused = true" class="mail-and-pw google-sign-in tr-150ms br-32"
+                    <div (click)="isMailFocused = true" class="mail-and-pw tr-150ms br-32"
                         [ngClass]="{'purple-border': isMailFocused}">
                         <img [src]="isMailFocused ? 'assets/img/mail_focused.svg' : 'assets/img/mail_unfocused.svg'">
                         <input formControlName="email" type="email" placeholder="E-Mail" required
@@ -50,7 +57,7 @@
                 </div>
             </div>
 
-            <div><span routerLink="resetPassword" class="forgot-password tr-150ms">Passwort vergessen?</span></div>
+            <div><span class="forgot-password tr-150ms">Passwort vergessen?</span></div>
 
             <div class="or">
                 <div></div>
@@ -60,29 +67,18 @@
 
             <div class="google-sign-in tr-150ms br-32">
                 <img src="assets/img/google.svg" alt="">
-                <span (click)="googleLogin()">Anmelden mit Google</span>
+                <span>Anmelden mit Google</span>
             </div>
 
             <div class="btn-container">
-                <button [ngClass]="{'btnDisabled': !formData.valid}" [disabled]="!formData.valid" type="submit"
-                    class="login-btn br-32 tr-150ms btn-padding-20" mat-flat-button>Anmelden</button>
-                <button type="button" (click)="guestLogin()" class="guest-login-btn br-32 tr-150ms btn-padding-20"
-                    mat-flat-button>Gäste-Login</button>
+                <button class="login-btn br-32 tr-150ms" mat-flat-button>Anmelden</button>
+                <button class="guest-login-btn br-32 tr-150ms" mat-flat-button>Gäste-Login</button>
             </div>
         </form>
     </div>
 
-    <div class="new-account-container"
-        [ngStyle]="{'display': containerWidth <= 600 ? 'flex' : 'none', 'padding-top': containerHeight <= 700 ? '10px' : '40px'}">
-        <span class="fs-15" [ngStyle]="{'font-size': '20px'}">Neu bei DABubble?</span>
-        <span
-            [ngStyle]="{'border': '1px solid #797EF3', 'color': '#444DF2', 'font-weight': 'bold', 'text-align': 'center'}"
-            routerLink="registration" class="new-account tr-150ms">Konto erstellen
-        </span>
-    </div>
-
-    <div class="footer-container" [ngStyle]="{'display': containerWidth <= 600 ? 'none' : 'flex'}">
-        <span routerLink="imprint" class="footer-content tr-150ms">Impressum</span>
-        <span routerLink="privacyPolicy" class="footer-content tr-150ms">Datenschutz</span>
+    <div class="footer-container">
+        <span class="footer-content tr-150ms">Impressum</span>
+        <span class="footer-content tr-150ms">Datenschutz</span>
     </div>
 </div>

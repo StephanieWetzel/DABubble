@@ -116,10 +116,6 @@ form {
             border: none;
             font-weight: 600;
 
-            @media (max-width: 600px) {
-                padding: 4px 20px;
-            }
-
             &:hover {
                 cursor: pointer;
                 background-color: #797EF3;
@@ -172,8 +168,7 @@ form {
     padding-top: 32px;
     gap: 32px;
 
-    @media (min-width:350px) and (max-width: 380px),
-    (max-height: 600px) {
+    @media (max-height: 600px) {
         padding-top: 0;
     }
 

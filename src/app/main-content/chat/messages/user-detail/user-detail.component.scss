@@ -6,12 +6,8 @@ section {
     max-width: 450px;
     background-color: #FFFFFF;
     border-radius: 32px;
-    @media(max-width: 600px) {
-      width: 70%;
-    }
     @media(max-width: 520px) {
       padding: 45px 20px;
-      width: 80%;
     }
     > .p-head {
       width: 100%;
