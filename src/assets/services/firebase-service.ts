@@ -83,6 +83,12 @@ export class FirebaseService {
     }
   }
 
+  async getCurrentChannelData(channelId: string) {
+    const dockRef = doc(this.getColl("channel"), channelId);
+    const docSnap = await getDoc(dockRef);
+    return docSnap.data() as Channel
+  }
+
 
   addIdToChannel(dockRef: any) {
     console.log('Document written - ID: ', dockRef?.id);

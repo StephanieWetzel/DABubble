@@ -1,0 +1,126 @@
+@import "./../../../../../styles.scss";
+
+.editChannel {
+  @include dFlex(flex-start, center, 20px, column);
+  margin: 40px 40px;
+  width: 792px;
+  max-width: 872px;
+  /*channel info head*/
+  > .head {
+    width: 100%;
+    @include dFlex(space-between, center);
+    > div {
+      @include dFlex(center, center, 15px, row);
+      > h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+    > mat-icon {
+      border-radius: 50%;
+      padding: 4px;
+      &:hover {
+        color: #444df2;
+        cursor: pointer;
+        background-color: #eceefe;
+      }
+    }
+  }
+  /*channel name info*/
+
+  > .channel-details {
+    width: 100%;
+    max-width: 792px;
+    @include dFlex(center, flex-start, 20px, column);
+    > .channel-name-cont {
+      width: 95%;
+      max-width: 792px;
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px solid #adb0d9;
+      @include dFlex(center, flex-start, 20px, column);
+      > .cHead {
+        width: 100%;
+        @include dFlex(space-between, center, 0, row);
+        > span {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+      > .cName {
+        width: 100%;
+        @include dFlex(flex-start, center, 10px, row);
+        > span {
+          font-size: 18px;
+        }
+      }
+    }
+    /*channel description*/
+    > .channel-description {
+      @include dFlex(center, flex-start, 30px, column);
+      padding: 20px;
+      border-radius: 20px;
+      border: 1px solid #adb0d9;
+      width: 95%;
+      > .channel-desc-cont {
+        @include dFlex(space-between, center, 0, row);
+        width: 100%;
+        > span {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+      > .description-text {
+        font-size: 18px;
+      }
+      > .cutline {
+        width: 100%;
+        height: 1px;
+        background-color: #adb0d9;
+      }
+      > .creator-cont {
+        @include dFlex(center, flex-start, 20px, column);
+        > span {
+          font-size: 18px;
+          font-weight: bold;
+        }
+      }
+    }
+    > .leave-channel {
+      @include dFlex(flex-end, center);
+      width: 100%;
+      > button {
+        padding: 12px 25px;
+        border: none !important;
+        outline: none;
+        border-radius: 25px;
+        background-color: #535af1;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.edit-channel {
+  width: 100%;
+  max-width: 792px;
+  @include dFlex(flex-start, center, 10px, row);
+  padding: 18px 20px;
+  border-radius: 40px;
+  border: 1px solid #adb0d9;
+  > input {
+    border: none;
+    outline: none;
+    width: 90%;
+  }
+}
+
+.editBlue {
+  color: #535af1;
+}
+
+.creatorFontColor {
+  font-size: 24px;
+  color: #535af1;
+}

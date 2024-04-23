@@ -1,5 +1,5 @@
 <section *ngIf="!isDmRoomOpen">
-    <div class="group-name">
+    <div (click)="openEditChannelDialog()" class="group-name">
         <mat-icon>tag</mat-icon>
         <span>{{ chatService.getChannelName() }}</span>
     </div>
