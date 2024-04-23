@@ -29,7 +29,7 @@
             <div class="avatar-and-message"
                 [ngClass]="{'avatar-and-message-sender': isCurrentUserSender(message.sendId)}">
                 <div class="avatar-container">
-                    <img [src]="chatService.getUserAvatar(message.sendId)">
+                    <img (click)="showID(message.sendId)" [src]="chatService.getUserAvatar(message.sendId)">
                 </div>
                 <div class="info-and-content" [ngClass]="{'info-and-content-sender': isCurrentUserSender(message.sendId)}">
                     <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
@@ -109,4 +109,5 @@
             </div>
         </div>
     </div>
+    <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId" (hasClosed)="handleProfile($event)"></app-user-detail>
 </section>
