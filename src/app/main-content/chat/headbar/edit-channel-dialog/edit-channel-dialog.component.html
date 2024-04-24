@@ -12,7 +12,7 @@
       <div class="cHead">
         <span>Channel-Name</span>
         <span *ngIf="!isEditNameOpen" class="editBlue" (click)="editChName()" >Bearbeiten</span>
-        <span *ngIf="isEditNameOpen" class="editBlue" [ngStyle]="isEditNameOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
+        <span *ngIf="isEditNameOpen" class="editBlue" (click)="safeEdit(channelData.name, 'name')" [ngStyle]="isEditNameOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
       </div>
       <div *ngIf="!isEditNameOpen" class="cName">
         <mat-icon style="font-style: italic">tag</mat-icon>
@@ -20,7 +20,7 @@
       </div>
       <div *ngIf="isEditNameOpen" class="edit-channel">
         <mat-icon style="font-style: italic">tag</mat-icon>
-        <input type="text" placeholder="{{ channel?.name }}">
+        <input [(ngModel)]="channelData.name" type="text" placeholder="{{ channel?.name }}">
       </div>
     </div>
 
@@ -28,23 +28,23 @@
       <div class="channel-desc-cont">
         <span>Beschreibung</span>
         <span (click)="editChDesc()" *ngIf="!isEditDescOpen" class="editBlue">Bearbeiten</span>
-        <span *ngIf="isEditDescOpen" class="editBlue" [ngStyle]="isEditDescOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
+        <span (click)="safeEdit(channelData.description, 'description')" *ngIf="isEditDescOpen" class="editBlue" [ngStyle]="isEditDescOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
       </div>
       <div *ngIf="!isEditDescOpen" class="description-text">
         {{ channel?.description}}
       </div>
       <div *ngIf="isEditDescOpen" class="edit-channel">
-        <input type="text" placeholder="Dein Text hier">
+        <input [(ngModel)]="channelData.description" type="text" placeholder="{{ channel?.description }}">
       </div>
       <div class="cutline" [ngStyle]="isEditDescOpen ? {'margin-left' : '20px'} : {}"></div>
       <div class="creator-cont">
         <span>Erstellt von</span>
-        <span class="creatorFontColor">{{ channel?.creator }}</span>
+        <span class="creatorFontColor">{{ user?.name }}</span>
       </div>
     </div>
 
     <div class="leave-channel">
-      <button>Channel verlassen</button>
+      <button (click)="leaveChannel()">Channel verlassen</button>
     </div>
   </div>
 </section>

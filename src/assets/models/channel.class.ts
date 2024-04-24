@@ -1,9 +1,15 @@
 
+
+interface Member {
+    id: string;
+    name: string
+}
+
 export class Channel {
     name: string;
     channelId: string;
     description: string;
-    member: string[];
+    member: Member[];
     messages: any[];
     createdAt: any;
     creator: string;

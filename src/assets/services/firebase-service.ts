@@ -98,6 +98,19 @@ export class FirebaseService {
     });
   }
 
+  async updateChannelInfo(channelId: string | undefined, edit: string | undefined | any , whatToUpdate: string) {
+    const dockRef = doc(this.getColl('channel'), channelId)
+    await updateDoc(dockRef, {
+      [whatToUpdate]: edit
+    })
+  }
+
+  async getCreator(creatorID: string) {
+    const dockRef = doc(this.getColl("user"), creatorID);
+    const dockSnap = await getDoc(dockRef);
+    return dockSnap.data() as User;
+  }
+
   createRoomRef(roomId: string) {
     return doc(this.getColl("directMessages"), roomId);
   }
