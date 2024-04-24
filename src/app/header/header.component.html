@@ -10,7 +10,7 @@
 
   <div class="search-and-profile">
     <div class="search">
-      <input matInput placeholder="Search in Channel..." value="" />
+      <input matInput placeholder="Search in Channel..." value="" [(ngModel)]="chatService.searchInput" (input)="chatService.getFilteredMessages()"/>
       <mat-icon>search</mat-icon>
     </div>
     <div class="profile" (click)="openProfileMenu()">

@@ -8,6 +8,8 @@ import { User } from '../../assets/models/user.class';
 import { ProfileAuthentication } from '../../assets/services/profileAuth.service';
 import { MobileService } from '../../assets/services/mobile.service';
 import { Subscription } from 'rxjs';
+import { ChatService } from '../../assets/services/chat-service/chat.service';
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-header',
@@ -18,6 +20,7 @@ import { Subscription } from 'rxjs';
     MatFormFieldModule,
     MatIcon,
     ProfileDialogComponent,
+    FormsModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -33,7 +36,7 @@ export class HeaderComponent {
   keepMenuOpen: boolean = window.innerWidth <= 520;
   @Output() openSidenav = new EventEmitter<void>();
 
-  constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService) {
+  constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService, public chatService: ChatService) {
   }
 
 

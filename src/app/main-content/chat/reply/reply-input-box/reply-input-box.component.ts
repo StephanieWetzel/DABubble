@@ -32,6 +32,10 @@ export class ReplyInputBoxComponent {
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
       });
+      editor.on('init', () => {
+        editor.focus();
+      });
+      this.chatService.editorReply = editor;
     }
   };
 

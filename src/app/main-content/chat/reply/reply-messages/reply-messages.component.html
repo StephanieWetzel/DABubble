@@ -23,8 +23,6 @@
             <div>
             </div>
         </div>
-
-
     </div>
     <div *ngFor="let message of getList(); let i = index" class="message">
         <!-- <div class="date" *ngIf="isDateDifferent(i)">
@@ -52,7 +50,7 @@
                 <div class="avatar-container">
                     <img [src]="chatService.getUserAvatar(message.sendId)">
                 </div>
-                <div class="info-and-content">
+                <div class="info-and-content" [ngClass]="{'info-and-content-sender': isCurrentUserSender(message.sendId)}">
                     <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
                         <span class="name">{{ chatService.getUserName(message.sendId) }} </span>
                         <span class="time">{{ message.time | customTime }}</span>

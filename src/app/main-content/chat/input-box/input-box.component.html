@@ -6,7 +6,7 @@
         </div>
     </div>
 
-    <editor id="inputData" [init]="editorInit"></editor>
+    <editor id="inputData" #inputData [init]="editorInit"></editor>
     <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty}" (click)="sendMessage()">
         <img src="./../../../../assets/img/send-message.svg" alt="send message">
     </button>

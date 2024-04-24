@@ -21,6 +21,8 @@ export class HeadbarComponent  {
   openMenu = false;
   currentChannelId: string | any;
   isDmRoomOpen: boolean = false;
+  newMessage: boolean = false;
+
   currentPartner: string = '';
   currentPartnerUser: User | null = null;
 
