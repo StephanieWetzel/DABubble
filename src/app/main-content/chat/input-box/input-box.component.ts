@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit, ElementRef  } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { ChatService } from './../../../../assets/services/chat-service/chat.service';
@@ -23,6 +23,8 @@ import { User } from '../../../../assets/models/user.class';
 
 
 export class InputBoxComponent {
+  @ViewChild('inputData', { static: false }) myEditor!: ElementRef ;
+
   public editorInit: RawEditorOptions = {
     base_url: '/tinymce',
     suffix: '.min',
@@ -42,6 +44,10 @@ export class InputBoxComponent {
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
       });
+      editor.on('init', () => {
+        editor.focus();
+      });
+      this.chatService.editorMessage = editor;
     }
   };
 
@@ -53,16 +59,6 @@ export class InputBoxComponent {
 
 
   constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer, private profileAuth: ProfileAuthentication) {
-  }
-
-
-  ngOnInit() {
-    this.profileAuth.initializeUser();
-    this.profileAuth.user$.subscribe((user) => {
-      if(user){
-        this.currentUser = new User(user);
-      }
-    })
   }
 
 
@@ -78,7 +74,7 @@ export class InputBoxComponent {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
-      message.sendId = this.currentUser.userId;      
+      message.sendId = this.chatService.currentUser.userId;      
       for (const file of this.selectedFiles) {
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
@@ -93,11 +89,31 @@ export class InputBoxComponent {
 
   openSelectedFile(event: Event){
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFiles.push(input.files[0]);
-      this.selectedFileNames.push(input.files[0].name);
+    if (input && input.files) {
+      const files = input.files;
+      let totalSize = 0;
+      this.selectedFiles = [];
+      this.selectedFileNames = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        totalSize += file.size;
+      if (file.size > 5242880) { // 5 MB für Bilder
+        alert("Dateien dürfen nicht größer als 5 MB sein.");
+      } else {
+        this.selectedFiles.push(file);
+        this.selectedFileNames.push(file.name);
+      }
+    }
+
+    if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
+      alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
+      this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
     }
   }
+  }
+
+ 
 
 
   openFilePreview(index: number) {

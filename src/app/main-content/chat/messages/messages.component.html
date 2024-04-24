@@ -6,10 +6,19 @@
             <span>{{ getOtherUserName() }}</span>
         </div>
         <p>
-            Diese Unterhaltung findet nur zwischen <span>&#64;{{ getOtherUserName() }}</span> und dir statt.
+            Diese Unterhaltung findet nur zwischen <span>&#64;{{ getOtherUserName() }}</span> und dir statt
         </p>
     </div>
-    <div *ngFor="let message of getList(); let i = index" class="message">
+    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.currentChannel$.value.length > 0 && !isDirectMessage()">
+        <div class="channel-container">
+            <span># {{ chatService.getChannelName() }}</span>
+        </div>
+        <p>
+            Dieser Channel wurde neu erstellt. Das ist der Anfang dieses Channels <span># {{ chatService.getChannelName() }}</span>
+        </p>
+    </div>
+    
+    <div *ngFor="let message of getFilteredMessages(); let i = index" class="message">
         <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
             <span>{{ message.time | customDate }}</span>

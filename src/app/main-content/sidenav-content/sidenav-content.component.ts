@@ -223,6 +223,7 @@ export class SidenavContentComponent {
     this.chatService.setCurrenDmPartner(userId);
     this.chatService.setIsDmRoom(true);
     this.checkScreenWidth();
+    this.chatService.setEditorFocusMessage();
     //this.chatService.getMessages();
   }
 

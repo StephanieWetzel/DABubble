@@ -170,6 +170,14 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
+  getFilteredMessages(): Message[] {
+    if (!this.chatService.searchInput) return this.getList();
+    return this.getList().filter(message =>
+      message.content.toLowerCase().includes(this.chatService.searchInput.toLowerCase())
+    );
+  }
+
+
   isCurrentUserSender(sender: string){
     return sender === this.currentUser.userId;
   }
@@ -180,6 +188,10 @@ export class MessagesComponent implements AfterViewInit {
     this.chatService.showReply = true;
     this.chatService.messageIdReply = message.messageId;
     this.chatService.getReplies();
+    setTimeout(() => {
+      this.chatService.setEditorFocusReply();
+    }, 500);
+   
   }
 
 
@@ -253,6 +265,8 @@ export class MessagesComponent implements AfterViewInit {
     const user = this.chatService.users.find(user => user.userId === userId);
     return user ? user.name : 'Noah Braun';
   }
+
+  
 
 
   // sendIdToName(id: string){

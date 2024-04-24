@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ProfileAuthentication } from '../profileAuth.service';
 import { User } from '../../models/user.class';
 import { Channel } from '../../models/channel.class';
+import { Editor } from 'tinymce';
 
 
 @Injectable({
@@ -36,10 +37,14 @@ export class ChatService implements OnDestroy {
 
   users: User[] = [];
 
+  editorMessage!: Editor;
+  editorReply!: Editor;
+
   isChannel = true;
 
   initialMessageForThread!: Message;
 
+  searchInput: string = '';
 
 
   unsubscribe!: Unsubscribe;
@@ -149,6 +154,18 @@ export class ChatService implements OnDestroy {
       this.messageCount.next(this.messages.length);
     });
   }
+
+  getFilteredMessages(): Message[] {
+    if (!this.searchInput) return this.messages;
+    return this.messages.filter(message =>
+      message.content.toLowerCase().includes(this.searchInput.toLowerCase())
+    );
+  }
+
+  // getList(): Message[] {
+  //   this.messages = this.chatService.messages;
+  //   return this.chatService.messages;
+  // }
 
 
   getReplies() {
@@ -324,5 +341,13 @@ export class ChatService implements OnDestroy {
 
   getReplyRef() {
     return collection(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`)
+  }
+
+  setEditorFocusMessage(){
+    this.editorMessage.focus()
+  }
+
+  setEditorFocusReply(){
+    this.editorReply.focus()
   }
 }
