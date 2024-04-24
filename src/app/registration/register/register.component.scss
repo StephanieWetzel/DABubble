@@ -81,7 +81,6 @@
                 font-size: 40px;
                 font-weight: bold;
             }
-
         }
     }
 }
@@ -115,6 +114,10 @@ form {
             padding: 10px 20px;
             border: none;
             font-weight: 600;
+
+            @media (max-width: 600px) {
+                padding: 4px 20px;
+            }
 
             &:hover {
                 cursor: pointer;
@@ -168,7 +171,8 @@ form {
     padding-top: 32px;
     gap: 32px;
 
-    @media (max-height: 600px) {
+    @media (min-width:350px) and (max-width: 380px),
+    (max-height: 600px) {
         padding-top: 0;
     }
 
@@ -260,7 +264,6 @@ input {
 .container:hover input~.checkmark {
     background-color: #ECEEFE;
     border-color: #444DF2;
-
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -292,7 +295,6 @@ input {
     border: solid #444DF2;
     border-width: 0 3px 3px 0;
 }
-
 
 // generic classes
 .fs-15 {

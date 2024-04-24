@@ -2,6 +2,8 @@ html,
 body {
     height: 100%;
     max-width: 1920px;
+    margin: 0;
+    overflow: hidden;
 }
 
 body {
@@ -86,6 +88,7 @@ app-input-box div .tox-toolbar__primary {
 /*style for add channel dialog*/
 .custom-add-channel-dialog .mat-mdc-dialog-surface {
     border-radius: 30px !important;
+
     @media(max-width: 520px) {
         width: 100vw !important;
         height: 100vh !important;
@@ -98,6 +101,7 @@ app-input-box div .tox-toolbar__primary {
 
 .custom-edit-channel-dialog .mat-mdc-dialog-surface {
     border-radius: 30px !important;
+
     @media(max-width: 520px) {
         width: 100vw !important;
         height: 100vh !important;

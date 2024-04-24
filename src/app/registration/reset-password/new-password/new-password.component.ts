@@ -10,6 +10,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { AuthenticationService } from '../../../../assets/services/authentication.service';
+import { updatePassword } from '@angular/fire/auth';
 
 
 @Component({
@@ -78,6 +79,8 @@ export class NewPasswordComponent {
 
 
   showOverlayAndNavigateToLogin() {
+    updatePassword(this.auth.currentUser, this.formData.value.newPassword)
+    console.log(this.auth.currentUser)
     this.showOverlay = true;
     setTimeout(() => {
       this.router.navigate(['']);
