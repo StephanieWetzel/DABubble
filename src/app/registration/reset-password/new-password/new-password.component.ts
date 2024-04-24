@@ -1,7 +1,7 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   FormGroup,
   Validators,
@@ -9,9 +9,7 @@ import {
   ReactiveFormsModule,
   FormBuilder,
 } from '@angular/forms';
-import { AuthenticationService } from '../../../../assets/services/authentication.service';
-import { updatePassword } from '@angular/fire/auth';
-
+import { Auth, confirmPasswordReset } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-new-password',
@@ -47,16 +45,21 @@ export class NewPasswordComponent {
   containerWidth: number;
   containerHeight: number;
 
-  newPassword: string = this.formData.value.confirmPassword;
+  private auth = inject(Auth);
+  private oobCode: string;
+  private route = inject(ActivatedRoute);
 
 
   constructor(
     private fbuilder: FormBuilder,
-    private router: Router,
-    public auth: AuthenticationService
+    private router: Router
   ) {
     this.containerWidth = window.innerWidth;
     this.containerHeight = window.innerHeight;
+
+    this.oobCode = this.route.snapshot.queryParams['oobCode'];
+    console.log(this.oobCode);
+
   }
 
 
@@ -71,6 +74,12 @@ export class NewPasswordComponent {
   }
 
 
+  /**
+ * Validator function to check if the password and confirm password fields match.
+ * 
+ * @param formGroup - The form group containing the password and confirm password fields.
+ * @returns Returns null if the password and confirm password fields match, otherwise returns an object with a `passwordMismatch` property.
+ */
   passwordsMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
     const confirmPassword = formGroup.get('confirmPassword')?.value;
@@ -78,36 +87,24 @@ export class NewPasswordComponent {
   }
 
 
-  showOverlayAndNavigateToLogin() {
-    updatePassword(this.auth.currentUser, this.formData.value.newPassword)
-    console.log(this.auth.currentUser)
-    this.showOverlay = true;
-    setTimeout(() => {
-      this.router.navigate(['']);
-    }, 2000);
+  /**
+ * Resets the password using the provided one-time code (oobCode) and navigates to the login page upon success.
+ * 
+ * @param auth - The authentication service instance.
+ * @param oobCode - The one-time code received in the password reset email.
+ * @param newPassword - The new password to set.
+ * @returns {Promise<void>} A promise that resolves when the password is successfully reset.
+ */
+  async changePasswordAndNavigateToLogin() {
+    try {
+      await confirmPasswordReset(this.auth, this.oobCode, this.formData.value.confirmPassword);
+      this.showOverlay = true;
+      setTimeout(() => {
+        this.router.navigate(['']);
+      }, 2000);
+    } catch (error) {
+    }
   }
-
-
-  // async changePasswordAndNavigateToLogin() {
-  //   try {
-  //     const user = this.auth.currentUser;
-  //     console.log(user)
-  //     if (user) {
-  //       await user.updatePassword(this.newPassword);
-  //       console.log('Passwort erfolgreich geändert.');
-  //       this.showOverlay = true;
-  //       setTimeout(() => {
-  //         this.router.navigate(['']);
-  //       }, 2000);
-  //     } else {
-  //       console.error('Kein angemeldeter Benutzer gefunden.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Fehler beim Ändern des Passworts:', error);
-  //   }
-  // }
-
-
 
 
 }

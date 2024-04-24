@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 import { trigger, transition, animate, style } from '@angular/animations';
+
 @Component({
   selector: 'app-reset-password',
   standalone: true,

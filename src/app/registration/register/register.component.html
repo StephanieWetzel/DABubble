@@ -13,7 +13,7 @@
 
         <span class="signup-text">Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</span>
 
-        <form [formGroup]="formData">
+        <form (ngSubmit)="pushUserDataToFirebase()" [formGroup]="formData">
             <div class="input-container">
                 <div>
                     <!-- name -->
@@ -82,8 +82,8 @@
             </div>
 
             <div class="btn-container">
-                <button [ngClass]="{'btnDisabled': !formData.valid}" [disabled]="!formData.valid"
-                    (click)="pushUserDataToFirebase()" class="br-32 tr-150ms">Weiter</button>
+                <button type="submit" [ngClass]="{'btnDisabled': !formData.valid}" [disabled]="!formData.valid"
+                    class="br-32 tr-150ms">Weiter</button>
             </div>
 
         </form>
