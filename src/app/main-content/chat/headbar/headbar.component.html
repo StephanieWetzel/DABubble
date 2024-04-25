@@ -4,6 +4,12 @@
         <span>{{ chatService.getChannelName() }}</span>
     </div>
     <div class="group-members">
+        <div class="member-grouped-cont">
+            <div *ngFor="let avatar of avatars" class="member-avatar">
+                <img [src]="avatar">
+            </div>
+            <span>{{channel?.member?.length}}</span>
+        </div>
         <div #dropdownContainer class="dropdown-container">
             <button class="add-member-btn" (click)="toggleMenu()">
                 <mat-icon class="outlined">person_add</mat-icon>

@@ -83,10 +83,18 @@ export class FirebaseService {
     }
   }
 
-  async getCurrentChannelData(channelId: string) {
+  async getCurrentChannelData(channelId: string): Promise<Channel | null> {
     const dockRef = doc(this.getColl("channel"), channelId);
-    const docSnap = await getDoc(dockRef);
-    return docSnap.data() as Channel
+    try {
+      const docSnap = await getDoc(dockRef);
+      if (docSnap.exists()) {
+        return docSnap.data() as Channel
+      } else {
+        return null;
+      }
+    } catch (error) {
+      return null
+    }  
   }
 
 
@@ -130,6 +138,20 @@ export class FirebaseService {
       }
       
     })
+  }
+
+  async getAvatar(userId: string) {
+    const dockRef = doc(this.getColl("user"), userId);
+    const dockSnap = await getDoc(dockRef);
+    if (!dockSnap.exists()) {
+    
+    return null 
+    }
+    const user = dockSnap.data() as User;
+    if (!user.avatar) {
+      return null
+    }
+    return user.avatar
   }
 
   transformDmRoom(currentUserID: string, otherUserID: string, roomId: string) {

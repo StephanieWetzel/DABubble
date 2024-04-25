@@ -8,6 +8,8 @@ import { User } from '../../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { EditChannelDialogComponent } from './edit-channel-dialog/edit-channel-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Channel } from '../../../../assets/models/channel.class';
+import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-headbar',
@@ -23,24 +25,40 @@ export class HeadbarComponent  {
   isDmRoomOpen: boolean = false;
   newMessage: boolean = false;
   isInfoOpen: boolean = false;
-
+  channel: Channel | null = null;
+  avatars: any[] = [];
   currentPartner: string = '';
   currentPartnerUser: User | null = null;
 
-  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog){}
+  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService){}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.chatService.isDmRoom$.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
     })
     this.chatService.dmPartnerID$.subscribe(async userId => {
       this.currentPartner = userId;
       this.currentPartnerUser = await this.auth.fetchPartnerFromFirestore(userId)
-      console.log(this.currentPartnerUser)
     })
-    this.chatService.currentChannel$.subscribe(channelID => {
-      this.currentChannelId = channelID;
+    this.chatService.currentChannel$.subscribe(async channelID => {
+      this.currentChannelId = channelID; 
+      this.channel = await this.firestore.getCurrentChannelData(this.currentChannelId);
+      if (this.channel) {
+        this.safeUserAvatars();
+      }
     })
+    
+    
+  }
+
+  async safeUserAvatars() {
+    this.avatars = [];
+    if (this.channel && this.channel.member) {
+      const avatarPromises = this.channel?.member.map(member => this.firestore.getAvatar(member.id) || []);
+      const avatars = await Promise.all(avatarPromises);
+      this.avatars = avatars.filter(avatar => avatar != null);
+    }
+    console.log("hier die Avatare: ", this.avatars)
   }
 
   // openMobileEditChannelDialog() {
@@ -48,8 +66,7 @@ export class HeadbarComponent  {
   //   //   panelClass: 'custom-edit-channel-dialog',
   //   //   data: { channelID: this.currentChannelId }
   //   // })
-  // }
-
+  //}
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
