@@ -45,7 +45,6 @@ export class HeaderComponent {
     this.screenWidth = window.innerWidth
     if (window.innerWidth < 520) {
       this.keepMenuOpen = true;
-      console.log(this.keepMenuOpen)
     }
   }
 
@@ -87,7 +86,6 @@ export class HeaderComponent {
     const clickedInsideMenu =
       profileMenuElement && profileMenuElement.contains(event.target as Node);
     if (this.isProfilMenuOpen && !clickedInsideMenu && !this.keepMenuOpen || !this.isProfileEditOpen) {
-      console.log('Menü wird geschlossen', this.keepMenuOpen)
       this.isProfilMenuOpen = false;
     }
   }

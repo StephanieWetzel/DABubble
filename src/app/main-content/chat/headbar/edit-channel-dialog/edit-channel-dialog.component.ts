@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { Channel } from '../../../../../assets/models/channel.class';
@@ -27,16 +27,20 @@ export class EditChannelDialogComponent {
   };
 
   constructor(
-    public dialogref: MatDialogRef<EditChannelDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    // public dialogref: MatDialogRef<EditChannelDialogComponent>,
+    //@Inject(MAT_DIALOG_DATA) public data: any,
     public firestore: FirebaseService,
     private auth: ProfileAuthentication
   ) {}
 
+  @Input() currentChannel!: string;
+  @Output() closeDialog = new EventEmitter<boolean>();
+
   async ngOnInit() {
-    this.channel = await this.firestore.getCurrentChannelData(
-      this.data.channelID
-    );
+    // this.channel = await this.firestore.getCurrentChannelData(
+    //   this.data.channelID
+    // );
+    this.channel = await this.firestore.getCurrentChannelData(this.currentChannel)
     if (this.channel) {
       this.user = await this.firestore.getCreator(this.channel.creator);
       this.auth.fetchLoggedUser().then((userID) => {
@@ -45,11 +49,15 @@ export class EditChannelDialogComponent {
     }
   }
 
+  close() {
+    this.closeDialog.emit(false)
+  }
+
   leaveChannel() {
     const updatedMember = this.channel?.member.filter(member => member.id !== this.currentUser);
     console.log("member: ", updatedMember)
     this.firestore.updateChannelInfo(this.channel?.channelId, updatedMember, 'member');
-    this.dialogref.close();
+    this.closeDialog.emit(false);
   }
 
   editChName() {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
@@ -22,6 +22,7 @@ export class HeadbarComponent  {
   currentChannelId: string | any;
   isDmRoomOpen: boolean = false;
   newMessage: boolean = false;
+  isInfoOpen: boolean = false;
 
   currentPartner: string = '';
   currentPartnerUser: User | null = null;
@@ -42,11 +43,35 @@ export class HeadbarComponent  {
     })
   }
 
+  // openMobileEditChannelDialog() {
+  //   // const dialogRef = this.dialog.open(EditChannelDialogComponent, {
+  //   //   panelClass: 'custom-edit-channel-dialog',
+  //   //   data: { channelID: this.currentChannelId }
+  //   // })
+  // }
+
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const infoDialog = document.getElementById('infoMenu');
+    const clickedInsideMenu = infoDialog && infoDialog.contains(event.target as Node);
+    if (this.isInfoOpen && !clickedInsideMenu) {
+      this.isInfoOpen = false;
+    }
+  }
+
   openEditChannelDialog() {
-    const dialogRef = this.dialog.open(EditChannelDialogComponent, {
-      panelClass: 'custom-edit-channel-dialog',
-      data: { channelID: this.currentChannelId }
-    })
+    if (this.isInfoOpen) {
+      this.isInfoOpen = !this.isInfoOpen
+    } else {
+      setTimeout(() => {
+        this.isInfoOpen = true;
+      }, 10)
+    }
+  }
+
+  handleCloseEvent(event:boolean) {
+    this.isInfoOpen = event;
   }
 
   toggleMenu(){

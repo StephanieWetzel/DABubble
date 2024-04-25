@@ -2,7 +2,6 @@
 
 .editChannel {
   @include dFlex(flex-start, center, 20px, column);
-  margin: 40px 40px;
   width: 792px;
   max-width: 872px;
   /*channel info head*/

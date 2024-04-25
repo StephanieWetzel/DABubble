@@ -4,15 +4,15 @@
       <mat-icon style="font-style: italic">tag</mat-icon>
       <h2>{{ channel?.name }}</h2>
     </div>
-    <mat-icon>close</mat-icon>
+    <mat-icon (click)="close()" >close</mat-icon>
   </div>
 
   <div class="channel-details">
     <div class="channel-name-cont" [ngStyle]="isEditNameOpen ? {'border':'none', 'padding' : '20px 0 0 0'} : {'border': '1px solid #adb0d9'} ">
       <div class="cHead">
         <span>Channel-Name</span>
-        <span *ngIf="!isEditNameOpen" class="editBlue" (click)="editChName()" >Bearbeiten</span>
-        <span *ngIf="isEditNameOpen" class="editBlue" (click)="safeEdit(channelData.name, 'name')" [ngStyle]="isEditNameOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
+        <span *ngIf="!isEditNameOpen" class="editBlue" (click)="editChName(); $event.stopPropagation()" >Bearbeiten</span>
+        <span *ngIf="isEditNameOpen" class="editBlue" (click)="safeEdit(channelData.name, 'name');  $event.stopPropagation()" [ngStyle]="isEditNameOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
       </div>
       <div *ngIf="!isEditNameOpen" class="cName">
         <mat-icon style="font-style: italic">tag</mat-icon>
@@ -27,8 +27,8 @@
     <div class="channel-description" [ngStyle]="isEditDescOpen ? {'border': 'none', 'padding' : '20px 0 0 0'} : {'border': '1px solid #adb0d9'}">
       <div class="channel-desc-cont">
         <span>Beschreibung</span>
-        <span (click)="editChDesc()" *ngIf="!isEditDescOpen" class="editBlue">Bearbeiten</span>
-        <span (click)="safeEdit(channelData.description, 'description')" *ngIf="isEditDescOpen" class="editBlue" [ngStyle]="isEditDescOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
+        <span (click)="editChDesc();  $event.stopPropagation()" *ngIf="!isEditDescOpen" class="editBlue">Bearbeiten</span>
+        <span (click)="safeEdit(channelData.description, 'description');  $event.stopPropagation()" *ngIf="isEditDescOpen" class="editBlue" [ngStyle]="isEditDescOpen ? {'margin-right':'-20px'} : {}">Speichern</span>
       </div>
       <div *ngIf="!isEditDescOpen" class="description-text">
         {{ channel?.description}}

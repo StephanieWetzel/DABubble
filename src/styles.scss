@@ -85,6 +85,10 @@ app-input-box div .tox-toolbar__primary {
     cursor: text !important;
 }
 
+.mat-drawer.mat-drawer-side {
+    z-index: 1;
+}
+
 /*style for add channel dialog*/
 .custom-add-channel-dialog .mat-mdc-dialog-surface {
     border-radius: 30px !important;
@@ -101,6 +105,7 @@ app-input-box div .tox-toolbar__primary {
 
 .custom-edit-channel-dialog .mat-mdc-dialog-surface {
     border-radius: 30px !important;
+    border-top-left-radius: 0px !important;
 
     @media(max-width: 520px) {
         width: 100vw !important;
@@ -110,6 +115,12 @@ app-input-box div .tox-toolbar__primary {
         margin: 0 !important;
         border-radius: 0 !important;
     }
+}
+
+.custom-edit-channel-dialog {
+    position: absolute;
+    
+    transform: translateY(-20%);
 }
 
 .cdk-overlay-container {
