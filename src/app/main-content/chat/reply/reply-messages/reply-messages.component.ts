@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { CustomDatePipe } from "../../messages/date-pipe/custom-date.pipe";
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
@@ -26,13 +26,19 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
     currentContent!: string;
 
 
-
+    @Output() hasOpened = new EventEmitter<{opened: boolean, userId: string}>();
 
 
     constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication){
 
     }
     
+    openProfile(id: string) {
+      const opened = true;
+      const userId = id
+      this.hasOpened.emit({opened, userId});
+    }
+
     ngOnInit(): void {
         this.profileAuth.initializeUser();
         this.profileAuth.user$.subscribe((user) => {

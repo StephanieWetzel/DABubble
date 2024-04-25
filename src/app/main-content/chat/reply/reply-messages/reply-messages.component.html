@@ -4,7 +4,7 @@
         <div class="avatar-and-message">
 
             <div class="avatar-container">
-                <img [src]="chatService.getUserAvatar(chatService.initialMessageForThread.sendId)">
+                <img (click)="openProfile(chatService.initialMessageForThread.sendId)" [src]="chatService.getUserAvatar(chatService.initialMessageForThread.sendId)">
             </div>
             <div class="info-and-content">
                 <div class="info"
@@ -48,7 +48,7 @@
             <div class="avatar-and-message"
                 [ngClass]="{'avatar-and-message-sender': isCurrentUserSender(message.sendId)}">
                 <div class="avatar-container">
-                    <img [src]="chatService.getUserAvatar(message.sendId)">
+                    <img (click)="openProfile(message.sendId)" [src]="chatService.getUserAvatar(message.sendId)">
                 </div>
                 <div class="info-and-content" [ngClass]="{'info-and-content-sender': isCurrentUserSender(message.sendId)}">
                     <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
