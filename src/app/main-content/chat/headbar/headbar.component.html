@@ -1,6 +1,6 @@
 <section *ngIf="!isDmRoomOpen && !isNewMessage">
     <div (click)="openEditChannelDialog()" class="group-name">
-        <mat-icon>tag</mat-icon>
+        <img src="./assets/icons/tag.png">
         <span>{{ chatService.getChannelName() }}</span>
     </div>
     <div class="group-members">
@@ -9,7 +9,7 @@
                 <mat-icon class="outlined">person_add</mat-icon>
             </button>
 
-            <div class="add-person-menu" [class.open-menu]="openMenu">
+            <div class="add-person-menu" style="display: none;" [class.open-menu]="openMenu">
                 <div>
                     <h3>Leute hinzufügen</h3>
                     <mat-icon>close</mat-icon>
@@ -28,6 +28,12 @@
         </div>
     </div>
 </section>
+
+<div *ngIf="isInfoOpen" class="channel-info-cont">
+    <div id="infoMenu" class="channel-info brNoLeftTop32">
+        <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)" [currentChannel]="currentChannelId"></app-edit-channel-dialog>
+    </div>
+</div>
 
 <section class="dm-head" *ngIf="isDmRoomOpen && !isNewMessage">
     <div class="user-cont">

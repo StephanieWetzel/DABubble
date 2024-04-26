@@ -100,6 +100,9 @@ app-header {
     padding-left: 0px;
     padding-right: 0px;
   }
+  @media(max-width: 600px) {
+    padding-bottom: 0px;
+  }
 }
 
 .main-content {
@@ -109,6 +112,10 @@ app-header {
   box-sizing: border-box;
   border-radius: 30px;
   overflow: hidden;
+  @media(max-width: 600px) {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
 }
 
 .write-message {
