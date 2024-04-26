@@ -237,5 +237,12 @@ export class SidenavContentComponent {
     //sort the userId's aplhabetical then add them together seperated with a _
     return [userId1, userId2].sort().join('_');
   }
+
+
+  writeNewMessage(){
+    this.chatService.newMessage.next(true);
+    this.chatService.currentChannel$.next('writeANewMessage');
+    this.chatService.updateMessages(); 
+  }
 }
 

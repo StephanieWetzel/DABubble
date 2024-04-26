@@ -9,7 +9,7 @@
             Diese Unterhaltung findet nur zwischen <span>&#64;{{ getOtherUserName() }}</span> und dir statt
         </p>
     </div>
-    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.currentChannel$.value.length > 0 && !isDirectMessage()">
+    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.currentChannel$.value.length > 0 && !isDirectMessage() && !wantToWriteNewMessage()">
         <div class="channel-container">
             <span># {{ chatService.getChannelName() }}</span>
         </div>

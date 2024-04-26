@@ -29,6 +29,8 @@ export class ChatService implements OnDestroy {
   isDmRoom = new BehaviorSubject<boolean>(false);
   isDmRoom$ = this.isDmRoom.asObservable();
   allChannels: Channel[] = [];
+  newMessage = new BehaviorSubject<boolean>(false);
+  newMessage$ = this.newMessage.asObservable();
 
   replyCount = new BehaviorSubject<number>(0); // initialer Wert
   replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
@@ -64,6 +66,10 @@ export class ChatService implements OnDestroy {
 
   safeUsers() {
 
+  }
+
+  openNewMessage(){
+    
   }
 
 
@@ -134,13 +140,23 @@ export class ChatService implements OnDestroy {
 
 
   updateMessages() {
-    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
-    if (!this.currentChannel$.value && !this.users) {
+    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(); 
+    console.log(this.currentChannel$.value);
+    
+    if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
     }
+
     if (this.unsubscribe) {
       this.unsubscribe();
+    }
+    if(this.currentChannel$.value === 'writeANewMessage'){
+      this.messages = [];
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
+      return;
     }
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
       const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {

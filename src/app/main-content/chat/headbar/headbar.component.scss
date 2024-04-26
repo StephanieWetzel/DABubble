@@ -8,6 +8,37 @@ section {
     z-index: 10;
 }
 
+.input-search {
+    width: 100%;
+    max-width: 100%;
+    @include dFlex($jc:flex-start, $ai: center);
+    border: 1px solid #adb0d9;
+
+    >mat-icon {
+        padding-left: 20px;
+        font-style: italic;
+        opacity: 0.4;
+    }
+}
+
+.selected-user-pair {
+    @include dFlex($jc: flex-start,$ai: center,$g: 15px);
+    position: relative;
+    height: 34px;
+    padding: 10px 0px;
+    > img {
+      height: 34px;
+      border-radius: 100%;
+    }
+    p{
+        margin: 0;
+    }
+  }
+  
+
+.br-32 {
+    border-radius: 32px;
+}
 
 .group-name {
     @include dFlex(flex-start, center, 10px);
@@ -71,6 +102,16 @@ section {
     }
 }
 
+.newMessageInput {
+    font-size: 16px;
+    border: $bgPage 1px solid;
+    border-radius: 30px;
+    padding: 15px 20px;
+    outline: none;
+    box-shadow: none;
+    background-color: white;
+    width: 100%;
+}
 
 .add-person-menu {
     padding: 40px;

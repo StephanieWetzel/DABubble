@@ -266,6 +266,10 @@ export class MessagesComponent implements AfterViewInit {
     return user ? user.name : 'Noah Braun';
   }
 
+  wantToWriteNewMessage(){
+    return this.chatService.currentChannel$.value === 'writeANewMessage';
+  }
+
   
 
 

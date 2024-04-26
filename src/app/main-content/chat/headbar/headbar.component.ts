@@ -8,13 +8,14 @@ import { User } from '../../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { EditChannelDialogComponent } from './edit-channel-dialog/edit-channel-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { Channel } from '../../../../assets/models/channel.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-headbar',
   standalone: true,
-  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule,MatDialogModule ,EditChannelDialogComponent],
+  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule,MatDialogModule ,EditChannelDialogComponent, MatChip, MatChipListbox],
   templateUrl: './headbar.component.html',
   styleUrl: './headbar.component.scss'
 })
@@ -23,7 +24,7 @@ export class HeadbarComponent  {
   openMenu = false;
   currentChannelId: string | any;
   isDmRoomOpen: boolean = false;
-  newMessage: boolean = false;
+  isNewMessage: boolean = false;
   isInfoOpen: boolean = false;
   channel: Channel | null = null;
   avatars: any[] = [];
@@ -75,6 +76,13 @@ export class HeadbarComponent  {
     if (this.isInfoOpen && !clickedInsideMenu) {
       this.isInfoOpen = false;
     }
+
+
+    this.chatService.newMessage$.subscribe(newMessage => {
+      this.isNewMessage = newMessage;
+      this.chatService.updateMessages();
+      console.log(this.isNewMessage);
+    })
   }
 
   openEditChannelDialog() {
