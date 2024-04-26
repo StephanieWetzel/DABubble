@@ -6,6 +6,7 @@ section {
     box-shadow: 0px 1px 0px 0px rgba(0, 0, 0, 0.2);
     @include dFlex($jc: space-between);
     z-index: 10;
+    position: relative;
 }
 
 .input-search {
@@ -41,51 +42,68 @@ section {
 }
 
 .group-name {
-    @include dFlex(flex-start, center, 10px);
+    @include dFlex();
     width: fit-content;
-    
+
+    mat-icon {
+        font-weight: 600;
+        transform: scale(1.2);
+        margin-bottom: 2px;
+    }
 
     span {
         font-weight: 700;
         font-size: 24px;
+        margin: 8px;
     }
 }
 
-.group-members {
-    @include dFlex(center,center, 10px);
-    > .member-grouped-cont {
-        @include dFlex(center,center, 10px);
-        padding: 0px 8px;
-        border-radius: 30px;
+// .group-members {}
+.search-results {
+    position: absolute;
+    top: 80%;
+    left: 43px;
+    width: 291px;
+    padding: 20px 21px 20px 21px;
+    border: 1px solid #adb0d9;
+    z-index: 2005;
+    background-color: white;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+    border-top-right-radius: 32px;
+    > div {
+      @include dFlex(flex-start, flex-start, 0px, column);
+      > .user-result-list {
+        @include dFlex(flex-start, center, 15px);
+        padding: 4px 18px 4px 18px;
+        margin-bottom: 15px;
+        border-top-left-radius: 32px;
+        border-bottom-left-radius: 32px;
+        border-top-right-radius: 32px;
+        border-bottom-right-radius: 32px;
         &:hover {
-            cursor: pointer;
-            background-color: #eceefe;
-            color: #535af1;
+          background-color: #eceefe;
+          cursor: pointer;
         }
-        > span {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        > .member-avatar {
-            @include dFlex(center,center);
-            background-color: #FFFFFF;
-            padding: 2px;
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-left: -26px;
-            &:first-child {
-                margin-left: 0;
-            }
+        > .user-pair {
+          position: relative;
+          height: 50px;
+          > img {
+            height: 50px;
+          }
+          > .online-attribut {
+            position: absolute;
+            bottom: 2px;
+            right: 0;
             > img {
-                height: 40px;
-                border-radius: 50%;
+              height: 14px;
             }
-
+          }
         }
+      }
     }
-}
+  }
+
 
 .add-member-btn {
     background-color: $bgPage;
@@ -173,7 +191,6 @@ section {
 }
 
 .open-menu {
-    display: block !important;
     opacity: 1;
     z-index: 999;
     // display: flex !important;
@@ -213,30 +230,6 @@ section {
 }
 
 
-/*Channel Info*/
-
-.channel-info-cont {
-    position: fixed;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    top: 0;
-    z-index: 2;
-    background-color: rgba($color: #000000, $alpha: 0.1);
-    > .channel-info {
-        background-color: #ffffff;
-        border-radius: 30px;
-        margin-left: 410px;
-        margin-top: 150px;
-        max-width: 792px;
-        padding: 40px 40px;
-        margin-right: 68px;
-    }
-    
-}
-
-
-
 /*DM Head*/
 
 .user-cont {
@@ -266,16 +259,5 @@ section {
     >span {
         font-size: 24px;
         font-weight: bold;
-    }
-}
-
-.brNoLeftTop32 {
-    border-top-left-radius: 0px !important;
-}
-
-.mobile-dialog {
-    display: none !important;
-    @media(max-width: 820px) {
-        display: flex !important;
     }
 }

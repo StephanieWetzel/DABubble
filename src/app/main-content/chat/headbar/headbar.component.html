@@ -1,21 +1,15 @@
 <section *ngIf="!isDmRoomOpen && !isNewMessage">
     <div (click)="openEditChannelDialog()" class="group-name">
-        <img src="./assets/icons/tag.png">
+        <mat-icon>tag</mat-icon>
         <span>{{ chatService.getChannelName() }}</span>
     </div>
     <div class="group-members">
-        <div class="member-grouped-cont">
-            <div *ngFor="let avatar of avatars" class="member-avatar">
-                <img [src]="avatar">
-            </div>
-            <span>{{channel?.member?.length}}</span>
-        </div>
         <div #dropdownContainer class="dropdown-container">
             <button class="add-member-btn" (click)="toggleMenu()">
                 <mat-icon class="outlined">person_add</mat-icon>
             </button>
 
-            <div class="add-person-menu" style="display: none;" [class.open-menu]="openMenu">
+            <div class="add-person-menu" [class.open-menu]="openMenu">
                 <div>
                     <h3>Leute hinzufügen</h3>
                     <mat-icon>close</mat-icon>
@@ -34,12 +28,6 @@
         </div>
     </div>
 </section>
-
-<div *ngIf="isInfoOpen" class="channel-info-cont">
-    <div id="infoMenu" class="channel-info brNoLeftTop32">
-        <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)" [currentChannel]="currentChannelId"></app-edit-channel-dialog>
-    </div>
-</div>
 
 <section class="dm-head" *ngIf="isDmRoomOpen && !isNewMessage">
     <div class="user-cont">
@@ -66,17 +54,41 @@
         <mat-chip-listbox #chipList>
             <div class="input-search br-32">
                 <!-- Geänderter Input mit der neuen Klasse und Placeholder -->
-                <input class="newMessageInput" formControlName="searchInput" type="text"
-                    placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
+                <input [formControl]="searchInput" type="text" placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
+
             </div>
-            <mat-chip *ngFor="let user of chatService.users">
+            <mat-chip *ngFor="let user of selectedUsers">
                 <div class="selected-user-pair">
                     <img [src]="user.avatar">
                     <p>{{ user.name }}</p>
                 </div>
                 <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
+            
         </mat-chip-listbox>
+        <div class="search-results" *ngIf="searchResults.length > 0">
+            <div>
+            <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
+              <div class="user-pair">
+                <img [src]="user.avatar">
+                <div class="online-attribut">
+                  <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+                </div>
+              </div>
+              <p>{{ user.name }}</p>
+            </div>
+          </div></div>
+        </div>
+        <div class="search-results" *ngIf="searchResults.length > 0">
+            <div>
+        <div *ngIf="filteredChannels.length > 0" class="user-result-list">
+            <div *ngFor="let channel of filteredChannels" (click)="selectChannel(channel)">
+              {{ channel.name }}
+            </div>
+        </div>
     </div>
+</div>
+
+        
     <!-- <input class="newMessageInput" type="text" placeholder="An: #Channel, oder @jemand oder E-Mail Adresse"> -->
 </section>
