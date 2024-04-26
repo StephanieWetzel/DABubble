@@ -11,6 +11,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Channel } from '../../../../assets/models/channel.class';
+import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-headbar',
@@ -27,6 +28,8 @@ export class HeadbarComponent  {
   isNewMessage: boolean = false;
   isInfoOpen: boolean = false;
 
+  channel: Channel | null = null;
+  avatars: any[] = [];
   currentPartner: string = '';
   currentPartnerUser: User | null = null;
   searchResults: any[] = [];
@@ -36,11 +39,11 @@ export class HeadbarComponent  {
 
 
 
-  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog){
+  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService){
     this.searchInput = new FormControl('');
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.chatService.isDmRoom$.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
     })
@@ -49,8 +52,12 @@ export class HeadbarComponent  {
       this.currentPartnerUser = await this.auth.fetchPartnerFromFirestore(userId)
       console.log(this.currentPartnerUser)
     })
-    this.chatService.currentChannel$.subscribe(channelID => {
+    this.chatService.currentChannel$.subscribe(async channelID => {
       this.currentChannelId = channelID;
+      this.channel = await this.firestore.getCurrentChannelData(this.currentChannelId);
+      if (this.channel) {
+        this.safeUserAvatars();
+      }
     })
 
 
@@ -76,6 +83,16 @@ export class HeadbarComponent  {
         this.filteredChannels = [];
       }
     });
+  }
+
+  async safeUserAvatars() {
+    this.avatars = [];
+    if (this.channel && this.channel.member) {
+      const avatarPromises = this.channel?.member.map(member => this.firestore.getAvatar(member.id) || []);
+      const avatars = await Promise.all(avatarPromises);
+      this.avatars = avatars.filter(avatar => avatar != null);
+    }
+    //console.log("hier die Avatare: ", this.avatars)
   }
 
 
