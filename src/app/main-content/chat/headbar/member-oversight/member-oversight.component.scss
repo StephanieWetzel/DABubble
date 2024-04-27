@@ -1,0 +1,102 @@
+@import "./../../../../../styles.scss";
+
+.member-oversight {
+  > .head {
+    @include dFlex(space-between, center);
+    margin-bottom: 20px;
+    > span {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    > mat-icon {
+      border-radius: 50%;
+      padding: 4px;
+      &:hover {
+        color: #444df2;
+        cursor: pointer;
+        background-color: #eceefe;
+      }
+    }
+  }
+  > .members {
+    @include dFlex(center, flex-start, 0, column);
+    > .user-list {
+      @include dFlex(center, center, 15px);
+      padding: 5px 20px 5px 20px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      border-top-left-radius: 32px;
+      border-bottom-left-radius: 32px;
+      border-top-right-radius: 32px;
+      border-bottom-right-radius: 32px;
+      &:hover {
+        background-color: #eceefe;
+        color: #535af1;
+        cursor: pointer;
+      }
+      > p {
+        margin: 0;
+      }
+      > .user-pair {
+        @include dFlex(center, center);
+        position: relative;
+        > img {
+          height: 50px;
+          width: 50px;
+          border-radius: 50%;
+        }
+        > .online-attribut {
+          position: absolute;
+          bottom: -6px;
+          right: 0;
+          > img {
+            height: 14px;
+          }
+        }
+      }
+    }
+  }
+  > .add-member {
+    @include dFlex(flex-start, center, 15px);
+    padding: 14px 21px;
+    border-radius: 32px;
+    > .add-member-btn {
+      background-color: $bgPage;
+      padding: 8px;
+      border-radius: 50%;
+      border: none;
+      @include dFlex();
+    }
+    > span {
+      font-size: 18px;
+    }
+    &:hover {
+        background-color: $bgPage;
+        cursor: pointer;
+        > span {
+            color: #535af1;
+        }
+        > .add-member-btn > mat-icon {
+            color: #535af1;
+            font-size: 25px;
+        }
+    }
+  }
+  > .user-profile {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    > app-user-detail {
+        @include dFlex(center,center);
+        margin-top: 173px;
+    }
+  }
+}
+
+
+
+.outlined {
+  font-family: "Material Icons Outlined";
+}

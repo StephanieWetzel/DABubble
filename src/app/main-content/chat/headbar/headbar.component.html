@@ -4,7 +4,7 @@
         <span>{{ chatService.getChannelName() }}</span>
     </div>
     <div class="group-members">
-        <div class="member-grouped-cont">
+        <div (click)="openMemberOversight()" class="member-grouped-cont">
             <div *ngFor="let avatar of avatars" class="member-avatar">
                 <img [src]="avatar">
             </div>
@@ -38,6 +38,12 @@
 <div *ngIf="isInfoOpen" class="channel-info-cont">
     <div id="infoMenu" class="channel-info brNoLeftTop32">
         <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)" [currentChannel]="currentChannelId"></app-edit-channel-dialog>
+    </div>
+</div>
+
+<div *ngIf="isMemberOversight" class="member-oversight-cont">
+    <div [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
+        <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [currentChannel]="channel"></app-member-oversight>
     </div>
 </div>
 

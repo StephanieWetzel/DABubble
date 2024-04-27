@@ -265,7 +265,7 @@ section {
     left: 0;
     bottom: 0;
     top: 0;
-    z-index: 2;
+    z-index: 10;
     background-color: rgba($color: #000000, $alpha: 0.1);
     > .channel-info {
         background-color: #ffffff;
@@ -279,8 +279,47 @@ section {
 
 }
 
+
+
 .brNoLeftTop32 {
     border-top-left-radius: 0px !important;
+}
+
+.brNoRightTop32 {
+    border-top-right-radius: 0px !important;
+}
+
+/*Member Oversight*/
+
+.member-oversight-cont {
+    position: fixed;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    z-index: 10;
+    background-color: rgba($color: #000000, $alpha: 0.1);
+    @include dFlex(flex-end,flex-start,0, row);
+    > .member-oversight {
+        background-color: #ffffff;
+        border-radius: 30px;
+        border-top-right-radius: 0px !important;
+        margin-top: 173px;
+        padding: 40px 40px;
+        margin-right: 156px;
+        width: 100%;
+        max-width: 335px;
+    }
+    > .member-search {
+        background-color: #ffffff;
+        border-radius: 30px;
+        border-top-right-radius: 0px !important;
+        margin-top: 173px;
+        padding: 40px 40px;
+        margin-right: 20px;
+        width: 100%;
+        max-width: 434px;
+    }
 }
 
 .mobile-dialog {

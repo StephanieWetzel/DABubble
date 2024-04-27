@@ -97,6 +97,28 @@ export class FirebaseService {
     }  
   }
 
+  async getChannelMember(channel: Channel | null): Promise<User[]> {
+    if (!channel || !channel.member) {
+      console.error('invalid channel data')
+      return []
+    }
+    const membersData: User[] = [];
+    const memberPromises = channel?.member.map(member => this.getCurrentUser(member.id) || []);
+    try {
+    const members = await Promise.all(memberPromises!);
+    members.forEach(doc => {
+      if (doc) {
+        membersData.push(doc)
+      }else {
+        console.log("no data found");
+      }
+    });
+    } catch (error) {
+      console.error('error occured fetching member data', error);
+    }
+    return membersData
+  }
+
 
   addIdToChannel(dockRef: any) {
     console.log('Document written - ID: ', dockRef?.id);

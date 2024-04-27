@@ -12,11 +12,12 @@ import { MatChip, MatChipListbox } from '@angular/material/chips';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Channel } from '../../../../assets/models/channel.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
+import { MemberOversightComponent } from './member-oversight/member-oversight.component';
 
 @Component({
   selector: 'app-headbar',
   standalone: true,
-  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule,MatDialogModule ,EditChannelDialogComponent, MatChip, MatChipListbox, ReactiveFormsModule],
+  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule,MatDialogModule ,EditChannelDialogComponent, MatChip, MatChipListbox, ReactiveFormsModule, MemberOversightComponent],
   templateUrl: './headbar.component.html',
   styleUrl: './headbar.component.scss'
 })
@@ -27,6 +28,8 @@ export class HeadbarComponent  {
   isDmRoomOpen: boolean = false;
   isNewMessage: boolean = false;
   isInfoOpen: boolean = false;
+  isMemberOversight: boolean = false;
+  isSearching:boolean = false;
 
   channel: Channel | null = null;
   avatars: any[] = [];
@@ -85,6 +88,14 @@ export class HeadbarComponent  {
     });
   }
 
+  changeWidth(event: boolean) {
+    this.isSearching = event;
+  }
+
+  openMemberOversight() {
+    this.isMemberOversight = !this.isMemberOversight;
+  }
+
   async safeUserAvatars() {
     this.avatars = [];
     if (this.channel && this.channel.member) {
@@ -121,6 +132,10 @@ export class HeadbarComponent  {
 
   handleCloseEvent(event:boolean) {
     this.isInfoOpen = event;
+  }
+
+  handleCloseEventMember(event:boolean) {
+    this.isMemberOversight = event;
   }
 
   toggleMenu(){

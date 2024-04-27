@@ -1,0 +1,39 @@
+<section *ngIf="!isAdding" class="member-oversight">
+    <div class="head">
+        <span>Mitglieder</span>
+        <mat-icon (click)="close()">close</mat-icon>
+    </div>
+    <div class="members">
+        <div (click)="showProfile(user.userId)" *ngFor="let user of members" class="user-list">
+            <div class="user-pair">
+              <img [src]="user.avatar">
+              <div class="online-attribut">
+                <img *ngIf="user.state === 'true'; else awayOrOffline" src="./assets/icons/Online.png">
+                <ng-template #awayOrOffline>
+                  <img *ngIf="user.state === 'away'; else offline" src="./assets/icons/Away.png">
+                  <ng-template #offline>
+                    <img src="./assets/icons/Offline.png">
+                  </ng-template>
+                </ng-template>
+              </div>
+            </div>
+            <p>{{ user.name }} <span *ngIf="user.userId === currentUser">(Du)</span></p>
+        </div>
+    </div>
+    <div (click)="toggleAddMember()" class="add-member">
+        <button class="add-member-btn">
+            <mat-icon class="outlined">person_add</mat-icon>
+        </button>
+        <span>Mitglieder hinzufügen</span>
+    </div>
+
+    <!--Todo: profile menu von jedem nutzer auch wieder sichtbar machen -.-'''' -->
+    
+    <div *ngIf="isShowingProfile" class="user-profile">
+        <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId" (hasClosed)="handleProfile($event)"></app-user-detail>
+    </div>
+</section>
+
+<!--search input content-->
+
+<app-add-member *ngIf="isAdding" [channel]="currentChannel" (isClosed)="searchClosed($event)"></app-add-member>
