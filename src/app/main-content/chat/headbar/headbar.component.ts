@@ -140,10 +140,6 @@ export class HeadbarComponent {
     this.isMemberOversight = event;
   }
 
-  handleCloseEventMember(event:boolean) {
-    this.isMemberOversight = event;
-  }
-
   toggleMenu() {
     this.openMenu = !this.openMenu;
   }
