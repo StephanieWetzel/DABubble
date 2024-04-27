@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { User } from '../../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
@@ -16,11 +16,11 @@ import { FirebaseService } from '../../../../assets/services/firebase-service';
 @Component({
   selector: 'app-headbar',
   standalone: true,
-  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule,MatDialogModule ,EditChannelDialogComponent, MatChip, MatChipListbox, ReactiveFormsModule],
+  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule, MatDialogModule, EditChannelDialogComponent, MatChip, MatChipListbox, ReactiveFormsModule],
   templateUrl: './headbar.component.html',
   styleUrl: './headbar.component.scss'
 })
-export class HeadbarComponent  {
+export class HeadbarComponent {
   isOpen = false;
   openMenu = false;
   currentChannelId: string | any;
@@ -36,10 +36,12 @@ export class HeadbarComponent  {
   selectedUsers: any[] = [];
   searchInput;
   filteredChannels: Channel[] = [];
+  selectedChannels: Channel[] = [];
 
 
 
-  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService){
+
+  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService) {
     this.searchInput = new FormControl('');
   }
 
@@ -119,36 +121,36 @@ export class HeadbarComponent  {
     }
   }
 
-  handleCloseEvent(event:boolean) {
+  handleCloseEvent(event: boolean) {
     this.isInfoOpen = event;
   }
 
-  toggleMenu(){
+  toggleMenu() {
     this.openMenu = !this.openMenu;
   }
 
   selectUser(user: any): void {
-    console.log(user);
-    if (!this.selectedUsers.some(u => u.userId  === user.userId )) { 
+    if (!this.selectedUsers.some(u => u.userId === user.userId)) {
       this.selectedUsers.push(user);
       this.searchResults = this.findResults(this.searchInput.value || "");
     }
-    console.log(this.selectedUsers);
   }
 
   findResults(searchTerm: string): any[] {
     return this.chatService.users.filter(
       item => item.name?.toLowerCase().includes(searchTerm.toLowerCase()) &&
-              !this.selectedUsers.find(user => user.name === item.name)
+        !this.selectedUsers.find(user => user.name === item.name)
     );
   }
 
   selectChannel(channel: any): void {
-    if (!this.filteredChannels.some(c => c.channelId  === channel.channelId )) { 
-      this.filteredChannels.push(channel);
-      this.searchResults = this.findResults(this.searchInput.value || "");
+    if (!this.selectedChannels.some(c => c.channelId === channel.channelId)) {
+        this.selectedChannels.push(channel);
+        // this.filteredChannels = []; // Optional: Clear filteredChannels if you don't need it anymore
     }
-  }
+}
+  
+
 
   findChannels(searchTerm: string): any[] {
     return this.chatService.allChannels.filter(channel => channel.name.toLowerCase().includes(searchTerm.toLowerCase()));

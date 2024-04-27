@@ -37,7 +37,8 @@
 
 <div *ngIf="isInfoOpen" class="channel-info-cont">
     <div id="infoMenu" class="channel-info brNoLeftTop32">
-        <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)" [currentChannel]="currentChannelId"></app-edit-channel-dialog>
+        <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)"
+            [currentChannel]="currentChannelId"></app-edit-channel-dialog>
     </div>
 </div>
 
@@ -61,46 +62,53 @@
 
 
 <section *ngIf="isNewMessage && !isDmRoomOpen">
-    <div class="channel-form ts125 search-input">
-
-        <mat-chip-listbox #chipList>
-            <div class="input-search br-32">
-                <!-- Geänderter Input mit der neuen Klasse und Placeholder -->
-                <input [formControl]="searchInput" type="text" placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
-
-            </div>
-            <mat-chip *ngFor="let user of selectedUsers">
-                <div class="selected-user-pair">
-                    <img [src]="user.avatar">
-                    <p>{{ user.name }}</p>
-                </div>
-                <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            
-        </mat-chip-listbox>
-        <div class="search-results" *ngIf="searchResults.length > 0">
-            <div>
-            <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
-              <div class="user-pair">
-                <img [src]="user.avatar">
-                <div class="online-attribut">
-                  <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
-                </div>
-              </div>
-              <p>{{ user.name }}</p>
-            </div>
-          </div></div>
+<div class="w-100">
+    <h2 class="new-message-h">New Message</h2>
+    <mat-chip-listbox #chipList>
+        <div class="input-search br-32">
+            <!-- Geänderter Input mit der neuen Klasse und Placeholder -->
+            <input [formControl]="searchInput" type="text" placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
         </div>
-        <div class="search-results" *ngIf="searchResults.length > 0">
-            <div>
-        <div *ngIf="filteredChannels.length > 0" class="user-result-list">
-            <div *ngFor="let channel of filteredChannels" (click)="selectChannel(channel)">
-              {{ channel.name }}
+        <mat-chip *ngFor="let user of selectedUsers">
+            <div class="selected-user-pair">
+                <img [src]="user.avatar">
+                <p>{{ user.name }}</p>
+            </div>
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <mat-chip *ngFor="let channel of selectedChannels">
+            <div class="selected-user-pair">
+                <mat-icon>tag</mat-icon>
+                <p>{{ channel.name }}</p>
+            </div>
+            <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+
+    </mat-chip-listbox>
+    <div class="search-results" *ngIf="searchResults.length > 0">
+        <div>
+            <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
+                <div class="user-pair">
+                    <img [src]="user.avatar">
+                    <div class="online-attribut">
+                        <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+                    </div>
+                </div>
+                <p>{{ user.name }}</p>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="filteredChannels.length > 0" class="search-results">
+        <div>
+            <div class="user-result-list" *ngFor="let channel of filteredChannels" (click)="selectChannel(channel)">
+                <div class="user-pair">
+                    <mat-icon>tag</mat-icon> <span> {{ channel.name }}</span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-        
+
     <!-- <input class="newMessageInput" type="text" placeholder="An: #Channel, oder @jemand oder E-Mail Adresse"> -->
 </section>
