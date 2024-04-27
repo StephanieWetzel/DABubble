@@ -1,4 +1,4 @@
-import { OnInit, Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { OnInit, Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
 import { CommonModule, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
@@ -7,7 +7,7 @@ import { CustomTimePipe } from './time-pipe/custom-time.pipe';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { Reaction } from '../../../../assets/models/reactions.class';
-import tinymce, { RawEditorOptions  } from 'tinymce';
+import tinymce, { RawEditorOptions } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,16 +19,16 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [NgFor, 
-    NgIf, 
-    CustomDatePipe, 
-    CustomTimePipe, 
-    MatIconModule, 
-    MatIcon, 
-    MatMenuModule, 
-    KeyValuePipe, 
+  imports: [NgFor,
+    NgIf,
+    CustomDatePipe,
+    CustomTimePipe,
+    MatIconModule,
+    MatIcon,
+    MatMenuModule,
+    KeyValuePipe,
     EditorModule,
-    FormsModule, 
+    FormsModule,
     MatButtonModule,
     NgClass,
     UserDetailComponent
@@ -53,7 +53,7 @@ export class MessagesComponent implements AfterViewInit {
   selectedProfileId: string = '';
 
   currentUser!: User;
-  
+
 
   public editEditorInit: RawEditorOptions = {
     suffix: '.min',
@@ -77,11 +77,11 @@ export class MessagesComponent implements AfterViewInit {
   };
 
 
-  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication) {
+  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication, private changeDetRef: ChangeDetectorRef) {
     this.messages = this.chatService.messages;
   }
 
-  showID(id:string) {
+  showID(id: string) {
     this.selectedProfileId = id;
     this.isShowingProfile = true
   }
@@ -98,19 +98,23 @@ export class MessagesComponent implements AfterViewInit {
     }));
   }
 
+  ngAfterViewChecked(): void {
+    this.changeDetRef.detectChanges();
+  }
+
   ngOnInit() {
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
-      if(user){
+      if (user) {
         this.currentUser = new User(user);
       }
     })
   }
 
-  isDirectMessage(){
+  isDirectMessage() {
     return this.chatService.currentChannel$.value.length > 25
   }
-  
+
   scrollToBottom(): void {
     requestAnimationFrame(() => {
       if (this.chatContainer && this.chatContainer.nativeElement) {
@@ -127,36 +131,36 @@ export class MessagesComponent implements AfterViewInit {
     const lastReply = replies.reduce((latest, reply) => {
       return latest.time > reply.time ? latest : reply;
     });
-    return lastReply.time;  
+    return lastReply.time;
   }
 
-  editMessage(id:string, content: string){
+  editMessage(id: string, content: string) {
     this.closeEditor();
     this.editingMessageId = id;
     this.currentEditingContent = content
   }
 
-  closeEditor(){
+  closeEditor() {
     const editorInstance = tinymce.get('editData-' + this.editingMessageId);
-    if(editorInstance){
+    if (editorInstance) {
       editorInstance.remove();
     }
     this.editingMessageId = '';
   }
 
-  safeMessage(safe: boolean, messageId: string = ''){
-    if (safe){
+  safeMessage(safe: boolean, messageId: string = '') {
+    if (safe) {
       this.chatService.editMessage(messageId, this.getInputContent(tinymce.get('editData-' + messageId)));
     }
     this.closeEditor();
   }
 
-  getInputContent(input: any){
+  getInputContent(input: any) {
     const content = input.getContent({ format: 'text' });
     return content;
   }
-  
-  isDateDifferent(index: number){
+
+  isDateDifferent(index: number) {
     if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
     const currentDateFormatted = this.customDatePipe.transform(this.messages[index].time);
     const previousDateFormatted = this.customDatePipe.transform(this.messages[index - 1].time);
@@ -178,12 +182,12 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
-  isCurrentUserSender(sender: string){
+  isCurrentUserSender(sender: string) {
     return sender === this.currentUser.userId;
   }
 
 
-  showReply(message: Message){
+  showReply(message: Message) {
     this.chatService.initialMessageForThread = message;
     this.chatService.showReply = true;
     this.chatService.messageIdReply = message.messageId;
@@ -191,11 +195,11 @@ export class MessagesComponent implements AfterViewInit {
     setTimeout(() => {
       this.chatService.setEditorFocusReply();
     }, 500);
-   
+
   }
 
 
-  addReaction(messageId: string, emote: string){
+  addReaction(messageId: string, emote: string) {
     this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, false)
   }
 
@@ -211,20 +215,20 @@ export class MessagesComponent implements AfterViewInit {
 
   urlToFileName(url: string): string {
     const decodedUrl = decodeURIComponent(url);
-  
+
     const parts = decodedUrl.split('/');
     let fileName = parts[parts.length - 1];
-  
+
     fileName = fileName.split('?')[0];
     return fileName;
   }
 
 
-  openEditMessage(){
+  openEditMessage() {
     this.menuEditMessage = !this.menuEditMessage;
   }
 
-  
+
   async downloadFile(url: string, filename: string): Promise<void> {
     try {
       const response = await fetch(url);
@@ -250,30 +254,30 @@ export class MessagesComponent implements AfterViewInit {
     }
   }
 
-  
 
-  getOtherUserImg(){
+
+  getOtherUserImg() {
     const ids = this.chatService.currentChannel$.value.split('_')
     const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
     const user = this.chatService.users.find(user => user.userId === userId);
     return user ? user.avatar : 'assets/img/avatar_clean1.png';
   }
 
-  getOtherUserName(){
+  getOtherUserName() {
     const ids = this.chatService.currentChannel$.value.split('_')
     const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
     const user = this.chatService.users.find(user => user.userId === userId);
     return user ? user.name : 'Noah Braun';
   }
 
-  wantToWriteNewMessage(){
+  wantToWriteNewMessage() {
     return this.chatService.currentChannel$.value === 'writeANewMessage';
   }
 
-  
+
 
 
   // sendIdToName(id: string){
   //   this.chatService.getUser(id);
   // }
-  }
+}
