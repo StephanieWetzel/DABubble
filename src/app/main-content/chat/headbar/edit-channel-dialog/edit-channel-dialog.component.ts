@@ -7,6 +7,7 @@ import { FirebaseService } from '../../../../../assets/services/firebase-service
 import { FormsModule } from '@angular/forms';
 import { User } from '../../../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../../../assets/services/profileAuth.service';
+import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
 
 @Component({
   selector: 'app-edit-channel-dialog',
@@ -30,7 +31,8 @@ export class EditChannelDialogComponent {
     // public dialogref: MatDialogRef<EditChannelDialogComponent>,
     //@Inject(MAT_DIALOG_DATA) public data: any,
     public firestore: FirebaseService,
-    private auth: ProfileAuthentication
+    private auth: ProfileAuthentication,
+    private chatService: ChatService
   ) {}
 
   @Input() currentChannel!: string;
@@ -57,6 +59,7 @@ export class EditChannelDialogComponent {
     const updatedMember = this.channel?.member.filter(member => member.id !== this.currentUser);
     console.log("member: ", updatedMember)
     this.firestore.updateChannelInfo(this.channel?.channelId, updatedMember, 'member');
+    this.chatService.currentChannel$.next('pSBwciqiaOgtUayZaIgj');
     this.closeDialog.emit(false);
   }
 

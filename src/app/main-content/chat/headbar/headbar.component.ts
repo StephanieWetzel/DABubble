@@ -13,11 +13,23 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Channel } from '../../../../assets/models/channel.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { MemberOversightComponent } from './member-oversight/member-oversight.component';
+import { AddMemberComponent } from './add-member/add-member.component';
 
 @Component({
   selector: 'app-headbar',
   standalone: true,
-  imports: [MatIconModule, MatMenuModule, MatButtonModule, CommonModule, MatDialogModule, EditChannelDialogComponent, MatChip, MatChipListbox, ReactiveFormsModule, MemberOversightComponent],
+  imports: [MatIconModule,
+     MatMenuModule, 
+     MatButtonModule, 
+     CommonModule, 
+     MatDialogModule, 
+     EditChannelDialogComponent, 
+     MatChip, 
+     MatChipListbox, 
+     ReactiveFormsModule, 
+     MemberOversightComponent,
+     AddMemberComponent
+    ],
   templateUrl: './headbar.component.html',
   styleUrl: './headbar.component.scss'
 })
@@ -30,6 +42,9 @@ export class HeadbarComponent {
   isInfoOpen: boolean = false;
   isMemberOversight: boolean = false;
   isSearching:boolean = false;
+  currentUser = '';
+  isSearchOpen: boolean = false;
+  members: User[] | null = null;
   unsubscribeFromChannel: (() => void) | undefined;
 
   channel: Channel | null = null;
@@ -67,9 +82,12 @@ export class HeadbarComponent {
         this.channel = channelData;
         if (this.channel) {
           this.safeUserAvatars();
+          this.getAuthUserID();
+          this.getMember();
         }
       })
-    })
+    });
+    
 
     this.chatService.newMessage$.subscribe(newMessage => {
       this.isNewMessage = newMessage;
@@ -99,6 +117,34 @@ export class HeadbarComponent {
     if (this.unsubscribeFromChannel) {
       this.unsubscribeFromChannel();
     }
+  }
+
+  getAuthUserID() {
+    this.auth.fetchLoggedUser().then((userId) => {
+      this.currentUser = userId;
+    })
+  }
+
+  async getMember() {
+    if (this.channel) {
+      this.members = await this.firestore.getChannelMember(this.channel);
+      if (this.members && this.currentUser) {
+        this.members = this.prioritizeCurrentUser(this.members, this.currentUser)
+      }
+    }
+  }
+
+  searchClosed(event:boolean) {
+    this.isSearchOpen = !this.isSearchOpen
+  }
+
+  prioritizeCurrentUser(users: User[], currentUserId: string): User[] {
+    const index = users.findIndex(user => user.userId === currentUserId);
+    if (index > -1) {
+      const currentUser = users.splice(index, 1)[0];
+      users.unshift(currentUser);
+    }
+    return users
   }
 
   changeWidth(event: boolean) {
@@ -152,7 +198,7 @@ export class HeadbarComponent {
   }
 
   toggleMenu() {
-    this.openMenu = !this.openMenu;
+    this.isSearchOpen = !this.isSearchOpen;
   }
 
   selectUser(user: any): void {

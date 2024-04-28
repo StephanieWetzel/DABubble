@@ -62,7 +62,7 @@ mat-chip-listbox{
 .group-name {
     @include dFlex(flex-start, center, 10px);
     width: fit-content;
-
+    cursor: pointer;
     span {
         font-weight: 700;
         font-size: 24px;

@@ -94,8 +94,12 @@
         border: none !important;
         outline: none;
         border-radius: 25px;
-        background-color: #535af1;
+        background-color: #686868;;
         color: #ffffff;
+        &:enabled {
+          background-color: #535af1;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -117,6 +121,7 @@
 
 .editBlue {
   color: #535af1;
+  cursor: pointer;
 }
 
 .creatorFontColor {
