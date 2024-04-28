@@ -19,38 +19,130 @@
 }
 
 .channel-name {
-    @include dFlex(flex-start, center,15px);
-    margin-bottom: 20px;
-    > mat-icon {
-        font-style: italic;
-        color: #797ef3;
-    }
-    > span {
-        color: #797ef3;
-        font-size: 18px;
-    }
+  @include dFlex(flex-start, center, 15px);
+  margin-bottom: 20px;
+  > mat-icon {
+    font-style: italic;
+    color: #797ef3;
+  }
+  > span {
+    color: #797ef3;
+    font-size: 18px;
+  }
 }
 
 .search {
-    margin-bottom: 20px;
-    padding: 15px 20px;
-    border-radius: 30px;
-    border: 1px solid #adb0d9;
-    > input {
-        outline: none;
-        border: none;
+  width: 100%;
+  @include dFlex(flex-start, center, 0px);
+  border: 1px solid #adb0d9;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  height: 55px;
+  margin-left: 8px;
+}
+
+.search-results {
+  position: absolute;
+  top: 450px; /*was 350*/
+  width: 291px;
+  padding: 20px 21px 20px 21px;
+  border: 1px solid #adb0d9;
+  z-index: 2005;
+  background-color: white;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  border-top-right-radius: 32px;
+  > div {
+    @include dFlex(flex-start, flex-start, 0px, column);
+    > .user-result-list {
+      @include dFlex(flex-start, center, 15px);
+      padding: 4px 18px 4px 18px;
+      margin-bottom: 15px;
+      border-top-left-radius: 32px;
+      border-bottom-left-radius: 32px;
+      border-top-right-radius: 32px;
+      border-bottom-right-radius: 32px;
+      &:hover {
+        background-color: #eceefe;
+        cursor: pointer;
+      }
+      > .user-pair {
+        position: relative;
+        height: 50px;
+        > img {
+          height: 50px;
+          border-radius: 50%;
+        }
+        > .online-attribut {
+          position: absolute;
+          bottom: 2px;
+          right: 0;
+          > img {
+            height: 14px;
+          }
+        }
+      }
     }
+  }
 }
 
 .add-btn {
-    @include dFlex(flex-end,center);
-    > .add {
-        padding: 12px 25px;
-        background-color: #686868;
-        border-radius: 25px;
-        > span {
-            font-size: 18px;
-            color: #ffffff;
-        }
+  @include dFlex(flex-end, center);
+  > button {
+    padding: 12px 25px;
+    background-color: #686868;
+    border-radius: 25px;
+    font-size: 18px;
+    color: #ffffff;
+    border: none;
+    &:enabled {
+      background-color: #444df2;
+      cursor: pointer;
     }
+  }
+}
+
+p {
+  margin: 0 !important;
+  font-size: 18px !important;
+}
+
+input {
+  margin-left: 27px !important;
+  margin-right: 27px !important;
+  outline: none;
+  border: none;
+  overflow: auto;
+}
+
+.mdc-evolution-chip-set {
+  width: 100% !important;
+}
+
+.mdc-evolution-chip-set .mdc-evolution-chip {
+  margin-left: 20px !important;
+}
+/*selected user styling part*/
+
+mat-chip {
+  background-color: #eceefe !important;
+  height: 40px;
+  border-radius: 35px !important;
+}
+
+.selected-user-pair {
+  @include dFlex(flex-start, center, 15px);
+  position: relative;
+  height: 34px;
+  padding: 3px 0px;
+  > mat-icon {
+    font-family: "Material Icons Outlined";
+    opacity: 2;
+    scale: 1;
+    margin-left: -15px;
+  }
+  > img {
+    height: 34px;
+    border-radius: 50%;
+  }
 }

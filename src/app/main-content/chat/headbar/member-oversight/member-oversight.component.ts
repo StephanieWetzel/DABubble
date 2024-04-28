@@ -41,6 +41,12 @@ export class MemberOversightComponent {
     
   }
 
+  closeOversight(event:boolean) {
+    if (event) {
+      this.hasClosed.emit()
+    }
+  }
+
   close() {
     this.hasClosed.emit(false);
   }

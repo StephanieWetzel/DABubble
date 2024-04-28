@@ -30,6 +30,7 @@ export class HeadbarComponent {
   isInfoOpen: boolean = false;
   isMemberOversight: boolean = false;
   isSearching:boolean = false;
+  unsubscribeFromChannel: (() => void) | undefined;
 
   channel: Channel | null = null;
   avatars: any[] = [];
@@ -57,14 +58,18 @@ export class HeadbarComponent {
       this.currentPartnerUser = await this.auth.fetchPartnerFromFirestore(userId)
       console.log(this.currentPartnerUser)
     })
-    this.chatService.currentChannel$.subscribe(async channelID => {
+    this.chatService.currentChannel$.subscribe(channelID => {
       this.currentChannelId = channelID;
-      this.channel = await this.firestore.getCurrentChannelData(this.currentChannelId);
-      if (this.channel) {
-        this.safeUserAvatars();
+      if (this.unsubscribeFromChannel) {
+        this.unsubscribeFromChannel();
       }
+      this.unsubscribeFromChannel = this.firestore.subscribeToChannel(this.currentChannelId, (channelData) => {
+        this.channel = channelData;
+        if (this.channel) {
+          this.safeUserAvatars();
+        }
+      })
     })
-
 
     this.chatService.newMessage$.subscribe(newMessage => {
       this.isNewMessage = newMessage;
@@ -88,6 +93,12 @@ export class HeadbarComponent {
         this.filteredChannels = [];
       }
     });
+  }
+
+  ngOnDestroy() {
+    if (this.unsubscribeFromChannel) {
+      this.unsubscribeFromChannel();
+    }
   }
 
   changeWidth(event: boolean) {

@@ -36,4 +36,4 @@
 
 <!--search input content-->
 
-<app-add-member *ngIf="isAdding" [channel]="currentChannel" (isClosed)="searchClosed($event)"></app-add-member>
+<app-add-member *ngIf="isAdding" [currentMembers]="members" [channel]="currentChannel" (isClosed)="searchClosed($event)" (hasAdded)="closeOversight($event)"></app-add-member>

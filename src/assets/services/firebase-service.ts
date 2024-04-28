@@ -4,6 +4,7 @@ import {
   Firestore,
   Unsubscribe,
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
@@ -97,6 +98,20 @@ export class FirebaseService {
     }  
   }
 
+  subscribeToChannel(channelId: string, callback: (channel: Channel | null) => void): () => void {
+    const dockRef = doc(this.getColl("channel"), channelId);
+    const unsubscribe = onSnapshot(dockRef, (doc) => {
+      if (doc.exists()) {
+        callback(doc.data() as Channel);
+      } else {
+        callback(null);
+      }
+    }, (error) => {
+      console.error("error subscribing to channel updates", error);
+    });
+    return unsubscribe
+  }
+
   async getChannelMember(channel: Channel | null): Promise<User[]> {
     if (!channel || !channel.member) {
       console.error('invalid channel data')
@@ -117,6 +132,13 @@ export class FirebaseService {
       console.error('error occured fetching member data', error);
     }
     return membersData
+  }
+
+  async updateChannelMembers(channelId: string, membersToAdd: {id: string, name: string}[]) {
+    const dockRef = doc(this.getColl("channel"), channelId);
+    await updateDoc(dockRef, {
+      member: arrayUnion(...membersToAdd)
+    })
   }
 
 

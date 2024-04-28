@@ -1,17 +1,37 @@
-
 <div class="head">
-    <span>Leute hinzufügen</span>
-    <mat-icon (click)="close()">close</mat-icon>
+  <span>Leute hinzufügen</span>
+  <mat-icon (click)="close()">close</mat-icon>
 </div>
 <div class="channel-name">
-    <mat-icon>tag_outline</mat-icon>
-    <span>{{ channel?.name }}</span>
+  <mat-icon>tag_outline</mat-icon>
+  <span>{{ channel?.name }}</span>
 </div>
-<div class="search">
-    <input type="text" placeholder="Name eingeben">
+<div class="search-content">
+  <mat-chip-listbox #chipList>
+    <div class="search">
+        <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
+            <div class="selected-user-pair">
+                <img [src]="user.avatar">
+                <p>{{ user.name }}</p>
+                <mat-icon matChipRemove>close</mat-icon>
+            </div>
+        </mat-chip>
+      <input [formControl]="searchInput" type="text" placeholder="Name eingeben" />
+    </div>
+  </mat-chip-listbox>
+  <div class="search-results" *ngIf="searchResults.length > 0">
+    <div>
+        <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
+            <div class="user-pair">
+            <img [src]="user.avatar">
+            <div class="online-attribut">
+                <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+            </div>
+        </div>
+        <span>{{ user.name }}</span>
+    </div>
+  </div>
 </div>
 <div class="add-btn">
-    <div class="add">
-        <span>Hinzufügen</span>
-    </div>
+    <button [disabled]="selectedUsers.length === 0" (click)="addMember()">Hinzufügen</button>
 </div>
