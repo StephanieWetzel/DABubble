@@ -97,10 +97,8 @@ export class FirebaseService {
     const dockRef = doc(this.getColl("user"), userID);
     const docSnap = await getDoc(dockRef);
     if (docSnap.exists()) {
-      console.log("I got this user for ya: ", docSnap.data());
       return docSnap.data() as User;
     } else {
-      console.log("No such document! lel");
       return null
     }
   }
@@ -194,7 +192,6 @@ export class FirebaseService {
  * @param {any} dockRef - The reference to the newly created channel document.
  */
   addIdToChannel(dockRef: any) {
-    console.log('Document written - ID: ', dockRef?.id);
     const channelRef = doc(this.getColl('channel'), `${dockRef?.id}`);
     updateDoc(channelRef, {
       channelId: dockRef?.id,
@@ -250,14 +247,11 @@ export class FirebaseService {
     const roomRef = doc(this.getColl("directMessages"), roomId)
     onSnapshot(roomRef, (docSnap) => {
       if (docSnap.exists()) {
-        console.log('Room exists: ', docSnap.data())
         this.chatService.isChannel = false;
         this.chatService.currentChannel$.next(docSnap.data()['id']);
       } else {
-        console.log('Room doesnt exist, will be created soon');
         const transformedRoomData = new DirectMessage(this.transformDmRoom(currentUserID, otherUserID, roomId));
         setDoc(roomRef, transformedRoomData.toJSON());
-        console.log('Room created');
       }
     })
   }

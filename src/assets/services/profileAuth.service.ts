@@ -33,7 +33,7 @@ export class ProfileAuthentication {
                 this.fetchUserFromFirestore(userID)
             }
         }).catch(error => {
-            console.log('No such user lul', error);
+            //console.log('No such user lul', error);
         })
     }
 
@@ -62,7 +62,6 @@ export class ProfileAuthentication {
      * 
      */
     async fetchUserFromFirestore(userID: string) {
-        console.log('Now fetching user from database: ', userID);
         const docRef = doc(this.firestore, 'user', userID);
         this.refreshState(userID, 'true');
         this.realTimeDB.setUserState(userID, 'true');
@@ -89,7 +88,6 @@ export class ProfileAuthentication {
             if (userSnap.exists()) {
                 return userSnap.data() as User;
             } else {
-                console.log('no user found');
                 return null;
             }
         } catch (error) {
@@ -165,7 +163,7 @@ export class ProfileAuthentication {
         const stateRef = this.realTimeDB.getDbRef(auth.currentUser?.uid)
         set(stateRef, { state: 'false' })
         signOut(auth).then(() => {
-            console.log("Logout successful !")
+            //console.log("Logout successful !")
             this.router.navigate(['/']);
         })
     }
