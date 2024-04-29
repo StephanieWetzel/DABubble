@@ -85,8 +85,7 @@ export class LoginComponent {
       const email = this.formData.value.email;
       const password = this.formData.value.password;
       try {
-        await this.auth.signIn(email, password).then((userCredential) => {
-          const user = userCredential.user;
+        await this.auth.signIn(email, password).then(() => {
           this.router.navigate(['/main']);
         });
       } catch (error) {
