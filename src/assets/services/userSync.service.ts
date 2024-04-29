@@ -11,7 +11,9 @@ export class UserSync {
     private timeOutID: any;
     private inactivityTime: number = 100000 * 10 * 1000; // 5 sec inactivity
 
-    constructor(private firestore: Firestore, public realTimeDB: Database ){}
+    constructor(private firestore: Firestore, public realTimeDB: Database) { }
+
+
     /**
      * Begins monitoring user activity for the specified user.
      * If the user becomes inactive for a predefined duration, their state will be set to 'away'.
@@ -23,6 +25,7 @@ export class UserSync {
     startMonitoringActivity(userId: string | undefined) {
         this.resetTimer(userId);
     }
+
 
     /**
      * Resets the activity monitoring timer for a specific user. Clears any previous timer,
@@ -38,6 +41,7 @@ export class UserSync {
         this.timeOutID = setTimeout(() => this.setUserState(userId, 'away'), this.inactivityTime)
     }
 
+
     // syncState(userId: string | undefined) {
     //     const stateRef = ref(this.realTimeDB, `state/${userId}`)
     //     get(stateRef).then((snapshot) => {
@@ -47,6 +51,7 @@ export class UserSync {
     //         }
     //     })
     // }
+
 
     /**
      * Sets the user's state in the real-time database. If the user's state is set to 'true' (indicating active),
@@ -66,6 +71,7 @@ export class UserSync {
             }
         }
     }
+
 
     /**
      * Retrieves a reference to the user's state in the real-time database. This can be used

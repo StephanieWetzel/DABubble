@@ -23,6 +23,7 @@ export class ProfileAuthentication {
     public user$ = this.userSubject.asObservable();
     constructor(private firestore: Firestore, private router: Router, public realTimeDB: UserSync) { }
 
+
     /**
      * Initializes the user by checking if a user is logged in and then fetching that user's details from firestore.
      */
@@ -35,6 +36,8 @@ export class ProfileAuthentication {
             console.log('No such user lul', error);
         })
     }
+
+
     /**
      * Checks for the current authenticated user and returns their user ID.
      * @returns {Promise<string>} - A promise that resolves with the user ID of the currently logged-in user.
@@ -51,6 +54,7 @@ export class ProfileAuthentication {
             })
         })
     }
+
 
     /**
      * Fetches user data from Firestore and updates user state to 'true' for being active.
@@ -72,6 +76,7 @@ export class ProfileAuthentication {
         })
     }
 
+
     /**
      * Fetches partner data from Firestore.
      * @param {string} userID - The user ID of the partner to fetch.
@@ -80,18 +85,19 @@ export class ProfileAuthentication {
     async fetchPartnerFromFirestore(userID: string): Promise<User | null> {
         const docRef = doc(this.firestore, 'user', userID);
         try {
-          const userSnap = await getDoc(docRef);
-          if (userSnap.exists()) {
-            return userSnap.data() as User;
-          } else {
-            console.log('no user found');
-            return null;
-          }
+            const userSnap = await getDoc(docRef);
+            if (userSnap.exists()) {
+                return userSnap.data() as User;
+            } else {
+                console.log('no user found');
+                return null;
+            }
         } catch (error) {
-          console.error('error ', error);
-          return null;
+            console.error('error ', error);
+            return null;
         }
     }
+
 
     // setUserState(userID: string, userState: string) {
     //     if (userID) {
@@ -102,6 +108,7 @@ export class ProfileAuthentication {
     //         }
     //     }
     // }
+
 
     /**
      * Updates the user's state in Firestore to the specified state.
@@ -119,6 +126,7 @@ export class ProfileAuthentication {
             console.log(new Error("User not found !"))
         }
     }
+
 
     /**
      * Updates user's name and email in Firestore and authentication service.
@@ -146,6 +154,7 @@ export class ProfileAuthentication {
             })
         }
     }
+
 
     /**
      * Logs out the current user, updates their state to 'false', and navigates to the login screen.
