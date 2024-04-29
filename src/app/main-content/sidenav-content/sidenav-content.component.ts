@@ -139,7 +139,9 @@ export class SidenavContentComponent {
       panelClass: 'custom-add-channel-dialog'
     });
     secondDialogRef.afterClosed().subscribe(secondDialogData => {
-      this.firestore.saveChannel(this.cacheChannel(firstDialogData, secondDialogData))
+     this.cacheChannel(firstDialogData, secondDialogData).then(channel => {
+      this.firestore.saveChannel(channel);
+     })
     });
   }
 
@@ -149,7 +151,8 @@ export class SidenavContentComponent {
    * @param {any} secondDialogData - Data from the second dialog including selected users.
    * @returns {Channel} The new channel object ready to be saved.
    */
-  cacheChannel(firstDialogData: any, secondDialogData: any) {
+  async cacheChannel(firstDialogData: any, secondDialogData: any) {
+    const currentUser = await this.firestore.getCurrentUser(this.currentUser) 
     let members;
     if (secondDialogData.selectedUsers) {
       members = secondDialogData.selectedUsers.map((user: any) => {
@@ -160,6 +163,7 @@ export class SidenavContentComponent {
         return { id: user.userId, name: user.name }
       })
     }
+    members.push({id: currentUser?.userId, name: currentUser?.name});
     const dialogData = this.transformChannelData(firstDialogData, members)
     const channel = new Channel(dialogData)
     return channel;
