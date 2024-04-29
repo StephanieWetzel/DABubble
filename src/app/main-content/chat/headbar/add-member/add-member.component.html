@@ -21,7 +21,7 @@
   </mat-chip-listbox>
   <div class="search-results" *ngIf="searchResults.length > 0">
     <div>
-        <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
+        <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user); $event.stopPropagation()">
             <div class="user-pair">
             <img [src]="user.avatar">
             <div class="online-attribut">
@@ -33,5 +33,5 @@
   </div>
 </div>
 <div class="add-btn">
-    <button [disabled]="selectedUsers.length === 0" (click)="addMember()">Hinzufügen</button>
+    <button [disabled]="selectedUsers.length === 0" (click)="addMember(); $event.stopPropagation()">Hinzufügen</button>
 </div>

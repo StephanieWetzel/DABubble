@@ -65,13 +65,10 @@ export class SidenavContentComponent {
     this.unsubChannels = this.firestore.fetchCollection(channelCollId, orderByField, orderDirection).subscribe((channels) => {
       this.fetchedChannels = channels.filter(channel => channel.member.some((member: { id: string; }) => member.id === this.currentUser));
       this.chatService.allChannels = this.fetchedChannels
-      console.log(this.fetchedChannels);
-      
     });
     this.unsubUsers = this.firestore.fetchCollection(userColId).subscribe((users) => {
       this.fetchedUser = this.prioritizeCurrentUser(users, this.currentUser);
       this.attachStateToUsers(this.fetchedUser);
-      console.log(this.fetchedUser)
       this.chatService.users = this.fetchedUser
     });
   }
@@ -82,7 +79,6 @@ export class SidenavContentComponent {
   getAuthUserId() {
     this.auth.fetchLoggedUser().then((userID) => {
       this.currentUser = userID;
-      console.log("Current User: ", this.currentUser)
     })
   }
 
@@ -206,7 +202,6 @@ export class SidenavContentComponent {
    */
   openChannel(channelID: string) {
     // logik open channel 
-    console.log("Channel with ID:", channelID, ' opened.')
     this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
     this.checkScreenWidth();

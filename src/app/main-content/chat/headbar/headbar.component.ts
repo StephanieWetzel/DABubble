@@ -152,7 +152,13 @@ export class HeadbarComponent {
   }
 
   openMemberOversight() {
-    this.isMemberOversight = !this.isMemberOversight;
+    if (this.isMemberOversight) {
+      this.isMemberOversight = !this.isMemberOversight
+    } else {
+      setTimeout(() => {
+        this.isMemberOversight = true;
+      }, 10);
+    }
   }
 
   async safeUserAvatars() {
@@ -170,8 +176,21 @@ export class HeadbarComponent {
   onDocumentClick(event: MouseEvent) {
     const infoDialog = document.getElementById('infoMenu');
     const clickedInsideMenu = infoDialog && infoDialog.contains(event.target as Node);
+    const oversightDialog = document.getElementById('memberOversight');
+    const clickedInsideOversightDialog = oversightDialog && oversightDialog.contains(event.target as Node);
+    const memberSearchDialog = document.getElementById('memberSearch');
+    const clickedInsideMemberSearch = memberSearchDialog && memberSearchDialog.contains(event.target as Node);
+    // for edit channel dialog
     if (this.isInfoOpen && !clickedInsideMenu) {
       this.isInfoOpen = false;
+    }
+    // for member oversight dialog
+    if (this.isMemberOversight && !clickedInsideOversightDialog) {
+      this.isMemberOversight = false;
+    }
+    // for add member / search member dialog
+    if (this.isSearchOpen && !clickedInsideMemberSearch) {
+      this.isSearchOpen = false;
     }
   }
 
@@ -197,8 +216,14 @@ export class HeadbarComponent {
     this.isMemberOversight = event;
   }
 
-  toggleMenu() {
-    this.isSearchOpen = !this.isSearchOpen;
+  openMemberSearch() {
+    if (this.isSearchOpen) {
+      this.isSearchOpen = !this.isSearchOpen;
+    } else {
+      setTimeout(() => {
+        this.isSearchOpen = true;
+      }, 10);
+    }
   }
 
   selectUser(user: any): void {

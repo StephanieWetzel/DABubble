@@ -11,7 +11,7 @@
             <span>{{channel?.member?.length}}</span>
         </div>
         <div class="dropdown-container">
-            <button class="add-member-btn" (click)="toggleMenu()">
+            <button class="add-member-btn" (click)="openMemberSearch()">
                 <mat-icon class="outlined">person_add</mat-icon>
             </button>
         </div>
@@ -26,13 +26,13 @@
 </div>
 
 <div *ngIf="isMemberOversight" class="member-oversight-cont">
-    <div [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
+    <div id="memberOversight" [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
         <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [currentChannel]="channel"></app-member-oversight>
     </div>
 </div>
 
 <div *ngIf="isSearchOpen" class="member-oversight-cont">
-    <div class="member-search">
+    <div id="memberSearch" class="member-search">
         <app-add-member [currentMembers]="members" [channel]="channel" (isClosed)="searchClosed($event)"></app-add-member>
     </div>
 </div>

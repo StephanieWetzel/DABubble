@@ -20,7 +20,7 @@
             <p>{{ user.name }} <span *ngIf="user.userId === currentUser">(Du)</span></p>
         </div>
     </div>
-    <div (click)="toggleAddMember()" class="add-member">
+    <div (click)="toggleAddMember(); $event.stopPropagation()" class="add-member">
         <button class="add-member-btn">
             <mat-icon class="outlined">person_add</mat-icon>
         </button>
