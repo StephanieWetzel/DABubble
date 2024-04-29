@@ -53,12 +53,12 @@ export class AuthenticationService {
     return this.currentUser;
   }
 
-/**
- * Fetches data for a guest user from Firestore based on a predefined guest user ID.
- * @returns {Promise<User | null>} A promise that resolves with the user data if the document exists,
- * or null if there is no such document.
- * 
- */
+  /**
+   * Fetches data for a guest user from Firestore based on a predefined guest user ID.
+   * @returns {Promise<User | null>} A promise that resolves with the user data if the document exists,
+   * or null if there is no such document.
+   * 
+   */
   async fetchGuestData() {
     const guestID = 'ck4vudalTaUgOYeatRsBQhoCqr12';
     const docRef = doc(this.firestore, 'user', guestID)

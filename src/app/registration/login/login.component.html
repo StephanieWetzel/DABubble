@@ -21,7 +21,7 @@
                         [ngClass]="{'purple-border': isMailFocused}">
                         <img [src]="isMailFocused ? 'assets/img/mail_focused.svg' : 'assets/img/mail_unfocused.svg'">
                         <input formControlName="email" type="email" placeholder="E-Mail" required
-                            pattern="[^@]+@[^\.]+\..+">
+                            pattern="[^@]+@[^\.]+\..+" autocomplete="email">
                     </div>
 
                     <div *ngIf="formData.get('email')?.invalid && formData.get('email')?.touched">
@@ -40,7 +40,8 @@
                         class="mail-and-pw google-sign-in tr-150ms br-32">
                         <img
                             [src]="isPasswordFocused ? 'assets/img/lock_focused.svg' : 'assets/img/lock_unfocused.svg'">
-                        <input formControlName="password" type="password" placeholder="Passwort" required>
+                        <input formControlName="password" type="password" placeholder="Passwort" required
+                            autocomplete="current-password">
                     </div>
                     <div *ngIf="formData.get('password')?.invalid && formData.get('password')?.touched">
                         <span class="invalid-text" *ngIf="formData.get('password')?.errors?.['required']">
