@@ -234,6 +234,15 @@
   }
 }
 
+.active-channel {
+  color: #535af1 !important;
+  background-color: #eceefe;
+  font-weight: bold;
+  > mat-icon {
+    color: #535af1 !important;
+  }
+}
+
 .mat-expansion-panel-header.mat-expanded {
   height: 48px !important; /*class for accordion expand height*/
 }

@@ -32,6 +32,7 @@ export class SidenavContentComponent {
   unsubUsers: Subscription | undefined;
   currentUser: string = '';
   screenWidth: number;
+  selectedChannel: string = 'pSBwciqiaOgtUayZaIgj';
   @Output() closeSidenav = new EventEmitter<void>();
 
   constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync, private mobilService: MobileService) {
@@ -209,6 +210,7 @@ export class SidenavContentComponent {
     this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
     this.checkScreenWidth();
+    this.selectedChannel = channelID;
   }
 
   /**
@@ -223,6 +225,7 @@ export class SidenavContentComponent {
     this.chatService.setIsDmRoom(true);
     this.checkScreenWidth();
     this.chatService.setEditorFocusMessage();
+    this.selectedChannel = userId;
     //this.chatService.getMessages();
   }
 

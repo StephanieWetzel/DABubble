@@ -32,7 +32,7 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <span class="list-enumeration channel-enumeration" *ngFor="let channel of fetchedChannels" (click)="openChannel(channel.channelId)">
+      <span class="list-enumeration channel-enumeration" [ngClass]="{'active-channel': selectedChannel === channel.channelId}" *ngFor="let channel of fetchedChannels" (click)="openChannel(channel.channelId)">
         <mat-icon style="font-style: italic;">tag</mat-icon>
          {{ channel.name }}
       </span>
@@ -60,7 +60,7 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <div *ngFor="let user of fetchedUser" class="user-list" (click)="openDM(user.userId)">
+      <div *ngFor="let user of fetchedUser" class="user-list" [ngClass]="{'active-channel': selectedChannel === user.userId}" (click)="openDM(user.userId)">
         <div class="user-pair">
           <img [src]="user.avatar">
           <div class="online-attribut">
