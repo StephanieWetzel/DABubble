@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { User } from '../../../../assets/models/user.class';
+import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-input-box',
@@ -51,6 +52,8 @@ export class InputBoxComponent {
     }
   };
 
+
+
   isContentEmpty: boolean = true;
   selectedFiles: File[] = []; // Speichert mehrere Dateien
   selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
@@ -58,7 +61,7 @@ export class InputBoxComponent {
   currentUser!: User;
 
 
-  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer, private profileAuth: ProfileAuthentication) {
+  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer, private profileAuth: ProfileAuthentication, public firestore: FirebaseService) {
   }
 
 
@@ -70,20 +73,73 @@ export class InputBoxComponent {
 
   async sendMessage() {
     let data = tinymce.get("inputData")
+    if (this.isInNewMessageInterface()){
+      await this.sendNewMessage(data);
+    }else{
+      await this.sendSingleMessage(data);
+    }
+    this.clearSelectedFiles();
+    this.clearInput(data);
+  }
+
+  isInNewMessageInterface(){
+    return this.chatService.currentChannel$.value === 'writeANewMessage'
+  }
+
+  async sendNewMessage(data: any){
+    this.chatService.selectedChannels.forEach(async channel => {
+      this.chatService.isChannel = true
+      this.chatService.currentChannel$.next(channel.channelId)
+      await this.sendSingleMessage(data)
+    });
+    if (this.chatService.selectedUsers.length > 0) {
+      this.chatService.isChannel = false;
+      this.chatService.selectedUsers.forEach(user => {
+      console.log(user);
+    });
+    }
+  }
+
+  async sendSingleMessage(data: any){
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
-      message.sendId = this.chatService.currentUser.userId;      
+      message.sendId = this.chatService.currentUser.userId;   
       for (const file of this.selectedFiles) {
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
       }
       await this.chatService.addMessage(message);
-      data.setContent('');
-      this.selectedFileNames = [];
-      this.selectedFiles = [];
     }
+  }
+
+  clearInput(data: any){
+    data.setContent('');
+  }
+
+  clearSelectedFiles(){
+    this.selectedFileNames = [];
+    this.selectedFiles = [];
+  }
+
+
+  async sendDM(userId:string) {
+    const roomId = this.generateRoomId(this.currentUser.userId, userId);
+    this.firestore.checkIfRoomExists(roomId, this.currentUser.userId, userId);
+    this.chatService.currentChannel$.next(roomId);
+    await this.sendMessage();
+  }
+
+  
+  /**
+   * Generates a room ID for a DM session by concatenating the user IDs in alphabetical order.
+   * @param {string} userId1 - First user ID.
+   * @param {string} userId2 - Second user ID.
+   * @returns {string} The generated room ID.
+   */
+  generateRoomId(userId1:string, userId2: string) {
+    return [userId1, userId2].sort().join('_');
   }
 
 

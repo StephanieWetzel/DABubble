@@ -49,6 +49,9 @@ export class ChatService implements OnDestroy {
   searchInput: string = '';
 
 
+  selectedUsers!: any[];
+  selectedChannels!: any[];
+
   unsubscribe!: Unsubscribe;
   unsubreplies!: Unsubscribe;
   // unsubDirectMessages!: Unsubscribe;
@@ -142,7 +145,6 @@ export class ChatService implements OnDestroy {
   updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(); 
     console.log(this.currentChannel$.value);
-    
     if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.

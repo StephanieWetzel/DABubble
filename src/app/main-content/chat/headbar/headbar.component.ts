@@ -19,17 +19,17 @@ import { AddMemberComponent } from './add-member/add-member.component';
   selector: 'app-headbar',
   standalone: true,
   imports: [MatIconModule,
-     MatMenuModule, 
-     MatButtonModule, 
-     CommonModule, 
-     MatDialogModule, 
-     EditChannelDialogComponent, 
-     MatChip, 
-     MatChipListbox, 
-     ReactiveFormsModule, 
-     MemberOversightComponent,
-     AddMemberComponent
-    ],
+    MatMenuModule,
+    MatButtonModule,
+    CommonModule,
+    MatDialogModule,
+    EditChannelDialogComponent,
+    MatChip,
+    MatChipListbox,
+    ReactiveFormsModule,
+    MemberOversightComponent,
+    AddMemberComponent
+  ],
   templateUrl: './headbar.component.html',
   styleUrl: './headbar.component.scss'
 })
@@ -41,7 +41,7 @@ export class HeadbarComponent {
   isNewMessage: boolean = false;
   isInfoOpen: boolean = false;
   isMemberOversight: boolean = false;
-  isSearching:boolean = false;
+  isSearching: boolean = false;
   currentUser = '';
   isSearchOpen: boolean = false;
   members: User[] | null = null;
@@ -87,7 +87,7 @@ export class HeadbarComponent {
         }
       })
     });
-    
+
 
     this.chatService.newMessage$.subscribe(newMessage => {
       this.isNewMessage = newMessage;
@@ -134,7 +134,7 @@ export class HeadbarComponent {
     }
   }
 
-  searchClosed(event:boolean) {
+  searchClosed(event: boolean) {
     this.isSearchOpen = !this.isSearchOpen
   }
 
@@ -212,7 +212,7 @@ export class HeadbarComponent {
     this.isInfoOpen = event;
   }
 
-  handleCloseEventMember(event:boolean) {
+  handleCloseEventMember(event: boolean) {
     this.isMemberOversight = event;
   }
 
@@ -229,6 +229,7 @@ export class HeadbarComponent {
   selectUser(user: any): void {
     if (!this.selectedUsers.some(u => u.userId === user.userId)) {
       this.selectedUsers.push(user);
+      this.chatService.selectedUsers = this.selectedUsers;
       this.searchResults = this.findResults(this.searchInput.value || "");
     }
   }
@@ -242,11 +243,11 @@ export class HeadbarComponent {
 
   selectChannel(channel: any): void {
     if (!this.selectedChannels.some(c => c.channelId === channel.channelId)) {
-        this.selectedChannels.push(channel);
-        // this.filteredChannels = []; // Optional: Clear filteredChannels if you don't need it anymore
+      this.selectedChannels.push(channel);
+      this.chatService.selectedChannels = this.selectedChannels;
+      // this.filteredChannels = []; // Optional: Clear filteredChannels if you don't need it anymore
     }
-}
-  
+  }
 
 
   findChannels(searchTerm: string): any[] {

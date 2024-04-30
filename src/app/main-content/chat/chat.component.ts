@@ -26,12 +26,4 @@ export class ChatComponent {
   onResize() {
     this.screenWidth = window.innerWidth
   };
-
-
-
-  // scrollToBottom(): void {
-  //   try {
-  //     this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
-  //   } catch(err) { }
-  // }
 }
