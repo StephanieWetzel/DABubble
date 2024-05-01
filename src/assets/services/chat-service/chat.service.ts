@@ -107,15 +107,16 @@ export class ChatService implements OnDestroy {
   }
 
 
-  async addMessage(message: Message) {
+  async addMessage(message: Message, channel: string) {
     if(this.isChannel){
-      const docRef = await addDoc(this.getChannelMessagesRef(), message.toJSON(message));
+      debugger
+      const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages`, docRefId), { messageId: docRefId });
+      await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
     }else{
       const docRef = await addDoc(this.getDirectMessagesRef(), message.toJSON(message));
       const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `directMessages/${this.currentChannel$.value}/messages`, docRefId), { messageId: docRefId });
+      await updateDoc(doc(this.firestore, `directMessages/${channel}/messages`, docRefId), { messageId: docRefId });
     }
   }
 
@@ -336,11 +337,11 @@ export class ChatService implements OnDestroy {
 
 
   getChannelMessagesQ() {
-    return query(this.getChannelMessagesRef(), orderBy('time', 'asc'));
+    return query(this.getChannelMessagesRef(this.currentChannel$.value), orderBy('time', 'asc'));
   }
 
-  getChannelMessagesRef() {
-    return collection(this.firestore, `channel/${this.currentChannel$.value}/messages`)
+  getChannelMessagesRef(channel: string) {
+    return collection(this.firestore, `channel/${channel}/messages`)
   }
 
 

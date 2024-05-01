@@ -76,7 +76,7 @@ export class InputBoxComponent {
     if (this.isInNewMessageInterface()){
       await this.sendNewMessage(data);
     }else{
-      await this.sendSingleMessage(data);
+      await this.sendSingleMessage(data, this.chatService.currentChannel$.value);
     }
     this.clearSelectedFiles();
     this.clearInput(data);
@@ -89,18 +89,18 @@ export class InputBoxComponent {
   async sendNewMessage(data: any){
     this.chatService.selectedChannels.forEach(async channel => {
       this.chatService.isChannel = true
-      this.chatService.currentChannel$.next(channel.channelId)
-      await this.sendSingleMessage(data)
+      // this.chatService.currentChannel$.next(channel.channelId)
+      await this.sendSingleMessage(data, channel.channelId)
     });
-    if (this.chatService.selectedUsers.length > 0) {
-      this.chatService.isChannel = false;
-      this.chatService.selectedUsers.forEach(user => {
-      console.log(user);
-    });
-    }
+    // if (this.chatService.selectedUsers.length > 0) {
+    //   this.chatService.isChannel = false;
+    //   this.chatService.selectedUsers.forEach(user => {
+    //   console.log(user);
+    // });
+    // }
   }
 
-  async sendSingleMessage(data: any){
+  async sendSingleMessage(data: any, channel: string){
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
@@ -110,7 +110,7 @@ export class InputBoxComponent {
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
       }
-      await this.chatService.addMessage(message);
+      await this.chatService.addMessage(message, channel);
     }
   }
 
