@@ -7,6 +7,9 @@ section {
     @include dFlex($jc: space-between);
     z-index: 10;
     position: relative;
+    @media(max-width: 920px){
+        padding: 25px 32px;
+    }
 }
 
 mat-chip-listbox{
@@ -63,10 +66,16 @@ mat-chip-listbox{
     @include dFlex(flex-start, center, 10px);
     width: fit-content;
     cursor: pointer;
+    @media(max-width: 920px){
+        gap: 0px;
+    }
     span {
         font-weight: 700;
         font-size: 24px;
         margin: 8px;
+        @media(max-width: 920px){
+            font-size: 22px;
+        }
     }
 }
 
@@ -77,7 +86,9 @@ mat-chip-listbox{
         @include dFlex(center, center, 10px);
         padding: 0px 8px;
         border-radius: 30px;
-
+        @media(max-width: 600px) {
+            display: none;
+        }
         &:hover {
             cursor: pointer;
             background-color: #eceefe;
@@ -87,6 +98,9 @@ mat-chip-listbox{
         >span {
             font-size: 20px;
             font-weight: 600;
+            @media(max-width: 900px){
+                display: none;
+            }
         }
 
         >.member-avatar {
@@ -98,7 +112,15 @@ mat-chip-listbox{
             border-radius: 50%;
             overflow: hidden;
             margin-left: -26px;
-
+            @media(max-width: 1000px) {
+                margin-left: -35px;
+            }
+            @media(max-width: 920px) {
+                margin-left: -40px;
+            }
+            @media(max-width: 820px){
+                margin-left: -26px;
+            }
             &:first-child {
                 margin-left: 0;
             }
@@ -279,6 +301,16 @@ mat-chip-listbox{
 
 .dropdown-container {
     position: relative;
+    @media(max-width: 600px) {
+     display: none;   
+    }
+}
+.dropdown-container-mobile {
+    display: none;
+    @media(max-width: 600px) {
+        display: block !important;
+        position: relative;
+    }
 }
 
 .group-def {
@@ -292,6 +324,18 @@ mat-chip-listbox{
 }
 
 /*Channel Info*/
+
+app-edit-channel-dialog {
+    display: flex;
+    width: 100%;
+}
+
+app-member-oversight {
+    @media(max-width: 600px) {
+     display: block;
+     width: 100%;   
+    }
+}
 
 .channel-info-cont {
     position: fixed;
@@ -310,6 +354,13 @@ mat-chip-listbox{
         max-width: 792px;
         padding: 40px 40px;
         margin-right: 68px;
+        @media(max-width: 820px){
+            margin-left: 38px;
+            margin-right: 90px;   
+        }
+        @media(max-width: 700px){
+            margin-right: 38px;
+        }
     }
 
 }
@@ -335,6 +386,9 @@ mat-chip-listbox{
     z-index: 10;
     background-color: rgba($color: #000000, $alpha: 0.1);
     @include dFlex(flex-end,flex-start,0, row);
+    @media(max-width: 600px) {
+     justify-content: center;   
+    }
     > .member-oversight {
         background-color: #ffffff;
         border-radius: 30px;
@@ -344,6 +398,20 @@ mat-chip-listbox{
         margin-right: 156px;
         width: 100%;
         max-width: 335px;
+        @media(max-width: 900px) {
+            margin-right: 104px;
+        }
+        @media(max-width: 820px) {
+            margin-right: 88px;
+        }
+        @media(max-width: 600px) {
+            max-width: 434px;
+            margin-right: 0px;
+        }
+        @media(max-width: 520px) {
+            margin-left: 16px;
+            margin-right: 16px;
+        }
     }
     > .member-search {
         background-color: #ffffff;
@@ -354,6 +422,13 @@ mat-chip-listbox{
         margin-right: 20px;
         width: 100%;
         max-width: 434px;
+        @media(max-width: 600px) {
+            margin-right: 0px;
+        }
+        @media(max-width: 520px) {
+            margin-left: 16px;
+            margin-right: 16px;
+        }
     }
 }
 

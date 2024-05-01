@@ -39,6 +39,21 @@
       border-radius: 20px;
       border: 1px solid #adb0d9;
       @include dFlex(center, flex-start, 20px, column);
+      @media(max-width: 1150px){
+        width: 93%;
+      }
+      @media(max-width: 1000px){
+        width: 92%;
+      }
+      @media(max-width: 900px){
+        width: 89%;
+      }
+      @media(max-width: 820px){
+        width: 93%;
+      }
+      @media(max-width: 700px){
+        width: 92%;
+      }
       > .cHead {
         width: 100%;
         @include dFlex(space-between, center, 0, row);
@@ -62,6 +77,21 @@
       border-radius: 20px;
       border: 1px solid #adb0d9;
       width: 95%;
+      @media(max-width: 1150px){
+       width: 93%;     
+      }
+      @media(max-width: 1000px){
+        width: 92%;
+      }
+      @media(max-width: 900px){
+        width: 89%;
+      }
+      @media(max-width: 820px){
+        width: 93%;
+      }
+      @media(max-width: 700px){
+        width: 92%;
+      }
       > .channel-desc-cont {
         @include dFlex(space-between, center, 0, row);
         width: 100%;

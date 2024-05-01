@@ -10,6 +10,11 @@
             </div>
             <span>{{channel?.member?.length}}</span>
         </div>
+        <div class="dropdown-container-mobile">
+            <button class="add-member-btn" (click)="openMemberOversight()">
+                <mat-icon class="outlined">person_add</mat-icon>
+            </button>
+        </div>
         <div class="dropdown-container">
             <button class="add-member-btn" (click)="openMemberSearch()">
                 <mat-icon class="outlined">person_add</mat-icon>
