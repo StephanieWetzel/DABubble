@@ -6,6 +6,9 @@ section {
   background-color: $bgPage;
   padding-top: 12px;
   @include dFlex($jc: flex-start);
+  @media(max-width: 380px) {
+    padding-top: 0px;
+  }
 }
 
 .logo-container {
@@ -22,10 +25,19 @@ section {
     @media (max-width: 820px) {
       height: 48px;
     }
+    @media (max-height: 670px) {
+      height: 32px;
+    }
   }
   > .back-arrow {
     height: 25px;
     width: 25px;
+    @media (max-width: 550px) {
+       margin-left: -15px;    
+    }
+    @media (max-height: 670px) {
+      margin-left: -15px;
+    }
   }
 
   span {
@@ -37,11 +49,18 @@ section {
     > img {
       height: 50px;
       width: 50px;
+      @media (max-height: 670px) {
+        height: 32px;
+        width: 32px;
+      }
     }
     > h3 {
       font-size: 24px;
       font-weight: 800;
       font-family: "Nunito";
+      @media (max-height: 670px) {
+        font-size: 18px;
+      }
     }
   }
 }
@@ -116,6 +135,10 @@ section {
       @media (max-width: 820px) {
         @include dFlex(center, center);
       }
+      @media (max-height: 670px) {
+        height: 50px;
+        width: 50px;
+      }
       > img {
         height: 70px;
         border-radius: 50%;
@@ -124,6 +147,9 @@ section {
         }
         @media (max-width: 550px) {
           height: 50px;
+        }
+        @media (max-height: 670px) {
+          height: 32px;
         }
       }
       > .online-attribut {
@@ -134,9 +160,16 @@ section {
           bottom: 0px;
           right: 12px;
         }
+        @media (max-height: 670px) {
+          right: 8px;
+        }
         > img {
           height: 14px;
           width: 14px;
+          @media (max-height: 670px) {
+            height: 10px;
+            width: 10px;
+          }
         }
       }
     }
@@ -253,6 +286,10 @@ section {
       bottom: 188px;
       right: 6px;
       border-top-right-radius: 32px;
+    }
+    @media (max-height: 670px) {
+      bottom: 32px;
+      height: 556px;
     }
     @include dFlex($fd: column);
     > .profile-content {

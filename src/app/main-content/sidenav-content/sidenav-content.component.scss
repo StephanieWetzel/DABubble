@@ -37,7 +37,7 @@
     @include dFlex(center);
     > .search {
       @include dFlex($jc: space-between);
-      width: 70%;
+      width: 85%;
       box-sizing: border-box;
       background-color: white;
       border: 1px solid #a5afdb;
@@ -59,6 +59,10 @@
         }
       }
     }
+  }
+  @media(max-width: 380px) {
+    padding-top: 8px;
+    padding-bottom: 5px;
   }
 }
 
@@ -110,6 +114,9 @@
       font-size: 35px;
       @include dFlex();
       height: 32px;
+      @media (max-height: 670px) {
+        font-size: 22px;
+      }
     }
   }
 }
@@ -137,6 +144,9 @@
       font-family: "Nunito" !important;
       font-weight: bold;
       margin: 0;
+      @media (max-height: 670px) {
+        font-size: 18px;
+      }
     }
   }
 }
@@ -166,6 +176,9 @@
   @media (max-height: 980px) {
     max-height: 300px;
   }
+  @media (max-height: 670px) {
+    max-height: 232px;
+  }
 }
 
 .list {
@@ -176,6 +189,9 @@
     padding: 5px 20px 5px 20px;
     margin-top: 8px;
     margin-bottom: 8px;
+    @media (max-height: 670px) {
+      margin-top: 0px;
+    }
     > mat-icon {
       margin-right: 10px;
     }
@@ -185,12 +201,20 @@
     border-bottom-left-radius: 16px;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
+    @media (max-height: 670px) {
+      font-size: 16px;
+    }
     &:hover {
       background-color: #eceefe;
       cursor: pointer;
     }
   }
   > .add-effect {
+    > span {
+      @media (max-height: 670px) {
+        font-size: 16px;
+      }
+    }
     &:hover {
       mat-icon,
       span {
@@ -212,6 +236,9 @@
     border-bottom-left-radius: 32px;
     border-top-right-radius: 32px;
     border-bottom-right-radius: 32px;
+    @media (max-height: 670px) {
+      margin-top: 0px;
+    }
     &:hover {
       background-color: #eceefe;
       color: #535af1;
@@ -219,6 +246,9 @@
     }
     > p {
       margin: 0;
+      @media (max-height: 670px) {
+        font-size: 16px;
+      }
     }
     > .user-pair {
       @include dFlex(center, center);
@@ -227,13 +257,23 @@
         height: 50px;
         width: 50px;
         border-radius: 50%;
+        @media (max-height: 670px) {
+          height: 32px;
+          width: 32px;
+        }
       }
       > .online-attribut {
         position: absolute;
         bottom: -6px;
         right: 0;
+        @media (max-height: 670px) {
+          bottom: -7px;
+        }
         > img {
           height: 14px;
+          @media (max-height: 670px) {
+            height: 10px;
+          }
         }
       }
     }
@@ -266,15 +306,21 @@
     padding-left: 8px;
     padding-right: 0px;
   }
+  @media (max-height: 670px) {
+    padding-top: 0px;
+  }
 }
 
 ::-webkit-scrollbar {
   width: 4px;
-  height: 2px;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #535af1;
+  background-color: rgba($color: #686868, $alpha: 0.5);
   border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba($color: #686868, $alpha: 0.7);
 }
 
 ::-webkit-scrollbar-track {
@@ -292,7 +338,7 @@
 /*Material Icons CSS*/
 
 .material-icons {
-  font-family: "Material Icons";
+  font-family: "Material Icons Outlined";
   font-weight: normal;
   font-style: normal;
   font-size: 24px; /* Preferred icon size */
@@ -303,7 +349,10 @@
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
-
+  @media (max-height: 670px) {
+    font-size: 18px;
+    margin-bottom: -5px;
+  }
   /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
   /* Support for Safari and Chrome. */

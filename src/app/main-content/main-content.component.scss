@@ -79,6 +79,9 @@ app-header {
     width: 100%;  
     padding: 12px 0 0 0;         
   }
+  @media(max-width: 380px) {
+    padding-top: 0px;
+  }
 }
 
 .sidenav {
@@ -102,6 +105,9 @@ app-header {
   }
   @media(max-width: 600px) {
     padding-bottom: 0px;
+  }
+  @media (max-height: 670px) {
+    padding-top: 0px;
   }
 }
 

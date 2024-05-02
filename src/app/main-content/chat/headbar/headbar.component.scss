@@ -10,6 +10,9 @@ section {
     @media(max-width: 920px){
         padding: 25px 32px;
     }
+    @media (max-height: 670px) {
+        padding: 16px 8px;
+    }
 }
 
 mat-chip-listbox{
@@ -75,6 +78,14 @@ mat-chip-listbox{
         margin: 8px;
         @media(max-width: 920px){
             font-size: 22px;
+        }
+        @media (max-height: 670px) {
+            font-size: 18px;
+        }
+    }
+    > img {
+        @media (max-height: 670px) {
+            height: 24px;
         }
     }
 }
@@ -194,7 +205,9 @@ mat-chip-listbox{
     border-radius: 50%;
     border: none;
     @include dFlex();
-
+    @media (max-height: 670px) {
+        width: 35px;
+    }
     mat-icon {
         &:hover {
             color: #535AF1;

@@ -72,23 +72,23 @@ app-reply{
 }
 
 app-messages::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 /* Handle (der bewegliche Teil der Scrollbar) */
 app-messages::-webkit-scrollbar-thumb {
-    background: #888;
+    background-color: rgba($color: #686868, $alpha: 0.5);
     border-radius: 4px;
 }
 
 /* Handle Hover */
 app-messages::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background-color: rgba($color: #686868, $alpha: 0.7);
 }
 
 /* Der Hintergrund der Scrollbar (der Teil, auf dem der Handle bewegt wird) */
 app-messages::-webkit-scrollbar-track {
-    background: #FFFFFF;
+    background: none;
     border-radius: 4px;
 }
 
