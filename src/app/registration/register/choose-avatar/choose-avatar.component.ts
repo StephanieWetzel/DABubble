@@ -41,7 +41,7 @@ export class ChooseAvatarComponent {
   userId: string | any = '';
   name: string | any = '';
 
-  firestore: Firestore = inject(Firestore);
+  // firestore: Firestore = inject(Firestore);
 
   containerWidth: number;
   containerHeight: number;
@@ -50,6 +50,7 @@ export class ChooseAvatarComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private firestore: Firestore
   ) {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];

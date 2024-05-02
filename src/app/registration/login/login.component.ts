@@ -35,7 +35,7 @@ import { AuthenticationService } from '../../../assets/services/authentication.s
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  firestore: Firestore = inject(Firestore)
+  // firestore: Firestore = inject(Firestore)
   user: User = new User;
   email: string = '';
   password: string = '';
@@ -57,7 +57,8 @@ export class LoginComponent {
   constructor(
     private fbuilder: FormBuilder,
     private auth: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private firestore: Firestore
   ) {
     this.containerWidth = window.innerWidth;
     this.containerHeight = window.innerHeight;
@@ -123,17 +124,11 @@ export class LoginComponent {
   async googleLogin() {
     try {
       const result = await this.auth.signInWithGoogle();
-      const { email, displayName, uid, photoURL } = result.user;
-      const transformedData = {
-        email: email ? email : "Keine E-Mail",
-        name: displayName ? displayName : "Unbekannt",
-        userId: uid,
-        avatar: photoURL ? photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
-      };
-      const userRef = doc(this.firestore, "user", uid);
+      const transformedData = this.transformGoogleSignInData(result);
+      const userRef = doc(this.firestore, "user", result.user.uid);
       const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
       await updateDoc(channelRef, {
-        member: arrayUnion({ id: uid, name: transformedData.name })
+        member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
       })
       await setDoc(userRef, transformedData);
       this.router.navigate(['/main']);
@@ -142,5 +137,20 @@ export class LoginComponent {
     }
   }
 
+
+  /**
+ * Transforms the data obtained from Google Sign-In into a format suitable for storing in the database.
+ * 
+ * @param {any} result - The result object obtained from Google Sign-In.
+ * @returns {object} An object containing the transformed user data.
+ */
+  transformGoogleSignInData(result: any) {
+    return {
+      email: result.user.email ? result.user.email : "Keine E-Mail",
+      name: result.user.displayName ? result.user.displayName : "Unbekannt",
+      userId: result.user.uid,
+      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
+    };
+  }
 
 }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit, ElementRef  } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit, ElementRef } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { ChatService } from './../../../../assets/services/chat-service/chat.service';
@@ -24,7 +24,7 @@ import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 
 export class InputBoxComponent {
-  @ViewChild('inputData', { static: false }) myEditor!: ElementRef ;
+  @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
 
   public editorInit: RawEditorOptions = {
     base_url: '/tinymce',
@@ -73,20 +73,20 @@ export class InputBoxComponent {
 
   async sendMessage() {
     let data = tinymce.get("inputData")
-    if (this.isInNewMessageInterface()){
+    if (this.isInNewMessageInterface()) {
       await this.sendNewMessage(data);
-    }else{
+    } else {
       await this.sendSingleMessage(data, this.chatService.currentChannel$.value);
     }
     this.clearSelectedFiles();
     this.clearInput(data);
   }
 
-  isInNewMessageInterface(){
+  isInNewMessageInterface() {
     return this.chatService.currentChannel$.value === 'writeANewMessage'
   }
 
-  async sendNewMessage(data: any){
+  async sendNewMessage(data: any) {
     this.chatService.selectedChannels.forEach(async channel => {
       this.chatService.isChannel = true
       // this.chatService.currentChannel$.next(channel.channelId)
@@ -100,12 +100,12 @@ export class InputBoxComponent {
     // }
   }
 
-  async sendSingleMessage(data: any, channel: string){
+  async sendSingleMessage(data: any, channel: string) {
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
-      message.sendId = this.chatService.currentUser.userId;   
+      message.sendId = this.chatService.currentUser.userId;
       for (const file of this.selectedFiles) {
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
@@ -114,36 +114,36 @@ export class InputBoxComponent {
     }
   }
 
-  clearInput(data: any){
+  clearInput(data: any) {
     data.setContent('');
   }
 
-  clearSelectedFiles(){
+  clearSelectedFiles() {
     this.selectedFileNames = [];
     this.selectedFiles = [];
   }
 
 
-  async sendDM(userId:string) {
+  async sendDM(userId: string) {
     const roomId = this.generateRoomId(this.currentUser.userId, userId);
     this.firestore.checkIfRoomExists(roomId, this.currentUser.userId, userId);
     this.chatService.currentChannel$.next(roomId);
     await this.sendMessage();
   }
 
-  
+
   /**
    * Generates a room ID for a DM session by concatenating the user IDs in alphabetical order.
    * @param {string} userId1 - First user ID.
    * @param {string} userId2 - Second user ID.
    * @returns {string} The generated room ID.
    */
-  generateRoomId(userId1:string, userId2: string) {
+  generateRoomId(userId1: string, userId2: string) {
     return [userId1, userId2].sort().join('_');
   }
 
 
-  openSelectedFile(event: Event){
+  openSelectedFile(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input && input.files) {
       const files = input.files;
@@ -154,45 +154,45 @@ export class InputBoxComponent {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         totalSize += file.size;
-      if (file.size > 5242880) { // 5 MB für Bilder
-        alert("Dateien dürfen nicht größer als 5 MB sein.");
-      } else {
-        this.selectedFiles.push(file);
-        this.selectedFileNames.push(file.name);
+        if (file.size > 5242880) { // 5 MB für Bilder
+          alert("Dateien dürfen nicht größer als 5 MB sein.");
+        } else {
+          this.selectedFiles.push(file);
+          this.selectedFileNames.push(file.name);
+        }
+      }
+
+      if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
+        alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
+        this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
       }
     }
-
-    if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
-      alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
-      this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
-    }
-  }
   }
 
- 
+
 
 
   openFilePreview(index: number) {
     const file = this.selectedFiles[index];
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-          this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
-          this.dialog.open(FilePreviewDialogComponent, {
-              data: { fileUrl: this.safeUrl, fileType: file.type }
-          });
-      };
-      reader.readAsDataURL(file);
-    }
-   
-  removeFile(index: number){
-    this.selectedFiles.splice(index,1)
-    this.selectedFileNames.splice(index,1);
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
+      this.dialog.open(FilePreviewDialogComponent, {
+        data: { fileUrl: this.safeUrl, fileType: file.type }
+      });
+    };
+    reader.readAsDataURL(file);
   }
 
-    decodeHtmlEntities(encodedString: string) {
-      const textArea = document.createElement('textarea');
-      textArea.innerHTML = encodedString;
-      return textArea.value;
-    }
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1)
+    this.selectedFileNames.splice(index, 1);
+  }
+
+  decodeHtmlEntities(encodedString: string) {
+    const textArea = document.createElement('textarea');
+    textArea.innerHTML = encodedString;
+    return textArea.value;
+  }
 
 }

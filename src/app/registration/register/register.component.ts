@@ -26,7 +26,7 @@ import { AuthenticationService } from '../../../assets/services/authentication.s
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  firestore: Firestore = inject(Firestore)
+  // firestore: Firestore = inject(Firestore)
 
   formData: FormGroup = this.fbuilder.group({
     name: ['', [Validators.required, this.fullNameValidator()]],
@@ -47,7 +47,8 @@ export class RegisterComponent {
   constructor(
     private fbuilder: FormBuilder,
     public auth: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private firestore: Firestore
   ) {
     this.containerWidth = window.innerWidth;
     this.containerHeight = window.innerHeight;
