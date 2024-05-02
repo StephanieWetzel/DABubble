@@ -54,6 +54,9 @@
       @media(max-width: 700px){
         width: 92%;
       }
+      @media (max-width: 450px) {
+       width: 89%; 
+      }
       > .cHead {
         width: 100%;
         @include dFlex(space-between, center, 0, row);
@@ -92,6 +95,9 @@
       @media(max-width: 700px){
         width: 92%;
       }
+      @media (max-width: 450px) {
+       width: 89%; 
+      }
       > .channel-desc-cont {
         @include dFlex(space-between, center, 0, row);
         width: 100%;
@@ -124,6 +130,9 @@
       border-radius: 20px;
       border: 1px solid #adb0d9;
       padding: 20px;
+      @media (max-width: 450px) {
+       width: 89%; 
+      }
     }
 
     }

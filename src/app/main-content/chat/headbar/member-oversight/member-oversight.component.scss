@@ -20,6 +20,11 @@
   }
   > .members {
     @include dFlex(center, flex-start, 0, column);
+    @media(max-width: 600px) {
+      justify-content: flex-start;
+      overflow-y: scroll;
+      max-height: 300px;
+    }
     > .user-list {
       @include dFlex(center, center, 15px);
       padding: 5px 20px 5px 20px;

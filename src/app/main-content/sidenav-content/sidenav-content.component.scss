@@ -72,6 +72,9 @@
   @media(max-width: 500px) {
     padding-left: 20px;
   }
+  @media(max-width: 400px) {
+    padding-left: 8px;
+  }
   > div {
     @media (max-width: 600px) {
       width: 400px;
@@ -159,6 +162,9 @@
   }
   @media(max-width: 450px) {
     width: 300px;
+  }
+  @media (max-height: 980px) {
+    max-height: 300px;
   }
 }
 
@@ -255,6 +261,10 @@
   }
   @media(max-width: 500px) {
     padding-left: 20px;
+  }
+  @media (max-width:400px) {
+    padding-left: 8px;
+    padding-right: 0px;
   }
 }
 
