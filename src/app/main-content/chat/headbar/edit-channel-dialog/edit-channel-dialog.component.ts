@@ -8,17 +8,20 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../../../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../../../assets/services/profileAuth.service';
 import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
+import { MemberOversightComponent } from '../member-oversight/member-oversight.component';
+import { AddMemberComponent } from '../add-member/add-member.component';
 
 @Component({
   selector: 'app-edit-channel-dialog',
   standalone: true,
-  imports: [CommonModule, MatIcon, FormsModule],
+  imports: [CommonModule, MatIcon, FormsModule, MemberOversightComponent, AddMemberComponent],
   templateUrl: './edit-channel-dialog.component.html',
   styleUrl: './edit-channel-dialog.component.scss',
 })
 export class EditChannelDialogComponent {
   isEditNameOpen: boolean = false;
   isEditDescOpen: boolean = false;
+  isMobileOverlayOpen: boolean = false;
   channel: Channel | null = null;
   user: User | null = null;
   currentUser: string = '';
@@ -36,6 +39,8 @@ export class EditChannelDialogComponent {
   ) {}
 
   @Input() currentChannel!: string;
+  @Input() channelMobile: Channel | null = null;
+  @Input() membersMobile: User[] | null = null;
   @Output() closeDialog = new EventEmitter<boolean>();
 
   async ngOnInit() {
@@ -101,6 +106,19 @@ export class EditChannelDialogComponent {
     } else if (this.channel && editedAttribut === "description") {
       this.channel.description = edit;
     }
+  }
+
+  handleMobileOverlay(event:boolean) {
+    this.isMobileOverlayOpen = event;
+  }
+
+  closeAddMember(event:boolean) {
+    this.isMobileOverlayOpen = !event
+  }
+
+  closeInfo(event: boolean) {
+    this.closeAddMember(!event);
+    this.close();
   }
 
 }

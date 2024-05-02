@@ -1,6 +1,9 @@
+<div class="mobile-island-head">
+  <div class="mobile-island"></div>
+</div>
 <div class="head">
   <span>Leute hinzufügen</span>
-  <mat-icon (click)="close()">close</mat-icon>
+  <mat-icon (click)="close(); $event.stopPropagation()">close</mat-icon>
 </div>
 <div class="channel-name">
   <mat-icon>tag_outline</mat-icon>

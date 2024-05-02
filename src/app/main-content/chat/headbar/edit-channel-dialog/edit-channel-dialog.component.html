@@ -43,8 +43,19 @@
       </div>
     </div>
 
+    <div class="mobile-oversight">
+      <app-member-oversight [currentChannel]="channelMobile" [openedInChannel]="true" (isMobileOverlay)="handleMobileOverlay($event)"></app-member-oversight>
+    </div>
+
     <div class="leave-channel">
       <button (click)="leaveChannel()" [disabled]="currentChannel === 'pSBwciqiaOgtUayZaIgj'">Channel verlassen</button>
     </div>
   </div>
+
+  <div *ngIf="isMobileOverlayOpen" class="add-member-mobile-overlay">
+    <div class="overlay-cont">
+      <app-add-member [channel]="channelMobile"[currentMembers]="membersMobile" (isClosed)="closeAddMember($event)" (hasAdded)="closeInfo($event)"></app-add-member>
+    </div>
+  </div>
+
 </section>

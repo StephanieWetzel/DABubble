@@ -60,6 +60,7 @@
     @include dFlex(flex-start, center, 15px);
     padding: 14px 21px;
     border-radius: 32px;
+    max-width: 248px;
     > .add-member-btn {
       background-color: $bgPage;
       padding: 8px;

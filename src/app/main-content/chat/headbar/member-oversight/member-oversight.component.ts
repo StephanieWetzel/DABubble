@@ -18,8 +18,10 @@ import { AddMemberComponent } from '../add-member/add-member.component';
 export class MemberOversightComponent {
 
   @Input() currentChannel: Channel | null = null;
+  @Input() openedInChannel: boolean | any;
   @Output() hasClosed = new EventEmitter<boolean>();
   @Output() isSearchOpen = new EventEmitter<boolean>();
+  @Output() isMobileOverlay = new EventEmitter<boolean>();
 
   members: User[] | null = null
   currentUser = '';
@@ -83,6 +85,10 @@ export class MemberOversightComponent {
   toggleAddMember() {
     this.isAdding = !this.isAdding;
     this.isSearchOpen.emit(true);
+  }
+
+  openMobileAddMemberOverlay() {
+    this.isMobileOverlay.emit(true);
   }
 
 }

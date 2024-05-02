@@ -116,6 +116,17 @@
         }
       }
     }
+    > .mobile-oversight{
+      display: none;
+      @media(max-width: 600px) {
+      display: block;
+      width: 92%;
+      border-radius: 20px;
+      border: 1px solid #adb0d9;
+      padding: 20px;
+    }
+
+    }
     > .leave-channel {
       @include dFlex(flex-end, center);
       width: 100%;
@@ -146,6 +157,23 @@
     border: none;
     outline: none;
     width: 90%;
+  }
+}
+
+.add-member-mobile-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba($color: #000000, $alpha: 0.35);
+  @include dFlex(flex-start, flex-end);
+  > .overlay-cont {
+    background-color: #ffffff;
+    width: 100%;
+    padding: 30px 16px 100px 16px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
   }
 }
 

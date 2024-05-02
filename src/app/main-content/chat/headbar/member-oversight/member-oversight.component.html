@@ -1,7 +1,7 @@
 <section *ngIf="!isAdding" class="member-oversight">
     <div class="head">
         <span>Mitglieder</span>
-        <mat-icon (click)="close()">close</mat-icon>
+        <mat-icon *ngIf="!openedInChannel" (click)="close()">close</mat-icon>
     </div>
     <div class="members">
         <div (click)="showProfile(user.userId)" *ngFor="let user of members" class="user-list">
@@ -20,15 +20,19 @@
             <p>{{ user.name }} <span *ngIf="user.userId === currentUser">(Du)</span></p>
         </div>
     </div>
-    <div (click)="toggleAddMember(); $event.stopPropagation()" class="add-member">
+    <div *ngIf="!openedInChannel" (click)="toggleAddMember(); $event.stopPropagation()" class="add-member">
         <button class="add-member-btn">
             <mat-icon class="outlined">person_add</mat-icon>
         </button>
         <span>Mitglieder hinzufügen</span>
     </div>
-
-    <!--Todo: profile menu von jedem nutzer auch wieder sichtbar machen -.-'''' -->
-    
+    <!--mobile button-->
+    <div *ngIf="openedInChannel" (click)="openMobileAddMemberOverlay(); $event.stopPropagation()" class="add-member">
+      <button class="add-member-btn">
+          <mat-icon class="outlined">person_add</mat-icon>
+      </button>
+      <span>Mitglieder hinzufügen</span>
+  </div>
     <div *ngIf="isShowingProfile" class="user-profile">
         <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId" (hasClosed)="handleProfile($event)"></app-user-detail>
     </div>

@@ -1,5 +1,22 @@
 @import "./../../../../../styles.scss";
 
+.mobile-island-head {
+  display: none;
+  @media(max-width: 600px) {
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    transition: all .15s;
+  }
+  > .mobile-island {
+    height: 6px;
+    width: 62px;
+    border-radius: 23px;
+    background-color: #d9d9d9;
+  }
+}
+
 .head {
   @include dFlex(space-between, center);
   margin-bottom: 20px;
@@ -53,6 +70,12 @@
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
   border-top-right-radius: 32px;
+  @media(max-width: 600px) {
+    top: auto;
+    right: auto;
+    left: 32px;
+    bottom: 64px;
+  }
   > div {
     @include dFlex(flex-start, flex-start, 0px, column);
     > .user-result-list {

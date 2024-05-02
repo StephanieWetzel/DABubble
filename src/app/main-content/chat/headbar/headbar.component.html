@@ -26,13 +26,13 @@
 <div *ngIf="isInfoOpen" class="channel-info-cont">
     <div id="infoMenu" class="channel-info brNoLeftTop32">
         <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)"
-            [currentChannel]="currentChannelId"></app-edit-channel-dialog>
+            [currentChannel]="currentChannelId" [channelMobile]="channel" [membersMobile]="members"></app-edit-channel-dialog>
     </div>
 </div>
 
 <div *ngIf="isMemberOversight" class="member-oversight-cont">
     <div id="memberOversight" [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
-        <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [currentChannel]="channel"></app-member-oversight>
+        <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [openedInChannel]="false" [currentChannel]="channel"></app-member-oversight>
     </div>
 </div>
 
