@@ -74,10 +74,22 @@
     top: auto;
     right: auto;
     left: 32px;
-    bottom: 64px;
+    bottom: 54px;
+  }
+  @media(max-width: 500px){
+    width: 232px;
+  }
+  @media(max-width: 450px){
+   padding: 16px 8px;
+   left: 36px;
+   bottom: 58px;
   }
   > div {
     @include dFlex(flex-start, flex-start, 0px, column);
+    @media(max-width: 600px){
+      height: 88px;
+      overflow-y: scroll;
+    }
     > .user-result-list {
       @include dFlex(flex-start, center, 15px);
       padding: 4px 18px 4px 18px;

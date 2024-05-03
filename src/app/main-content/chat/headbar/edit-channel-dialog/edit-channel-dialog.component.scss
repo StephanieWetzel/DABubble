@@ -8,6 +8,9 @@
   > .head {
     width: 100%;
     @include dFlex(space-between, center);
+    @media (max-width: 600px) {
+      display: none;
+    }
     > div {
       @include dFlex(center, center, 15px, row);
       > h2 {
@@ -54,8 +57,20 @@
       @media(max-width: 700px){
         width: 92%;
       }
-      @media (max-width: 450px) {
-       width: 89%; 
+      @media(max-width: 600px){
+        gap: 18px;
+      }
+      @media(max-width: 450px){
+        width: 90%;
+      }
+      @media(max-width: 400px){
+        width: 88%;
+      }
+      @media(max-width: 460px){
+        width: 87%;
+      }
+      @media(max-width: 320px){
+        width: 86%;
       }
       > .cHead {
         width: 100%;
@@ -95,8 +110,20 @@
       @media(max-width: 700px){
         width: 92%;
       }
-      @media (max-width: 450px) {
-       width: 89%; 
+      @media(max-width: 600px){
+        gap: 18px;
+      }
+      @media(max-width: 450px){
+        width: 90%;
+      }
+      @media(max-width: 400px){
+        width: 88%;
+      }
+      @media(max-width: 360px){
+        width: 87%;
+      }
+      @media(max-width: 320px){
+        width: 86%;
       }
       > .channel-desc-cont {
         @include dFlex(space-between, center, 0, row);
@@ -130,11 +157,19 @@
       border-radius: 20px;
       border: 1px solid #adb0d9;
       padding: 20px;
-      @media (max-width: 450px) {
-       width: 89%; 
       }
-    }
-
+      @media(max-width: 450px){
+        width: 90%;
+      }
+      @media(max-width: 400px){
+        width: 88%;
+      }
+      @media(max-width: 360px){
+        width: 87%;
+      }
+      @media(max-width: 320px){
+        width: 86%;
+      }
     }
     > .leave-channel {
       @include dFlex(flex-end, center);
@@ -150,6 +185,9 @@
           background-color: #535af1;
           cursor: pointer;
         }
+      }
+      @media (max-height: 670px) {
+        margin-bottom: 20px; 
       }
     }
   }
@@ -170,7 +208,7 @@
 }
 
 .add-member-mobile-overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
