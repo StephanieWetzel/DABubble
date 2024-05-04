@@ -10,7 +10,7 @@
   position: fixed;
   width: 347px;
   height: 60px;
-  left: -149px;
+  left: -156px;
   top: 70%;
   z-index: 2;
   background-color: #FFFFFF;
@@ -96,7 +96,7 @@ app-header {
 
 .main-content-container {
   background-color: $bgPage;
-  padding: 12px;
+  padding: 12px 12px 12px 0px;
   height: 100%;
   box-sizing: border-box;
   @media(max-width: 1000px) {

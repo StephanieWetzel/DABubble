@@ -2,22 +2,42 @@
 
 .nav-head {
   @include dFlex(space-between);
-  padding: 32px 30px 0px 30px;
+  padding: 32px 12px 0px 30px;
   margin-bottom: 25px;
+  @media (max-width: 820px) {
+    padding-right: 24px;
+  }
   @media (max-width: 600px) {
     padding-left: 72px;
     justify-content: flex-start;
+    gap: 206px;
   }
   @media (max-width: 550px) {
     display: none;
   }
-  > img {
-    @media (max-width: 600px) {
-      margin-left: 190px;
+  > .edit {
+    padding: 8px;
+    cursor: pointer;
+    > img {
+      height: 24px;
+    }
+  }
+  > .edit-blue {
+    background-color: #eceefe;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    > img {
+      height: 23px
     }
   }
   > div {
     @include dFlex(flex-start, center, 16px, row);
+    > img {
+      @media (max-width: 820px) {
+        height: 48px;
+      }
+    }
     > h3 {
       font-size: 24px;
       font-weight: bold;
@@ -60,7 +80,7 @@
       }
     }
   }
-  @media(max-width: 380px) {
+  @media (max-width: 380px) {
     padding-top: 8px;
     padding-bottom: 5px;
   }
@@ -73,10 +93,10 @@
   @media (max-width: 600px) {
     padding-left: 72px;
   }
-  @media(max-width: 500px) {
+  @media (max-width: 500px) {
     padding-left: 20px;
   }
-  @media(max-width: 400px) {
+  @media (max-width: 400px) {
     padding-left: 8px;
   }
   > div {
@@ -90,20 +110,21 @@
   @include dFlex(flex-end, center);
   position: absolute;
   z-index: 4;
-  right: -28px;
+  right: -19px;
   top: 7px;
   margin-left: 78px;
   @media (max-width: 820px) {
     margin-left: 0;
     right: -14px;
   }
-  @media(max-width: 450px) {
+  @media (max-width: 450px) {
     right: auto;
     left: 274px;
   }
   > button {
     border: none;
     background-color: white;
+    padding: 2px;
     &:hover {
       border-radius: 100%;
       color: #535af1;
@@ -111,9 +132,10 @@
       cursor: pointer;
     }
     > mat-icon {
-      font-size: 35px;
+      font-size: 24px;
       @include dFlex();
-      height: 32px;
+      height: 24px;
+      width: 24px;
       @media (max-height: 670px) {
         font-size: 22px;
       }
@@ -170,7 +192,7 @@
   @media (max-width: 600px) {
     width: 400px;
   }
-  @media(max-width: 450px) {
+  @media (max-width: 450px) {
     width: 300px;
   }
   @media (max-height: 980px) {
@@ -299,16 +321,21 @@
   @media (max-width: 600px) {
     padding-left: 72px;
   }
-  @media(max-width: 500px) {
+  @media (max-width: 500px) {
     padding-left: 20px;
   }
-  @media (max-width:400px) {
+  @media (max-width: 400px) {
     padding-left: 8px;
     padding-right: 0px;
   }
   @media (max-height: 670px) {
     padding-top: 0px;
   }
+}
+
+.edit-hover {
+  background-color: #eceefe;
+  border-radius: 50%;
 }
 
 ::-webkit-scrollbar {
@@ -332,6 +359,32 @@
   @media (max-width: 820px) {
     align-items: flex-start !important;
     margin-top: 94px !important;
+  }
+}
+
+/*mobile send all button*/
+
+.mobile-send-all-btn {
+  display: none;
+  @media (max-width: 550px) {
+    position: absolute;
+    bottom: 40px;
+    right: 37px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    @include dFlex(center, center);
+    cursor: pointer;
+    background-color: #524df3;
+    color: #ffffff;
+    @media (max-height: 670px) {
+      width: 50px;
+      height: 50px;
+      right: 44px;
+    }
+    > img {
+      margin-top: -4px;
+    }
   }
 }
 

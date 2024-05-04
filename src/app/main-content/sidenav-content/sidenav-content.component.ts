@@ -33,6 +33,7 @@ export class SidenavContentComponent {
   currentUser: string = '';
   screenWidth: number;
   selectedChannel: string = 'pSBwciqiaOgtUayZaIgj';
+  showBlueEdit: boolean = false;
   @Output() closeSidenav = new EventEmitter<void>();
 
   constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync, private mobilService: MobileService) {
