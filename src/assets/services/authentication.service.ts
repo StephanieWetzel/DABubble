@@ -1,24 +1,27 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  GoogleAuthProvider
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import {
   Firestore,
+  arrayUnion,
   doc,
-  getDoc
+  getDoc,
+  setDoc,
+  updateDoc
 } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
-import { Auth, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Auth, signInWithPopup, signInWithRedirect, signOut, getRedirectResult } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationService {
   currentUser: any;
-
-  constructor(public auth: Auth, private firestore: Firestore) { }
+  constructor(public auth: Auth, private firestore: Firestore, private router: Router,) { }
 
   /**
  * Signs in a user with the provided email and password.
@@ -60,6 +63,28 @@ export class AuthenticationService {
     return signInWithPopup(this.auth, provider);
   }
 
+  signInWithGoogle2() {
+    const provider = new GoogleAuthProvider();
+    return signInWithRedirect(this.auth, provider);
+  }
+
+  async handleRedirect(standardChannelId: string) {
+    try {
+      const result = await getRedirectResult(this.auth);
+      if (result && result.user) {
+        const transformedData = this.transformGoogleSignInData(result);
+        const userRef = doc(this.firestore, "user", result.user.uid);
+        const channelRef = doc(this.firestore, "channel", standardChannelId);
+        await updateDoc(channelRef, {
+          member: arrayUnion({id: transformedData.userId, name: transformedData.name})
+        });
+        await setDoc(userRef, transformedData);
+        this.router.navigate(['/main']);
+      }
+    } catch (error) {
+      console.error("error occured")
+    }
+  }
 
   /**
  * Fetches the currently authenticated user.
@@ -86,5 +111,13 @@ export class AuthenticationService {
     }
   }
 
+  transformGoogleSignInData(result: any) {
+    return {
+      email: result.user.email ? result.user.email : "Keine E-Mail",
+      name: result.user.displayName ? result.user.displayName : "Unbekannt",
+      userId: result.user.uid,
+      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
+    };
+  }
 
 }

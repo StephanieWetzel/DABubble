@@ -75,6 +75,9 @@ export class LoginComponent {
     this.containerHeight = event.target.innerHeight;
   }
 
+  ngOnInit() {
+    this.auth.handleRedirect(this.developerChannelId)
+  }
 
   /**
  * Attempts to log in a user.
@@ -137,6 +140,9 @@ export class LoginComponent {
     }
   }
 
+  googleLogin2() {
+    this.auth.signInWithGoogle2();
+  }
 
   /**
  * Transforms the data obtained from Google Sign-In into a format suitable for storing in the database.

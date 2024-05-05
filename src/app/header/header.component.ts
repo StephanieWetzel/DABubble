@@ -51,6 +51,7 @@ export class HeaderComponent {
   getBackToNav() {
     this.mobileService.openChannel(false);
     this.mobileService.toggleDrawe(true);
+    this.mobileService.setActiveChannel('');
   }
 
 

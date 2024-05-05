@@ -32,7 +32,7 @@ export class SidenavContentComponent {
   unsubUsers: Subscription | undefined;
   currentUser: string = '';
   screenWidth: number;
-  selectedChannel: string = 'pSBwciqiaOgtUayZaIgj';
+  selectedChannel: string | null = 'pSBwciqiaOgtUayZaIgj';
   showBlueEdit: boolean = false;
   @Output() closeSidenav = new EventEmitter<void>();
 
@@ -42,6 +42,11 @@ export class SidenavContentComponent {
     this.screenWidth = window.innerWidth;
     this.realTimeDB.startMonitoringActivity(this.currentUser);
   }
+
+  ngOnInit() {
+    this.selectedChannel = this.mobilService.getActiveChannel();
+  }
+
   /**
    * Listens to user activity events like mouse move and key down to reset the activity timer.
    */
@@ -211,7 +216,8 @@ export class SidenavContentComponent {
     this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
     this.checkScreenWidth();
-    this.selectedChannel = channelID;
+    this.mobilService.setActiveChannel(channelID);
+    this.selectedChannel = this.mobilService.getActiveChannel();
   }
 
   /**
@@ -226,7 +232,8 @@ export class SidenavContentComponent {
     this.chatService.setIsDmRoom(true);
     this.checkScreenWidth();
     this.chatService.setEditorFocusMessage();
-    this.selectedChannel = userId;
+    this.mobilService.setActiveChannel(userId);
+    this.selectedChannel = this.mobilService.getActiveChannel();
     //this.chatService.getMessages();
   }
 
@@ -241,6 +248,7 @@ export class SidenavContentComponent {
     return [userId1, userId2].sort().join('_');
   }
 
+  
 
   writeNewMessage(){
     this.chatService.newMessage.next(true);
