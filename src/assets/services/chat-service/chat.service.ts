@@ -49,8 +49,8 @@ export class ChatService implements OnDestroy {
   searchInput: string = '';
 
 
-  selectedUsers!: any[];
-  selectedChannels!: any[];
+  selectedUsers!: User[];
+  selectedChannels!: Channel[];
 
   unsubscribe!: Unsubscribe;
   unsubreplies!: Unsubscribe;
@@ -106,10 +106,13 @@ export class ChatService implements OnDestroy {
     this.isDmRoom.next(value);
   }
 
+  setIsNewMessage(value: boolean) {
+    this.newMessage.next(value)
+  }
+
 
   async addMessage(message: Message, channel: string) {
     if(this.isChannel){
-      debugger
       const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
@@ -145,7 +148,6 @@ export class ChatService implements OnDestroy {
 
   updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(); 
-    console.log(this.currentChannel$.value);
     if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
@@ -257,7 +259,7 @@ export class ChatService implements OnDestroy {
       this.checkIfReactionExists(reactionIndex, reactions, user, emote, reactedEmote);
       await updateDoc(messageRef, { reactions: reactions });
     } else {
-      console.log("Dokument existiert nicht!");
+      // console.log("Dokument existiert nicht!");
     }
   }
 

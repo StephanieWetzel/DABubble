@@ -57,16 +57,16 @@ export class HeadbarComponent {
   filteredChannels: Channel[] = [];
   selectedChannels: Channel[] = [];
 
-
-
+  @ViewChild('inputArea', { static: false }) inputArea!: ElementRef;
 
   constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService) {
     this.searchInput = new FormControl('');
   }
 
   async ngOnInit() {
-    this.chatService.isDmRoom$.subscribe(isOpen => {
+    this.chatService.isDmRoom.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
+      
     })
     this.chatService.dmPartnerID$.subscribe(async userId => {
       this.currentPartner = userId;
@@ -92,7 +92,6 @@ export class HeadbarComponent {
     this.chatService.newMessage$.subscribe(newMessage => {
       this.isNewMessage = newMessage;
       this.chatService.updateMessages();
-      console.log(this.isNewMessage);
     })
 
     this.searchInput.valueChanges.subscribe(value => {
@@ -192,6 +191,10 @@ export class HeadbarComponent {
     if (this.isSearchOpen && !clickedInsideMemberSearch) {
       this.isSearchOpen = false;
     }
+    // for input new message
+    if (this.inputArea && this.inputArea.nativeElement && !this.inputArea.nativeElement.contains(event.target as Node)) {
+        this.searchInput.setValue('');
+    }
   }
 
   openEditChannelDialog() {
@@ -230,8 +233,10 @@ export class HeadbarComponent {
     if (!this.selectedUsers.some(u => u.userId === user.userId)) {
       this.selectedUsers.push(user);
       this.chatService.selectedUsers = this.selectedUsers;
-      this.searchResults = this.findResults(this.searchInput.value || "");
+      this.searchInput.setValue(this.searchInput.value);
+      // this.searchResults = this.findResults(this.searchInput.value || "");
     }
+
   }
 
   findResults(searchTerm: string): any[] {
@@ -241,16 +246,30 @@ export class HeadbarComponent {
     );
   }
 
+  removeUser(userToRemove: User){
+    this.selectedUsers = this.selectedUsers.filter(user => user.userId !== userToRemove.userId);
+    this.searchInput.setValue(this.searchInput.value);
+  }
+
   selectChannel(channel: any): void {
     if (!this.selectedChannels.some(c => c.channelId === channel.channelId)) {
       this.selectedChannels.push(channel);
       this.chatService.selectedChannels = this.selectedChannels;
+      this.searchInput.setValue(this.searchInput.value);
       // this.filteredChannels = []; // Optional: Clear filteredChannels if you don't need it anymore
     }
   }
 
 
   findChannels(searchTerm: string): any[] {
-    return this.chatService.allChannels.filter(channel => channel.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    return this.chatService.allChannels.filter(channel =>
+      channel.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !this.selectedChannels.some(c => c.channelId === channel.channelId) 
+    );  
+  }
+
+  removeChannel(channelToRemove: Channel){
+    this.selectedChannels = this.selectedChannels.filter(channel => channel.channelId !== channelToRemove.channelId);
+    this.searchInput.setValue(this.searchInput.value);
   }
 }

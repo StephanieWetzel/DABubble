@@ -215,9 +215,11 @@ export class SidenavContentComponent {
     // logik open channel 
     this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
+    this.chatService.setIsNewMessage(false);
     this.checkScreenWidth();
     this.mobilService.setActiveChannel(channelID);
     this.selectedChannel = this.mobilService.getActiveChannel();
+    
   }
 
   /**
@@ -234,6 +236,7 @@ export class SidenavContentComponent {
     this.chatService.setEditorFocusMessage();
     this.mobilService.setActiveChannel(userId);
     this.selectedChannel = this.mobilService.getActiveChannel();
+    this.chatService.setIsNewMessage(false);
     //this.chatService.getMessages();
   }
 
@@ -251,9 +254,11 @@ export class SidenavContentComponent {
   
 
   writeNewMessage(){
-    this.chatService.newMessage.next(true);
+    this.chatService.setIsNewMessage(true);
+    this.chatService.isDmRoom.next(false);
     this.chatService.currentChannel$.next('writeANewMessage');
     this.chatService.updateMessages(); 
+    this.selectedChannel = 'writeANewMessage'
   }
 }
 

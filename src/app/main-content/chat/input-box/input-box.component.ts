@@ -86,19 +86,26 @@ export class InputBoxComponent {
     return this.chatService.currentChannel$.value === 'writeANewMessage'
   }
 
+
   async sendNewMessage(data: any) {
-    this.chatService.selectedChannels.forEach(async channel => {
+    if(this.chatService.selectedChannels && this.chatService.selectedChannels.length > 0){
       this.chatService.isChannel = true
-      // this.chatService.currentChannel$.next(channel.channelId)
-      await this.sendSingleMessage(data, channel.channelId)
-    });
-    // if (this.chatService.selectedUsers.length > 0) {
-    //   this.chatService.isChannel = false;
-    //   this.chatService.selectedUsers.forEach(user => {
-    //   console.log(user);
-    // });
-    // }
+      this.chatService.selectedChannels.forEach(async channel => {
+        await this.sendSingleMessage(data, channel.channelId)
+      });
+    }
+    
+    if (this.chatService.selectedUsers && this.chatService.selectedUsers.length > 0) {
+      this.chatService.isChannel = false;
+      console.log(this.chatService.selectedUsers);
+      
+      this.chatService.selectedUsers.forEach(async (user: User) => {
+        console.log(user.userId)
+        await this.sendDM(data, user.userId)
+      });
+    }
   }
+
 
   async sendSingleMessage(data: any, channel: string) {
     if (data && this.getInputContent(data)) {
@@ -124,11 +131,14 @@ export class InputBoxComponent {
   }
 
 
-  async sendDM(userId: string) {
-    const roomId = this.generateRoomId(this.currentUser.userId, userId);
-    this.firestore.checkIfRoomExists(roomId, this.currentUser.userId, userId);
+  async sendDM(data: string, userId: string) {
+    console.log('in sendDM', this.chatService.currentUser.userId, userId);
+    const roomId = this.generateRoomId(this.chatService.currentUser.userId, userId);
+   
+    
+    this.firestore.checkIfRoomExists(roomId, this.chatService.currentUser.userId, userId);
     this.chatService.currentChannel$.next(roomId);
-    await this.sendMessage();
+    await this.sendSingleMessage(data, roomId);
   }
 
 
