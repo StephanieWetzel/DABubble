@@ -257,6 +257,16 @@ export class FirebaseService {
   }
 
 
+  async checkAndCreateRoom(roomId: string, currentUserID: string, otherUserID: string): Promise<void> {
+    const roomRef = doc(this.firestore, "directMessages", roomId);
+    const docSnap = await getDoc(roomRef);
+    if (!docSnap.exists()) {
+      const transformedRoomData = new DirectMessage(this.transformDmRoom(currentUserID, otherUserID, roomId));
+      setDoc(roomRef, transformedRoomData.toJSON());
+    }    
+  }
+
+
   /**
  * Retrieves the avatar of the user with the specified ID from the Firestore database.
  * @param {string} userId - The ID of the user whose avatar to retrieve.

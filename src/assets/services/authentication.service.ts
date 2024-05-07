@@ -72,7 +72,12 @@ export class AuthenticationService {
     try {
       const result = await getRedirectResult(this.auth);
       if (result && result.user) {
+        debugger
         const transformedData = this.transformGoogleSignInData(result);
+        if (!result.user.uid) {
+          console.error("UID ist undefined oder null");
+          return;
+        }
         const userRef = doc(this.firestore, "user", result.user.uid);
         const channelRef = doc(this.firestore, "channel", standardChannelId);
         await updateDoc(channelRef, {

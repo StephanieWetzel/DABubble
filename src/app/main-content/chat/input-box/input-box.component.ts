@@ -80,6 +80,8 @@ export class InputBoxComponent {
     }
     this.clearSelectedFiles();
     this.clearInput(data);
+
+    
   }
 
   isInNewMessageInterface() {
@@ -88,26 +90,25 @@ export class InputBoxComponent {
 
 
   async sendNewMessage(data: any) {
+    debugger
     if(this.chatService.selectedChannels && this.chatService.selectedChannels.length > 0){
       this.chatService.isChannel = true
-      this.chatService.selectedChannels.forEach(async channel => {
-        await this.sendSingleMessage(data, channel.channelId)
-      });
+      for (const channel of this.chatService.selectedChannels) {
+        await this.sendSingleMessage(data, channel.channelId);
+      }
     }
-    
     if (this.chatService.selectedUsers && this.chatService.selectedUsers.length > 0) {
       this.chatService.isChannel = false;
       console.log(this.chatService.selectedUsers);
-      
-      this.chatService.selectedUsers.forEach(async (user: User) => {
-        console.log(user.userId)
-        await this.sendDM(data, user.userId)
-      });
+      for (const user of this.chatService.selectedUsers) {
+        await this.sendDM(data, user.userId);
+      }
     }
   }
 
 
   async sendSingleMessage(data: any, channel: string) {
+    debugger
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
@@ -132,12 +133,10 @@ export class InputBoxComponent {
 
 
   async sendDM(data: string, userId: string) {
+    debugger
     console.log('in sendDM', this.chatService.currentUser.userId, userId);
     const roomId = this.generateRoomId(this.chatService.currentUser.userId, userId);
-   
-    
-    this.firestore.checkIfRoomExists(roomId, this.chatService.currentUser.userId, userId);
-    this.chatService.currentChannel$.next(roomId);
+    await this.firestore.checkAndCreateRoom(roomId, this.chatService.currentUser.userId, userId);
     await this.sendSingleMessage(data, roomId);
   }
 

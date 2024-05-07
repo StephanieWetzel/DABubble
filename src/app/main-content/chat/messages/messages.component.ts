@@ -198,11 +198,27 @@ export class MessagesComponent implements AfterViewInit {
 
   }
 
+  getReactionEmote1(): string {
+    return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
+  }
+
+  getReactionEmote2(): string {
+    return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
+  }
+
 
   addReaction(messageId: string, emote: string) {
     this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, false)
+    this.addToLastReaction(emote);
   }
 
+
+  addToLastReaction(emote: string){
+    if(emote != this.getReactionEmote1()){
+      this.currentUser.lastReaction2 = this.getReactionEmote1()
+      this.currentUser.lastReaction1 = emote
+    }
+  }
 
   formatUsernames(users: string[]): string {
     if (users.length <= 2) {
@@ -273,11 +289,4 @@ export class MessagesComponent implements AfterViewInit {
   wantToWriteNewMessage() {
     return this.chatService.currentChannel$.value === 'writeANewMessage';
   }
-
-
-
-
-  // sendIdToName(id: string){
-  //   this.chatService.getUser(id);
-  // }
 }
