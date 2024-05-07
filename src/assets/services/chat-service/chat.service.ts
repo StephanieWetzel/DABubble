@@ -112,7 +112,7 @@ export class ChatService implements OnDestroy {
 
 
   async addMessage(message: Message, channel: string) {
-    debugger
+    
     if(channel.length <= 27){
       const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
@@ -125,6 +125,7 @@ export class ChatService implements OnDestroy {
   }
 
   async getRepliesLength(){
+    
     await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
   }
 
@@ -148,6 +149,7 @@ export class ChatService implements OnDestroy {
 
 
   updateMessages() {
+    
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value); 
     if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
@@ -178,6 +180,7 @@ export class ChatService implements OnDestroy {
   }
 
   getFilteredMessages(): Message[] {
+    
     if (!this.searchInput) return this.messages;
     return this.messages.filter(message =>
       message.content.toLowerCase().includes(this.searchInput.toLowerCase())
@@ -191,6 +194,7 @@ export class ChatService implements OnDestroy {
 
 
   getReplies() {
+    
     this.unsubreplies = onSnapshot(this.getRepliesQ(), (list) => {
       this.replies = [];
       this.replies = this.loadMessages(list);
@@ -199,6 +203,7 @@ export class ChatService implements OnDestroy {
   }
 
   loadMessages(list: QuerySnapshot<DocumentData>) {
+    
     let temporaryMessages: Message[] = [];
     list.forEach(doc => {
       let message = new Message({ ...doc.data() })
@@ -221,6 +226,7 @@ export class ChatService implements OnDestroy {
 
 
   async uploadFile(file: File) {
+    
     const storage = getStorage();
     const storageRef = ref(storage, `uploads/${new Date().getTime()}_${file.name}`);
     try {
@@ -235,6 +241,7 @@ export class ChatService implements OnDestroy {
 
 
   createReactionArray(message: Message) {
+    
     if (message.reactions) {
       for (let i = 0; i < message.reactions.length; i++) {
         message.reactions[i] = new Reaction(message.reactions[i])
@@ -244,6 +251,7 @@ export class ChatService implements OnDestroy {
 
 
   async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
+    
     let path;
     if (reply) {
       path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
@@ -266,6 +274,7 @@ export class ChatService implements OnDestroy {
 
 
   removeAllUserReactions(reactions: Reaction[], user: string) {
+    
     let reactedEmote = '';
     reactions.forEach((reaction, index) => {
       const userIndex = reaction.users.indexOf(user);
@@ -281,6 +290,7 @@ export class ChatService implements OnDestroy {
 
 
   checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote: string) {
+    
     let addedEmote = emote;
     if (reactionIndex > -1) {
       let reaction = reactions[reactionIndex];

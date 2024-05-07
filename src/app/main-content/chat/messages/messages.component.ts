@@ -135,6 +135,7 @@ export class MessagesComponent implements AfterViewInit {
   }
 
   editMessage(id: string, content: string) {
+    
     this.closeEditor();
     this.editingMessageId = id;
     this.currentEditingContent = content

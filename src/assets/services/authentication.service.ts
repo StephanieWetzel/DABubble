@@ -30,6 +30,7 @@ export class AuthenticationService {
  * @returns {Promise<UserCredential>} A promise that resolves with the user credential upon successful sign-in.
  */
   signIn(email: string, password: string) {
+    
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
@@ -59,20 +60,23 @@ export class AuthenticationService {
  * @returns {Promise<UserCredential>} A promise that resolves with the user credential upon successful Google sign-in.
  */
   signInWithGoogle() {
+    
     const provider = new GoogleAuthProvider();
     return signInWithPopup(this.auth, provider);
   }
 
   signInWithGoogle2() {
+    
     const provider = new GoogleAuthProvider();
     return signInWithRedirect(this.auth, provider);
   }
 
   async handleRedirect(standardChannelId: string) {
+    
     try {
       const result = await getRedirectResult(this.auth);
       if (result && result.user) {
-        debugger
+        
         const transformedData = this.transformGoogleSignInData(result);
         if (!result.user.uid) {
           console.error("UID ist undefined oder null");
@@ -106,6 +110,7 @@ export class AuthenticationService {
    * 
    */
   async fetchGuestData() {
+    
     const guestID = 'ck4vudalTaUgOYeatRsBQhoCqr12';
     const docRef = doc(this.firestore, 'user', guestID)
     const docSnap = await getDoc(docRef);

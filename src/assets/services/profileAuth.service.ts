@@ -28,6 +28,7 @@ export class ProfileAuthentication {
      * Initializes the user by checking if a user is logged in and then fetching that user's details from firestore.
      */
     initializeUser() {
+        
         this.fetchLoggedUser().then((userID) => {
             if (userID) {
                 this.fetchUserFromFirestore(userID)
@@ -43,6 +44,7 @@ export class ProfileAuthentication {
      * @returns {Promise<string>} - A promise that resolves with the user ID of the currently logged-in user.
      */
     async fetchLoggedUser(): Promise<string> {
+        
         const auth = getAuth();
         return new Promise((resolve, reject) => {
             onAuthStateChanged(auth, (user) => {
@@ -62,6 +64,7 @@ export class ProfileAuthentication {
      * 
      */
     async fetchUserFromFirestore(userID: string) {
+        
         const docRef = doc(this.firestore, 'user', userID);
         this.refreshState(userID, 'true');
         this.realTimeDB.setUserState(userID, 'true');
@@ -82,6 +85,7 @@ export class ProfileAuthentication {
      * @returns {Promise<User | null>} - A promise that resolves with the user data or null if not found.
      */
     async fetchPartnerFromFirestore(userID: string): Promise<User | null> {
+        
         const docRef = doc(this.firestore, 'user', userID);
         try {
             const userSnap = await getDoc(docRef);
@@ -115,6 +119,7 @@ export class ProfileAuthentication {
      * 
      */
     async refreshState(userID: string | undefined, uState: string) {
+        
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID)
             await updateDoc(docRef, {
@@ -134,6 +139,7 @@ export class ProfileAuthentication {
      * 
      */
     async updateUserEdit(userID: string | undefined, editName: string | any, editMail: string | any) {
+        
         const auth = getAuth();
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID);
@@ -158,6 +164,7 @@ export class ProfileAuthentication {
      * Logs out the current user, updates their state to 'false', and navigates to the login screen.
      */
     async userLogout() {
+        
         const auth = getAuth();
         await this.refreshState(auth.currentUser?.uid, 'false');
         const stateRef = this.realTimeDB.getDbRef(auth.currentUser?.uid)

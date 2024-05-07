@@ -50,6 +50,7 @@ export class ReplyInputBoxComponent {
   }
 
   sendMessage() {
+    
     let replyData = tinymce.get('inputReply');
 
     if (replyData && this.getInputContent(replyData)) {
