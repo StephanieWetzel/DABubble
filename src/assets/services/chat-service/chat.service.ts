@@ -82,6 +82,8 @@ export class ChatService implements OnDestroy {
         this.currentUser = new User(user);
         this.userInitialized.next(true);
         this.updateMessages();
+        console.log('mein user im cs:', user);
+        
       }
     });
 
