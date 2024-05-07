@@ -54,19 +54,21 @@ export class AuthenticationService {
   }
 
 
-  /**
- * Signs in with Google authentication provider using a pop-up window.
- * @returns {Promise<UserCredential>} A promise that resolves with the user credential upon successful Google sign-in.
- */
-  signInWithGoogle() {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(this.auth, provider);
-  }
+  //   /**
+  //  * Signs in with Google authentication provider using a pop-up window.
+  //  * @returns {Promise<UserCredential>} A promise that resolves with the user credential upon successful Google sign-in.
+  //  */
+  //   signInWithGoogle() {
+  //     const provider = new GoogleAuthProvider();
+  //     return signInWithPopup(this.auth, provider);
+  //   }
 
-  signInWithGoogle2() {
+
+  signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     return signInWithRedirect(this.auth, provider);
   }
+
 
   async handleRedirect(standardChannelId: string) {
     try {
@@ -76,15 +78,15 @@ export class AuthenticationService {
         const userRef = doc(this.firestore, "user", result.user.uid);
         const channelRef = doc(this.firestore, "channel", standardChannelId);
         await updateDoc(channelRef, {
-          member: arrayUnion({id: transformedData.userId, name: transformedData.name})
+          member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
         });
         await setDoc(userRef, transformedData);
         this.router.navigate(['/main']);
       }
     } catch (error) {
-      console.error("error occured")
     }
   }
+
 
   /**
  * Fetches the currently authenticated user.
@@ -93,6 +95,7 @@ export class AuthenticationService {
   fetchCurrentUser() {
     return this.currentUser;
   }
+
 
   /**
    * Fetches data for a guest user from Firestore based on a predefined guest user ID.
@@ -111,6 +114,13 @@ export class AuthenticationService {
     }
   }
 
+
+  /**
+* Transforms the data obtained from Google Sign-In into a format suitable for storing in the database.
+* 
+* @param {any} result - The result object obtained from Google Sign-In.
+* @returns {object} An object containing the transformed user data.
+*/
   transformGoogleSignInData(result: any) {
     return {
       email: result.user.email ? result.user.email : "Keine E-Mail",

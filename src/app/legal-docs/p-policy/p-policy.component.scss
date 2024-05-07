@@ -2,78 +2,96 @@
 @import "./../../../styles.scss";
 
 .policy-container {
-  padding: 48px 56px;
+  padding: 24px 56px;
   width: 860px;
-  height: 860px;
+  height: 65vh;
   max-width: 60%;
   @include dFlex(flex-start, flex-start, 0px, column);
   background-color: white;
   border-radius: 28px;
   box-shadow: #c2c4e3 0px 2px 8px;
+
   @media (max-width: 800px) {
     max-width: 80%;
   }
+
   @media (max-width: 600px) {
     padding: 24px 28px;
-    height: 600px;
+    height: 50vh;
     width: 600px;
   }
+
   @media(max-width:500px) {
     height: 450px;
   }
+
   @media(max-width:400px) {
     font-size: 22px;
     height: 400px;
   }
+
   @media(max-height: 670px) {
     height: 380px;
   }
-  > img {
+
+  >img {
     margin-bottom: 16px;
+
     &:hover {
       cursor: pointer;
     }
   }
-  > .policy-content {
+
+  >.policy-content {
     overflow-y: scroll;
     @include dFlex(flex-start, flex-start, 32px, column);
-    > .policy {
+
+    >.policy {
       @include dFlex(flex-start, flex-start, 0px, column);
       margin-bottom: 15px;
-      > h3 {
+
+      >h3 {
         font-size: 26px;
         color: #444df2;
         font-weight: 500;
       }
-      > h4 {
+
+      >h4 {
         font-size: 20px;
         color: #444df2;
         font-weight: 400;
       }
-      > span {
+
+      >span {
         font-size: 18px;
         margin-bottom: 16px;
       }
-      > ul {
+
+      >ul {
         padding-left: 18px;
-        > li {
+
+        >li {
           font-family: "Nunito";
           font-size: 16px;
           margin-bottom: 4px;
         }
       }
+
       @media(max-width: 500px) {
-        > h3 {
+        >h3 {
           font-size: 24px;
         }
-        > h4 {
+
+        >h4 {
           font-size: 18px;
         }
-        > span {
+
+        >span {
           font-size: 16px;
         }
-        > ul {
-          > li {
+
+        >ul {
+          >li {
             font-size: 14px;
           }
         }
@@ -87,9 +105,11 @@
   font-weight: bold;
   color: #444df2;
   margin-bottom: 16px;
+
   @media(max-width: 500px) {
     font-size: 28px;
   }
+
   @media(max-width:400px) {
     font-size: 24px;
   }
@@ -100,9 +120,11 @@
   color: #444df2;
   font-weight: bold;
   margin-bottom: 16px;
+
   @media(max-width: 500px) {
     font-size: 26px;
   }
+
   @media(max-width:400px) {
     font-size: 22px;
   }
@@ -112,6 +134,7 @@
   width: 6px;
   height: 5px;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #444df2;
   border-radius: 4px;
