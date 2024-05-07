@@ -112,12 +112,13 @@ export class ChatService implements OnDestroy {
 
 
   async addMessage(message: Message, channel: string) {
-    if(this.isChannel){
+    debugger
+    if(channel.length <= 27){
       const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
     }else{
-      const docRef = await addDoc(this.getDirectMessagesRef(), message.toJSON(message));
+      const docRef = await addDoc(this.getDirectMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `directMessages/${channel}/messages`, docRefId), { messageId: docRefId });
     }
@@ -147,7 +148,7 @@ export class ChatService implements OnDestroy {
 
 
   updateMessages() {
-    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(); 
+    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value); 
     if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
@@ -347,12 +348,12 @@ export class ChatService implements OnDestroy {
   }
 
 
-  getDirectMessagesQ() {
-    return query(this.getDirectMessagesRef(), orderBy('time', 'asc'));
+  getDirectMessagesQ(channel: string) {
+    return query(this.getDirectMessagesRef(channel), orderBy('time', 'asc'));
   }
 
-  getDirectMessagesRef() {
-    return collection(this.firestore, `directMessages/${this.currentChannel$.value}/messages`)
+  getDirectMessagesRef(channel: string) {
+    return collection(this.firestore, `directMessages/${channel}/messages`)
   }
 
 

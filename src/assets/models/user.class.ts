@@ -5,6 +5,8 @@ export class User {
     state: string; //online / offline state
     avatar: string;
     password: string;
+    lastReaction1: string;
+    lastReaction2: string;
 
     /**
      * Constructs a new instance of the User class.
@@ -18,6 +20,8 @@ export class User {
         this.state = obj ? obj.state : '';
         this.avatar = obj ? obj.avatar : '';
         this.password = obj ? obj.password : '';
+        this.lastReaction1 = obj ? obj.lastReaction1 : '🙌🏻';
+        this.lastReaction2 = obj ? obj.lastReaction2 : '✅';
     }
 
     /**
