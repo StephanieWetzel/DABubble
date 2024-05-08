@@ -16,6 +16,7 @@ import {
   query,
   setDoc,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Channel } from '../models/channel.class';
@@ -301,5 +302,19 @@ export class FirebaseService {
     }
   }
 
+  checkChannelNameExists(name: string): Observable<boolean> {
+    const channelsRef = collection(this.firestore, 'channel');
+    const qry = query(channelsRef, where('name', '==', name), limit(1));
+    return new Observable<boolean>(subscriber => {
+      const unsubscribe: Unsubscribe = onSnapshot(qry, (querySnapshot) => {
+        subscriber.next(!querySnapshot.empty);
+        subscriber.complete();
+        unsubscribe();
+      }, (error) => {
+        subscriber.error(error);
+      });
+      return {unsubscribe};
+    });
+  }
 
 }

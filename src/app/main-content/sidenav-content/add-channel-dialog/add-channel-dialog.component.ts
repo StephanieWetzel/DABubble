@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule, ValidationErrors, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { FirebaseService } from '../../../../assets/services/firebase-service';
+import { Observable, catchError, debounceTime, distinctUntilChanged, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-add-channel-dialog',
@@ -15,11 +17,19 @@ import { MatInputModule } from '@angular/material/input';
 export class AddChannelDialogComponent {
   firstDialogGroup: FormGroup | any;
 
-  constructor(public dialogRef: MatDialogRef<AddChannelDialogComponent>) {
+  constructor(public dialogRef: MatDialogRef<AddChannelDialogComponent>, public firestore: FirebaseService) {
+    
+  }
+
+  ngOnInit() {
     this.firstDialogGroup = new FormGroup({
-      channelName: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required])
-    })
+      channelName: new FormControl('', {
+        validators: Validators.required,
+        asyncValidators: this.createAsyncValidator(),
+        updateOn: 'blur'
+      }),
+      description: new FormControl('')
+    });
   }
 
   /**
@@ -33,4 +43,19 @@ export class AddChannelDialogComponent {
   cancelCreation() {
     this.dialogRef.close();
   }
+
+  createAsyncValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) {
+        return of(null);
+      }
+      return this.firestore.checkChannelNameExists(control.value).pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        map(exists => exists ? { channelNameTaken: true } : null),
+        catchError(() => of(null))
+      );
+    };
+  }
+
 }

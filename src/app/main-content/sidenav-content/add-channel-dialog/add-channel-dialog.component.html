@@ -18,6 +18,10 @@
         <mat-icon>tag_outline</mat-icon>
         <input formControlName="channelName" type="text" placeholder="z.B. Kooperationsprojekte" required>
       </div>
+      <div class="error-handling" *ngIf="firstDialogGroup.get('channelName')?.invalid && firstDialogGroup.get('channelName')?.touched">
+        <span *ngIf="firstDialogGroup.get('channelName')?.errors?.['required']">*Ein Channel-Name ist erforderlich!</span>
+        <span *ngIf="firstDialogGroup.get('channelName')?.errors?.['channelNameTaken']">*Dieser Channel-Name ist bereits vergeben!</span>
+      </div>
     </div>
     <div class="description">
       <h3>Beschreibung</h3>
@@ -25,11 +29,11 @@
     </div>
     <div class="channel-form">
       <div class="inputs br-32">
-        <textarea formControlName="description" type="text" placeholder="Dein Text hier" required></textarea>
+        <textarea formControlName="description" type="text" placeholder="Dein Text hier"></textarea>
       </div>
     </div>
-    <div class="create-btn ts125">
-      <div (click)="onClose()"><span>Erstellen</span></div>
+    <div class="create-btn ts125" [class.disabled]="!firstDialogGroup.valid">
+      <div [class.disabled]="!firstDialogGroup.valid" (click)="onClose()"><span>Erstellen</span></div>
     </div>
   </form>
 </section>
