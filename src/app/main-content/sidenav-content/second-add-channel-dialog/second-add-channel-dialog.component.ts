@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { User } from '../../../../assets/models/user.class';
 import { MatChipsModule } from '@angular/material/chips';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
+import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 
 @Component({
   selector: 'app-second-add-channel-dialog',
@@ -36,12 +37,14 @@ export class SecondAddChannelDialogComponent {
   searchResults: any[] = [];
   fetchedUser: any[] = [];
   user: User = new User();
+  currentUser: any = '';
   selectedUsers: any[] = [];
   unsubUser;
 
   constructor(
     public dialogRef: MatDialogRef<SecondAddChannelDialogComponent>,
-    private firestore: FirebaseService
+    private firestore: FirebaseService,
+    private auth: ProfileAuthentication
   ) {
     this.secondDialogGroup = new FormGroup({
       selectedOption: new FormControl('', [Validators.required]),
@@ -52,10 +55,23 @@ export class SecondAddChannelDialogComponent {
       .valueChanges.subscribe((searchTerm: string) => {
         this.searchResults = searchTerm ? this.findResults(searchTerm) : [];
       });
-
+    
     this.unsubUser = this.firestore.fetchCollection('user').subscribe((users) => {
       this.fetchedUser = users;
+      console.log(this.currentUser)
+      this.removeCurrentUser();
     });
+  }
+
+  async ngOnInit() {
+    this.currentUser = await this.auth.fetchLoggedUser();
+  }
+
+  removeCurrentUser() {
+    if (this.currentUser && this.fetchedUser) {
+      
+      this.fetchedUser = this.fetchedUser.filter(user => user.userId !== this.currentUser);
+    }
   }
 
   /**
