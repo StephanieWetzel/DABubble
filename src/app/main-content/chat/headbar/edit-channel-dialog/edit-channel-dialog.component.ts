@@ -44,9 +44,6 @@ export class EditChannelDialogComponent {
   @Output() closeDialog = new EventEmitter<boolean>();
 
   async ngOnInit() {
-    // this.channel = await this.firestore.getCurrentChannelData(
-    //   this.data.channelID
-    // );
     this.channel = await this.firestore.getCurrentChannelData(this.currentChannel)
     if (this.channel) {
       this.user = await this.firestore.getCreator(this.channel.creator);
