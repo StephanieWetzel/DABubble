@@ -69,9 +69,11 @@ export class HeadbarComponent {
       
     })
     this.chatService.dmPartnerID$.subscribe(async userId => {
-      this.currentPartner = userId;
-      this.currentPartnerUser = await this.auth.fetchPartnerFromFirestore(userId)
-      console.log(this.currentPartnerUser)
+      if (userId) {
+        this.currentPartner = userId;
+        this.currentPartnerUser = await this.auth.fetchPartnerFromFirestore(userId)
+        console.log(this.currentPartnerUser)
+      }
     })
     this.chatService.currentChannel$.subscribe(channelID => {
       this.currentChannelId = channelID;
