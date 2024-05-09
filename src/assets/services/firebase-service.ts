@@ -317,4 +317,11 @@ export class FirebaseService {
     });
   }
 
+  async updateAvatar(avatar: string, userId: string) {
+    const userRef = doc(this.firestore, "user", userId);
+    await updateDoc(userRef, {
+      avatar: avatar
+    });
+  }
+
 }

@@ -1,0 +1,39 @@
+<div class="head-cont">
+  <div (click)="closeAvatar()">
+    <mat-icon>arrow_back</mat-icon>
+  </div>
+  <span>Dein Avatar bearbeiten</span>
+</div>
+
+<div class="user-pic-cont">
+  <img [src]="userAvatar" alt="user-pic" />
+</div>
+
+<div class="user-name-cont">
+  <h3>{{ user?.name}}</h3>
+</div>
+
+<div class="choose-avatar">
+  <span>Aus der Liste wählen</span>
+  <div class="avatar-list">
+    <div class="avatar" *ngFor="let avatar of AVATAR_LIST" (click)="selectAvatar(avatar)">
+        <img [src]="avatar" alt="avatarPic">
+    </div>
+  </div>
+  <div class="upload-pic">
+    <span>eigenes Bild verwenden</span>
+    <div (click)="uploadPic()" class="upload-btn">
+      <span>Datei hochladen</span>
+    </div>
+    <input #file id="file" type="file" style="display: none;" (change)="onFileSelected($event)">
+  </div>
+</div>
+
+<div class="cancel-save-btns">
+  <div (click)="closeAvatar()" class="cancel-btn">
+    <span>Abbrechen</span>
+  </div>
+  <div (click)="saveAvatar()" class="save-btn">
+    <span>Speichern</span>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-<section>
+<section *ngIf="!isAvatarEditing">
   <div class="p-head mrB45">
     <span>{{ isEditing ? 'Dein Profil bearbeiten' : 'Profil'}}</span>
     <div (click)="closeProfileMenu()" class="close-btn">
@@ -8,7 +8,10 @@
 
   <div class="p-pic mrB45">
     <div class="pic-cont">
-      <img [src]="user?.avatar" alt="user-pic" />
+      <img class="user-pic" [src]="user?.avatar" alt="user-pic" />
+      <div (click)="openEditAvatar()" class="edit-avatar-cont">
+        <img class="edit-avatar-btn" src="./assets/icons/edit-mobile.png">
+      </div>
     </div>
   </div>
   <!--profile oversight-->
@@ -45,4 +48,8 @@
     <span class="mail"><b>{{ user?.email }}</b></span>
   </div>
   <app-profile-edit-dialog *ngIf="isEditing" (closeEvent)="isEditing = false"></app-profile-edit-dialog>
+</section>
+
+<section *ngIf="isAvatarEditing" class="avatar-edit">
+  <app-profile-avatar-edit [user]="user" (closeAvatarEditing)="openEditAvatar()"></app-profile-avatar-edit>
 </section>

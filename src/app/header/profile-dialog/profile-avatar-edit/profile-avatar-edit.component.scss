@@ -1,0 +1,121 @@
+@import "./../../../../styles.scss";
+
+.head-cont {
+  @include dFlex(flex-start, center, 60px);
+  margin-bottom: 32px;
+  > div {
+    @include dFlex(center, center);
+  }
+  > span {
+    font-size: 24px;
+    font-weight: bold;
+  }
+}
+
+.user-pic-cont {
+  @include dFlex(center, center);
+  margin-bottom: 32px;
+  > img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+  }
+}
+
+.user-name-cont {
+  @include dFlex(center, center);
+  margin-bottom: 32px;
+  > h3 {
+    font-family: "Nunito";
+    font-size: 32px;
+    font-weight: bold;
+  }
+}
+
+.choose-avatar {
+  margin-bottom: 32px;
+  > span {
+    font-size: 20px;
+  }
+  > .avatar-list {
+    margin-top: 16px;
+    @include dFlex(center, center, 8px);
+    flex-wrap: wrap;
+    > .avatar {
+      @include dFlex(center, center);
+      border-radius: 50%;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      &:hover {
+        background-color: #959595;
+      }
+      > img {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+  > .upload-pic {
+    margin-top: 16px;
+    @include dFlex(space-between, center);
+    > span {
+      font-size: 20px;
+    }
+    > .upload-btn {
+      @include dFlex(center, center);
+      width: 187px;
+      height: 49px;
+      background-color: #ffffff;
+      border-radius: 25px;
+      border: 1px solid #797ef3;
+      > span {
+        color: #444df2;
+      }
+      &:hover {
+        cursor: pointer;
+        background-color: #444df2;
+        > span {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.cancel-save-btns {
+  @include dFlex(center, center, 32px);
+
+  > .cancel-btn {
+    height: 49px;
+    width: 141px;
+    @include dFlex(center, center);
+    border: 1px solid #444df2;
+    background-color: #ffffff;
+    border-radius: 25px;
+    > span {
+      color: #797ef3;
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: #444df2;
+      > span {
+        color: #ffffff;
+      }
+    }
+  }
+  > .save-btn {
+    height: 49px;
+    width: 141px;
+    @include dFlex(center, center);
+    background-color: #444df2;
+    border-radius: 25px;
+    > span {
+      color: #ffffff;
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: #797ef3;
+    }
+  }
+}

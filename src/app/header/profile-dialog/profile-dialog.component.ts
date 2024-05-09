@@ -4,17 +4,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { ProfileEditDialogComponent } from './profile-edit-dialog/profile-edit-dialog.component';
 import { ProfileAuthentication } from '../../../assets/services/profileAuth.service';
 import { User } from '../../../assets/models/user.class';
+import { ProfileAvatarEditComponent } from './profile-avatar-edit/profile-avatar-edit.component';
 
 @Component({
   selector: 'app-profile-dialog',
   standalone: true,
-  imports: [CommonModule, MatIconModule, ProfileEditDialogComponent],
+  imports: [CommonModule, MatIconModule, ProfileEditDialogComponent, ProfileAvatarEditComponent],
   templateUrl: './profile-dialog.component.html',
   styleUrl: './profile-dialog.component.scss'
 })
 export class ProfileDialogComponent {
   isEditing: boolean = false;
   user: User | null = null;
+  isAvatarEditing: boolean = false;
   @Output() closeEvent = new EventEmitter<boolean>();
 
   constructor(private profileAuth: ProfileAuthentication){}
@@ -45,4 +47,9 @@ export class ProfileDialogComponent {
   userIsEditing() {
     this.isEditing = !this.isEditing;
   }
+
+  openEditAvatar() {
+    this.isAvatarEditing = !this.isAvatarEditing;
+  }
+
 }
