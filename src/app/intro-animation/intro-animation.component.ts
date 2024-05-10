@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './intro-animation.component.html',
-  styleUrl: './intro-animation.component.scss',
+  styleUrl: './intro-animation.component.scss'
 })
 
 export class IntroAnimationComponent {

@@ -81,7 +81,7 @@ export class InputBoxComponent {
     this.clearSelectedFiles();
     this.clearInput(data);
 
-    
+
   }
 
   isInNewMessageInterface() {
@@ -90,8 +90,8 @@ export class InputBoxComponent {
 
 
   async sendNewMessage(data: any) {
-    
-    if(this.chatService.selectedChannels && this.chatService.selectedChannels.length > 0){
+
+    if (this.chatService.selectedChannels && this.chatService.selectedChannels.length > 0) {
       this.chatService.isChannel = true
       for (const channel of this.chatService.selectedChannels) {
         await this.sendSingleMessage(data, channel.channelId);
@@ -108,7 +108,7 @@ export class InputBoxComponent {
 
 
   async sendSingleMessage(data: any, channel: string) {
-    
+
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
@@ -133,7 +133,7 @@ export class InputBoxComponent {
 
 
   async sendDM(data: string, userId: string) {
-    
+
     console.log('in sendDM', this.chatService.currentUser.userId, userId);
     const roomId = this.generateRoomId(this.chatService.currentUser.userId, userId);
     await this.firestore.checkAndCreateRoom(roomId, this.chatService.currentUser.userId, userId);
