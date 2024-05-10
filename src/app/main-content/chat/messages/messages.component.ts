@@ -193,9 +193,7 @@ export class MessagesComponent implements AfterViewInit {
     this.chatService.showReply = true;
     this.chatService.messageIdReply = message.messageId;
     this.chatService.getReplies();
-    setTimeout(() => {
-      this.chatService.setEditorFocusReply();
-    }, 500);
+    this.chatService.setEditorFocusReply();
 
   }
 

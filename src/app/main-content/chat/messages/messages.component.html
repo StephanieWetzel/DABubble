@@ -1,5 +1,5 @@
 <section #chatContainer>
-    <div class="no-message-container"
+    <!-- <div class="no-message-container"
         *ngIf="messages.length === 0 && chatService.users.length > 0 && isDirectMessage()">
         <div class="other-user-container">
             <img [src]="getOtherUserImg()" alt="">
@@ -16,7 +16,7 @@
         <p>
             Dieser Channel wurde neu erstellt. Das ist der Anfang dieses Channels <span># {{ chatService.getChannelName() }}</span>
         </p>
-    </div>
+    </div> -->
     
     <div *ngFor="let message of getFilteredMessages(); let i = index" class="message">
         <div class="date" *ngIf="isDateDifferent(i)">

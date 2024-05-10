@@ -382,6 +382,8 @@ export class ChatService implements OnDestroy {
   }
 
   setEditorFocusReply(){
-    this.editorReply.focus()
+    if (this.editorReply){
+      this.editorReply.focus()
+    }
   }
 }
