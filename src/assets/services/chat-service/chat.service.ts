@@ -82,8 +82,6 @@ export class ChatService implements OnDestroy {
         this.currentUser = new User(user);
         this.userInitialized.next(true);
         this.updateMessages();
-        console.log('mein user im cs:', user);
-        
       }
     });
 
@@ -127,37 +125,16 @@ export class ChatService implements OnDestroy {
   }
 
   async getRepliesLength(){
-    
     await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
   }
 
-  // updateMessages() {
-  //   const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ();
-  //   if (!this.currentChannel$.value && !this.users) {
-  //     console.error("currentChannel$ ist undefined.");
-  //     return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
-  //   }
-  //   if (this.unsubscribe) {
-  //     this.unsubscribe();
-  //   }
-  //   console.log('users in the chat service:', this.users);
-  //   this.unsubscribe = onSnapshot(ref, (snapshot) => {
-  //     this.messages = snapshot.docs.map(doc => doc.data() as Message);
-  //     console.log(this.currentChannel$.value);
-  //     console.log(this.messages);
-  //     this.messageCount.next(this.messages.length);
-  //   },);
-  // }
-
 
   updateMessages() {
-    
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value); 
     if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
       return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
     }
-
     if (this.unsubscribe) {
       this.unsubscribe();
     }
@@ -270,7 +247,7 @@ export class ChatService implements OnDestroy {
       this.checkIfReactionExists(reactionIndex, reactions, user, emote, reactedEmote);
       await updateDoc(messageRef, { reactions: reactions });
     } else {
-      // console.log("Dokument existiert nicht!");
+      console.log("Dokument existiert nicht!");
     }
   }
 

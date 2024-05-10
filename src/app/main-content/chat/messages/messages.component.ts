@@ -194,7 +194,6 @@ export class MessagesComponent implements AfterViewInit {
     this.chatService.messageIdReply = message.messageId;
     this.chatService.getReplies();
     this.chatService.setEditorFocusReply();
-
   }
 
   getReactionEmote1(): string {
@@ -264,8 +263,6 @@ export class MessagesComponent implements AfterViewInit {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading the file:', error);
-      // Additional debugging information
-      console.error('Failed URL:', url);
     }
   }
 
