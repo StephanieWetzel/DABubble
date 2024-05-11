@@ -1,5 +1,5 @@
 <div class="head-cont">
-  <div (click)="closeAvatar()">
+  <div class="close-btn" (click)="closeAvatar()">
     <mat-icon>arrow_back</mat-icon>
   </div>
   <span>Dein Avatar bearbeiten</span>
@@ -16,12 +16,12 @@
 <div class="choose-avatar">
   <span>Aus der Liste wählen</span>
   <div class="avatar-list">
-    <div class="avatar" *ngFor="let avatar of AVATAR_LIST" (click)="selectAvatar(avatar)">
+    <div class="avatar" [ngClass]="userAvatar === avatar ? 'selectedAvatar' : ''" *ngFor="let avatar of AVATAR_LIST" (click)="selectAvatar(avatar)">
         <img [src]="avatar" alt="avatarPic">
     </div>
   </div>
   <div class="upload-pic">
-    <span>eigenes Bild verwenden</span>
+    <span>oder</span>
     <div (click)="uploadPic()" class="upload-btn">
       <span>Datei hochladen</span>
     </div>

@@ -2,7 +2,6 @@
 
 section {
   padding: 40px;
-  height: 625px;
   @media (max-width: 520px) {
     padding: 45px 20px;
   }
@@ -12,8 +11,8 @@ section {
     > span {
       font-size: 24px;
       font-weight: bold;
-      @media (max-width: 520px) {
-        margin-bottom: 15px;
+      @media (max-width: 400px) {
+        font-size: 20px;
       }
     }
     > .close-btn {
@@ -76,15 +75,21 @@ section {
       > span {
         font-size: 20px;
         font-weight: bold;
+        @media (max-width: 400px) {
+          font-size: 18px;
+        }
       }
       > div {
         @include dFlex(flex-start, center, 15px);
         > img {
-          height: 16px;
-          width: 16px;
+          height: 14px;
+          width: 14px;
         }
         > span {
           font-size: 18px;
+          @media (max-width: 400px) {
+            font-size: 16px;
+          }
         }
       }
     }
@@ -139,6 +144,9 @@ section {
       > span {
         font-size: 20px;
         font-weight: bold;
+        @media (max-width: 400px) {
+          font-size: 18px;
+        }
       }
     }
     > .mail {
@@ -147,7 +155,10 @@ section {
         font-size: 18px;
         font-weight: 600;
         color: #1381ff;
-        padding-left: 50px;
+        padding-left: 45px;
+        @media (max-width: 400px) {
+          font-size: 16px;
+        }
       }
     }
   }
