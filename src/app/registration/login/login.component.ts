@@ -75,9 +75,9 @@ export class LoginComponent {
     this.containerHeight = event.target.innerHeight;
   }
 
-  ngOnInit() {
-    this.auth.handleRedirect(this.developerChannelId)
-  }
+  // ngOnInit() {
+  //   this.auth.handleRedirect(this.developerChannelId)
+  // }
 
   /**
  * Attempts to log in a user.
@@ -117,31 +117,48 @@ export class LoginComponent {
   }
 
 
-  //   /**
-  //  * Attempts to log in the user using Google authentication.
-  //  * If the sign-in is successful, it retrieves user data, transforms it, and stores it in the Firestore database.
-  //  * Finally, it navigates the user to the main page.
-  //  * @returns {Promise<void>} A promise that resolves when the login process is completed.
-  //  * @throws {Error} An error that occurs if the login process fails.
-  //  */
-  //   async googleLogin() {
-  //     try {
-  //       const result = await this.auth.signInWithGoogle();
-  //       const transformedData = this.transformGoogleSignInData(result);
-  //       const userRef = doc(this.firestore, "user", result.user.uid);
-  //       const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
-  //       await updateDoc(channelRef, {
-  //         member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
-  //       })
-  //       await setDoc(userRef, transformedData);
-  //       this.router.navigate(['/main']);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   }
-
-  googleLogin() {
-    this.auth.signInWithGoogle();
+  /**
+ * Attempts to log in the user using Google authentication.
+ * If the sign-in is successful, it retrieves user data, transforms it, and stores it in the Firestore database.
+ * Finally, it navigates the user to the main page.
+ * @returns {Promise<void>} A promise that resolves when the login process is completed.
+ * @throws {Error} An error that occurs if the login process fails.
+ */
+  async googleLogin() {
+    try {
+      const result = await this.auth.signInWithGoogle();
+      const transformedData = this.transformGoogleSignInData(result);
+      const userRef = doc(this.firestore, "user", result.user.uid);
+      const channelRef = doc(this.firestore, 'channel', this.developerChannelId);
+      await updateDoc(channelRef, {
+        member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
+      })
+      await setDoc(userRef, transformedData);
+      this.router.navigate(['/main']);
+    } catch (error) {
+      console.error(error);
+    }
   }
+
+
+  /**
+* Transforms the data obtained from Google Sign-In into a format suitable for storing in the database.
+* 
+* @param {any} result - The result object obtained from Google Sign-In.
+* @returns {object} An object containing the transformed user data.
+*/
+  transformGoogleSignInData(result: any) {
+    return {
+      email: result.user.email ? result.user.email : "Keine E-Mail",
+      name: result.user.displayName ? result.user.displayName : "Unbekannt",
+      userId: result.user.uid,
+      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
+    };
+  }
+
+
+  // googleLogin() {
+  //   this.auth.signInWithGoogle();
+  // }
 
 }
