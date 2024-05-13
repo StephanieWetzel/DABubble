@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild, inject, HostListener } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
@@ -40,8 +40,6 @@ export class ChooseAvatarComponent {
   selectedAvatarURL: string | any = '';
   userId: string | any = '';
   name: string | any = '';
-
-  // firestore: Firestore = inject(Firestore);
 
   containerWidth: number;
   containerHeight: number;
