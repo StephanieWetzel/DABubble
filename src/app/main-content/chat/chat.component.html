@@ -1,5 +1,5 @@
 <section>
-  <div *ngIf="!chatService.showReply || screenWidth > 920" class="chat-container">
+  <div *ngIf="!chatService.showReply || screenWidth > 1300" class="chat-container">
     <div class="chat">
       <app-headbar></app-headbar>
       <app-messages></app-messages>
@@ -7,7 +7,7 @@
     </div>
   </div>
 
-  <div *ngIf="chatService.showReply" class="reply-container">
+  <div *ngIf="chatService.showReply " class="reply-container" [ngClass]="{'w-100': screenWidth < 1300}">
     <app-reply></app-reply>
   </div>
 </section>

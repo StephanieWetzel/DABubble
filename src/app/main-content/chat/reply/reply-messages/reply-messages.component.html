@@ -88,11 +88,15 @@
             </div>
             <div class="options-container"
                 [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
-                <div (click)="addReaction(message.messageId, '✅')">
-                    <div class="check">✅</div>
+                <div (click)="addReaction(message.messageId, getReactionEmote1())" class="last-reaction-container">
+                    <div class="last-reaction">
+                        {{ getReactionEmote1() }}
+                    </div>
                 </div>
-                <div (click)="addReaction(message.messageId, '🙌🏻')" class="hands-container">
-                    <div class="hands">🙌🏻</div>
+                <div (click)="addReaction(message.messageId, getReactionEmote2())" class="last-reaction-container">
+                    <div class="last-reaction">
+                        {{ getReactionEmote2() }}
+                    </div>                    
                 </div>
                 <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
                 <mat-menu #menu="matMenu" xPosition="before">

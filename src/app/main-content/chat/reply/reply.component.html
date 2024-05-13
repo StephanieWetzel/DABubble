@@ -1,4 +1,4 @@
-<section class="show-reply">
+<section class="show-reply"  [ngClass]="{'w-100': screenWidth < 1300}">
     <app-reply-headbar></app-reply-headbar>
     <app-reply-messages (hasOpened)="handleProfile($event)"></app-reply-messages>
     <app-reply-input-box></app-reply-input-box>

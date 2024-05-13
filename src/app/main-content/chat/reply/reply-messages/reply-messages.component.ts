@@ -9,6 +9,7 @@ import { ProfileAuthentication } from '../../../../../assets/services/profileAut
 import { CustomTimePipe } from "../../messages/time-pipe/custom-time.pipe";
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { FirebaseService } from '../../../../../assets/services/firebase-service';
 
 @Component({
     selector: 'app-reply-messages',
@@ -29,7 +30,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
     @Output() hasOpened = new EventEmitter<{opened: boolean, userId: string}>();
 
 
-    constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication){
+    constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication,  public firebaseService: FirebaseService){
 
     }
     
@@ -82,17 +83,36 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
         const previousDateFormatted = this.customDatePipe.transform(this.replies[index - 1].time);
         return currentDateFormatted !== previousDateFormatted;
       }
-
-      addReaction(messageId: string, emote: string){
-        this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true)
-      }
-
-
+      
+      
       formatUsernames(users: string[]): string {
         if (users.length <= 2) {
           return users.join(' und ');
         } else {
           return `${users.slice(0, -1).join(', ')} und ${users[users.length - 1]}`;
         }
+      }
+
+      addReaction(messageId: string, emote: string){
+        this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true)
+        this.addToLastReaction(emote);
+
+      }
+
+      addToLastReaction(emote: string){
+        if(emote != this.getReactionEmote1()){
+          this.currentUser.lastReaction2 = this.getReactionEmote1()
+          this.currentUser.lastReaction1 = emote
+        }
+        this.firebaseService.updateLastReaction(this.currentUser.lastReaction1, this.currentUser.lastReaction2, this.currentUser.userId)
+      }
+
+
+      getReactionEmote1(): string {
+        return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
+      }
+    
+      getReactionEmote2(): string {
+        return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
       }
 }

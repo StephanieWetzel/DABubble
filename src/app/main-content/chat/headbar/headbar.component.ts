@@ -46,7 +46,7 @@ export class HeadbarComponent {
   isSearchOpen: boolean = false;
   members: User[] | null = null;
   unsubscribeFromChannel: (() => void) | undefined;
-
+  screenWidth: number = window.innerWidth;
   channel: Channel | null = null;
   avatars: any[] = [];
   currentPartner: string = '';
@@ -66,7 +66,6 @@ export class HeadbarComponent {
   async ngOnInit() {
     this.chatService.isDmRoom.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
-      
     })
     this.chatService.dmPartnerID$.subscribe(async userId => {
       if (userId) {
@@ -199,6 +198,11 @@ export class HeadbarComponent {
     }
   }
 
+  @HostListener('window:resize')
+  checkScreenWidth() {
+    this.screenWidth = window.innerWidth
+  }
+
   openEditChannelDialog() {
     // const dialogRef = this.dialog.open(EditChannelDialogComponent, {
     //   panelClass: 'custom-edit-channel-dialog',
@@ -247,6 +251,8 @@ export class HeadbarComponent {
         !this.selectedUsers.find(user => user.name === item.name)
     );
   }
+
+  
 
   removeUser(userToRemove: User){
     this.selectedUsers = this.selectedUsers.filter(user => user.userId !== userToRemove.userId);

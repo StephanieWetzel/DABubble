@@ -324,4 +324,12 @@ export class FirebaseService {
     });
   }
 
+
+  async updateLastReaction(lastReaction1: string, lastReaction2: string, userId: string) {
+    const userRef = doc(this.firestore, "user", userId);
+    await updateDoc(userRef, {
+      lastReaction1: lastReaction1,
+      lastReaction2: lastReaction2
+    });
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ReplyHeadbarComponent } from './reply-headbar/reply-headbar.component';
 import { ReplyInputBoxComponent } from './reply-input-box/reply-input-box.component';
 import { ReplyMessagesComponent } from './reply-messages/reply-messages.component';
@@ -17,6 +17,11 @@ export class ReplyComponent {
 
   isShowingProfile: boolean = false;
   selectedProfileId: string = '';
+  screenWidth: number = window.innerWidth;
+
+ 
+
+  
 
   constructor(public chatService: ChatService) {}
 
@@ -28,5 +33,10 @@ export class ReplyComponent {
   closeProfile(event: boolean) {
     this.isShowingProfile = false;
   }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.screenWidth = window.innerWidth
+  };
 
 }

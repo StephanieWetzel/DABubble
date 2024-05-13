@@ -129,31 +129,57 @@ export class ChatService implements OnDestroy {
   }
 
 
-  updateMessages() {
-    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value); 
+  // updateMessages() {
+  //   const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value); 
+  //   if (!this.currentChannel$.value || !this.users) {
+  //     console.error("currentChannel$ ist undefined.");
+  //     return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
+  //   }
+  //   if (this.unsubscribe) {
+  //     this.unsubscribe();
+  //   }
+  //   if(this.currentChannel$.value === 'writeANewMessage'){
+  //     this.messages = [];
+  //     if (this.unsubscribe) {
+  //       this.unsubscribe();
+  //     }
+  //     return;
+  //   }
+  //   this.unsubscribe = onSnapshot(ref, async (snapshot) => {
+  //     const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
+  //       const messageData = new Message(doc.data() as Message);
+  //       const repliesRef = collection(doc.ref, 'replies'); // Verwende die collection Methode von Firestore direkt
+  //       const repliesSnapshot = await getDocs(repliesRef);
+  //       const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
+  //       return { ...messageData, replies };  // Fügt die Replies zur Message hinzu
+  //     }));
+  //     this.messages = messagesWithReplies ;
+  //     this.messageCount.next(this.messages.length);
+  //   });
+  // }
+
+  async updateMessages() {
+    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
     if (!this.currentChannel$.value || !this.users) {
       console.error("currentChannel$ ist undefined.");
-      return; // Abbruch, wenn kein gültiger Kanal gesetzt ist.
+      return;
     }
     if (this.unsubscribe) {
       this.unsubscribe();
     }
-    if(this.currentChannel$.value === 'writeANewMessage'){
+    if (this.currentChannel$.value === 'writeANewMessage') {
       this.messages = [];
-      if (this.unsubscribe) {
-        this.unsubscribe();
-      }
       return;
     }
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
       const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
         const messageData = new Message(doc.data() as Message);
-        const repliesRef = collection(doc.ref, 'replies'); // Verwende die collection Methode von Firestore direkt
+        const repliesRef = collection(doc.ref, 'replies');
         const repliesSnapshot = await getDocs(repliesRef);
         const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
-        return { ...messageData, replies };  // Fügt die Replies zur Message hinzu
+        return { ...messageData, replies };
       }));
-      this.messages = messagesWithReplies ;
+      this.messages = messagesWithReplies;
       this.messageCount.next(this.messages.length);
     });
   }

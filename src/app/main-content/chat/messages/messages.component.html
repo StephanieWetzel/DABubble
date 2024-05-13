@@ -2,7 +2,7 @@
     <div class="no-message-container"
         *ngIf="messages.length === 0 && chatService.users.length > 0 && isDirectMessage()">
         <div class="other-user-container">
-            <img [src]="getOtherUserImg()" alt="">
+            <img [src]="getOtherUserImg()" alt=""  loading="lazy">
             <span>{{ getOtherUserName() }}</span>
         </div>
         <p>
@@ -18,12 +18,12 @@
         </p>
     </div>
     
-    <div *ngFor="let message of getFilteredMessages(); let i = index" class="message">
-        <!-- <div class="date" *ngIf="isDateDifferent(i)">
+    <div *ngFor="let message of getFilteredMessages(); trackBy: trackByMessageId; let i = index" class="message">
+        <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
             <span>{{ message.time | customDate }}</span>
             <div></div>
-        </div> -->
+        </div>
         <div class="edit-message-container" *ngIf="editingMessageId === message.messageId">
             <div class="edit-message">
                 <editor [init]="editEditorInit" [id]="'editData-' + message.messageId"></editor>

@@ -257,7 +257,9 @@ export class SidenavContentComponent {
     this.chatService.setIsNewMessage(true);
     this.chatService.isDmRoom.next(false);
     this.chatService.currentChannel$.next('writeANewMessage');
-    this.chatService.updateMessages(); 
+    this.chatService.updateMessages();
+    this.checkScreenWidth();
+    this.mobilService.setActiveChannel('writeANewMessage');
     this.selectedChannel = 'writeANewMessage'
   }
 }

@@ -1,4 +1,4 @@
-import { OnInit, Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { OnInit, Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
 import { CommonModule, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
@@ -11,10 +11,11 @@ import tinymce, { RawEditorOptions } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { FormsModule, NgModel } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime } from 'rxjs';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { User } from '../../../../assets/models/user.class';
 import { UserDetailComponent } from './user-detail/user-detail.component';
+import { FirebaseService } from '../../../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-messages',
@@ -34,7 +35,8 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
     UserDetailComponent
   ],
   templateUrl: './messages.component.html',
-  styleUrl: './messages.component.scss'
+  styleUrl: './messages.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MessagesComponent implements AfterViewInit {
@@ -77,7 +79,7 @@ export class MessagesComponent implements AfterViewInit {
   };
 
 
-  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication, private changeDetRef: ChangeDetectorRef) {
+  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication, private changeDetRef: ChangeDetectorRef, public firebaseService: FirebaseService) {
     this.messages = this.chatService.messages;
   }
 
@@ -91,7 +93,14 @@ export class MessagesComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.subscription.add(this.chatService.messageCount$.subscribe({
+    // this.subscription.add(this.chatService.messageCount$.subscribe({
+    //   next: (count) => {
+    //     this.scrollToBottom();
+    //   }
+    // }));
+    this.subscription.add(this.chatService.messageCount$.pipe(
+      debounceTime(300) // oder throttleTime
+    ).subscribe({
       next: (count) => {
         this.scrollToBottom();
       }
@@ -196,6 +205,10 @@ export class MessagesComponent implements AfterViewInit {
     this.chatService.setEditorFocusReply();
   }
 
+  toggleChatAndThread(){
+    return 
+  }
+
   getReactionEmote1(): string {
     return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
   }
@@ -216,6 +229,7 @@ export class MessagesComponent implements AfterViewInit {
       this.currentUser.lastReaction2 = this.getReactionEmote1()
       this.currentUser.lastReaction1 = emote
     }
+    this.firebaseService.updateLastReaction(this.currentUser.lastReaction1, this.currentUser.lastReaction2, this.currentUser.userId)
   }
 
   formatUsernames(users: string[]): string {
@@ -266,6 +280,29 @@ export class MessagesComponent implements AfterViewInit {
     }
   }
 
+  getCustomDate(value: number){
+      const inputDate = new Date(value);
+      const today = new Date();
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1)
+  
+      const inputDateString = inputDate.toLocaleDateString('de-DE');
+      const todayString = today.toLocaleDateString('de-DE');
+      const yesterdayString = yesterday.toLocaleDateString('de-DE');
+  
+      if (inputDateString === todayString) {
+        return 'Heute';
+      } else if (inputDateString === yesterdayString) {
+        return 'Gestern';
+      }else{
+        const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long', 
+        day: '2-digit', 
+        month: 'long'
+      };
+      return inputDate.toLocaleDateString('de-DE', options);
+      }
+  }
 
 
   getOtherUserImg() {
@@ -284,5 +321,9 @@ export class MessagesComponent implements AfterViewInit {
 
   wantToWriteNewMessage() {
     return this.chatService.currentChannel$.value === 'writeANewMessage';
+  }
+
+  trackByMessageId(index: number, message: Message): string {
+    return message.messageId;
   }
 }
