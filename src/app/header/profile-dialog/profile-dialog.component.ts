@@ -47,7 +47,10 @@ export class ProfileDialogComponent {
   userIsEditing() {
     this.isEditing = !this.isEditing;
   }
-
+  /**
+   * Toggles the editing dialog of the user's avatar. This method switches the state of `isAvatarEditing`,
+   * allowing the component to react dynamically to user actions for editing the avatar.
+   */
   openEditAvatar() {
     this.isAvatarEditing = !this.isAvatarEditing;
   }

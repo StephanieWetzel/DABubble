@@ -257,7 +257,17 @@ export class FirebaseService {
     })
   }
 
-
+  /**
+   * Checks if a direct message room exists in the Firestore database; if not, it creates a new room.
+   * This function first checks for the existence of a document corresponding to `roomId`.
+   * If the document does not exist, it creates a new `DirectMessage` instance using the provided user IDs
+   * and the room ID, then saves this new room data to Firestore.
+   * 
+   * @param {string} roomId - The unique identifier for the room.
+   * @param {string} currentUserID - The user ID of the current user.
+   * @param {string} otherUserID - The user ID of the other user involved in the direct message.
+   * @returns {Promise<void>} A promise that resolves when the check is complete and the room is created if necessary.
+   */
   async checkAndCreateRoom(roomId: string, currentUserID: string, otherUserID: string): Promise<void> {
     const roomRef = doc(this.firestore, "directMessages", roomId);
     const docSnap = await getDoc(roomRef);
@@ -301,7 +311,16 @@ export class FirebaseService {
       messages: []
     }
   }
-
+  /**
+   * Checks if a channel name already exists in the Firestore database.
+   * This method queries the Firestore for documents in the 'channel' collection
+   * that match the specified name, limiting the query to the first match. It returns
+   * an observable that emits a boolean value indicating whether the channel name exists.
+   * 
+   * @param {string} name - The name of the channel to check for existence.
+   * @returns {Observable<boolean>} An observable that emits a single boolean value,
+   * true if the channel name exists, otherwise false, and then completes.
+   */
   checkChannelNameExists(name: string): Observable<boolean> {
     const channelsRef = collection(this.firestore, 'channel');
     const qry = query(channelsRef, where('name', '==', name), limit(1));
@@ -316,7 +335,13 @@ export class FirebaseService {
       return {unsubscribe};
     });
   }
-
+  /**
+   * Updates the avatar image of a user in the Firestore database.
+   * 
+   * @param {string} avatar - The new avatar URL or path to set for the user.
+   * @param {string} userId - The unique identifier of the user whose avatar is being updated.
+   * @returns {Promise<void>} A promise that resolves when the avatar update is successfully completed.
+   */
   async updateAvatar(avatar: string, userId: string) {
     const userRef = doc(this.firestore, "user", userId);
     await updateDoc(userRef, {

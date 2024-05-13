@@ -39,7 +39,11 @@ export class HeaderComponent {
   constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService, public chatService: ChatService) {
   }
 
-
+  /**
+   * Handles the window resize event to dynamically adjust UI elements based on the screen width.
+   *
+   * @listens window:resize - Listens for resize events on the window to trigger this method.
+   */
   @HostListener('window:resize')
   checkScreenWidth() {
     this.screenWidth = window.innerWidth
@@ -48,6 +52,9 @@ export class HeaderComponent {
     }
   }
 
+  /**
+   * Resets navigation settings by closing any open channel, toggling the navigation drawer,
+   */
   getBackToNav() {
     this.mobileService.openChannel(false);
     this.mobileService.toggleDrawe(true);

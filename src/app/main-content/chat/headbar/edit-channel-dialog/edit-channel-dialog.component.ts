@@ -14,7 +14,13 @@ import { AddMemberComponent } from '../add-member/add-member.component';
 @Component({
   selector: 'app-edit-channel-dialog',
   standalone: true,
-  imports: [CommonModule, MatIcon, FormsModule, MemberOversightComponent, AddMemberComponent],
+  imports: [
+    CommonModule,
+    MatIcon,
+    FormsModule,
+    MemberOversightComponent,
+    AddMemberComponent,
+  ],
   templateUrl: './edit-channel-dialog.component.html',
   styleUrl: './edit-channel-dialog.component.scss',
 })
@@ -44,37 +50,63 @@ export class EditChannelDialogComponent {
   @Output() closeDialog = new EventEmitter<boolean>();
 
   async ngOnInit() {
-    this.channel = await this.firestore.getCurrentChannelData(this.currentChannel)
+    this.channel = await this.firestore.getCurrentChannelData(
+      this.currentChannel
+    );
     if (this.channel) {
       this.user = await this.firestore.getCreator(this.channel.creator);
       this.auth.fetchLoggedUser().then((userID) => {
-        this.currentUser = userID
-      })
+        this.currentUser = userID;
+      });
     }
   }
 
+  /**
+   * Closes the dialog by emitting an event with a false value.
+   */
   close() {
-    this.closeDialog.emit(false)
+    this.closeDialog.emit(false);
   }
 
+  /**
+   * Leaves the current channel by updating its member list, updating channel info in Firestore,
+   * and emitting an event to switch to a default channel.
+   */
   leaveChannel() {
-    const updatedMember = this.channel?.member.filter(member => member.id !== this.currentUser);
-    console.log("member: ", updatedMember)
-    this.firestore.updateChannelInfo(this.channel?.channelId, updatedMember, 'member');
+    const updatedMember = this.channel?.member.filter(
+      (member) => member.id !== this.currentUser
+    );
+    console.log('member: ', updatedMember);
+    this.firestore.updateChannelInfo(
+      this.channel?.channelId,
+      updatedMember,
+      'member'
+    );
     this.chatService.currentChannel$.next('pSBwciqiaOgtUayZaIgj');
     this.closeDialog.emit(false);
   }
 
+  /**
+   * Toggles the state of editing the channel name.
+   */
   editChName() {
     this.channelData.name = this.channel?.name;
     this.isEditNameOpen = !this.isEditNameOpen;
   }
 
+  /**
+   * Toggles the state of editing the channel description.
+   */
   editChDesc() {
     this.channelData.description = this.channel?.description;
     this.isEditDescOpen = !this.isEditDescOpen;
   }
 
+  /**
+   * Safely edits the channel's name or description and updates the local and Firestore data accordingly.
+   * @param {string} edit - The edited value.
+   * @param {string} editedAttribut - The attribute being edited (either "name" or "description").
+   */
   safeEdit(edit: string, editedAttribut: string) {
     if (editedAttribut === 'name' && editedAttribut.length > 1) {
       this.channelData.name = edit;
@@ -83,39 +115,68 @@ export class EditChannelDialogComponent {
       this.isEditNameOpen = false;
     } else if (editedAttribut === 'description' && editedAttribut.length > 1) {
       this.channelData.description = edit;
-      this.safeEditedChannelLokal(edit, editedAttribut)
+      this.safeEditedChannelLokal(edit, editedAttribut);
       this.safeEditToFirestore(editedAttribut, edit);
       this.isEditDescOpen = false;
     }
   }
 
-  safeEditToFirestore(editedAttribut: string, edit:string) {
-    if (editedAttribut === "name") {
-      this.firestore.updateChannelInfo(this.channel?.channelId, edit, editedAttribut)
-    } else if (editedAttribut === "description") {
-      this.firestore.updateChannelInfo(this.channel?.channelId, edit, editedAttribut)
+  /**
+   * Updates the edited channel attribute in Firestore.
+   * @param {string} editedAttribut - The attribute being edited (either "name" or "description").
+   * @param {string} edit - The edited value.
+   */
+  safeEditToFirestore(editedAttribut: string, edit: string) {
+    if (editedAttribut === 'name') {
+      this.firestore.updateChannelInfo(
+        this.channel?.channelId,
+        edit,
+        editedAttribut
+      );
+    } else if (editedAttribut === 'description') {
+      this.firestore.updateChannelInfo(
+        this.channel?.channelId,
+        edit,
+        editedAttribut
+      );
     }
   }
 
+  /**
+   * Updates the locally stored channel data after a safe edit.
+   * @param {string} edit - The edited value.
+   * @param {string} editedAttribut - The attribute being edited (either "name" or "description").
+   */
   safeEditedChannelLokal(edit: string, editedAttribut: string) {
-    if (this.channel && editedAttribut === "name") {
+    if (this.channel && editedAttribut === 'name') {
       this.channel.name = edit;
-    } else if (this.channel && editedAttribut === "description") {
+    } else if (this.channel && editedAttribut === 'description') {
       this.channel.description = edit;
     }
   }
 
-  handleMobileOverlay(event:boolean) {
+  /**
+   * Handles the event for opening or closing the mobile overlay.
+   * @param {boolean} event - Boolean indicating whether the mobile overlay is open.
+   */
+  handleMobileOverlay(event: boolean) {
     this.isMobileOverlayOpen = event;
   }
 
-  closeAddMember(event:boolean) {
-    this.isMobileOverlayOpen = !event
+  /**
+   * Closes the add member overlay based on the event boolean.
+   * @param {boolean} event - Boolean indicating whether the add member overlay should be closed.
+   */
+  closeAddMember(event: boolean) {
+    this.isMobileOverlayOpen = !event;
   }
 
+  /**
+   * Closes the info dialog by closing the add member overlay and emitting a close event.
+   * @param {boolean} event - Boolean indicating whether the info dialog should be closed.
+   */
   closeInfo(event: boolean) {
     this.closeAddMember(!event);
     this.close();
   }
-
 }

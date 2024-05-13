@@ -67,6 +67,9 @@ export class SecondAddChannelDialogComponent {
     this.currentUser = await this.auth.fetchLoggedUser();
   }
 
+  /**
+   * Removes the current user from the list of fetched users if the current user is present.
+   */
   removeCurrentUser() {
     if (this.currentUser && this.fetchedUser) {
       
@@ -108,7 +111,9 @@ export class SecondAddChannelDialogComponent {
       this.dialogRef.close(this.secondDialogGroup.get('selectedOption').value);
     }
   }
-
+  /**
+   * Cancels the channel creation process
+   */
   cancelCreation() {
     this.dialogRef.close();
   }
