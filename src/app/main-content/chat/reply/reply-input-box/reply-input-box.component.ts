@@ -50,9 +50,7 @@ export class ReplyInputBoxComponent {
   }
 
   sendMessage() {
-    
     let replyData = tinymce.get('inputReply');
-
     if (replyData && this.getInputContent(replyData)) {
       let content = replyData.getContent({ format: 'text' });
       let message = new Message();
@@ -60,7 +58,6 @@ export class ReplyInputBoxComponent {
       message.sendId = this.chatService.currentUser.userId;
       this.chatService.addReply(message);
       replyData.setContent('');
-
     }
   }
 

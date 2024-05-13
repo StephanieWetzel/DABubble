@@ -59,23 +59,16 @@ export class ChatService implements OnDestroy {
 
   constructor(private profileAuth: ProfileAuthentication) {
     this.initializeUserAndMessages();
-    this.safeUsers();
   }
+
+
+  /** Clean up subscriptions on component destroy */
   ngOnDestroy(): void {
     this.unsubreplies();
     this.unsubscribe();
   }
 
-
-  safeUsers() {
-
-  }
-
-  openNewMessage(){
-    
-  }
-
-
+  /** Initialize user and message subscriptions */
   initializeUserAndMessages() {
     this.profileAuth.user$.subscribe(user => {
       if (user) {
@@ -90,41 +83,63 @@ export class ChatService implements OnDestroy {
     });
   }
 
-
-  getUserAvatar(sendId: string){
+  /**
+   * Get the avatar of a user by their ID
+   * @param {string} sendId - The ID of the user
+   * @returns {string} - The avatar URL or default avatar
+   */
+  getUserAvatar(sendId: string) {
     const user = this.users.find(user => user.userId === sendId);
     return user ? user.avatar : 'assets/img/avatar_clean1.png';
   }
 
-
+  /**
+   * Set the current direct message partner
+   * @param {string} value - The ID of the direct message partner
+   */
   setCurrenDmPartner(value: string) {
     this.dmPartnerID.next(value);
   }
 
-
+  /**
+   * Set the direct message room status
+   * @param {boolean} value - The direct message room status
+   */
   setIsDmRoom(value: boolean) {
     this.isDmRoom.next(value);
   }
 
+
+  /**
+   * Set the status of a new message
+   * @param {boolean} value - The new message status
+   */
   setIsNewMessage(value: boolean) {
     this.newMessage.next(value)
   }
 
 
+  /**
+   * Add a message to a channel or direct message
+   * @param {Message} message - The message object
+   * @param {string} channel - The channel ID
+   */
   async addMessage(message: Message, channel: string) {
-    
-    if(channel.length <= 27){
+
+    if (channel.length <= 27) {
       const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
-    }else{
+    } else {
       const docRef = await addDoc(this.getDirectMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `directMessages/${channel}/messages`, docRefId), { messageId: docRefId });
     }
   }
 
-  async getRepliesLength(){
+
+  /** Get the length of the replies for the current message */
+  async getRepliesLength() {
     await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
   }
 
@@ -158,6 +173,8 @@ export class ChatService implements OnDestroy {
   //   });
   // }
 
+
+  /** Update the list of messages based on the current channel */
   async updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
     if (!this.currentChannel$.value || !this.users) {
@@ -184,8 +201,11 @@ export class ChatService implements OnDestroy {
     });
   }
 
+  /**
+   * Get filtered messages based on the search input
+   * @returns {Message[]} - The filtered messages
+   */
   getFilteredMessages(): Message[] {
-    
     if (!this.searchInput) return this.messages;
     return this.messages.filter(message =>
       message.content.toLowerCase().includes(this.searchInput.toLowerCase())
@@ -198,8 +218,8 @@ export class ChatService implements OnDestroy {
   // }
 
 
+  /** Get the list of replies for the current message */
   getReplies() {
-    
     this.unsubreplies = onSnapshot(this.getRepliesQ(), (list) => {
       this.replies = [];
       this.replies = this.loadMessages(list);
@@ -207,8 +227,13 @@ export class ChatService implements OnDestroy {
     })
   }
 
+
+  /**
+   * Load messages from a query snapshot
+   * @param {QuerySnapshot<DocumentData>} list - The query snapshot of messages
+   * @returns {Message[]} - The loaded messages
+   */
   loadMessages(list: QuerySnapshot<DocumentData>) {
-    
     let temporaryMessages: Message[] = [];
     list.forEach(doc => {
       let message = new Message({ ...doc.data() })
@@ -218,11 +243,21 @@ export class ChatService implements OnDestroy {
     return temporaryMessages
   }
 
+
+  /**
+   * Edit the content of a message
+   * @param {string} messageId - The ID of the message
+   * @param {string} input - The new content of the message
+   */
   async editMessage(messageId: string, input: string) {
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages`, messageId), { content: input });
   }
 
 
+  /**
+  * Add a reply to a message
+  * @param {Message} message - The reply message object
+  */
   async addReply(message: Message) {
     const docRef = await addDoc(this.getReplyRef(), message.toJSON(message));
     const docRefId = docRef.id;
@@ -230,8 +265,13 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+  * Upload a file to Firebase storage
+  * @param {File} file - The file to be uploaded
+  * @returns {Promise<string>} - The download URL of the uploaded file
+  * @throws Will throw an error if the upload fails
+  */
   async uploadFile(file: File) {
-    
     const storage = getStorage();
     const storageRef = ref(storage, `uploads/${new Date().getTime()}_${file.name}`);
     try {
@@ -245,8 +285,11 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * Create reaction objects from raw data
+   * @param {Message} message - The message object to update
+   */
   createReactionArray(message: Message) {
-    
     if (message.reactions) {
       for (let i = 0; i < message.reactions.length; i++) {
         message.reactions[i] = new Reaction(message.reactions[i])
@@ -255,8 +298,14 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * React to a message with an emoticon
+   * @param {string} messageId - The ID of the message
+   * @param {string} emote - The emoticon to react with
+   * @param {string} user - The user reacting
+   * @param {boolean} reply - Whether the reaction is to a reply
+   */
   async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
-    
     let path;
     if (reply) {
       path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
@@ -278,8 +327,13 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * Remove all reactions by a user
+   * @param {Reaction[]} reactions - The list of reactions
+   * @param {string} user - The user removing reactions
+   * @returns {string} - The emoticon that was removed
+   */
   removeAllUserReactions(reactions: Reaction[], user: string) {
-    
     let reactedEmote = '';
     reactions.forEach((reaction, index) => {
       const userIndex = reaction.users.indexOf(user);
@@ -294,8 +348,15 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * Check if a reaction exists and handle it
+   * @param {number} reactionIndex - The index of the reaction
+   * @param {Reaction[]} reactions - The list of reactions
+   * @param {string} user - The user reacting
+   * @param {string} emote - The emoticon being added
+   * @param {string} reactedEmote - The emoticon that was reacted with
+   */
   checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote: string) {
-    
     let addedEmote = emote;
     if (reactionIndex > -1) {
       let reaction = reactions[reactionIndex];
@@ -307,6 +368,12 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * Add a new reaction to the list
+   * @param {Object[]} reactions - The list of reactions
+   * @param {string} user - The user reacting
+   * @param {string} emote - The emoticon being added
+   */
   addTheNewReaction(reactions: Object[], user: string, emote: string) {
     reactions.push({
       users: [user],
@@ -316,6 +383,14 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * Check if a user has reacted with a specific emoticon
+   * @param {Reaction[]} reactions - The list of reactions
+   * @param {Reaction} reaction - The reaction object
+   * @param {string} user - The user reacting
+   * @param {string} emote - The emoticon being added
+   * @param {string} reactedEmote - The emoticon that was reacted with
+   */
   checkIfUserReacted(reactions: Reaction[], reaction: Reaction, user: string, emote: string, reactedEmote: string) {
     if (this.userReactedWithEmote(reaction, user, emote, reactedEmote)) {
       // Benutzer hat noch nicht reagiert, füge ihn hinzu
@@ -325,6 +400,12 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+   * Delete a reaction if the count is zero
+   * @param {Reaction[]} reactions - The list of reactions
+   * @param {Reaction} reaction - The reaction object
+   * @param {number} reactionIndex - The index of the reaction
+   */
   deleteReactionAtZero(reactions: Reaction[], reaction: Reaction, reactionIndex: number) {
     if (reaction.count === 0) {
       reactions.splice(reactionIndex, 1);
@@ -332,60 +413,123 @@ export class ChatService implements OnDestroy {
   }
 
 
-  userReactedWithEmote(reaction: Reaction, user: string, emote: string, reactedEmote: string) {
+  /**
+   * Check if a user has reacted with a specific emoticon
+   * @param {Reaction} reaction - The reaction object
+   * @param {string} user - The user reacting
+   * @param {string} emote - The emoticon being added
+   * @param {string} reactedEmote - The emoticon that was reacted with
+   * @returns {boolean} - Whether the user has reacted with the emoticon
+   */
+  userReactedWithEmote(reaction: Reaction, user: string, emote: string, reactedEmote: string): boolean {
     let addedEmote = emote;
     return !reaction.users.includes(user) && reactedEmote != addedEmote;
   }
 
+
+  /**
+   * Retrieves the name of the user based on the provided user ID.
+   * @param {string} sendId - The ID of the user whose name is to be retrieved.
+   * @returns {string} - The name of the user or a default name if not found.
+   */
   getUserName(sendId: string): string {
     const user = this.users.find(user => user.userId === sendId);
-    return user ? user.name : 'Noah Braun'; 
+    return user ? user.name : 'Noah Braun';
   }
 
-  getChannelName(){
+
+  /**
+  * Retrieves the name of the current channel.
+  * @returns {string} - The name of the current channel or a default name if not found.
+  */
+  getChannelName() {
     const channel = this.allChannels.find(channel => channel.channelId === this.currentChannel$.value);
-    return channel ? channel.name : 'abc'; 
+    return channel ? channel.name : 'abc';
   }
 
 
+  /**
+  * Finds the index of a reaction based on the provided emote.
+  * @param {Reaction[]} reactions - The array of reactions.
+  * @param {string} emote - The emote to find in the reactions array.
+  * @returns {number} - The index of the reaction or -1 if not found.
+  */
   getReactionIndex(reactions: Reaction[], emote: string) {
     let reactionIndex = reactions.findIndex((r: Reaction) => r.emote === emote);
     return reactionIndex
   }
 
 
+  /**
+  * Constructs a Firestore query for channel messages ordered by time.
+  * @returns {Query} - The Firestore query for channel messages.
+  */
   getChannelMessagesQ() {
     return query(this.getChannelMessagesRef(this.currentChannel$.value), orderBy('time', 'asc'));
   }
 
+
+  /**
+  * Gets a Firestore reference to the messages of a specific channel.
+  * @param {string} channel - The ID of the channel.
+  * @returns {CollectionReference} - The Firestore collection reference.
+  */
   getChannelMessagesRef(channel: string) {
     return collection(this.firestore, `channel/${channel}/messages`)
   }
 
 
+  /**
+  * Constructs a Firestore query for direct messages ordered by time.
+  * @param {string} channel - The ID of the direct message channel.
+  * @returns {Query} - The Firestore query for direct messages.
+  */
   getDirectMessagesQ(channel: string) {
     return query(this.getDirectMessagesRef(channel), orderBy('time', 'asc'));
   }
 
+
+  /**
+  * Gets a Firestore reference to the messages of a specific direct message channel.
+  * @param {string} channel - The ID of the direct message channel.
+  * @returns {CollectionReference} - The Firestore collection reference.
+  */
   getDirectMessagesRef(channel: string) {
     return collection(this.firestore, `directMessages/${channel}/messages`)
   }
 
 
+  /**
+  * Constructs a Firestore query for replies ordered by time.
+  * @returns {Query} - The Firestore query for replies.
+  */
   getRepliesQ() {
     return query(this.getReplyRef(), orderBy('time', 'asc'));
   }
 
+
+  /**
+  * Gets a Firestore reference to the replies of a specific message.
+  * @returns {CollectionReference} - The Firestore collection reference.
+  */
   getReplyRef() {
     return collection(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`)
   }
 
-  setEditorFocusMessage(){
+
+  /**
+  * Sets focus to the message editor.
+  */
+  setEditorFocusMessage() {
     this.editorMessage.focus()
   }
 
-  setEditorFocusReply(){
-    if (this.editorReply){
+
+  /**
+  * Sets focus to the reply editor, if it exists.
+  */
+  setEditorFocusReply() {
+    if (this.editorReply) {
       this.editorReply.focus()
     }
   }
