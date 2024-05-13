@@ -14,6 +14,8 @@ import { Channel } from '../../../../assets/models/channel.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { MemberOversightComponent } from './member-oversight/member-oversight.component';
 import { AddMemberComponent } from './add-member/add-member.component';
+import { MobileService } from '../../../../assets/services/mobile.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-headbar',
@@ -46,6 +48,8 @@ export class HeadbarComponent {
   isSearchOpen: boolean = false;
   members: User[] | null = null;
   unsubscribeFromChannel: (() => void) | undefined;
+  isDrawerOpenedSub!: Subscription;
+  isDrawerOpen!: boolean;
 
   channel: Channel | null = null;
   avatars: any[] = [];
@@ -59,11 +63,21 @@ export class HeadbarComponent {
 
   @ViewChild('inputArea', { static: false }) inputArea!: ElementRef;
 
-  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService) {
+  constructor(
+    public chatService: ChatService, 
+    private auth: ProfileAuthentication, 
+    public dialog: MatDialog, 
+    public firestore: FirebaseService,
+    public mobileService: MobileService
+  ) {
     this.searchInput = new FormControl('');
   }
 
   async ngOnInit() {
+    this.isDrawerOpenedSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
+      this.isDrawerOpen = isOpen;
+      console.log(this.isDrawerOpen)
+    })
     this.chatService.isDmRoom.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
       

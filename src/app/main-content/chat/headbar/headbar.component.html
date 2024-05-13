@@ -31,7 +31,7 @@
         </div>
         <mat-icon (click)="handleCloseEvent(true)" >close</mat-icon>
     </div>
-    <div id="infoMenu" class="channel-info brNoLeftTop32">
+    <div id="infoMenu" class="channel-info brNoLeftTop32" [ngClass]="isDrawerOpen ? 'channel-info-opened' : 'channel-info-closed'">
         <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)"
             [currentChannel]="currentChannelId" [channelMobile]="channel" [membersMobile]="members"></app-edit-channel-dialog>
     </div>

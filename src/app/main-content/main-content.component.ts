@@ -73,5 +73,6 @@ export class MainContentComponent {
 
   toggleDrawerVar() {
     this.isDrawerOpen = !this.isDrawerOpen;
+    this.mobileService.toggleDrawe(this.isDrawerOpen);
   }
 }
