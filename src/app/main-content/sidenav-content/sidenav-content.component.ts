@@ -195,6 +195,9 @@ export class SidenavContentComponent {
     }
   }
 
+  /**
+   * Checks the screen width and performs actions if it's less than 820 pixels.
+   */
   checkScreenWidth() {
     if (this.screenWidth < 820) {
       this.mobilService.openChannel(true);
@@ -202,6 +205,10 @@ export class SidenavContentComponent {
     }
   }
 
+  /**
+   * Handles the click event on the channel.
+   * Opens the channel on mobile.
+   */
   onChannelClick() {
     this.mobilService.openChannel(true);
   }

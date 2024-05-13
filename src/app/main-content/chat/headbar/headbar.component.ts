@@ -14,6 +14,8 @@ import { Channel } from '../../../../assets/models/channel.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { MemberOversightComponent } from './member-oversight/member-oversight.component';
 import { AddMemberComponent } from './add-member/add-member.component';
+import { MobileService } from '../../../../assets/services/mobile.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-headbar',
@@ -46,6 +48,8 @@ export class HeadbarComponent {
   isSearchOpen: boolean = false;
   members: User[] | null = null;
   unsubscribeFromChannel: (() => void) | undefined;
+  isDrawerOpenedSub!: Subscription;
+  isDrawerOpen!: boolean;
   screenWidth: number = window.innerWidth;
   channel: Channel | null = null;
   avatars: any[] = [];
@@ -59,11 +63,21 @@ export class HeadbarComponent {
 
   @ViewChild('inputArea', { static: false }) inputArea!: ElementRef;
 
-  constructor(public chatService: ChatService, private auth: ProfileAuthentication, public dialog: MatDialog, public firestore: FirebaseService) {
+  constructor(
+    public chatService: ChatService, 
+    private auth: ProfileAuthentication, 
+    public dialog: MatDialog, 
+    public firestore: FirebaseService,
+    public mobileService: MobileService
+  ) {
     this.searchInput = new FormControl('');
   }
 
   async ngOnInit() {
+    this.isDrawerOpenedSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
+      this.isDrawerOpen = isOpen;
+      console.log(this.isDrawerOpen)
+    })
     this.chatService.isDmRoom.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
     })
@@ -119,12 +133,20 @@ export class HeadbarComponent {
     }
   }
 
+  /**
+   * Retrieves the user ID of the currently logged-in user from an authentication service.
+   */
   getAuthUserID() {
     this.auth.fetchLoggedUser().then((userId) => {
       this.currentUser = userId;
     })
   }
 
+  /**
+   * Fetches members from the specified channel in Firestore and prioritizes the current user in the list.
+   * 
+   * @returns {Promise<void>} A promise that resolves once the members have been fetched and reordered.
+   */
   async getMember() {
     if (this.channel) {
       this.members = await this.firestore.getChannelMember(this.channel);
@@ -138,6 +160,13 @@ export class HeadbarComponent {
     this.isSearchOpen = !this.isSearchOpen
   }
 
+  /**
+   * Modifies an array of users to prioritize the current user by moving their entry to the front of the array.
+   * 
+   * @param {User[]} users - The array of user objects to be modified.
+   * @param {string} currentUserId - The unique identifier of the current user to be prioritized.
+   * @returns {User[]} The modified array with the current user prioritized at the front.
+   */
   prioritizeCurrentUser(users: User[], currentUserId: string): User[] {
     const index = users.findIndex(user => user.userId === currentUserId);
     if (index > -1) {
@@ -147,10 +176,19 @@ export class HeadbarComponent {
     return users
   }
 
+  /**
+   * Sets the searching status based on the given boolean event.
+   *
+   * @param {boolean} event - The boolean value indicating the new status for searching, either true or false.
+   */
   changeWidth(event: boolean) {
     this.isSearching = event;
   }
 
+  /**
+   * Toggles the member oversight status. If already enabled, it disables it immediately.
+   * If disabled, it enables the oversight after a brief delay.
+   */
   openMemberOversight() {
     if (this.isMemberOversight) {
       this.isMemberOversight = !this.isMemberOversight
@@ -161,6 +199,12 @@ export class HeadbarComponent {
     }
   }
 
+  /**
+   * Asynchronously fetches and stores the avatars of channel members.
+   * Ensures that only non-null avatars are kept. This method only operates if the channel and its members are defined.
+   * 
+   * @returns {Promise<void>} A promise that resolves when all avatars have been updated.
+   */
   async safeUserAvatars() {
     this.avatars = [];
     if (this.channel && this.channel.member) {
@@ -168,10 +212,16 @@ export class HeadbarComponent {
       const avatars = await Promise.all(avatarPromises);
       this.avatars = avatars.filter(avatar => avatar != null);
     }
-    //console.log("hier die Avatare: ", this.avatars)
   }
 
-
+  /**
+   * Handles document-wide click events to manage visibility of various UI dialogs.
+   * This method checks if the click was outside the info menu, member oversight dialog,
+   * or member search dialog, and closes these dialogs if they are open and the click was outside their area.
+   * Additionally, it clears the search input if the click is outside the input message area.
+   * 
+   * @param {MouseEvent} event - The mouse event that triggered the handler.
+   */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const infoDialog = document.getElementById('infoMenu');
@@ -202,12 +252,10 @@ export class HeadbarComponent {
   checkScreenWidth() {
     this.screenWidth = window.innerWidth
   }
-
+  /**
+   * Toggles the visibility of the edit channel information dialog.
+   */
   openEditChannelDialog() {
-    // const dialogRef = this.dialog.open(EditChannelDialogComponent, {
-    //   panelClass: 'custom-edit-channel-dialog',
-    //   data: { channelID: this.currentChannelId }
-    // })
     if (this.isInfoOpen) {
       this.isInfoOpen = !this.isInfoOpen
     } else {
@@ -216,15 +264,26 @@ export class HeadbarComponent {
       }, 10)
     }
   }
-
+  /**
+   * Handles the close event for an information dialog by setting its visibility state.
+   * 
+   * @param {boolean} event - The boolean value indicating whether the information dialog should be open or closed.
+   */
   handleCloseEvent(event: boolean) {
     this.isInfoOpen = event;
   }
-
+  /**
+   * Handles the close event for an information dialog by setting its visibility state.
+   * 
+   * @param {boolean} event - The boolean value indicating whether the information dialog should be open or closed.
+   */
   handleCloseEventMember(event: boolean) {
     this.isMemberOversight = event;
   }
 
+  /**
+   * Toggles the visibility of the member search dialog.
+   */
   openMemberSearch() {
     if (this.isSearchOpen) {
       this.isSearchOpen = !this.isSearchOpen;

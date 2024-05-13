@@ -5,7 +5,8 @@
 
     <div class="signup-container">
         <div class="signup-header">
-            <img routerLink="" [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
+            <img [routerLink]="['']"
+                [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
                 (mouseover)="isHovered = true" (mouseout)="isHovered = false" src="assets/img/goBack_unfocused.svg"
                 alt="">
             <h2>Konto erstellen</h2>
@@ -78,7 +79,7 @@
                     <span class="checkmark"></span>
                 </label>
                 <p>Ich stimme der
-                    <span routerLink="/privacyPolicy" class="policy-link">Datenschutzerklärung</span>
+                    <span [routerLink]="['/privacyPolicy']" class="policy-link">Datenschutzerklärung</span>
                     zu.
                 </p>
             </div>
@@ -92,7 +93,7 @@
     </div>
 
     <div class="footer-container">
-        <span routerLink="/imprint" class="footer-content tr-150ms">Impressum</span>
-        <span routerLink="/privacyPolicy" class="footer-content tr-150ms">Datenschutz</span>
+        <span [routerLink]="['/imprint']" class="footer-content tr-150ms">Impressum</span>
+        <span [routerLink]="['/privacyPolicy']" class="footer-content tr-150ms">Datenschutz</span>
     </div>
 </div>

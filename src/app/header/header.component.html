@@ -1,7 +1,8 @@
 <section>
   <div class="logo-container">
-    <img class="back-arrow" *ngIf="isChannelOpen && screenWidth < 820" (click)="getBackToNav()" src="./assets/icons/keyboard_arrow_down.png">
-    <img *ngIf="!isChannelOpen || screenWidth > 550" src="./../../assets/img/logo-header_complete.svg" alt="" />
+    <img class="back-arrow" *ngIf="isChannelOpen && screenWidth < 820" (click)="getBackToNav()"
+      src="./assets/icons/keyboard_arrow_down.png">
+    <img *ngIf="!isChannelOpen || screenWidth > 550" src="./assets/img/logo-header_complete.svg" alt="" />
     <div class="mobile-cont" *ngIf="isChannelOpen && screenWidth < 550">
       <img src="./assets/img/Workspace logo.png" alt="logo" />
       <h3>Devspace</h3>
@@ -10,7 +11,8 @@
 
   <div class="search-and-profile">
     <div class="search">
-      <input matInput placeholder="Search in Channel..." value="" [(ngModel)]="chatService.searchInput" (input)="chatService.getFilteredMessages()"/>
+      <input matInput placeholder="Search in Channel..." value="" [(ngModel)]="chatService.searchInput"
+        (input)="chatService.getFilteredMessages()" />
       <mat-icon>search</mat-icon>
     </div>
     <div class="profile" (click)="openProfileMenu()">
@@ -19,12 +21,12 @@
         <img [src]="user?.avatar" />
         <div class="online-attribut">
           <img *ngIf="user?.state === 'true'; else awayOrOffline" src="./assets/icons/Online.png">
-            <ng-template #awayOrOffline>
-              <img *ngIf="user?.state === 'away'; else offline" src="./assets/icons/Away.png">
-              <ng-template #offline>
-                <img src="./assets/icons/Offline.png">
-              </ng-template>
+          <ng-template #awayOrOffline>
+            <img *ngIf="user?.state === 'away'; else offline" src="./assets/icons/Away.png">
+            <ng-template #offline>
+              <img src="./assets/icons/Offline.png">
             </ng-template>
+          </ng-template>
         </div>
       </div>
       <mat-icon>keyboard_arrow_down</mat-icon>

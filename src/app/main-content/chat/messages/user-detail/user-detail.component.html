@@ -1,52 +1,52 @@
 <section>
-    <div class="p-head mrB45">
-      <span>Profil</span>
-      <div (click)="closeProfile(true)" class="close-btn">
-        <mat-icon>close_outline</mat-icon>
-      </div>
+  <div class="p-head mrB45">
+    <span>Profil</span>
+    <div (click)="closeProfile(true)" class="close-btn">
+      <mat-icon>close_outline</mat-icon>
     </div>
-  
-    <div class="p-pic mrB45">
-      <div class="pic-cont">
-        <img [src]="pUser?.avatar" alt="user-pic" />
-      </div>
+  </div>
+
+  <div class="p-pic mrB45">
+    <div class="pic-cont">
+      <img [src]="pUser?.avatar" alt="user-pic" />
     </div>
-    <!--profile oversight-->
-    <div class="p-name-cont mrB45">
-      <div class="name-status">
-        <span>{{ pUser?.name }}</span>
-        <div *ngIf="pUser?.state === 'true'; else awayOrOffline">
-          <img src="../../../assets/icons/Online.png" />
-          <span>Aktiv</span>
+  </div>
+  <!--profile oversight-->
+  <div class="p-name-cont mrB45">
+    <div class="name-status">
+      <span>{{ pUser?.name }}</span>
+      <div *ngIf="pUser?.state === 'true'; else awayOrOffline">
+        <img src="./assets/icons/Online.png" />
+        <span>Aktiv</span>
+      </div>
+      <ng-template #awayOrOffline>
+        <div *ngIf="pUser?.state === 'away'; else offline">
+          <img src="./assets/icons/Away.png" />
+          <span>Abwesend</span>
         </div>
-        <ng-template #awayOrOffline>
-          <div *ngIf="pUser?.state === 'away'; else offline">
-            <img src="../../../assets/icons/Away.png" />
-            <span>Abwesend</span>
+        <ng-template #offline>
+          <div #offline>
+            <img src="./assets/icons/Offline.png" />
+            <span>Offline</span>
           </div>
-          <ng-template #offline>
-            <div #offline>
-              <img src="../../../assets/icons/Offline.png" />
-              <span>Offline</span>
-            </div>
-          </ng-template>
         </ng-template>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="p-mail-cont mrB45">
+    <div class="mail-content">
+      <div>
+        <mat-icon>mail_outline</mat-icon>
       </div>
+      <span>E-Mail-Adresse</span>
     </div>
-  
-    <div class="p-mail-cont mrB45">
-      <div class="mail-content">
-        <div>
-          <mat-icon>mail_outline</mat-icon>
-        </div>
-        <span>E-Mail-Adresse</span>
-      </div>
-      <span class="mail"><b>{{ pUser?.email }}</b></span>
+    <span class="mail"><b>{{ pUser?.email }}</b></span>
+  </div>
+  <div (click)="openDM()" class="dm-btn">
+    <div>
+      <img src="./assets/icons/dm-icon.png">
+      <span>Nachricht</span>
     </div>
-    <div (click)="openDM()" class="dm-btn">
-        <div>
-            <img src="./assets/icons/dm-icon.png">
-            <span>Nachricht</span>
-        </div>
-    </div>
-  </section>
+  </div>
+</section>

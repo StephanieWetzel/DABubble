@@ -6,6 +6,7 @@ section {
   background-color: $bgPage;
   padding-top: 12px;
   @include dFlex($jc: flex-start);
+
   @media(max-width: 380px) {
     padding-top: 0px;
   }
@@ -15,6 +16,7 @@ section {
   @include dFlex($jc: flex-start);
   width: 350px;
   padding: 0 24px;
+
   @media (max-width: 820px) {
     padding-right: 16px;
     width: 250px;
@@ -22,19 +24,24 @@ section {
 
   img {
     height: 70px;
+
     @media (max-width: 820px) {
       height: 48px;
     }
+
     @media (max-height: 670px) {
       height: 32px;
     }
   }
-  > .back-arrow {
+
+  >.back-arrow {
     height: 25px;
     width: 25px;
+
     @media (max-width: 550px) {
-       margin-left: -15px;    
+      margin-left: -15px;
     }
+
     @media (max-height: 670px) {
       margin-left: -15px;
     }
@@ -44,20 +51,25 @@ section {
     font-size: 30px;
     margin-left: 16px;
   }
-  > .mobile-cont {
+
+  >.mobile-cont {
     @include dFlex(center, center, 10px);
-    > img {
+
+    >img {
       height: 50px;
       width: 50px;
+
       @media (max-height: 670px) {
         height: 32px;
         width: 32px;
       }
     }
-    > h3 {
+
+    >h3 {
       font-size: 24px;
       font-weight: 800;
       font-family: "Nunito";
+
       @media (max-height: 670px) {
         font-size: 18px;
       }
@@ -70,17 +82,22 @@ section {
   width: 100%;
   padding: 0 24px;
   gap: 24px;
+
   @media (max-width: 820px) {
     padding-left: 0px;
   }
+
   @media (max-width: 600px) {
     justify-content: space-between;
   }
+
   @media (max-width: 550px) {
     justify-content: flex-end;
     cursor: auto;
   }
+
   cursor: pointer;
+
   .search {
     @include dFlex($jc: space-between);
     width: 70%;
@@ -88,20 +105,25 @@ section {
     background-color: white;
     border-radius: 42px;
     padding: 8px 16px;
+
     @media (max-width: 820px) {
       padding: 4px 16px;
       width: 50%;
       margin-left: 40px;
     }
+
     @media (max-width: 650px) {
       margin-left: 20px;
     }
+
     @media (max-width: 600px) {
       width: 60%;
     }
+
     @media (max-width: 550px) {
       display: none;
     }
+
     input {
       font-size: 16px;
       border: none;
@@ -110,63 +132,82 @@ section {
       background-color: white;
       width: 80%;
     }
+
     mat-icon {
       transform: scale(1.2);
       color: rgba(0, 0, 0, 0.4);
+
       @media (max-width: 820px) {
         transform: scale(1);
       }
     }
   }
+
   .profile {
     @include dFlex($g: 20px);
+
     @media (max-width: 820px) {
       gap: 0;
     }
+
     span {
       font-size: 22px;
+
       @media (max-width: 600px) {
         display: none;
       }
     }
-    > .user-pair {
+
+    >.user-pair {
       position: relative;
       height: 70px;
       width: 70px;
+
       @media (max-width: 820px) {
         @include dFlex(center, center);
       }
+
       @media (max-height: 670px) {
         height: 50px;
         width: 50px;
       }
-      > img {
+
+      >img {
         height: 70px;
+        width: 70px;
         border-radius: 50%;
+
         @media (max-width: 820px) {
           height: 48px;
         }
+
         @media (max-width: 550px) {
           height: 50px;
         }
+
         @media (max-height: 670px) {
           height: 32px;
         }
       }
-      > .online-attribut {
+
+      >.online-attribut {
         position: absolute;
         bottom: -10px;
         right: 0;
+
         @media (max-width: 820px) {
           bottom: 0px;
           right: 12px;
         }
+
         @media (max-height: 670px) {
           right: 8px;
         }
-        > img {
+
+        >img {
           height: 14px;
           width: 14px;
+
           @media (max-height: 670px) {
             height: 10px;
             width: 10px;
@@ -174,7 +215,8 @@ section {
         }
       }
     }
-    > mat-icon {
+
+    >mat-icon {
       @media (max-width: 600px) {
         display: none;
       }
@@ -202,7 +244,8 @@ section {
   background-color: rgba($color: #000000, $alpha: 0.1);
   height: 100vh;
   z-index: 2;
-  > .profile-menu {
+
+  >.profile-menu {
     width: 282px;
     height: 181px;
     background-color: #ffffff;
@@ -210,10 +253,12 @@ section {
     top: 90px;
     right: 13px;
     @include dFlex($fd: column);
+
     @media (max-width: 820px) {
       width: 224px;
       height: 154px;
     }
+
     @media (max-width: 520px) {
       width: 100%;
       right: 0;
@@ -226,13 +271,16 @@ section {
       height: 206px;
       align-items: flex-start;
     }
-    > .mobile-island {
+
+    >.mobile-island {
       display: none;
+
       @media (max-width: 520px) {
         width: 100%;
         margin-bottom: 25px;
         @include dFlex(center, center);
-        > div {
+
+        >div {
           border-radius: 23px;
           background-color: #d9d9d9;
           width: 62px;
@@ -240,12 +288,15 @@ section {
         }
       }
     }
-    > span {
+
+    >span {
       font-size: 24px;
       padding: 10px 70px 10px 70px;
+
       @media (max-width: 820px) {
         font-size: 18px;
       }
+
       @media (max-width: 520px) {
         font-size: 20px;
         font-weight: bold;
@@ -253,13 +304,16 @@ section {
         padding: 10px 30px 10px 30px;
         margin-left: 25px;
       }
+
       &:hover {
         cursor: pointer;
         background-color: #eceffe;
         color: #535af1;
       }
-      > img {
+
+      >img {
         display: none;
+
         @media (max-width: 520px) {
           display: flex;
         }
@@ -270,7 +324,8 @@ section {
 
 .bgD {
   background-color: rgba($color: #000000, $alpha: 0.3);
-  > .profile-edit-info {
+
+  >.profile-edit-info {
     width: 100%;
     max-width: 500px;
     // height: 705px;
@@ -278,6 +333,7 @@ section {
     top: 90px;
     right: 13px;
     background-color: #ffffff;
+
     // @media (max-width: 820px) {
     //   height: 620px;
     // }
@@ -288,12 +344,15 @@ section {
       right: 6px;
       border-top-right-radius: 32px;
     }
+
     @media (max-height: 670px) {
       bottom: 32px;
       // height: 556px;
     }
+
     @include dFlex($fd: column);
-    > .profile-content {
+
+    >.profile-content {
       // height: 100%;
       width: 100%;
     }
@@ -312,6 +371,7 @@ section {
 
 .mb15 {
   margin-bottom: 15px;
+
   @media (max-width: 520px) {
     margin-left: -6px;
   }

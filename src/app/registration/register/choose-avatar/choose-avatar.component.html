@@ -10,7 +10,7 @@
 
     <div class="content-container">
         <div class="content-header">
-            <img routerLink="../../registration"
+            <img [routerLink]="['/../../registration']"
                 [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
                 (mouseover)="isHovered = true" (mouseout)="isHovered = false">
             <h2>Wähle deinen Avatar</h2>
@@ -53,7 +53,7 @@
     </div>
 
     <div class="footer-container">
-        <span routerLink="/imprint" class="footer-content tr-150ms">Impressum</span>
-        <span routerLink="/privacyPolicy" class="footer-content tr-150ms">Datenschutz</span>
+        <span [routerLink]="['/imprint']" class="footer-content tr-150ms">Impressum</span>
+        <span [routerLink]="['/privacyPolicy']" class="footer-content tr-150ms">Datenschutz</span>
     </div>
 </div>

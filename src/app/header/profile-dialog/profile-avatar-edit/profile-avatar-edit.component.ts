@@ -33,14 +33,30 @@ export class ProfileAvatarEditComponent {
     }
   }
 
+  /**
+   * Closes the avatar editing overlay by emitting the closing event.
+   */
   closeAvatar() {
     this.closeAvatarEditing.emit(true);
   }
 
+  /**
+   * Sets the selected avatar for the user.
+   *
+   * @param {string} avatar - The avatar image URL or identifier to set as the user's avatar.
+   */
   selectAvatar(avatar: string) {
     this.userAvatar = avatar;
   }
 
+  /**
+   * Handles file selection events to update the user's avatar with the selected file.
+   * This method extracts the first file from the event's file input, reads it as a data URL
+   * using a FileReader, and sets the resulting base64 encoded string as the user's avatar.
+   * The avatar update occurs in the onload event handler of the FileReader.
+   *
+   * @param {any} event - The file input event containing the selected file.
+   */
   onFileSelected(event:any) {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -50,6 +66,9 @@ export class ProfileAvatarEditComponent {
     reader.readAsDataURL(file);
   }
 
+  /**
+   * Saves the user's avatar if the user is authenticated.
+   */
   saveAvatar() {
     if (this.user?.userId) {
       this.firestore.updateAvatar(this.userAvatar, this.user?.userId)
@@ -57,6 +76,9 @@ export class ProfileAvatarEditComponent {
     }
   }
 
+  /**
+   * Triggers the file input element to open a file selection dialog for uploading a picture.
+   */
   uploadPic() {
     this.file.nativeElement.click();
   }

@@ -369,7 +369,6 @@ app-member-oversight {
     >.channel-info {
         background-color: #ffffff;
         border-radius: 30px;
-        margin-left: 410px;
         margin-top: 150px;
         max-width: 792px;
         padding: 40px 40px;
@@ -395,6 +394,19 @@ app-member-oversight {
 
 }
 
+.channel-info-opened {
+    @media (min-width: 820px) {
+        margin-left: 410px !important; 
+    }
+    
+}
+
+.channel-info-closed {
+    @media (min-width: 820px) {
+        margin-left: 40px !important;  
+    }
+    
+}
 
 
 .brNoLeftTop32 {
