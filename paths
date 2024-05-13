@@ -1,2 +1,33 @@
 
 D:\Developer Akademie\abschlussprojekt_da_bubble\da-bubble>git pull 
+Updating de52184..1f1e03f
+Fast-forward
+ src/app/header/header.component.ts                 |   9 +-
+ .../profile-avatar-edit.component.ts               |  22 +++++
+ .../profile-dialog/profile-dialog.component.ts     |   5 +-
+ .../profile-edit-dialog.component.ts               |  16 +++-
+ .../headbar/add-member/add-member.component.ts     |  71 +++++++++++----
+ .../edit-channel-dialog.component.ts               | 101 +++++++++++++++++----
+ .../chat/headbar/headbar.component.html            |   2 +-
+ .../chat/headbar/headbar.component.scss            |  14 ++-
+ .../main-content/chat/headbar/headbar.component.ts |  79 ++++++++++++++--
+ .../member-oversight/member-oversight.component.ts |  78 ++++++++++++----
+ .../chat/messages/messages.component.scss          |  10 +-
+ .../messages/user-detail/user-detail.component.ts  |  62 ++++++++++---
+ src/app/main-content/main-content.component.ts     |   1 +
+ .../add-channel-dialog.component.ts                |  51 ++++++++---
+ .../second-add-channel-dialog.component.ts         |   7 +-
+ .../sidenav-content/sidenav-content.component.scss |  10 +-
+ .../sidenav-content/sidenav-content.component.ts   |   7 ++
+ src/assets/services/firebase-service.ts            |  31 ++++++-
+ src/assets/services/mobile.service.ts              |   9 +-
+ 19 files changed, 469 insertions(+), 116 deletions(-)
+
+D:\Developer Akademie\abschlussprojekt_da_bubble\da-bubble>git add . 
+
+D:\Developer Akademie\abschlussprojekt_da_bubble\da-bubble>git commit -m "fixed routing problem and adjusted width for header image - need to be fixed now especially for tinymce" 
+[main f715d81] fixed routing problem and adjusted width for header image - need to be fixed now especially for tinymce
+ 10 files changed, 169 insertions(+), 122 deletions(-)
+ create mode 100644 paths
+
+D:\Developer Akademie\abschlussprojekt_da_bubble\da-bubble>git push 

@@ -9,15 +9,17 @@
             Diese Unterhaltung findet nur zwischen <span>&#64;{{ getOtherUserName() }}</span> und dir statt
         </p>
     </div>
-    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.currentChannel$.value.length > 0 && !isDirectMessage() && !wantToWriteNewMessage()">
+    <div class="no-message-container"
+        *ngIf="messages.length === 0 && chatService.currentChannel$.value.length > 0 && !isDirectMessage() && !wantToWriteNewMessage()">
         <div class="channel-container">
             <span># {{ chatService.getChannelName() }}</span>
         </div>
         <p>
-            Dieser Channel wurde neu erstellt. Das ist der Anfang dieses Channels <span># {{ chatService.getChannelName() }}</span>
+            Dieser Channel wurde neu erstellt. Das ist der Anfang dieses Channels <span># {{
+                chatService.getChannelName() }}</span>
         </p>
     </div>
-    
+
     <div *ngFor="let message of getFilteredMessages(); let i = index" class="message">
         <!-- <div class="date" *ngIf="isDateDifferent(i)">
             <div></div>
@@ -40,7 +42,8 @@
                 <div class="avatar-container">
                     <img (click)="showID(message.sendId)" [src]="chatService.getUserAvatar(message.sendId)">
                 </div>
-                <div class="info-and-content" [ngClass]="{'info-and-content-sender': isCurrentUserSender(message.sendId)}">
+                <div class="info-and-content"
+                    [ngClass]="{'info-and-content-sender': isCurrentUserSender(message.sendId)}">
                     <div class="info" [ngClass]="{'info-sender': isCurrentUserSender(message.sendId)}">
                         <span class="name">{{ chatService.getUserName(message.sendId) }} </span>
                         <span class="time">{{ message.time | customTime }}</span>
@@ -51,76 +54,80 @@
                         <div class="files-container" *ngIf="message.fileUrls.length > 0">
                             <div *ngFor="let url of message.fileUrls" class="attached-file"
                                 (click)="downloadFile(url, urlToFileName(url))"><img
-                                    *ngIf="urlToFileName(url).endsWith('.pdf')" src="./../../../../assets/img/pdf.png"
+                                    *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
                                     alt="pdf:"><span>{{ urlToFileName(url) }}</span>
                             </div>
                         </div>
                     </div>
-                
 
-                <div class="reactions" *ngIf="message.reactions.length > 0">
-                    <div *ngFor="let reaction of message.reactions"
-                        (click)="addReaction(message.messageId, reaction.emote)" class="reaction-container">
-                        <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>
-                        <div class="reaction-info"
-                            [ngClass]="{'reaction-info-sender': isCurrentUserSender(message.sendId)}">
-                            <span>{{ reaction.emote }}</span>
-                            <span class="reactors">
-                                {{ formatUsernames(reaction.users) }}
-                            </span>
-                            <span *ngIf="reaction.users.length === 1">hat reagiert</span>
-                            <span *ngIf="reaction.users.length > 1">haben reagiert</span>
+
+                    <div class="reactions" *ngIf="message.reactions.length > 0">
+                        <div *ngFor="let reaction of message.reactions"
+                            (click)="addReaction(message.messageId, reaction.emote)" class="reaction-container">
+                            <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count
+                                }}</span>
+                            <div class="reaction-info"
+                                [ngClass]="{'reaction-info-sender': isCurrentUserSender(message.sendId)}">
+                                <span>{{ reaction.emote }}</span>
+                                <span class="reactors">
+                                    {{ formatUsernames(reaction.users) }}
+                                </span>
+                                <span *ngIf="reaction.users.length === 1">hat reagiert</span>
+                                <span *ngIf="reaction.users.length > 1">haben reagiert</span>
+                            </div>
+                        </div>
+                        <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
+                        <mat-menu #down_menu="matMenu" xPosition="before">
+                            <ul>
+                                <li *ngFor="let emote of chatService.emoticons"
+                                    (click)="addReaction(message.messageId, emote)">
+                                    {{ emote }}
+                                </li>
+                            </ul>
+                        </mat-menu>
+                    </div>
+                    <div class="answers" *ngIf="message.replies.length != 0">
+                        <span class="a-count" (click)="showReply(message)">
+                            {{ message.replies.length }} Antwort{{ message.replies.length === 1 ? '' : 'en' }}
+                        </span>
+                        <span class="last">Letzte Antwort {{ getLastReplyTime(message.replies) | customTime }}</span>
+                    </div>
+                    <div class="options-container"
+                        [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
+                        <div (click)="addReaction(message.messageId, getReactionEmote1())"
+                            class="last-reaction-container">
+                            <div class="last-reaction">
+                                {{ getReactionEmote1() }}
+                            </div>
+                        </div>
+                        <div (click)="addReaction(message.messageId, getReactionEmote2())"
+                            class="last-reaction-container">
+                            <div class="last-reaction">
+                                {{ getReactionEmote2() }}
+                            </div>
+                        </div>
+                        <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
+                        <mat-menu #menu="matMenu" xPosition="before">
+                            <ul>
+                                <li *ngFor="let emote of chatService.emoticons"
+                                    (click)="addReaction(message.messageId, emote)">
+                                    {{ emote }}
+                                </li>
+                            </ul>
+                        </mat-menu>
+                        <div (click)="showReply(message)"><mat-icon class="outlined">chat_outline</mat-icon></div>
+                        <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)">
+                            <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
+                            <div class="edit-text" *ngIf="menuEditMessage == true"
+                                (click)="editMessage(message.messageId, message.content)">
+                                <p>Nachricht bearbeiten</p>
+                            </div>
                         </div>
                     </div>
-                    <mat-icon class="outlined" [matMenuTriggerFor]="down_menu">add_reaction_outline</mat-icon>
-                    <mat-menu #down_menu="matMenu" xPosition="before">
-                        <ul>
-                            <li *ngFor="let emote of chatService.emoticons"
-                                (click)="addReaction(message.messageId, emote)">
-                                {{ emote }}
-                            </li>
-                        </ul>
-                    </mat-menu>
                 </div>
-                <div class="answers" *ngIf="message.replies.length != 0">
-                    <span class="a-count" (click)="showReply(message)">
-                        {{ message.replies.length }} Antwort{{ message.replies.length === 1 ? '' : 'en' }}
-                    </span>
-                    <span class="last">Letzte Antwort {{ getLastReplyTime(message.replies) | customTime }}</span>
-                </div>
-                <div class="options-container"
-                    [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
-                    <div (click)="addReaction(message.messageId, getReactionEmote1())" class="last-reaction-container">
-                        <div class="last-reaction">
-                            {{ getReactionEmote1() }}
-                        </div>
-                    </div>
-                    <div (click)="addReaction(message.messageId, getReactionEmote2())" class="last-reaction-container">
-                        <div class="last-reaction">
-                            {{ getReactionEmote2() }}
-                        </div>                    
-                    </div>
-                    <div [matMenuTriggerFor]="menu"><mat-icon class="outlined">add_reaction_outline</mat-icon></div>
-                    <mat-menu #menu="matMenu" xPosition="before">
-                        <ul>
-                            <li *ngFor="let emote of chatService.emoticons"
-                                (click)="addReaction(message.messageId, emote)">
-                                {{ emote }}
-                            </li>
-                        </ul>
-                    </mat-menu>
-                    <div (click)="showReply(message)"><mat-icon class="outlined">chat_outline</mat-icon></div>
-                    <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)">
-                        <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
-                        <div class="edit-text" *ngIf="menuEditMessage == true"
-                            (click)="editMessage(message.messageId, message.content)">
-                            <p>Nachricht bearbeiten</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
             </div>
         </div>
     </div>
-    <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId" (hasClosed)="handleProfile($event)"></app-user-detail>
+    <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId"
+        (hasClosed)="handleProfile($event)"></app-user-detail>
 </section>
