@@ -65,12 +65,21 @@ export class InputBoxComponent {
   }
 
 
+  /**
+   * Gets the plain text content from an input editor, trimming any leading or trailing whitespace.
+   * @param {any} input - The editor instance from which to retrieve content.
+   * @returns {boolean} - The trimmed text content from the editor.
+   */
   getInputContent(input: any): boolean {
     const content = input.getContent({ format: 'text' }).trim();
     return content;
   }
 
 
+  /**
+   * Handles sending messages based on the context (new message interface or existing conversation).
+   * Clears input and selected files after sending.
+   */
   async sendMessage() {
     let data = tinymce.get("inputData")
     if (this.isInNewMessageInterface()) {
@@ -80,17 +89,23 @@ export class InputBoxComponent {
     }
     this.clearSelectedFiles();
     this.clearInput(data);
-
-
   }
 
+
+  /**
+   * Checks if the current interface is for sending new messages.
+   * @returns {boolean} - True if the current interface is for new messages, false otherwise.
+   */
   isInNewMessageInterface() {
     return this.chatService.currentChannel$.value === 'writeANewMessage'
   }
 
 
+  /**
+   * Handles sending new messages either to selected channels or direct messages to selected users.
+   * @param {any} data - The message data from the input editor.
+   */
   async sendNewMessage(data: any) {
-
     if (this.chatService.selectedChannels && this.chatService.selectedChannels.length > 0) {
       this.chatService.isChannel = true
       for (const channel of this.chatService.selectedChannels) {
@@ -107,8 +122,12 @@ export class InputBoxComponent {
   }
 
 
+  /**
+   * Sends a message to a specific channel or user.
+   * @param {any} data - The message content from the input editor.
+   * @param {string} channel - The channel ID to send the message to.
+   */
   async sendSingleMessage(data: any, channel: string) {
-
     if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
@@ -122,18 +141,31 @@ export class InputBoxComponent {
     }
   }
 
+
+  /**
+   * Clears the input in the editor.
+   * @param {any} data - The editor instance whose content is to be cleared.
+   */
   clearInput(data: any) {
     data.setContent('');
   }
 
+
+  /**
+   * Clears the selected files list.
+   */
   clearSelectedFiles() {
     this.selectedFileNames = [];
     this.selectedFiles = [];
   }
 
 
+  /**
+   * Sends a direct message to a specific user.
+   * @param {any} data - The message content.
+   * @param {string} userId - The user ID of the recipient.
+   */
   async sendDM(data: string, userId: string) {
-
     console.log('in sendDM', this.chatService.currentUser.userId, userId);
     const roomId = this.generateRoomId(this.chatService.currentUser.userId, userId);
     await this.firestore.checkAndCreateRoom(roomId, this.chatService.currentUser.userId, userId);
@@ -152,6 +184,11 @@ export class InputBoxComponent {
   }
 
 
+  /**
+   * Handles file selection from an input element, enforcing file size restrictions.
+   * Adds files to selectedFiles array if they meet the size requirements.
+   * @param {Event} event - The event triggered by file selection.
+   */
   openSelectedFile(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input && input.files) {
@@ -159,7 +196,6 @@ export class InputBoxComponent {
       let totalSize = 0;
       this.selectedFiles = [];
       this.selectedFileNames = [];
-
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         totalSize += file.size;
@@ -170,7 +206,6 @@ export class InputBoxComponent {
           this.selectedFileNames.push(file.name);
         }
       }
-
       if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
         alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
         this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
@@ -179,8 +214,10 @@ export class InputBoxComponent {
   }
 
 
-
-
+  /**
+   * Opens a file preview dialog for the selected file.
+   * @param {number} index - The index of the file in the selectedFiles array.
+   */
   openFilePreview(index: number) {
     const file = this.selectedFiles[index];
     const reader = new FileReader();
@@ -193,11 +230,22 @@ export class InputBoxComponent {
     reader.readAsDataURL(file);
   }
 
+
+  /**
+   * Removes a selected file from the selectedFiles and selectedFileNames arrays.
+   * @param {number} index - The index of the file to remove.
+   */
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1)
     this.selectedFileNames.splice(index, 1);
   }
 
+
+  /**
+   * Decodes HTML entities in a string.
+   * @param {string} encodedString - The string with encoded HTML entities.
+   * @returns {string} - The decoded string.
+   */
   decodeHtmlEntities(encodedString: string) {
     const textArea = document.createElement('textarea');
     textArea.innerHTML = encodedString;
