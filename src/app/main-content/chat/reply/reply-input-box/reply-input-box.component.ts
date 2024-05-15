@@ -15,7 +15,7 @@ import { ChatService } from '../../../../../assets/services/chat-service/chat.se
 export class ReplyInputBoxComponent {
   public inputInit: RawEditorOptions = {
     id: 'inputReply',
-    base_url: '/tinymce',
+    base_url: './angular-projects/da-bubble/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',

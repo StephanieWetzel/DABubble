@@ -9,7 +9,7 @@ import { Firestore } from "@angular/fire/firestore";
 export class UserSync {
 
     private timeOutID: any;
-    private inactivityTime: number = 100000 * 10 * 1000; // 5 sec inactivity
+    private inactivityTime: number = 15 * 60 * 1000; // 5 sec inactivity
 
     constructor(private firestore: Firestore, public realTimeDB: Database) { }
 
@@ -42,15 +42,15 @@ export class UserSync {
     }
 
 
-    // syncState(userId: string | undefined) {
-    //     const stateRef = ref(this.realTimeDB, `state/${userId}`)
-    //     get(stateRef).then((snapshot) => {
-    //         const currentState = snapshot.val();
-    //         if (currentState === 'away') {
-    //             set(stateRef, { state: 'true'});
-    //         }
-    //     })
-    // }
+    syncState(userId: string | undefined) {
+        const stateRef = ref(this.realTimeDB, `state/${userId}`)
+        get(stateRef).then((snapshot) => {
+            const currentState = snapshot.val();
+            if (currentState === 'away') {
+                set(stateRef, { state: 'true'});
+            }
+        })
+    }
 
 
     /**
