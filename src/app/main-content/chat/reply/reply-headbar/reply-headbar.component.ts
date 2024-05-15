@@ -13,7 +13,7 @@ export class ReplyHeadbarComponent {
   constructor(private chatService: ChatService) {
 
   }
-
+  
   closeReply() {
     this.chatService.showReply = false;
   }

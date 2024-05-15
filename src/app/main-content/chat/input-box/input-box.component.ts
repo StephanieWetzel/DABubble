@@ -251,5 +251,4 @@ export class InputBoxComponent {
     textArea.innerHTML = encodedString;
     return textArea.value;
   }
-
 }
