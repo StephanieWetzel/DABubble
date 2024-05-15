@@ -248,10 +248,17 @@ export class HeadbarComponent {
     }
   }
 
+  
+  /**
+   * Listens for window resize events and updates the screenWidth property with the current window width.
+   * This method is decorated with @HostListener to automatically capture window resize events.
+   */
   @HostListener('window:resize')
   checkScreenWidth() {
     this.screenWidth = window.innerWidth
   }
+
+
   /**
    * Toggles the visibility of the edit channel information dialog.
    */
