@@ -58,7 +58,6 @@ export class SecondAddChannelDialogComponent {
     
     this.unsubUser = this.firestore.fetchCollection('user').subscribe((users) => {
       this.fetchedUser = users;
-      console.log(this.currentUser)
       this.removeCurrentUser();
     });
   }

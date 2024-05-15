@@ -76,7 +76,6 @@ export class EditChannelDialogComponent {
     const updatedMember = this.channel?.member.filter(
       (member) => member.id !== this.currentUser
     );
-    console.log('member: ', updatedMember);
     this.firestore.updateChannelInfo(
       this.channel?.channelId,
       updatedMember,

@@ -27,7 +27,7 @@ export class InputBoxComponent {
   @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
 
   public editorInit: RawEditorOptions = {
-    base_url: './angular-projects/da-bubble/tinymce',
+    base_url: '/angular-projects/da-bubble/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -114,7 +114,6 @@ export class InputBoxComponent {
     }
     if (this.chatService.selectedUsers && this.chatService.selectedUsers.length > 0) {
       this.chatService.isChannel = false;
-      console.log(this.chatService.selectedUsers);
       for (const user of this.chatService.selectedUsers) {
         await this.sendDM(data, user.userId);
       }
@@ -166,7 +165,6 @@ export class InputBoxComponent {
    * @param {string} userId - The user ID of the recipient.
    */
   async sendDM(data: string, userId: string) {
-    console.log('in sendDM', this.chatService.currentUser.userId, userId);
     const roomId = this.generateRoomId(this.chatService.currentUser.userId, userId);
     await this.firestore.checkAndCreateRoom(roomId, this.chatService.currentUser.userId, userId);
     await this.sendSingleMessage(data, roomId);

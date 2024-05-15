@@ -58,8 +58,6 @@ export class NewPasswordComponent {
     this.containerHeight = window.innerHeight;
 
     this.oobCode = this.route.snapshot.queryParams['oobCode'];
-    console.log(this.oobCode);
-
   }
 
 

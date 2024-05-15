@@ -76,7 +76,6 @@ export class HeadbarComponent {
   async ngOnInit() {
     this.isDrawerOpenedSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
       this.isDrawerOpen = isOpen;
-      console.log(this.isDrawerOpen)
     })
     this.chatService.isDmRoom.subscribe(isOpen => {
       this.isDmRoomOpen = isOpen;
@@ -85,7 +84,6 @@ export class HeadbarComponent {
       if (userId) {
         this.currentPartner = userId;
         this.currentPartnerUser = await this.auth.fetchPartnerFromFirestore(userId)
-        console.log(this.currentPartnerUser)
       }
     })
     this.chatService.currentChannel$.subscribe(channelID => {
