@@ -93,16 +93,12 @@ export class MessagesComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // this.subscription.add(this.chatService.messageCount$.subscribe({
-    //   next: (count) => {
-    //     this.scrollToBottom();
-    //   }
-    // }));
-    this.subscription.add(this.chatService.messageCount$.pipe(
-      debounceTime(300) // oder throttleTime
-    ).subscribe({
-      next: (count) => {
-        this.scrollToBottom();
+    this.subscription.add(this.chatService.scrollToBottom$.subscribe(shouldScroll => {
+      if (shouldScroll) {
+        setTimeout(() => {
+          this.scrollToBottom();
+          this.chatService.scrollToBottom$.next(false);
+        }, 100);
       }
     }));
   }

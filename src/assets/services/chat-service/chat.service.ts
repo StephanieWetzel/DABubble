@@ -31,6 +31,7 @@ export class ChatService implements OnDestroy {
   allChannels: Channel[] = [];
   newMessage = new BehaviorSubject<boolean>(false);
   newMessage$ = this.newMessage.asObservable();
+  scrollToBottom$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   replyCount = new BehaviorSubject<number>(0); // initialer Wert
   replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
@@ -38,7 +39,7 @@ export class ChatService implements OnDestroy {
   userInitialized = new BehaviorSubject<boolean>(false);
 
   users: User[] = [];
-
+  isFirstLoad = true;
   editorMessage!: Editor;
   editorReply!: Editor;
 
@@ -125,8 +126,7 @@ export class ChatService implements OnDestroy {
    * @param {string} channel - The channel ID
    */
   async addMessage(message: Message, channel: string) {
-
-    if (channel.length <= 27) {
+    if(channel.length <= 27){
       const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
@@ -135,6 +135,7 @@ export class ChatService implements OnDestroy {
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `directMessages/${channel}/messages`, docRefId), { messageId: docRefId });
     }
+    this.scrollToBottom$.next(true);
   }
 
 
@@ -188,18 +189,65 @@ export class ChatService implements OnDestroy {
       this.messages = [];
       return;
     }
-    this.unsubscribe = onSnapshot(ref, async (snapshot) => {
-      const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
-        const messageData = new Message(doc.data() as Message);
-        const repliesRef = collection(doc.ref, 'replies');
-        const repliesSnapshot = await getDocs(repliesRef);
-        const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
-        return { ...messageData, replies };
-      }));
-      this.messages = messagesWithReplies;
+    this.unsubscribe = onSnapshot(ref, (snapshot) => {
+      snapshot.docChanges().forEach(async (change) => {
+        const messageData = new Message(change.doc.data() as Message);
+        if (change.type === 'added' || change.type === 'modified') {
+          const repliesRef = collection(change.doc.ref, 'replies');
+          const repliesSnapshot = await getDocs(repliesRef);
+          const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
+          const fullMessageData = { ...messageData, replies };
+  
+          if (change.type === 'added') {
+            if (!this.messages.some(m => m.messageId === messageData.messageId)) {
+              this.messages.push(fullMessageData);
+            }
+          } else if (change.type === 'modified') {
+            const index = this.messages.findIndex(m => m.messageId === messageData.messageId);
+            if (index !== -1) {
+              this.messages[index] = fullMessageData;
+            }
+          }
+        } else if (change.type === 'removed') {
+          this.messages = this.messages.filter(m => m.messageId !== messageData.messageId);
+        }
+      });
       this.messageCount.next(this.messages.length);
+      if (this.isFirstLoad) {
+        this.scrollToBottom$.next(true);
+        this.isFirstLoad = false;
+      }
     });
   }
+  // async updateMessages() {
+  //   const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
+  //   if (!this.currentChannel$.value || !this.users) {
+  //     console.error("currentChannel$ ist undefined.");
+  //     return;
+  //   }
+  //   if (this.unsubscribe) {
+  //     this.unsubscribe();
+  //   }
+  //   if (this.currentChannel$.value === 'writeANewMessage') {
+  //     this.messages = [];
+  //     return;
+  //   }
+  //   this.unsubscribe = onSnapshot(ref, async (snapshot) => {
+  //     const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
+  //       const messageData = new Message(doc.data() as Message);
+  //       const repliesRef = collection(doc.ref, 'replies');
+  //       const repliesSnapshot = await getDocs(repliesRef);
+  //       const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
+  //       return { ...messageData, replies };
+  //     }));
+  //     this.messages = messagesWithReplies;
+  //     this.messageCount.next(this.messages.length);
+  //     if (this.isFirstLoad) {
+  //       this.scrollToBottom$.next(true);
+  //       this.isFirstLoad = false; // Erstes Laden abgeschlossen
+  //     }
+  //   });
+  // }
 
   /**
    * Get filtered messages based on the search input
