@@ -24,28 +24,34 @@
 </section>
 
 <div *ngIf="isInfoOpen" class="channel-info-cont">
-    <div class="mobile-edit-head">
-        <div>
-          <mat-icon style="font-style: italic">tag</mat-icon>
-          <h2>{{ channel?.name }}</h2>
+    <div class="centering">
+        <div class="mobile-edit-head">
+            <div>
+                <mat-icon style="font-style: italic">tag</mat-icon>
+                <h2>{{ channel?.name }}</h2>
+            </div>
+            <mat-icon (click)="handleCloseEvent(true)" >close</mat-icon>
         </div>
-        <mat-icon (click)="handleCloseEvent(true)" >close</mat-icon>
-    </div>
-    <div id="infoMenu" class="channel-info brNoLeftTop32" [ngClass]="isDrawerOpen ? 'channel-info-opened' : 'channel-info-closed'">
-        <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)"
+        <div id="infoMenu" class="channel-info brNoLeftTop32" [ngClass]="isDrawerOpen ? 'channel-info-opened' : 'channel-info-closed'">
+            <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)"
             [currentChannel]="currentChannelId" [channelMobile]="channel" [membersMobile]="members"></app-edit-channel-dialog>
+        </div>
     </div>
 </div>
 
 <div *ngIf="isMemberOversight" class="member-oversight-cont">
-    <div id="memberOversight" [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
-        <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [openedInChannel]="false" [currentChannel]="channel"></app-member-oversight>
+    <div class="centering">
+        <div id="memberOversight" [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
+            <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [openedInChannel]="false" [currentChannel]="channel"></app-member-oversight>
+        </div>
     </div>
 </div>
 
 <div *ngIf="isSearchOpen" class="member-oversight-cont">
-    <div id="memberSearch" class="member-search">
-        <app-add-member [currentMembers]="members" [channel]="channel" (isClosed)="searchClosed($event)"></app-add-member>
+    <div class="centering">
+        <div id="memberSearch" class="member-search">
+            <app-add-member [currentMembers]="members" [channel]="channel" (isClosed)="searchClosed($event)"></app-add-member>
+        </div>
     </div>
 </div>
 

@@ -39,17 +39,21 @@
 </section>
 
 <div *ngIf="isProfilMenuOpen" class="profile-menu-cont">
-  <div id="profileMenu" class="profile-menu brNoLeftTop32">
-    <div class="mobile-island">
-      <div></div>
+  <div class="centering">
+    <div id="profileMenu" class="profile-menu brNoLeftTop32">
+      <div class="mobile-island">
+        <div></div>
+      </div>
+      <span class="mb15 br32" (click)="openProfile()"><img src="./assets/icons/account_circle-icon.svg">Profil</span>
+      <span (click)="logout()" class="br32"><img src="./assets/icons/logout-mobile.png">Logout</span>
     </div>
-    <span class="mb15 br32" (click)="openProfile()"><img src="./assets/icons/account_circle-icon.svg">Profil</span>
-    <span (click)="logout()" class="br32"><img src="./assets/icons/logout-mobile.png">Logout</span>
   </div>
 </div>
 
 <div *ngIf="isProfileEditOpen" class="profile-menu-cont bgD">
-  <div class="profile-edit-info brNoLeftTop32">
-    <app-profile-dialog (closeEvent)="userWantsBackEvent($event)" class="profile-content"></app-profile-dialog>
+  <div class="centering">
+    <div class="profile-edit-info brNoLeftTop32">
+      <app-profile-dialog (closeEvent)="userWantsBackEvent($event)" class="profile-content"></app-profile-dialog>
+    </div>
   </div>
 </div>
