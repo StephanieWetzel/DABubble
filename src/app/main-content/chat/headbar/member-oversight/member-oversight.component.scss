@@ -25,7 +25,9 @@
     }
   }
   > .members {
-    @include dFlex(center, flex-start, 0, column);
+    @include dFlex(flex-start, flex-start, 0, column);
+    max-height: 450px;
+    overflow-y: scroll;
     @media(max-width: 600px) {
       justify-content: flex-start;
       overflow-y: scroll;

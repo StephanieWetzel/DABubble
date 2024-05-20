@@ -66,11 +66,15 @@ export class AddMemberComponent {
     const currentMemberIds = new Set(
       this.currentMembers?.map((member) => member.userId) || []
     );
+    const selectedUserIds = new Set(
+      this.selectedUsers?.map((user) => user.userId) || []
+    );
     this.searchResults =
       this.fetchedUser?.filter(
         (user) =>
           user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-          !currentMemberIds.has(user.userId)
+          !currentMemberIds.has(user.userId) &&
+          !selectedUserIds.has(user.userId)
       ) || [];
   }
 

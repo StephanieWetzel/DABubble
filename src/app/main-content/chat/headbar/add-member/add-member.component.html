@@ -12,6 +12,7 @@
 <div class="search-content">
   <mat-chip-listbox #chipList>
     <div class="search">
+      <div>
         <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
             <div class="selected-user-pair">
                 <img [src]="user.avatar">
@@ -19,6 +20,7 @@
                 <mat-icon matChipRemove>close</mat-icon>
             </div>
         </mat-chip>
+      </div>
       <input [formControl]="searchInput" type="text" placeholder="Name eingeben" />
     </div>
   </mat-chip-listbox>

@@ -128,6 +128,7 @@ export class SecondAddChannelDialogComponent {
       this.searchResults = this.findResults(
         this.secondDialogGroup.get('searchInput').value
       );
+      this.secondDialogGroup.get('searchInput').setValue('');
     }
   }
 

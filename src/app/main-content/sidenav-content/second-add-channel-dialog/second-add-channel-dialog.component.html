@@ -34,14 +34,15 @@
       
       <mat-chip-listbox #chipList>
         <div class="input-search br-32">
-          <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
-          <div class="selected-user-pair">
-            <img [src]="user.avatar">
-            <p>{{ user.name }}</p>
+          <div class="chip-cont">
+            <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
+            <div class="selected-user-pair">
+              <img [src]="user.avatar">
+              <p>{{ user.name }}</p>
+            </div>
+            <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
           </div>
-          <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-        
           <input formControlName="searchInput" type="text" placeholder="Namen eingeben" />
         </div>
       </mat-chip-listbox>

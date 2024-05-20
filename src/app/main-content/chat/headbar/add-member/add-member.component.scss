@@ -54,7 +54,7 @@
   border: 1px solid #adb0d9;
   border-radius: 30px;
   margin-bottom: 20px;
-  height: 55px;
+  max-height: 300px;
   margin-left: 8px;
 }
 
@@ -107,6 +107,7 @@
         height: 50px;
         > img {
           height: 50px;
+          width: 50px;
           border-radius: 50%;
         }
         > .online-attribut {
@@ -149,6 +150,7 @@ input {
   outline: none;
   border: none;
   overflow: auto;
+  height: 55px;
 }
 
 .mdc-evolution-chip-set {
@@ -179,6 +181,7 @@ mat-chip {
   }
   > img {
     height: 34px;
+    width: 34px;
     border-radius: 50%;
   }
 }
