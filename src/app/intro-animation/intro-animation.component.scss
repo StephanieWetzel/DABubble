@@ -69,6 +69,10 @@
     justify-content: center;
     align-items: center;
     position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: 999;
     overflow: hidden;
     background: linear-gradient(1.46deg, #313AE6 1.22%, #797EF3 98.76%);

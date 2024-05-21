@@ -6,33 +6,22 @@
     flex-direction: column;
 }
 
-.drawer-toggle-btn{
+.drawer-toggle-btn {
     position: fixed;
     left: 0;
     top: 150px;
     height: 50px;
     z-index: 2;
-    background-color: rgba(0,0,0,.1);
+    background-color: rgba(0, 0, 0, .1);
 }
 
-mat-toolbar{
+mat-toolbar {
     width: 100%;
     height: fit-content;
 }
 
-app-header{
+app-header {
     width: 100%;
-}
-
-app-intro-animation {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100vh;
-    width: 100vw;
-    z-index: 2999;
 }
 
 .mat-drawer-container {
