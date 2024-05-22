@@ -26,10 +26,10 @@ input,
 mat-form-field,
 button {
     font-family: 'Nunito', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
 
     @media (max-width: 600px) {
-        font-size: 18px;
+        font-size: 15px;
     }
 }
 
@@ -130,7 +130,7 @@ app-input-box div .tox-toolbar__primary {
 
 .custom-edit-channel-dialog {
     position: absolute;
-    
+
     transform: translateY(-20%);
 }
 
