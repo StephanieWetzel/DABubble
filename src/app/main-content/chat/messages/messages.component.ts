@@ -70,9 +70,7 @@ export class MessagesComponent implements AfterViewInit {
     toolbar: 'emoticons',
     entity_encoding: 'raw',
     setup: editor => {
-      editor.on('init', () => {
-        console.log(this.editingMessageId);
-        
+      editor.on('init', () => {        
         if (this.menuEditMessage) {
           editor.setContent(this.currentEditingContent);
         }

@@ -83,17 +83,20 @@ section {
 }
 
 .edit-message-container {
+    justify-content: flex-end;
+    align-items: center;
     width: 100%;
     padding: 10px 35px;
     padding-bottom: 27px;
     padding-top: 27px;
     box-sizing: border-box;
-    @include dFlex($jc: flex-end);
-    display: none;
+    display: none !important;
 }
 
 .edit-visible{
     display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .edit-message {
@@ -548,12 +551,14 @@ app-user-detail {
     @include dFlex(center, center);
     margin: 12px;
     border-radius: 28px;
-    margin-right: 12px;
-    margin-left: 0px;
+    margin-right: 24px;
     @media(max-width: 1000px) {
-        margin-right: 0px;
+        margin-right: 12px;
+        margin-left: 12px;
     }
-    @media(max-width: 820px) {  
+    @media(max-width: 820px) {
+        margin-left: 0px;    
+        margin-right: 0px;    
         margin-bottom: 0px;  
         border-bottom-left-radius: 0px;   
         border-bottom-right-radius: 0px;  
