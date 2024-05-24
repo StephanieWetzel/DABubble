@@ -71,6 +71,8 @@ export class MessagesComponent implements AfterViewInit {
     entity_encoding: 'raw',
     setup: editor => {
       editor.on('init', () => {
+        console.log(this.editingMessageId);
+        
         if (this.menuEditMessage) {
           editor.setContent(this.currentEditingContent);
         }

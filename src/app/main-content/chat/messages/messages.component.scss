@@ -89,10 +89,11 @@ section {
     padding-top: 27px;
     box-sizing: border-box;
     @include dFlex($jc: flex-end);
+    display: none;
 }
 
-.edit-message-container.hidden {
-    display: none;
+.edit-visible{
+    display: flex !important;
 }
 
 .edit-message {

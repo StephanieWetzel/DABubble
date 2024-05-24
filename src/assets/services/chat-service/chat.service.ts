@@ -213,10 +213,13 @@ export class ChatService implements OnDestroy {
         }
       });
       this.messageCount.next(this.messages.length);
-      if (this.isFirstLoad) {
+      setTimeout(() => {
+        if (this.isFirstLoad) {
         this.scrollToBottom$.next(true);
         this.isFirstLoad = false;
       }
+      }, 100);
+      
     });
   }
   // async updateMessages() {
