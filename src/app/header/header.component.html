@@ -12,8 +12,15 @@
   <div class="search-and-profile">
     <div class="search">
       <input matInput placeholder="Search in Channel..." value="" [(ngModel)]="chatService.searchInput"
-        (input)="chatService.getFilteredMessages()" />
+        (input)="onSearchInputChange($event)" />
       <mat-icon>search</mat-icon>
+
+      <div class="search-results" *ngIf="chatService.searchResults.length >= 1">
+        <div class="results" *ngFor="let result of chatService.searchResults">
+          <span (click)="jumpToChannel(result.channelId)" >"{{result.data.content}}" von {{ result.userName }} &#64;{{result.channelName}}</span>
+        </div>
+      </div>
+      
     </div>
     <div class="profile" (click)="openProfileMenu()">
       <span>{{ user?.name }}</span>
@@ -57,3 +64,4 @@
     </div>
   </div>
 </div>
+

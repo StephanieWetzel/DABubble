@@ -234,10 +234,11 @@ export class MessagesComponent implements AfterViewInit {
    * @returns {Message[]} - Array of filtered messages.
    */
   getFilteredMessages(): Message[] {
-    if (!this.chatService.searchInput) return this.getList();
-    return this.getList().filter(message =>
-      message.content.toLowerCase().includes(this.chatService.searchInput.toLowerCase())
-    );
+    // // if (!this.chatService.searchInput) return this.getList();
+    // return this.getList().filter(message =>
+    //   message.content.toLowerCase().includes(this.chatService.searchInput.toLowerCase())
+    // );
+    return this.getList()
   }
 
 
