@@ -15,6 +15,7 @@ import { FirebaseService } from '../../../assets/services/firebase-service';
 import { onValue, ref } from '@angular/fire/database';
 import { UserSync } from '../../../assets/services/userSync.service';
 import { MobileService } from '../../../assets/services/mobile.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-sidenav-content',
@@ -22,7 +23,7 @@ import { MobileService } from '../../../assets/services/mobile.service';
   templateUrl: './sidenav-content.component.html',
   styleUrl: './sidenav-content.component.scss',
   encapsulation: ViewEncapsulation.None,
-  imports: [CommonModule, MatExpansionModule, MatIconModule, AddChannelDialogComponent, MatDialogModule, SecondAddChannelDialogComponent]
+  imports: [CommonModule, MatExpansionModule, MatIconModule, AddChannelDialogComponent, MatDialogModule, SecondAddChannelDialogComponent, FormsModule]
 })
 export class SidenavContentComponent {
   isUserOnline: boolean = true;
@@ -36,7 +37,7 @@ export class SidenavContentComponent {
   showBlueEdit: boolean = false;
   @Output() closeSidenav = new EventEmitter<void>();
 
-  constructor(public dialog: MatDialog, private firestore: FirebaseService, private chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync, private mobilService: MobileService) {
+  constructor(public dialog: MatDialog, private firestore: FirebaseService, public chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync, private mobilService: MobileService) {
     this.getAuthUserId();
     this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
     this.screenWidth = window.innerWidth;
@@ -258,7 +259,21 @@ export class SidenavContentComponent {
     return [userId1, userId2].sort().join('_');
   }
 
+  jumpToChannel(channelID: string) {
+    this.chatService.currentChannel$.next(channelID);
+    this.chatService.setIsDmRoom(false);
+    this.chatService.setIsNewMessage(false);
+    this.checkScreenWidth();
+    this.mobilService.setActiveChannel(channelID);
+    this.chatService.searchInput = '';
+    this.chatService.searchResults = [];
+  }
   
+  async onSearchInputChange(event: any) {
+    const searchInput = event.target.value;
+    console.log(searchInput)
+    await this.chatService.search(searchInput)
+  }
 
   writeNewMessage(){
     this.chatService.setIsNewMessage(true);

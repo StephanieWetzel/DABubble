@@ -107,7 +107,6 @@ export class ChatService implements OnDestroy {
         if (messageData['content'].toLowerCase().includes(searchInput.toLowerCase())) {
           const channelName = await this.getNameChannel(channelId);
           const userName = await this.getNameUser(messageData['sendId']);
-          console.log(channelName)
           this.searchResults.push({ type: 'message', 
           data: messageData, channelId, channelName,userName});
         };
