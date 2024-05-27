@@ -134,4 +134,21 @@ export class HeaderComponent {
       this.isProfilMenuOpen = profileMenu;
     }, 20);
   }
+
+  async onSearchInputChange(event: any) {
+    const searchInput = event.target.value;
+    console.log(searchInput)
+    await this.chatService.search(searchInput)
+  }
+
+  jumpToChannel(channelID: string) {
+    this.chatService.currentChannel$.next(channelID);
+    this.chatService.setIsDmRoom(false);
+    this.chatService.setIsNewMessage(false);
+    this.checkScreenWidth();
+    this.mobileService.setActiveChannel(channelID);
+    this.chatService.searchInput = '';
+    this.chatService.searchResults = [];
+  }
+
 }

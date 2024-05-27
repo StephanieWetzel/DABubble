@@ -141,6 +141,33 @@ section {
         transform: scale(1);
       }
     }
+
+    > .search-results {
+      position: absolute;
+      padding: 12px;
+      top: 72px;
+      z-index: 10;
+      background-color: #ffffff;
+      border-top-left-radius: 0px !important;
+      border-radius: 32px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      @media (max-width:950px) {
+        right: 50px;
+      }
+      @media (max-width:670px) {
+        right: 16px;
+      }
+      > .results {
+        padding-left: 12px;
+        @include dFlex(flex-start,center,15px);
+        padding: 5px 20px 5px 20px;
+        &:hover {
+          border-radius: 32px;
+          background-color: #eceffe;
+          cursor: pointer;
+        }
+      }
+    }
   }
 
   .profile {
@@ -240,7 +267,7 @@ section {
 /*profil menu*/
 
 .profile-menu-cont {
-  position: absolute;
+  position: fixed;
   right: 0;
   left: 0;
   bottom: 0;

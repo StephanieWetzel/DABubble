@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
-import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
+import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
 import { getFirestore, getDocs, DocumentReference, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { Message } from '../../models/message.class';
@@ -48,6 +48,7 @@ export class ChatService implements OnDestroy {
   initialMessageForThread!: Message;
 
   searchInput: string = '';
+  searchResults: any[] = [];
 
 
   selectedUsers!: User[];
@@ -82,6 +83,35 @@ export class ChatService implements OnDestroy {
     this.currentChannel$.subscribe(channel => {
       this.updateMessages();
     });
+  }
+
+  async getNameChannel(channelId: string): Promise<string> {
+    const channelDoc = await getDoc(doc(this.firestore, `channel/${channelId}`));
+    return channelDoc.exists() ? channelDoc.data()['name'] : 'Unknown Channel';
+  }
+
+  async getNameUser(userId: string): Promise<string> {
+    const userDoc = await getDoc(doc(this.firestore, `user/${userId}`));
+    return userDoc.exists() ? userDoc.data()['name'] : 'Unknown User';
+  }
+  
+  async search(searchInput: string) {
+    this.searchResults = [];
+    if (!searchInput) return;
+    const channelsSnapshot = await getDocs(collection(this.firestore, 'channel'));
+    for (const channelDoc of channelsSnapshot.docs) {
+      const channelId = channelDoc.id;
+      const messagesSnapshot = await getDocs(collection(this.firestore, `channel/${channelId}/messages`));
+      for (const messageDoc of messagesSnapshot.docs) {
+        const messageData = messageDoc.data();
+        if (messageData['content'].toLowerCase().includes(searchInput.toLowerCase())) {
+          const channelName = await this.getNameChannel(channelId);
+          const userName = await this.getNameUser(messageData['sendId']);
+          this.searchResults.push({ type: 'message', 
+          data: messageData, channelId, channelName,userName});
+        };
+      };
+    };
   }
 
   /**
@@ -219,16 +249,16 @@ export class ChatService implements OnDestroy {
   //   });
   // }
 
-  /**
-   * Get filtered messages based on the search input
-   * @returns {Message[]} - The filtered messages
-   */
-  getFilteredMessages(): Message[] {
-    if (!this.searchInput) return this.messages;
-    return this.messages.filter(message =>
-      message.content.toLowerCase().includes(this.searchInput.toLowerCase())
-    );
-  }
+  // /**
+  //  * Get filtered messages based on the search input
+  //  * @returns {Message[]} - The filtered messages
+  //  */
+  // getFilteredMessages(): Message[] {
+  //   if (!this.searchInput) return this.messages;
+  //   return this.messages.filter(message =>
+  //     message.content.toLowerCase().includes(this.searchInput.toLowerCase())
+  //   );
+  // }
 
   // getList(): Message[] {
   //   this.messages = this.chatService.messages;

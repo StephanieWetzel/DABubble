@@ -94,6 +94,32 @@
         }
       }
     }
+
+    >.search-results {
+      position: absolute;
+      padding: 12px;
+      top: 72px;
+      z-index: 10;
+      background-color: #ffffff;
+      border-radius: 32px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      @include dFlex(center,flex-start,0,column);
+      margin-left: 8px;
+      margin-right: 8px;
+      @media (max-width:380px) {
+        top: 48px;
+      }
+      > .results {
+        padding-left: 12px;
+        @include dFlex(flex-start,center,15px);
+        padding: 5px 20px 5px 20px;
+        &:hover {
+          border-radius: 32px;
+          background-color: #eceffe;
+          cursor: pointer;
+        }
+      }
+    }
   }
 
   @media (max-width: 380px) {
