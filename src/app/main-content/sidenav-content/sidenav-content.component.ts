@@ -221,6 +221,7 @@ export class SidenavContentComponent {
   openChannel(channelID: string) {
     // logik open channel 
     this.chatService.currentChannel$.next(channelID);
+    this.chatService.isFirstLoad = true
     this.chatService.setIsDmRoom(false);
     this.chatService.setIsNewMessage(false);
     this.checkScreenWidth();

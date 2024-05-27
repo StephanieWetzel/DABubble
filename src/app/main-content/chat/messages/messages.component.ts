@@ -47,7 +47,7 @@ export class MessagesComponent implements AfterViewInit {
   date: any;
   menuEditMessage = false;
   customDatePipe = new CustomDatePipe();
-  editingMessageId: string = '';
+  editingMessageId: string = 'editOver';
   currentContent!: string;
   currentEditingContent: string = '';
   subscription = new Subscription();
@@ -165,6 +165,7 @@ export class MessagesComponent implements AfterViewInit {
    * @param {string} content - The current content of the message.
    */
   editMessage(id: string, content: string) {
+    debugger
     this.closeEditor();
     this.editingMessageId = id;
     this.currentEditingContent = content
@@ -179,7 +180,7 @@ export class MessagesComponent implements AfterViewInit {
     if (editorInstance) {
       editorInstance.remove();
     }
-    this.editingMessageId = '';
+    this.editingMessageId = 'editOver';
   }
 
 
