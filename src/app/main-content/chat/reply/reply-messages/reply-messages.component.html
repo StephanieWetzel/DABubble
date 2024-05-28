@@ -32,16 +32,15 @@
             </div>
         </div> -->
 
-        <!-- <div class="edit-message-container" *ngIf="editingMessageId === message.messageId">
-            <div class="edit-message" >
-                <editor [init]="editEditorInit" [id]="'editData-' + message.messageId"></editor>
+        <div class="edit-message-container" [ngClass]="{'edit-visible': editingMessageId === message.messageId}">
+            <div class="edit-message">
+                <editor [init]="replyEditEditorInit" [id]="'editData-' + message.messageId"></editor>
                 <div class="edit-btns">
                     <button (click)="safeMessage(false)" class="break-btn">Abbrechen</button>
                     <button (click)="safeMessage(true, message.messageId)" class="safe-btn">Speichern</button>
                 </div>
-                
             </div>
-        </div> -->
+        </div>
 
         <!--  -->
         <div class="message-container" [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
@@ -108,12 +107,12 @@
                     </ul>
                 </mat-menu>
                 <div><mat-icon class="outlined">chat_outline</mat-icon></div>
-                <!-- <div class="edit-message-options">
+                <div class="edit-message-options">
                     <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
                     <div class="edit-text" *ngIf="menuEditMessage == true" (click)="editMessage(message.messageId, message.content)">
                         <p>Nachricht bearbeiten</p>
                     </div>
-                </div> -->
+                </div>
             </div>
         </div>
     </div>

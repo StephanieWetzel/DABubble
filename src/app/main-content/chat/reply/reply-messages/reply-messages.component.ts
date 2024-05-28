@@ -10,13 +10,17 @@ import { CustomTimePipe } from "../../messages/time-pipe/custom-time.pipe";
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { FirebaseService } from '../../../../../assets/services/firebase-service';
+import tinymce, { RawEditorOptions } from 'tinymce';
+import { EditorModule } from '@tinymce/tinymce-angular';
+
+
 
 @Component({
     selector: 'app-reply-messages',
     standalone: true,
     templateUrl: './reply-messages.component.html',
     styleUrl: './../../messages/messages.component.scss',
-    imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule]
+    imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule, EditorModule]
 })
 export class ReplyMessagesComponent implements AfterViewInit, OnInit{
     @ViewChild('replyContainer') private replyContainer!: ElementRef<HTMLDivElement>;
@@ -25,7 +29,31 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
     customDatePipe = new CustomDatePipe();
     currentUser!: User;
     currentContent!: string;
+    editingMessageId: string = '';
+    currentEditingContent: string = '';
+    menuEditMessage: boolean = false;
 
+
+    public replyEditEditorInit: RawEditorOptions = {
+      suffix: '.min',
+      menubar: false,
+      toolbar_location: 'bottom',
+      border: 'none',
+      plugins: 'autoresize emoticons link',
+      autoresize_bottom_margin: 0,
+      max_height: 500,
+      placeholder: 'Nachricht an Chat ... ',
+      statusbar: false,
+      toolbar: 'emoticons',
+      entity_encoding: 'raw',
+      setup: editor => {
+          editor.on('init', () => {
+              if (this.editingMessageId) {
+                  editor.setContent(this.currentEditingContent);
+              }
+          });
+      }
+  };
 
     @Output() hasOpened = new EventEmitter<{opened: boolean, userId: string}>();
 
@@ -106,6 +134,36 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
         }
         this.firebaseService.updateLastReaction(this.currentUser.lastReaction1, this.currentUser.lastReaction2, this.currentUser.userId)
       }
+
+      editMessage(id: string, content: string) {
+        this.closeEditor();
+        this.editingMessageId = id;
+        this.currentEditingContent = content;
+    }
+
+    closeEditor() {
+        const editorInstance = tinymce.get('editData-' + this.editingMessageId);
+        if (editorInstance) {
+            editorInstance.remove();
+        }
+        this.editingMessageId = '';
+    }
+
+    safeMessage(safe: boolean, messageId: string = '') {
+        if (safe) {
+            this.chatService.editMessage(messageId, this.getInputContent(tinymce.get('editData-' + messageId)));
+        }
+        this.closeEditor();
+    }
+
+    getInputContent(input: any) {
+        const content = input.getContent({ format: 'text' });
+        return content;
+    }
+
+    openEditMessage() {
+        this.menuEditMessage = !this.menuEditMessage;
+    }
 
 
       getReactionEmote1(): string {
