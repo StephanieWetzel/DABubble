@@ -17,7 +17,7 @@
 
       <div class="search-results" *ngIf="chatService.searchResults.length >= 1">
         <div class="results" *ngFor="let result of chatService.searchResults">
-          <span (click)="jumpToChannel(result.channelId)" >"{{result.data.content}}" von {{ result.userName }} &#64;{{result.channelName}}</span>
+          <span (click)="jumpToChannel(result, result.channelId)" >"{{result.data.content}}" von {{ result.userName }} &#64;{{result.channelName}}</span>
         </div>
       </div>
       

@@ -141,14 +141,17 @@ export class HeaderComponent {
     await this.chatService.search(searchInput)
   }
 
-  jumpToChannel(channelID: string) {
-    this.chatService.currentChannel$.next(channelID);
+  jumpToChannel(result: any, channelId: string) {
+    console.log(result)
+    console.log(result.data.messageId)
+    this.chatService.currentChannel$.next(channelId);
     this.chatService.setIsDmRoom(false);
     this.chatService.setIsNewMessage(false);
     this.checkScreenWidth();
-    this.mobileService.setActiveChannel(channelID);
+    this.mobileService.setActiveChannel(channelId);
     this.chatService.searchInput = '';
     this.chatService.searchResults = [];
+    this.chatService.highlightMessage(result.data.messageId, channelId);
   }
 
 }

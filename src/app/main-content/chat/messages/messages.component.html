@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="message-container" *ngIf="editingMessageId != message.messageId"
-            [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}">
+            [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}" [id]="message.messageId">
             <div class="avatar-and-message"
                 [ngClass]="{'avatar-and-message-sender': isCurrentUserSender(message.sendId)}">
                 <div class="avatar-container">

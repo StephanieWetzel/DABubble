@@ -37,6 +37,11 @@ export class ChatService implements OnDestroy {
   replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
   currentUser!: User;
   userInitialized = new BehaviorSubject<boolean>(false);
+  messageIdSource = new BehaviorSubject<string | null>(null);
+  channelIdSource = new BehaviorSubject<string | null>(null);
+
+  messageId$ = this.messageIdSource.asObservable();
+  channelId$ = this.channelIdSource.asObservable();
 
   users: User[] = [];
   isFirstLoad = true;
@@ -85,6 +90,11 @@ export class ChatService implements OnDestroy {
     });
   }
 
+  highlightMessage(messageId: string, channelId: string) {
+    this.channelIdSource.next(channelId);
+    this.messageIdSource.next(messageId);
+  }
+
   async getNameChannel(channelId: string): Promise<string> {
     const channelDoc = await getDoc(doc(this.firestore, `channel/${channelId}`));
     return channelDoc.exists() ? channelDoc.data()['name'] : 'Unknown Channel';
@@ -107,8 +117,7 @@ export class ChatService implements OnDestroy {
         if (messageData['content'].toLowerCase().includes(searchInput.toLowerCase())) {
           const channelName = await this.getNameChannel(channelId);
           const userName = await this.getNameUser(messageData['sendId']);
-          this.searchResults.push({ type: 'message', 
-          data: messageData, channelId, channelName,userName});
+           this.searchResults.push({data: messageData, channelId, channelName,userName});
         };
       };
     };

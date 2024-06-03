@@ -565,3 +565,8 @@ app-user-detail {
         border-bottom-right-radius: 0px;  
     }
 }
+
+.highlight {
+    background-color: #8c91dd;
+    transition: background-color 0.5s ease;
+}

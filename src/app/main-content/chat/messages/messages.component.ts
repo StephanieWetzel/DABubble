@@ -53,6 +53,7 @@ export class MessagesComponent implements AfterViewInit {
   subscription = new Subscription();
   isShowingProfile: boolean = false;
   selectedProfileId: string = '';
+  highlightSubscription!: Subscription;
 
   currentUser!: User;
 
@@ -101,6 +102,11 @@ export class MessagesComponent implements AfterViewInit {
         }, 100);
       }
     }));
+    this.highlightSubscription = this.chatService.messageId$.subscribe(messageId => {
+      if (messageId) {
+        this.highlightMessage(messageId);
+      }
+    });
   }
 
   ngAfterViewChecked(): void {
@@ -120,6 +126,19 @@ export class MessagesComponent implements AfterViewInit {
     })
   }
 
+  highlightMessage(messageId: string) {
+    console.log(messageId)
+    setTimeout(() => {
+      const messageElement = document.getElementById(messageId);
+      if (messageElement) {
+        messageElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        messageElement.classList.add('highlight');
+        setTimeout(() => {
+          messageElement.classList.remove('highlight');
+        }, 4000);
+      }
+    }, 500);
+  }
 
   /**
    * Determines if the current channel is a direct message based on the length of the channel ID.
