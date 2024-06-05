@@ -187,45 +187,60 @@ export class ChatService implements OnDestroy {
   async updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
     if (!this.currentChannel$.value || !this.users) {
-        console.error("currentChannel$ ist undefined.");
-        return;
+      console.error("currentChannel$ ist undefined.");
+      return;
     }
     if (this.unsubscribe) {
-      this.messages = [];
-        this.unsubscribe();
+      this.unsubscribe();
     }
     if (this.currentChannel$.value === 'writeANewMessage') {
-        this.messages = [];
-        return;
+      this.messages = [];
+      return;
     }
+  
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
-        for (const change of snapshot.docChanges()) {
-            const messageData = new Message(change.doc.data() as Message);
-            const repliesRef = collection(change.doc.ref, 'replies');
-            const repliesSnapshot = await getDocs(repliesRef);
-            const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
-            const fullMessageData = { ...messageData, replies };
-
-            if (change.type === 'added') {
-                if (!this.messages.some(m => m.messageId === messageData.messageId)) {
-                    this.messages.push(fullMessageData);
-                }
-            } else if (change.type === 'modified') {
-                const index = this.messages.findIndex(m => m.messageId === messageData.messageId);
-                if (index !== -1) {
-                    this.messages[index] = fullMessageData;
-                }
-            } else if (change.type === 'removed') {
-                this.messages = this.messages.filter(m => m.messageId !== messageData.messageId);
-            }
-        }
-        this.messageCount.next(this.messages.length);
-        if (this.isFirstLoad) {
-            this.scrollToBottom$.next(true);
-            this.isFirstLoad = false;
-        }
+      const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
+        const messageData = new Message(doc.data());
+        const repliesRef = collection(doc.ref, 'replies');
+        const repliesSnapshot = await getDocs(repliesRef);
+        const replies = repliesSnapshot.docs.map(replyDoc => new Message(replyDoc.data()));
+        messageData.replies = replies;
+        return messageData;
+      }));
+      
+      // Aktualisieren Sie den Nachrichten-Array
+      this.updateMessagesArray(messagesWithReplies);
+      
+      this.messageCount.next(this.messages.length);
+      if (this.isFirstLoad) {
+        this.scrollToBottom$.next(true);
+        this.isFirstLoad = false;
+      }
     });
-}
+  }
+
+  private updateMessagesArray(newMessages: Message[]) {
+    // Erstellen Sie eine Map der neuen Nachrichten nach messageId
+    const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
+  
+    // Aktualisieren oder entfernen Sie vorhandene Nachrichten
+    const updatedMessages = this.messages.map(currentMessage => {
+      const newMessage = newMessagesMap.get(currentMessage.messageId);
+      if (newMessage) {
+        newMessagesMap.delete(currentMessage.messageId);
+        return newMessage;
+      }
+      return currentMessage;
+    });
+  
+    // Fügen Sie neue Nachrichten hinzu, die nicht im aktuellen Array vorhanden sind
+    newMessagesMap.forEach((newMessage) => {
+      updatedMessages.push(newMessage);
+    });
+  
+    // Weisen Sie den aktualisierten Nachrichten-Array dem aktuellen Array zu
+    this.messages = updatedMessages;
+  }
 
 
   // async updateMessages() {
