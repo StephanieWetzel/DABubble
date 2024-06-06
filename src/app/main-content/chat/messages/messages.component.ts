@@ -20,8 +20,7 @@ import { FirebaseService } from '../../../../assets/services/firebase-service';
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [NgFor,
-    NgIf,
+  imports: [CommonModule,
     CustomDatePipe,
     CustomTimePipe,
     MatIconModule,
@@ -177,6 +176,15 @@ export class MessagesComponent implements AfterViewInit {
     return lastReply.time;
   }
 
+  onEditorInit(messageId: string) {
+    if (this.editingMessageId === messageId) {
+      const editorInstance = tinymce.get('editData-' + messageId);
+      if (editorInstance) {
+        editorInstance.setContent(this.currentEditingContent);
+      }
+    }
+  }
+
 
   /**
    * Prepares a message for editing by setting necessary states.
@@ -184,10 +192,13 @@ export class MessagesComponent implements AfterViewInit {
    * @param {string} content - The current content of the message.
    */
   editMessage(id: string, content: string) {
-    debugger
     this.closeEditor();
     this.editingMessageId = id;
     this.currentEditingContent = content
+    const editorInstance = tinymce.get('editData-' + id);
+    if (editorInstance) {
+      editorInstance.setContent(content);
+    }
   }
 
 

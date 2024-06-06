@@ -75,28 +75,38 @@ app-reply{
     width: 100% !important;
 }
 
+app-messages {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
 app-messages::-webkit-scrollbar {
-    width: 6px;
+    width: 0 !important;
+    height: 0 !important;
 }
 
-/* Handle (der bewegliche Teil der Scrollbar) */
-app-messages::-webkit-scrollbar-thumb {
-    background-color: rgba($color: #686868, $alpha: 0.5);
-    border-radius: 4px;
-}
+// app-messages::-webkit-scrollbar {
+//     width: 6px;
+// }
 
-/* Handle Hover */
-app-messages::-webkit-scrollbar-thumb:hover {
-    background-color: rgba($color: #686868, $alpha: 0.7);
-}
+// /* Handle (der bewegliche Teil der Scrollbar) */
+// app-messages::-webkit-scrollbar-thumb {
+//     background-color: rgba($color: #686868, $alpha: 0.5);
+//     border-radius: 4px;
+// }
 
-/* Der Hintergrund der Scrollbar (der Teil, auf dem der Handle bewegt wird) */
-app-messages::-webkit-scrollbar-track {
-    background: none;
-    border-radius: 4px;
-}
+// /* Handle Hover */
+// app-messages::-webkit-scrollbar-thumb:hover {
+//     background-color: rgba($color: #686868, $alpha: 0.7);
+// }
 
-/* Optional: Das Styling für den Button der Scrollbar (die Pfeile oben und unten), falls vorhanden */
-app-messages::-webkit-scrollbar-button {
-    display: none;
-}
+// /* Der Hintergrund der Scrollbar (der Teil, auf dem der Handle bewegt wird) */
+// app-messages::-webkit-scrollbar-track {
+//     background: none;
+//     border-radius: 4px;
+// }
+
+// /* Optional: Das Styling für den Button der Scrollbar (die Pfeile oben und unten), falls vorhanden */
+// app-messages::-webkit-scrollbar-button {
+//     display: none;
+// }

@@ -111,6 +111,45 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
         const previousDateFormatted = this.customDatePipe.transform(this.replies[index - 1].time);
         return currentDateFormatted !== previousDateFormatted;
       }
+
+      /**
+   * Extracts the file name from a URL.
+   * @param {string} url - The URL from which to extract the file name.
+   * @returns {string} - The extracted file name.
+   */
+  urlToFileName(url: string): string {
+    const decodedUrl = decodeURIComponent(url);
+    const parts = decodedUrl.split('/');
+    let fileName = parts[parts.length - 1];
+    fileName = fileName.split('?')[0];
+    return fileName;
+  }
+
+  
+  /**
+   * Initiates the file download process from a specified URL.
+   * @param {string} url - The URL of the file to download.
+   * @param {string} filename - The name to assign to the downloaded file.
+   */
+  async downloadFile(url: string, filename: string): Promise<void> {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Network response was not ok. Status: ${response.status}`);
+      }
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename || 'downloaded-file';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  }
       
       
       formatUsernames(users: string[]): string {

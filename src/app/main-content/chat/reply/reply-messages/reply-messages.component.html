@@ -1,5 +1,5 @@
 <section #replyContainer>
-
+    <div class="messages-section">
     <div class="initial-message" *ngIf="chatService.initialMessageForThread">
         <div class="avatar-and-message">
 
@@ -15,6 +15,7 @@
                 <div class="message-content"
                     [ngClass]="{'message-content-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
                     <p (ngModel)="currentContent">{{ chatService.initialMessageForThread.content }}</p>
+                    
                 </div>
             </div>
         </div>
@@ -57,6 +58,13 @@
                     <div class="message-content"
                         [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
                         <p (ngModel)="currentContent">{{ message.content }}</p>
+                        <div class="files-container" *ngIf="message.fileUrls.length > 0">
+                            <div *ngFor="let url of message.fileUrls" class="attached-file"
+                                (click)="downloadFile(url, urlToFileName(url))"><img
+                                    *ngIf="urlToFileName(url).endsWith('.pdf')" src="./../../../../assets/img/pdf.png"
+                                    alt="pdf:"><span>{{ urlToFileName(url) }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,7 +74,7 @@
                 <div *ngFor="let reaction of message.reactions" (click)="addReaction(message.messageId, reaction.emote)"
                     class="reaction-container">
                     <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count }}</span>
-                    <div class="reaction-info">
+                    <div class="reaction-info" [ngClass]="{'reaction-info-sender': isCurrentUserSender(message.sendId)}">
                         <span>{{ reaction.emote }}</span>
                         <span class="reactors">
                             {{ formatUsernames(reaction.users) }}
@@ -107,16 +115,17 @@
                     </ul>
                 </mat-menu>
                 <div><mat-icon class="outlined">chat_outline</mat-icon></div>
-                <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)" (mouseenter)="menuEditMessage = true" (mouseleave)="menuEditMessage = false">
+                <!-- <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)" (mouseenter)="menuEditMessage = true" (mouseleave)="menuEditMessage = false">
                     <div class="icon-container" >
                         <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
                     </div>
-                    <div class="edit-text" *ngIf="menuEditMessage == true" 
+                    <div class="edit-text edit-text-reply" *ngIf="menuEditMessage == true" 
                         (click)="editMessage(message.messageId, message.content)">
                         <p>Nachricht bearbeiten</p>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
+</div>
 </section>

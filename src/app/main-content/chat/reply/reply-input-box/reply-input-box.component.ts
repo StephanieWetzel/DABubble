@@ -4,18 +4,22 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { Message } from '../../../../../assets/models/message.class';
 import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
+import { MatIcon } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { FilePreviewDialogComponent } from '../../input-box/file-preview-dialog/file-preview-dialog.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reply-input-box',
   standalone: true,
-  imports: [EditorModule, CommonModule],
+  imports: [EditorModule, CommonModule, MatIcon],
   templateUrl: './reply-input-box.component.html',
   styleUrl: './reply-input-box.component.scss'
 })
 export class ReplyInputBoxComponent {
   public inputInit: RawEditorOptions = {
     id: 'inputReply',
-    base_url: '/tinymce',
+    base_url: '/angular-projects/da-bubble/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -40,8 +44,11 @@ export class ReplyInputBoxComponent {
   };
 
   isContentEmpty: boolean = true;
+  selectedFiles: File[] = []; // Speichert mehrere Dateien
+  selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
+  safeUrl: any;
 
-  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef) {
+  constructor(public dialog: MatDialog, private chatService: ChatService, private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer) {
 
   }
 
@@ -49,16 +56,81 @@ export class ReplyInputBoxComponent {
     return input.getContent({ format: 'text' }).trim();
   }
 
-  sendMessage() {
+  async sendMessage() {
+    
     let replyData = tinymce.get('inputReply');
-    if (replyData && this.getInputContent(replyData)) {
-      let content = replyData.getContent({ format: 'text' });
+    if (replyData){
+      await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
+      this.clearSelectedFiles();
+      replyData.setContent('');
+    }
+    
+  }
+
+  clearSelectedFiles() {
+    this.selectedFileNames = [];
+    this.selectedFiles = [];
+  }
+
+
+  async sendSingleMessage(data: any, channel: string) {
+    if (data && this.getInputContent(data)) {
+      let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
       message.sendId = this.chatService.currentUser.userId;
-      this.chatService.addReply(message);
-      replyData.setContent('');
+      for (const file of this.selectedFiles) {
+        const fileUrl = await this.chatService.uploadFile(file);
+        message.fileUrls.push(fileUrl);
+      }
+      await this.chatService.addReply(message);
     }
+  }
+
+  openSelectedFile(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input && input.files) {
+      const files = input.files;
+      let totalSize = 0;
+      this.selectedFiles = [];
+      this.selectedFileNames = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        totalSize += file.size;
+        if (file.size > 5242880) { // 5 MB für Bilder
+          alert("Dateien dürfen nicht größer als 5 MB sein.");
+        } else {
+          this.selectedFiles.push(file);
+          this.selectedFileNames.push(file.name);
+        }
+      }
+
+      if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
+        alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
+        this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
+      }
+    }
+  }
+
+
+
+
+  openFilePreview(index: number) {
+    const file = this.selectedFiles[index];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
+      this.dialog.open(FilePreviewDialogComponent, {
+        data: { fileUrl: this.safeUrl, fileType: file.type }
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1)
+    this.selectedFileNames.splice(index, 1);
   }
 
   decodeHtmlEntities(encodedString: string) {

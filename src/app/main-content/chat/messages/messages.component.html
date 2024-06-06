@@ -1,6 +1,10 @@
-<section #chatContainer>
+<section #chatContainer [ngClass]="{'h-100': chatService.noMessages === true}">
+    <div  [class.hidden]="!(chatService.isLoadingMessages$ | async)" class="loading-container">
+    </div>
+
+    <div class="messages-section">
     <div class="no-message-container"
-        *ngIf="messages.length === 0 && chatService.users.length > 0 && isDirectMessage()">
+        *ngIf="chatService.noMessages === true && isDirectMessage()">
         <div class="other-user-container">
             <img [src]="getOtherUserImg()" alt=""  loading="lazy">
             <span>{{ getOtherUserName() }}</span>
@@ -9,7 +13,7 @@
             Diese Unterhaltung findet nur zwischen <span>&#64;{{ getOtherUserName() }}</span> und dir statt
         </p>
     </div>
-    <div class="no-message-container" *ngIf="messages.length === 0 && chatService.currentChannel$.value.length > 0 && !isDirectMessage() && !wantToWriteNewMessage()">
+    <div class="no-message-container" *ngIf="chatService.noMessages === true && !isDirectMessage() && !wantToWriteNewMessage()">
         <div class="channel-container">
             <span># {{ chatService.getChannelName() }}</span>
         </div>
@@ -125,4 +129,5 @@
         </div>
     </div>
     <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId" (hasClosed)="handleProfile($event)"></app-user-detail>
+    </div>
 </section>

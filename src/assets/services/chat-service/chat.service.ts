@@ -43,6 +43,9 @@ export class ChatService implements OnDestroy {
   messageId$ = this.messageIdSource.asObservable();
   channelId$ = this.channelIdSource.asObservable();
 
+  isLoadingMessages = new BehaviorSubject<boolean>(false);
+  isLoadingMessages$ = this.isLoadingMessages.asObservable();
+
   users: User[] = [];
   isFirstLoad = true;
   editorMessage!: Editor;
@@ -61,6 +64,7 @@ export class ChatService implements OnDestroy {
 
   unsubscribe!: Unsubscribe;
   unsubreplies!: Unsubscribe;
+  noMessages: boolean = false;
   // unsubDirectMessages!: Unsubscribe;
   // unsubReplies!: Unsubscribe;
 
@@ -195,8 +199,17 @@ export class ChatService implements OnDestroy {
     }
     if (this.currentChannel$.value === 'writeANewMessage') {
       this.messages = [];
+      this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
       return;
     }
+    if(this.isFirstLoad){
+      this.isLoadingMessages.next(true); // Nachrichten werden geladen
+    }
+    
+    
+    console.log(this.messages);
+    
+
   
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
       const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
@@ -207,16 +220,26 @@ export class ChatService implements OnDestroy {
         messageData.replies = replies;
         return messageData;
       }));
-      
-      // Aktualisieren Sie den Nachrichten-Array
+  
       this.updateMessagesArray(messagesWithReplies);
-      
       this.messageCount.next(this.messages.length);
+  
       if (this.isFirstLoad) {
         this.scrollToBottom$.next(true);
         this.isFirstLoad = false;
       }
+      
+      setTimeout(() => {
+        this.isLoadingMessages.next(false); // Nachrichten sind vollständig geladen
+      }, 200);
+
+      if(this.messages.length === 0){
+        this.noMessages = true;
+      }else{
+        this.noMessages = false;
+      }
     });
+    console.log(this.messages);
   }
 
   private updateMessagesArray(newMessages: Message[]) {
@@ -370,74 +393,121 @@ export class ChatService implements OnDestroy {
   }
 
 
-  /**
-   * React to a message with an emoticon
-   * @param {string} messageId - The ID of the message
-   * @param {string} emote - The emoticon to react with
-   * @param {string} user - The user reacting
-   * @param {boolean} reply - Whether the reaction is to a reply
-   */
   async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
     let path;
     if (reply) {
-      path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
+      path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`;
     } else {
-      path = `channel/${this.currentChannel$.value}/messages`
+      path = `channel/${this.currentChannel$.value}/messages`;
     }
     const messageRef = doc(this.firestore, path, messageId);
     const docSnap = await getDoc(messageRef);
-
+  
     if (docSnap.exists()) {
       let reactions = docSnap.data()['reactions'] || [];
-      let reactedEmote = this.removeAllUserReactions(reactions, user);
-      const reactionIndex = this.getReactionIndex(reactions, emote)
-      this.checkIfReactionExists(reactionIndex, reactions, user, emote, reactedEmote);
+      const reactionIndex = this.getReactionIndex(reactions, emote);
+      this.checkIfReactionExists(reactionIndex, reactions, user, emote);
       await updateDoc(messageRef, { reactions: reactions });
     } else {
       console.log("Dokument existiert nicht!");
     }
   }
 
-
   /**
-   * Remove all reactions by a user
-   * @param {Reaction[]} reactions - The list of reactions
-   * @param {string} user - The user removing reactions
-   * @returns {string} - The emoticon that was removed
-   */
-  removeAllUserReactions(reactions: Reaction[], user: string) {
-    let reactedEmote = '';
-    reactions.forEach((reaction, index) => {
-      const userIndex = reaction.users.indexOf(user);
-      if (userIndex > -1) {
-        reactedEmote = reaction.emote
-        reaction.users.splice(userIndex, 1);
-        reaction.count--;
-        this.deleteReactionAtZero(reactions, reaction, index);
-      }
-    });
-    return reactedEmote;
-  }
-
-
-  /**
-   * Check if a reaction exists and handle it
-   * @param {number} reactionIndex - The index of the reaction
-   * @param {Reaction[]} reactions - The list of reactions
-   * @param {string} user - The user reacting
-   * @param {string} emote - The emoticon being added
-   * @param {string} reactedEmote - The emoticon that was reacted with
-   */
-  checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote: string) {
-    let addedEmote = emote;
+ * Check if a reaction exists and handle it
+ * @param {number} reactionIndex - The index of the reaction
+ * @param {Reaction[]} reactions - The list of reactions
+ * @param {string} user - The user reacting
+ * @param {string} emote - The emoticon being added
+ */
+  checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string) {
     if (reactionIndex > -1) {
       let reaction = reactions[reactionIndex];
-      this.checkIfUserReacted(reactions, reaction, user, emote, reactedEmote);
-    }
-    if (reactionIndex === -1 && reactedEmote != addedEmote) {
+      const userIndex = reaction.users.indexOf(user);
+      if (userIndex > -1) {
+        // Remove the user's reaction
+        reaction.users.splice(userIndex, 1);
+        reaction.count--;
+        this.deleteReactionAtZero(reactions, reaction, reactionIndex);
+      } else {
+        // Add the user's reaction
+        reaction.users.push(user);
+        reaction.count++;
+      }
+    } else {
       this.addTheNewReaction(reactions, user, emote);
     }
-  }
+}
+
+
+  // /**
+  //  * React to a message with an emoticon
+  //  * @param {string} messageId - The ID of the message
+  //  * @param {string} emote - The emoticon to react with
+  //  * @param {string} user - The user reacting
+  //  * @param {boolean} reply - Whether the reaction is to a reply
+  //  */
+  // async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
+  //   let path;
+  //   if (reply) {
+  //     path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
+  //   } else {
+  //     path = `channel/${this.currentChannel$.value}/messages`
+  //   }
+  //   const messageRef = doc(this.firestore, path, messageId);
+  //   const docSnap = await getDoc(messageRef);
+
+  //   if (docSnap.exists()) {
+  //     let reactions = docSnap.data()['reactions'] || [];
+  //     let reactedEmote = this.removeAllUserReactions(reactions, user);
+  //     const reactionIndex = this.getReactionIndex(reactions, emote)
+  //     this.checkIfReactionExists(reactionIndex, reactions, user, emote, reactedEmote);
+  //     await updateDoc(messageRef, { reactions: reactions });
+  //   } else {
+  //     console.log("Dokument existiert nicht!");
+  //   }
+  // }
+
+
+  // /**
+  //  * Remove all reactions by a user
+  //  * @param {Reaction[]} reactions - The list of reactions
+  //  * @param {string} user - The user removing reactions
+  //  * @returns {string} - The emoticon that was removed
+  //  */
+  // removeAllUserReactions(reactions: Reaction[], user: string) {
+  //   let reactedEmote = '';
+  //   reactions.forEach((reaction, index) => {
+  //     const userIndex = reaction.users.indexOf(user);
+  //     if (userIndex > -1) {
+  //       reactedEmote = reaction.emote
+  //       reaction.users.splice(userIndex, 1);
+  //       reaction.count--;
+  //       this.deleteReactionAtZero(reactions, reaction, index);
+  //     }
+  //   });
+  //   return reactedEmote;
+  // }
+
+
+  // /**
+  //  * Check if a reaction exists and handle it
+  //  * @param {number} reactionIndex - The index of the reaction
+  //  * @param {Reaction[]} reactions - The list of reactions
+  //  * @param {string} user - The user reacting
+  //  * @param {string} emote - The emoticon being added
+  //  * @param {string} reactedEmote - The emoticon that was reacted with
+  //  */
+  // checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote: string) {
+  //   let addedEmote = emote;
+  //   if (reactionIndex > -1) {
+  //     let reaction = reactions[reactionIndex];
+  //     this.checkIfUserReacted(reactions, reaction, user, emote, reactedEmote);
+  //   }
+  //   if (reactionIndex === -1 && reactedEmote != addedEmote) {
+  //     this.addTheNewReaction(reactions, user, emote);
+  //   }
+  // }
 
 
   /**
