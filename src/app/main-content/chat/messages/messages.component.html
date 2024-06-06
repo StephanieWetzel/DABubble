@@ -55,7 +55,7 @@
                         <div class="files-container" *ngIf="message.fileUrls.length > 0">
                             <div *ngFor="let url of message.fileUrls" class="attached-file"
                                 (click)="downloadFile(url, urlToFileName(url))"><img
-                                    *ngIf="urlToFileName(url).endsWith('.pdf')" src="./../../../../assets/img/pdf.png"
+                                    *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
                                     alt="pdf:"><span>{{ urlToFileName(url) }}</span>
                             </div>
                         </div>
