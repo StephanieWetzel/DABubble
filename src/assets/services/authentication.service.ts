@@ -5,14 +5,11 @@ import {
 } from 'firebase/auth';
 import {
   Firestore,
-  arrayUnion,
   doc,
-  getDoc,
-  setDoc,
-  updateDoc
+  getDoc
 } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
-import { Auth, signInWithRedirect, signOut, getRedirectResult } from '@angular/fire/auth';
+import { Auth, signInWithPopup, signOut } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
 import { Router } from '@angular/router';
 
@@ -61,57 +58,12 @@ export class AuthenticationService {
 
 
   /**
-  * Signs in with Google authentication provider using redirect.
-  * @returns {Promise<void>} A promise that resolves when the sign-in process completes.
-  */
+* Signs in with Google authentication provider using a pop-up window.
+* @returns {Promise<UserCredential>} A promise that resolves with the user credential upon successful Google sign-in.
+*/
   signInWithGoogle() {
     const provider = new GoogleAuthProvider();
-    return signInWithRedirect(this.auth, provider);
-  }
-
-
-  /**
- * Handles the redirect result from the authentication provider.
- * 
- * @param {string} standardChannelId - The ID of the standard channel.
- * @returns {Promise<void>} A promise that resolves when the handling completes.
- */
-  async handleRedirect(standardChannelId: string) {
-    try {
-      const result = await getRedirectResult(this.auth);
-      if (result && result.user) {
-
-        const transformedData = this.transformGoogleSignInData(result);
-        if (!result.user.uid) {
-          console.error("UID ist undefined oder null");
-          return;
-        }
-        const userRef = doc(this.firestore, "user", result.user.uid);
-        const channelRef = doc(this.firestore, "channel", standardChannelId);
-        await updateDoc(channelRef, {
-          member: arrayUnion({ id: transformedData.userId, name: transformedData.name })
-        });
-        await setDoc(userRef, transformedData);
-        this.router.navigate(['/main']);
-      }
-    } catch (error) {
-    }
-  }
-
-
-  /**
-* Transforms the data obtained from Google Sign-In into a format suitable for storing in the database.
-* 
-* @param {any} result - The result object obtained from Google Sign-In.
-* @returns {object} An object containing the transformed user data.
-*/
-  transformGoogleSignInData(result: any) {
-    return {
-      email: result.user.email ? result.user.email : "Keine E-Mail",
-      name: result.user.displayName ? result.user.displayName : "Unbekannt",
-      userId: result.user.uid,
-      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
-    };
+    return signInWithPopup(this.auth, provider);
   }
 
 
@@ -140,5 +92,4 @@ export class AuthenticationService {
       return null;
     }
   }
-
 }

@@ -27,7 +27,7 @@ export class UserDetailComponent {
   constructor(
     private firestore: FirebaseService,
     private chatService: ChatService
-  ) {}
+  ) { }
 
   /**
    * Emits an event to indicate that the profile is being closed with the provided value.
@@ -57,11 +57,6 @@ export class UserDetailComponent {
    */
   async loadUser(userId: string): Promise<void> {
     this.pUser = await this.firestore.getCurrentUser(userId);
-    if (this.pUser) {
-      console.log('User loaded', this.pUser);
-    } else {
-      console.log('Failed to load user.');
-    }
   }
 
   /**

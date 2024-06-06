@@ -108,7 +108,7 @@ export class ChatService implements OnDestroy {
     const userDoc = await getDoc(doc(this.firestore, `user/${userId}`));
     return userDoc.exists() ? userDoc.data()['name'] : 'Unknown User';
   }
-  
+
   async search(searchInput: string) {
     this.searchResults = [];
     if (!searchInput) return;
@@ -121,7 +121,7 @@ export class ChatService implements OnDestroy {
         if (messageData['content'].toLowerCase().includes(searchInput.toLowerCase())) {
           const channelName = await this.getNameChannel(channelId);
           const userName = await this.getNameUser(messageData['sendId']);
-           this.searchResults.push({data: messageData, channelId, channelName,userName});
+          this.searchResults.push({ data: messageData, channelId, channelName, userName });
         };
       };
     };
@@ -169,7 +169,7 @@ export class ChatService implements OnDestroy {
    * @param {string} channel - The channel ID
    */
   async addMessage(message: Message, channel: string) {
-    if(channel.length <= 27){
+    if (channel.length <= 27) {
       const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
       const docRefId = docRef.id;
       await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
@@ -202,15 +202,10 @@ export class ChatService implements OnDestroy {
       this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
       return;
     }
-    if(this.isFirstLoad){
+    if (this.isFirstLoad) {
       this.isLoadingMessages.next(true); // Nachrichten werden geladen
     }
-    
-    
-    console.log(this.messages);
-    
 
-  
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
       const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
         const messageData = new Message(doc.data());
@@ -220,32 +215,31 @@ export class ChatService implements OnDestroy {
         messageData.replies = replies;
         return messageData;
       }));
-  
+
       this.updateMessagesArray(messagesWithReplies);
       this.messageCount.next(this.messages.length);
-  
+
       if (this.isFirstLoad) {
         this.scrollToBottom$.next(true);
         this.isFirstLoad = false;
       }
-      
+
       setTimeout(() => {
         this.isLoadingMessages.next(false); // Nachrichten sind vollständig geladen
       }, 200);
 
-      if(this.messages.length === 0){
+      if (this.messages.length === 0) {
         this.noMessages = true;
-      }else{
+      } else {
         this.noMessages = false;
       }
     });
-    console.log(this.messages);
   }
 
   private updateMessagesArray(newMessages: Message[]) {
     // Erstellen Sie eine Map der neuen Nachrichten nach messageId
     const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
-  
+
     // Aktualisieren oder entfernen Sie vorhandene Nachrichten
     const updatedMessages = this.messages.map(currentMessage => {
       const newMessage = newMessagesMap.get(currentMessage.messageId);
@@ -255,12 +249,12 @@ export class ChatService implements OnDestroy {
       }
       return currentMessage;
     });
-  
+
     // Fügen Sie neue Nachrichten hinzu, die nicht im aktuellen Array vorhanden sind
     newMessagesMap.forEach((newMessage) => {
       updatedMessages.push(newMessage);
     });
-  
+
     // Weisen Sie den aktualisierten Nachrichten-Array dem aktuellen Array zu
     this.messages = updatedMessages;
   }
@@ -402,7 +396,7 @@ export class ChatService implements OnDestroy {
     }
     const messageRef = doc(this.firestore, path, messageId);
     const docSnap = await getDoc(messageRef);
-  
+
     if (docSnap.exists()) {
       let reactions = docSnap.data()['reactions'] || [];
       const reactionIndex = this.getReactionIndex(reactions, emote);
@@ -437,7 +431,7 @@ export class ChatService implements OnDestroy {
     } else {
       this.addTheNewReaction(reactions, user, emote);
     }
-}
+  }
 
 
   // /**
