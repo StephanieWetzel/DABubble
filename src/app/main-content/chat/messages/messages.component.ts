@@ -451,7 +451,7 @@ export class MessagesComponent implements AfterViewInit {
     const ids = this.chatService.currentChannel$.value.split('_')
     const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
     const user = this.chatService.users.find(user => user.userId === userId);
-    return user ? user.name : 'dir';
+    return user ? user.name : 'Noah Braun';
   }
 
 
