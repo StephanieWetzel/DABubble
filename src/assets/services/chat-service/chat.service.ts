@@ -171,98 +171,100 @@ export class ChatService implements OnDestroy {
     await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
   }
 
-/**
- * Add a message to a channel or direct message
- * @param {Message} message - The message object
- * @param {string} channel - The channel ID
- */
-async addMessage(message: Message, channel: string) {
-  let docRef;
-  if (channel.length <= 27) {
-    docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
-  } else {
-    docRef = await addDoc(this.getDirectMessagesRef(channel), message.toJSON(message));
-  }
-  const docRefId = docRef.id;
-  await updateDoc(docRef, { messageId: docRefId });
-  message.messageId = docRefId;  // Update message object with the new ID
-
-  // Update local messages array without triggering onSnapshot
-  this.messages.push(message);
-  this.scrollToBottom$.next(true);
-}
-
-/**
- * Update the messages array with new messages and remove duplicates
- * @param {Message[]} newMessages - The new messages to add
- */
-private updateMessagesArray(newMessages: Message[]) {
-  const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
-  const updatedMessages: Message[] = [];
-
-  this.messages.forEach(currentMessage => {
-    if (!currentMessage.messageId) return;  // Skip messages without a valid messageId
-    const newMessage = newMessagesMap.get(currentMessage.messageId);
-    if (newMessage) {
-      updatedMessages.push(newMessage);
-      newMessagesMap.delete(currentMessage.messageId); // Ensure we don't add the same message twice
+  async addMessage(message: Message, channel: string) {
+    let docRef;
+    if (channel.length <= 27) {
+      docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
     } else {
-      updatedMessages.push(currentMessage);
+      docRef = await addDoc(this.getDirectMessagesRef(channel), message.toJSON(message));
     }
-  });
-
-  newMessagesMap.forEach(newMessage => {
-    updatedMessages.push(newMessage);
-  });
-
-  updatedMessages.sort((a, b) => a.time - b.time);
-  this.messages = updatedMessages;
-}
-
-async updateMessages() {
-  const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
-  if (!this.currentChannel$.value || !this.users) {
-    console.error("currentChannel$ ist undefined.");
-    return;
+    const docRefId = docRef.id;
+    await updateDoc(docRef, { messageId: docRefId });
+    this.scrollToBottom$.next(true);
   }
-  if (this.unsubscribe) {
-    this.unsubscribe();
+  
+  /**
+   * Update the messages array with new messages and remove duplicates
+   * @param {Message[]} newMessages - The new messages to add
+   */
+  private updateMessagesArray(newMessages: Message[]) {
+    const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
+    const updatedMessages: Message[] = [];
+  
+    this.messages.forEach(currentMessage => {
+      if (!currentMessage.messageId) return;  // Skip messages without a valid messageId
+      const newMessage = newMessagesMap.get(currentMessage.messageId);
+      if (newMessage) {
+        updatedMessages.push(newMessage);
+        newMessagesMap.delete(currentMessage.messageId); // Ensure we don't add the same message twice
+      } else {
+        updatedMessages.push(currentMessage);
+      }
+    });
+  
+    newMessagesMap.forEach(newMessage => {
+      updatedMessages.push(newMessage);
+    });
+  
+    updatedMessages.sort((a, b) => a.time - b.time);
+    this.messages = this.removeDuplicates(updatedMessages);
   }
-  if (this.currentChannel$.value === 'writeANewMessage') {
-    this.messages = [];
-    this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
-    return;
-  }
-  if (this.isFirstLoad) {
-    this.isLoadingMessages.next(true); // Nachrichten werden geladen
-  }
-
-  this.unsubscribe = onSnapshot(ref, async (snapshot) => {
-    const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
-      const messageData = new Message(doc.data());
-      const repliesRef = collection(doc.ref, 'replies');
-      const repliesSnapshot = await getDocs(repliesRef);
-      const replies = repliesSnapshot.docs.map(replyDoc => new Message(replyDoc.data()));
-      messageData.replies = replies;
-      return messageData;
-    }));
-
-    this.updateMessagesArray(messagesWithReplies);
-    this.messageCount.next(this.messages.length);
-
+  
+  async updateMessages() {
+    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
+    if (!this.currentChannel$.value || !this.users) {
+      console.error("currentChannel$ ist undefined.");
+      return;
+    }
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+    if (this.currentChannel$.value === 'writeANewMessage') {
+      this.messages = [];
+      this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
+      return;
+    }
     if (this.isFirstLoad) {
-      this.scrollToBottom$.next(true);
-      this.isFirstLoad = false;
+      this.isLoadingMessages.next(true); // Nachrichten werden geladen
     }
-
-    setTimeout(() => {
-      this.isLoadingMessages.next(false); // Nachrichten sind vollständig geladen
-    }, 200);
-
-    this.noMessages = this.messages.length === 0;
-  });
-}
-
+  
+    this.unsubscribe = onSnapshot(ref, async (snapshot) => {
+      const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
+        const messageData = new Message(doc.data());
+        const repliesRef = collection(doc.ref, 'replies');
+        const repliesSnapshot = await getDocs(repliesRef);
+        const replies = repliesSnapshot.docs.map(replyDoc => new Message(replyDoc.data()));
+        messageData.replies = replies;
+        return messageData;
+      }));
+  
+      this.updateMessagesArray(messagesWithReplies);
+      this.messageCount.next(this.messages.length);
+  
+      if (this.isFirstLoad) {
+        this.scrollToBottom$.next(true);
+        this.isFirstLoad = false;
+      }
+  
+      setTimeout(() => {
+        this.isLoadingMessages.next(false); 
+      }, 200);
+  
+      this.noMessages = this.messages.length === 0;
+    });
+  }
+  
+  private removeDuplicates(messages: Message[]): Message[] {
+    const uniqueMessagesMap = new Map<number, Message>();
+    
+    messages.forEach(message => {
+      if (!uniqueMessagesMap.has(message.time)) {
+        uniqueMessagesMap.set(message.time, message);
+      }
+    });
+  
+    return Array.from(uniqueMessagesMap.values());
+  }
 
   /** Get the list of replies for the current message */
   getReplies() {
