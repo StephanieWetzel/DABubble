@@ -49,7 +49,6 @@ export class SidenavContentComponent {
     if(lastChannel && lastChannel.length < 25){
       this.selectedChannel = lastChannel;
     }
-    
   }
 
   /**
