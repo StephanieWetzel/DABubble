@@ -27,7 +27,7 @@ export class InputBoxComponent {
   @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
 
   public editorInit: RawEditorOptions = {
-    base_url: '/angular-projects/da-bubble/tinymce',
+    base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -89,6 +89,7 @@ export class InputBoxComponent {
     }
     this.clearSelectedFiles();
     this.clearInput(data);
+    this.cdr.detectChanges();
   }
 
 
@@ -127,7 +128,7 @@ export class InputBoxComponent {
    * @param {string} channel - The channel ID to send the message to.
    */
   async sendSingleMessage(data: any, channel: string) {
-    if (data && this.getInputContent(data)) {
+    if ((data && this.getInputContent(data)) || this.selectedFileNames.length > 0) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
@@ -236,6 +237,7 @@ export class InputBoxComponent {
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1)
     this.selectedFileNames.splice(index, 1);
+    this.cdr.detectChanges();
   }
 
 

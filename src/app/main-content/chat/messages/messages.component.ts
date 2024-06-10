@@ -221,10 +221,15 @@ export class MessagesComponent implements AfterViewInit {
   */
   safeMessage(safe: boolean, messageId: string = '') {
     if (safe) {
-      this.chatService.editMessage(messageId, this.getInputContent(tinymce.get('editData-' + messageId)));
+        const content = this.getInputContent(tinymce.get('editData-' + messageId));
+        const message = this.messages.find(msg => msg.messageId === messageId);
+        if (message) {
+            message.content = content; // Update the message content immediately in the UI
+        }
+        this.chatService.editMessage(messageId, content);
     }
     this.closeEditor();
-  }
+}
 
   /**
    * Retrieves the text content from a TinyMCE editor instance.

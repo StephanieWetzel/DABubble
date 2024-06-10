@@ -16,107 +16,108 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 
 
 @Component({
-    selector: 'app-reply-messages',
-    standalone: true,
-    templateUrl: './reply-messages.component.html',
-    styleUrl: './../../messages/messages.component.scss',
-    imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule, EditorModule]
+  selector: 'app-reply-messages',
+  standalone: true,
+  templateUrl: './reply-messages.component.html',
+  styleUrl: './../../messages/messages.component.scss',
+  imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule, EditorModule]
 })
-export class ReplyMessagesComponent implements AfterViewInit, OnInit{
-    @ViewChild('replyContainer') private replyContainer!: ElementRef<HTMLDivElement>;
-    subscription = new Subscription;
-    replies!: Message[];
-    customDatePipe = new CustomDatePipe();
-    currentUser!: User;
-    currentContent!: string;
-    editingMessageId: string = '';
-    currentEditingContent: string = '';
-    menuEditMessage: boolean = false;
+export class ReplyMessagesComponent implements AfterViewInit, OnInit {
+  @ViewChild('replyContainer') private replyContainer!: ElementRef<HTMLDivElement>;
+  subscription = new Subscription;
+  replies!: Message[];
+  customDatePipe = new CustomDatePipe();
+  currentUser!: User;
+  currentContent!: string;
+  editingMessageId: string = '';
+  currentEditingContent: string = '';
+  menuEditMessage: boolean = false;
 
 
-    public replyEditEditorInit: RawEditorOptions = {
-      suffix: '.min',
-      menubar: false,
-      toolbar_location: 'bottom',
-      border: 'none',
-      plugins: 'autoresize emoticons link',
-      autoresize_bottom_margin: 0,
-      max_height: 500,
-      placeholder: 'Nachricht an Chat ... ',
-      statusbar: false,
-      toolbar: 'emoticons',
-      entity_encoding: 'raw',
-      setup: editor => {
-          editor.on('init', () => {
-              if (this.editingMessageId) {
-                  editor.setContent(this.currentEditingContent);
-              }
-          });
-      }
+  public replyEditEditorInit: RawEditorOptions = {
+    suffix: '.min',
+    menubar: false,
+    toolbar_location: 'bottom',
+    border: 'none',
+    plugins: 'autoresize emoticons link',
+    autoresize_bottom_margin: 0,
+    max_height: 500,
+    placeholder: 'Nachricht an Chat ... ',
+    statusbar: false,
+    toolbar: 'emoticons',
+    entity_encoding: 'raw',
+    setup: editor => {
+      editor.on('init', () => {
+        if (this.editingMessageId) {
+          editor.setContent(this.currentEditingContent);
+        }
+      });
+    }
   };
 
-    @Output() hasOpened = new EventEmitter<{opened: boolean, userId: string}>();
+  @Output() hasOpened = new EventEmitter<{ opened: boolean, userId: string }>();
 
 
-    constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication,  public firebaseService: FirebaseService){
+  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication, public firebaseService: FirebaseService) {
 
-    }
-    
-    openProfile(id: string) {
-      const opened = true;
-      const userId = id
-      this.hasOpened.emit({opened, userId});
-    }
+  }
 
-    ngOnInit(): void {
-        this.profileAuth.initializeUser();
-        this.profileAuth.user$.subscribe((user) => {
-      if(user){
+  openProfile(id: string) {
+    const opened = true;
+    const userId = id
+    this.hasOpened.emit({ opened, userId });
+  }
+
+  ngOnInit(): void {
+    this.profileAuth.initializeUser();
+    this.profileAuth.user$.subscribe((user) => {
+      if (user) {
         this.currentUser = new User(user);
-      }})
-    }
-
-    ngAfterViewInit() {
-        this.subscription.add(this.chatService.messageCount$.subscribe({
-          next: (count) => {
-            this.scrollToBottom();
-
-          }
-        }));
       }
+    })
+  }
 
-      scrollToBottom(): void {
-        requestAnimationFrame(() => {
-          if (this.replyContainer && this.replyContainer.nativeElement) {
-            const lastMessageElement = this.replyContainer.nativeElement.lastElementChild;
-            if (lastMessageElement) {
-              lastMessageElement.scrollIntoView({ block: 'end', behavior: 'auto' });
-            }
-          }
-        });
+  ngAfterViewInit() {
+    this.subscription.add(this.chatService.messageCount$.subscribe({
+      next: (count) => {
+        this.scrollToBottom();
+
       }
+    }));
+  }
 
-      getList(): Message[] {
-        this.replies = this.chatService.replies;
-        return this.chatService.replies;
+  scrollToBottom(): void {
+    requestAnimationFrame(() => {
+      if (this.replyContainer && this.replyContainer.nativeElement) {
+        const lastMessageElement = this.replyContainer.nativeElement.lastElementChild;
+        if (lastMessageElement) {
+          lastMessageElement.scrollIntoView({ block: 'end', behavior: 'auto' });
+        }
       }
+    });
+  }
 
-      isCurrentUserSender(sender: string){
-        return sender === this.currentUser.userId;
-      }
+  getList(): Message[] {
+    this.replies = this.chatService.replies;
+    return this.chatService.replies;
+  }
 
-      isDateDifferent(index: number){
-        if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
-        const currentDateFormatted = this.customDatePipe.transform(this.replies[index].time);
-        const previousDateFormatted = this.customDatePipe.transform(this.replies[index - 1].time);
-        return currentDateFormatted !== previousDateFormatted;
-      }
+  isCurrentUserSender(sender: string) {
+    return sender === this.currentUser.userId;
+  }
 
-      /**
-   * Extracts the file name from a URL.
-   * @param {string} url - The URL from which to extract the file name.
-   * @returns {string} - The extracted file name.
-   */
+  isDateDifferent(index: number) {
+    if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
+    const currentDateFormatted = this.customDatePipe.transform(this.replies[index].time);
+    const previousDateFormatted = this.customDatePipe.transform(this.replies[index - 1].time);
+    return currentDateFormatted !== previousDateFormatted;
+  }
+
+  /**
+* Extracts the file name from a URL.
+* @param {string} url - The URL from which to extract the file name.
+* @returns {string} - The extracted file name.
+*/
   urlToFileName(url: string): string {
     const decodedUrl = decodeURIComponent(url);
     const parts = decodedUrl.split('/');
@@ -125,7 +126,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
     return fileName;
   }
 
-  
+
   /**
    * Initiates the file download process from a specified URL.
    * @param {string} url - The URL of the file to download.
@@ -150,66 +151,78 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit{
       console.error('Error downloading the file:', error);
     }
   }
-      
-      
-      formatUsernames(users: string[]): string {
-        if (users.length <= 2) {
-          return users.join(' und ');
-        } else {
-          return `${users.slice(0, -1).join(', ')} und ${users[users.length - 1]}`;
-        }
-      }
 
-      addReaction(messageId: string, emote: string){
-        this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true)
-        this.addToLastReaction(emote);
 
-      }
-
-      addToLastReaction(emote: string){
-        if(emote != this.getReactionEmote1()){
-          this.currentUser.lastReaction2 = this.getReactionEmote1()
-          this.currentUser.lastReaction1 = emote
-        }
-        this.firebaseService.updateLastReaction(this.currentUser.lastReaction1, this.currentUser.lastReaction2, this.currentUser.userId)
-      }
-
-      editMessage(id: string, content: string) {
-        this.closeEditor();
-        this.editingMessageId = id;
-        this.currentEditingContent = content;
+  formatUsernames(users: string[]): string {
+    if (users.length <= 2) {
+      return users.join(' und ');
+    } else {
+      return `${users.slice(0, -1).join(', ')} und ${users[users.length - 1]}`;
     }
+  }
 
-    closeEditor() {
-        const editorInstance = tinymce.get('editData-' + this.editingMessageId);
-        if (editorInstance) {
-            editorInstance.remove();
-        }
-        this.editingMessageId = '';
+  addReaction(messageId: string, emote: string) {
+    this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true)
+    this.addToLastReaction(emote);
+
+  }
+
+  addToLastReaction(emote: string) {
+    if (emote != this.getReactionEmote1()) {
+      this.currentUser.lastReaction2 = this.getReactionEmote1()
+      this.currentUser.lastReaction1 = emote
     }
+    this.firebaseService.updateLastReaction(this.currentUser.lastReaction1, this.currentUser.lastReaction2, this.currentUser.userId)
+  }
 
-    safeMessage(safe: boolean, messageId: string = '') {
-        if (safe) {
-            this.chatService.editMessage(messageId, this.getInputContent(tinymce.get('editData-' + messageId)));
-        }
-        this.closeEditor();
+  editMessage(id: string, content: string) {
+    this.closeEditor();
+    this.editingMessageId = id;
+    this.currentEditingContent = content;
+  }
+
+  closeEditor() {
+    const editorInstance = tinymce.get('editData-' + this.editingMessageId);
+    if (editorInstance) {
+      editorInstance.remove();
     }
+    this.editingMessageId = '';
+  }
 
-    getInputContent(input: any) {
-        const content = input.getContent({ format: 'text' });
-        return content;
-    }
+  // safeMessage(safe: boolean, messageId: string = '') {
+  //   if (safe) {
+  //     this.chatService.editMessage(messageId, this.getInputContent(tinymce.get('editData-' + messageId)));
+  //   }
+  //   this.closeEditor();
+  // }
 
-    openEditMessage() {
-        this.menuEditMessage = !this.menuEditMessage;
-    }
-
-
-      getReactionEmote1(): string {
-        return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
+  safeMessage(safe: boolean, messageId: string = '') {
+    if (safe) {
+      const content = this.getInputContent(tinymce.get('editData-' + messageId));
+      const message = this.replies.find(msg => msg.messageId === messageId);
+      if (message) {
+        message.content = content; // Update the message content immediately in the UI
       }
-    
-      getReactionEmote2(): string {
-        return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
-      }
+      this.chatService.editMessage(messageId, content);
+    }
+    this.closeEditor();
+  }
+
+  getInputContent(input: any) {
+    const content = input.getContent({ format: 'text' });
+    return content;
+  }
+
+  openEditMessage() {
+    this.menuEditMessage = !this.menuEditMessage;
+  }
+
+
+  getReactionEmote1(): string {
+    return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
+  }
+
+  getReactionEmote2(): string {
+    return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
+  }
 }

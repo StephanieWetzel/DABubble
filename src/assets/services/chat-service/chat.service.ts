@@ -69,6 +69,10 @@ export class ChatService implements OnDestroy {
   // unsubReplies!: Unsubscribe;
 
   constructor(private profileAuth: ProfileAuthentication) {
+    const activeChannel = this.getActiveChannel();
+    if (activeChannel) {
+      this.currentChannel$.next(activeChannel);
+    }
     this.initializeUserAndMessages();
   }
 
@@ -162,149 +166,102 @@ export class ChatService implements OnDestroy {
     this.newMessage.next(value)
   }
 
-
-  /**
-   * Add a message to a channel or direct message
-   * @param {Message} message - The message object
-   * @param {string} channel - The channel ID
-   */
-  async addMessage(message: Message, channel: string) {
-    if (channel.length <= 27) {
-      const docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
-      const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `channel/${channel}/messages`, docRefId), { messageId: docRefId });
-    } else {
-      const docRef = await addDoc(this.getDirectMessagesRef(channel), message.toJSON(message));
-      const docRefId = docRef.id;
-      await updateDoc(doc(this.firestore, `directMessages/${channel}/messages`, docRefId), { messageId: docRefId });
-    }
-    this.scrollToBottom$.next(true);
-  }
-
-
   /** Get the length of the replies for the current message */
   async getRepliesLength() {
     await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
   }
 
-
-  async updateMessages() {
-    const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
-    if (!this.currentChannel$.value || !this.users) {
-      console.error("currentChannel$ ist undefined.");
-      return;
-    }
-    if (this.unsubscribe) {
-      this.unsubscribe();
-    }
-    if (this.currentChannel$.value === 'writeANewMessage') {
-      this.messages = [];
-      this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
-      return;
-    }
-    if (this.isFirstLoad) {
-      this.isLoadingMessages.next(true); // Nachrichten werden geladen
-    }
-
-    this.unsubscribe = onSnapshot(ref, async (snapshot) => {
-      const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
-        const messageData = new Message(doc.data());
-        const repliesRef = collection(doc.ref, 'replies');
-        const repliesSnapshot = await getDocs(repliesRef);
-        const replies = repliesSnapshot.docs.map(replyDoc => new Message(replyDoc.data()));
-        messageData.replies = replies;
-        return messageData;
-      }));
-
-      this.updateMessagesArray(messagesWithReplies);
-      this.messageCount.next(this.messages.length);
-
-      if (this.isFirstLoad) {
-        this.scrollToBottom$.next(true);
-        this.isFirstLoad = false;
-      }
-
-      setTimeout(() => {
-        this.isLoadingMessages.next(false); // Nachrichten sind vollständig geladen
-      }, 200);
-
-      if (this.messages.length === 0) {
-        this.noMessages = true;
-      } else {
-        this.noMessages = false;
-      }
-    });
+/**
+ * Add a message to a channel or direct message
+ * @param {Message} message - The message object
+ * @param {string} channel - The channel ID
+ */
+async addMessage(message: Message, channel: string) {
+  let docRef;
+  if (channel.length <= 27) {
+    docRef = await addDoc(this.getChannelMessagesRef(channel), message.toJSON(message));
+  } else {
+    docRef = await addDoc(this.getDirectMessagesRef(channel), message.toJSON(message));
   }
+  const docRefId = docRef.id;
+  await updateDoc(docRef, { messageId: docRefId });
+  message.messageId = docRefId;  // Update message object with the new ID
 
-  private updateMessagesArray(newMessages: Message[]) {
-    // Erstellen Sie eine Map der neuen Nachrichten nach messageId
-    const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
+  // Update local messages array without triggering onSnapshot
+  this.messages.push(message);
+  this.scrollToBottom$.next(true);
+}
 
-    // Aktualisieren oder entfernen Sie vorhandene Nachrichten
-    const updatedMessages = this.messages.map(currentMessage => {
-      const newMessage = newMessagesMap.get(currentMessage.messageId);
-      if (newMessage) {
-        newMessagesMap.delete(currentMessage.messageId);
-        return newMessage;
-      }
-      return currentMessage;
-    });
+/**
+ * Update the messages array with new messages and remove duplicates
+ * @param {Message[]} newMessages - The new messages to add
+ */
+private updateMessagesArray(newMessages: Message[]) {
+  const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
+  const updatedMessages: Message[] = [];
 
-    // Fügen Sie neue Nachrichten hinzu, die nicht im aktuellen Array vorhanden sind
-    newMessagesMap.forEach((newMessage) => {
+  this.messages.forEach(currentMessage => {
+    if (!currentMessage.messageId) return;  // Skip messages without a valid messageId
+    const newMessage = newMessagesMap.get(currentMessage.messageId);
+    if (newMessage) {
       updatedMessages.push(newMessage);
-    });
+      newMessagesMap.delete(currentMessage.messageId); // Ensure we don't add the same message twice
+    } else {
+      updatedMessages.push(currentMessage);
+    }
+  });
 
-    // Weisen Sie den aktualisierten Nachrichten-Array dem aktuellen Array zu
-    this.messages = updatedMessages;
+  newMessagesMap.forEach(newMessage => {
+    updatedMessages.push(newMessage);
+  });
+
+  updatedMessages.sort((a, b) => a.time - b.time);
+  this.messages = updatedMessages;
+}
+
+async updateMessages() {
+  const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
+  if (!this.currentChannel$.value || !this.users) {
+    console.error("currentChannel$ ist undefined.");
+    return;
+  }
+  if (this.unsubscribe) {
+    this.unsubscribe();
+  }
+  if (this.currentChannel$.value === 'writeANewMessage') {
+    this.messages = [];
+    this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
+    return;
+  }
+  if (this.isFirstLoad) {
+    this.isLoadingMessages.next(true); // Nachrichten werden geladen
   }
 
+  this.unsubscribe = onSnapshot(ref, async (snapshot) => {
+    const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
+      const messageData = new Message(doc.data());
+      const repliesRef = collection(doc.ref, 'replies');
+      const repliesSnapshot = await getDocs(repliesRef);
+      const replies = repliesSnapshot.docs.map(replyDoc => new Message(replyDoc.data()));
+      messageData.replies = replies;
+      return messageData;
+    }));
 
-  // async updateMessages() {
-  //   const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
-  //   if (!this.currentChannel$.value || !this.users) {
-  //     console.error("currentChannel$ ist undefined.");
-  //     return;
-  //   }
-  //   if (this.unsubscribe) {
-  //     this.unsubscribe();
-  //   }
-  //   if (this.currentChannel$.value === 'writeANewMessage') {
-  //     this.messages = [];
-  //     return;
-  //   }
-  //   this.unsubscribe = onSnapshot(ref, async (snapshot) => {
-  //     const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
-  //       const messageData = new Message(doc.data() as Message);
-  //       const repliesRef = collection(doc.ref, 'replies');
-  //       const repliesSnapshot = await getDocs(repliesRef);
-  //       const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
-  //       return { ...messageData, replies };
-  //     }));
-  //     this.messages = messagesWithReplies;
-  //     this.messageCount.next(this.messages.length);
-  //     if (this.isFirstLoad) {
-  //       this.scrollToBottom$.next(true);
-  //       this.isFirstLoad = false; // Erstes Laden abgeschlossen
-  //     }
-  //   });
-  // }
+    this.updateMessagesArray(messagesWithReplies);
+    this.messageCount.next(this.messages.length);
 
-  // /**
-  //  * Get filtered messages based on the search input
-  //  * @returns {Message[]} - The filtered messages
-  //  */
-  // getFilteredMessages(): Message[] {
-  //   if (!this.searchInput) return this.messages;
-  //   return this.messages.filter(message =>
-  //     message.content.toLowerCase().includes(this.searchInput.toLowerCase())
-  //   );
-  // }
+    if (this.isFirstLoad) {
+      this.scrollToBottom$.next(true);
+      this.isFirstLoad = false;
+    }
 
-  // getList(): Message[] {
-  //   this.messages = this.chatService.messages;
-  //   return this.chatService.messages;
-  // }
+    setTimeout(() => {
+      this.isLoadingMessages.next(false); // Nachrichten sind vollständig geladen
+    }, 200);
+
+    this.noMessages = this.messages.length === 0;
+  });
+}
 
 
   /** Get the list of replies for the current message */
@@ -314,6 +271,14 @@ export class ChatService implements OnDestroy {
       this.replies = this.loadMessages(list);
       this.replyCount.next(this.replies.length)
     })
+  }
+
+  /**
+   * Retrieves the currently active channel ID from local storage.
+   * @returns {string} The ID of the currently active channel.
+   */
+  getActiveChannel() {
+    return localStorage.getItem('selectedChannelId');
   }
 
 

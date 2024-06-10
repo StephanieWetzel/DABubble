@@ -63,8 +63,8 @@ export class ReplyInputBoxComponent {
       await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
       this.clearSelectedFiles();
       replyData.setContent('');
+      this.cdr.detectChanges();
     }
-    
   }
 
   clearSelectedFiles() {
@@ -74,7 +74,7 @@ export class ReplyInputBoxComponent {
 
 
   async sendSingleMessage(data: any, channel: string) {
-    if (data && this.getInputContent(data)) {
+    if (data && this.getInputContent(data) || this.selectedFileNames.length > 0) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
@@ -131,6 +131,7 @@ export class ReplyInputBoxComponent {
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1)
     this.selectedFileNames.splice(index, 1);
+    this.cdr.detectChanges();
   }
 
   decodeHtmlEntities(encodedString: string) {
