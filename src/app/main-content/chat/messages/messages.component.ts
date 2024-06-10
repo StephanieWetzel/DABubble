@@ -221,15 +221,15 @@ export class MessagesComponent implements AfterViewInit {
   */
   safeMessage(safe: boolean, messageId: string = '') {
     if (safe) {
-        const content = this.getInputContent(tinymce.get('editData-' + messageId));
-        const message = this.messages.find(msg => msg.messageId === messageId);
-        if (message) {
-            message.content = content; // Update the message content immediately in the UI
-        }
-        this.chatService.editMessage(messageId, content);
+      const content = this.getInputContent(tinymce.get('editData-' + messageId));
+      const message = this.messages.find(msg => msg.messageId === messageId);
+      if (message) {
+        message.content = content; // Update the message content immediately in the UI
+      }
+      this.chatService.editMessage(messageId, content);
     }
     this.closeEditor();
-}
+  }
 
   /**
    * Retrieves the text content from a TinyMCE editor instance.
@@ -451,7 +451,7 @@ export class MessagesComponent implements AfterViewInit {
     const ids = this.chatService.currentChannel$.value.split('_')
     const userId = ids.filter(id => id !== this.chatService.currentUser.userId)[0];
     const user = this.chatService.users.find(user => user.userId === userId);
-    return user ? user.name : 'Noah Braun';
+    return user ? user.name : 'dir';
   }
 
 

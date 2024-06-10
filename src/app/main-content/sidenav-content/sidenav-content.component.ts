@@ -45,7 +45,11 @@ export class SidenavContentComponent {
   }
 
   ngOnInit() {
-    this.selectedChannel = this.mobilService.getActiveChannel();
+    const lastChannel = this.mobilService.getActiveChannel();
+    if(lastChannel && lastChannel.length < 25){
+      this.selectedChannel = lastChannel;
+    }
+    
   }
 
   /**

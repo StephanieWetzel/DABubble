@@ -70,7 +70,7 @@ export class ChatService implements OnDestroy {
 
   constructor(private profileAuth: ProfileAuthentication) {
     const activeChannel = this.getActiveChannel();
-    if (activeChannel) {
+    if (activeChannel && activeChannel.length < 25) {
       this.currentChannel$.next(activeChannel);
     }
     this.initializeUserAndMessages();
