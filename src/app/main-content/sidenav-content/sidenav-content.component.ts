@@ -7,7 +7,7 @@ import { AddChannelDialogComponent } from "./add-channel-dialog/add-channel-dial
 import { SecondAddChannelDialogComponent } from './second-add-channel-dialog/second-add-channel-dialog.component';
 import { DialogRef } from '@angular/cdk/dialog';
 import { Channel } from '../../../assets/models/channel.class';
-import { Subscription, BehaviorSubject  } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { User } from '../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../assets/services/profileAuth.service';
 import { ChatService } from '../../../assets/services/chat-service/chat.service';
@@ -46,7 +46,7 @@ export class SidenavContentComponent {
 
   ngOnInit() {
     const lastChannel = this.mobilService.getActiveChannel();
-    if(lastChannel && lastChannel.length < 25){
+    if (lastChannel) {
       this.selectedChannel = lastChannel;
     }
   }
@@ -97,7 +97,7 @@ export class SidenavContentComponent {
    * Attaches real-time state listeners to each fetched user to track and update their state.
    * @param {User[]} users - Array of users to attach state listeners to.
    * 
-   */  
+   */
   attachStateToUsers(users: User[]) {
     users.forEach(user => {
       const stateRef = this.realTimeDB.getDbRef(user.userId); //ref for realtime db
@@ -105,13 +105,13 @@ export class SidenavContentComponent {
         const state = snapshot.val(); // state value from user
         const userToUpdate = this.fetchedUser.find(u => u.userId === user.userId); // search for specific user with the on top given user.userId at -> const stateRef; checks if the user in fetchedUser-Array matches the user whose status has updated 
         if (userToUpdate) { // if a user has found, the state will be updated with the state from the realtime db
-          userToUpdate.state = state?.state || false; 
-          this.auth.refreshState(userToUpdate.userId, userToUpdate.state); 
+          userToUpdate.state = state?.state || false;
+          this.auth.refreshState(userToUpdate.userId, userToUpdate.state);
         }
       })
     })
-}
- 
+  }
+
   /**
    * Prioritizes the current user in the list of fetched users, moving them to the top of the list.
    * @param {any[]} users - The list of users.
@@ -129,7 +129,7 @@ export class SidenavContentComponent {
 
   /**
    * Opens a dialog to add a new channel.
-   */  
+   */
   openAddChannel() {
     const dialogRef = this.dialog.open(AddChannelDialogComponent, {
       panelClass: 'custom-add-channel-dialog'
@@ -144,15 +144,15 @@ export class SidenavContentComponent {
   /**
    * Opens a second dialog based on data from the first add channel dialog.
    * @param {any} firstDialogData - Data returned from the first dialog.
-   */  
+   */
   openSecondDialog(firstDialogData: any): void {
     const secondDialogRef = this.dialog.open(SecondAddChannelDialogComponent, {
       panelClass: 'custom-add-channel-dialog'
     });
     secondDialogRef.afterClosed().subscribe(secondDialogData => {
-     this.cacheChannel(firstDialogData, secondDialogData).then(channel => {
-      this.firestore.saveChannel(channel);
-     })
+      this.cacheChannel(firstDialogData, secondDialogData).then(channel => {
+        this.firestore.saveChannel(channel);
+      })
     });
   }
 
@@ -163,7 +163,7 @@ export class SidenavContentComponent {
    * @returns {Channel} The new channel object ready to be saved.
    */
   async cacheChannel(firstDialogData: any, secondDialogData: any) {
-    const currentUser = await this.firestore.getCurrentUser(this.currentUser) 
+    const currentUser = await this.firestore.getCurrentUser(this.currentUser)
     let members;
     if (secondDialogData.selectedUsers) {
       members = secondDialogData.selectedUsers.map((user: any) => {
@@ -174,19 +174,19 @@ export class SidenavContentComponent {
         return { id: user.userId, name: user.name }
       })
     }
-    members.push({id: currentUser?.userId, name: currentUser?.name});
+    members.push({ id: currentUser?.userId, name: currentUser?.name });
     const dialogData = this.transformChannelData(firstDialogData, members)
     const channel = new Channel(dialogData)
     return channel;
   }
 
-/**
- * Transforms data from channel creation dialogs into a structured format for a new channel.
- * 
- * @param {any} firstDialogData - Data returned from the first channel creation dialog, containing channel name and description.
- * @param {any[]} members - Array of members to be included in the channel, typically derived from user selections in a dialog.
- * @returns {object} A new channel object with properties set from dialog data and defaults for others like channelId and messages.
- */
+  /**
+   * Transforms data from channel creation dialogs into a structured format for a new channel.
+   * 
+   * @param {any} firstDialogData - Data returned from the first channel creation dialog, containing channel name and description.
+   * @param {any[]} members - Array of members to be included in the channel, typically derived from user selections in a dialog.
+   * @returns {object} A new channel object with properties set from dialog data and defaults for others like channelId and messages.
+   */
   transformChannelData(firstDialogData: any, members: any) {
     return {
       name: firstDialogData.channelName,
@@ -224,7 +224,7 @@ export class SidenavContentComponent {
    */
   openChannel(channelID: string) {
     // logik open channel 
-    this.chatService.messages = []; 
+    this.chatService.messages = [];
     this.chatService.currentChannel$.next(channelID);
     this.chatService.isFirstLoad = true
     this.chatService.setIsDmRoom(false);
@@ -232,15 +232,15 @@ export class SidenavContentComponent {
     this.checkScreenWidth();
     this.mobilService.setActiveChannel(channelID);
     this.selectedChannel = this.mobilService.getActiveChannel();
-    
+
   }
 
   /**
    * Opens a direct message session between the current user and another user.
    * @param {string} userId - ID of the user to open DM with.
-   */  
-  openDM(userId:string) {
-    this.chatService.messages = []; 
+   */
+  openDM(userId: string) {
+    this.chatService.messages = [];
     const roomId = this.generateRoomId(this.currentUser, userId);
     this.firestore.checkIfRoomExists(roomId, this.currentUser, userId);
     this.chatService.currentChannel$.next(roomId);
@@ -259,8 +259,8 @@ export class SidenavContentComponent {
    * @param {string} userId1 - First user ID.
    * @param {string} userId2 - Second user ID.
    * @returns {string} The generated room ID.
-   */  
-  generateRoomId(userId1:string, userId2: string) {
+   */
+  generateRoomId(userId1: string, userId2: string) {
     //sort the userId's aplhabetical then add them together seperated with a _
     return [userId1, userId2].sort().join('_');
   }
@@ -274,14 +274,14 @@ export class SidenavContentComponent {
     this.chatService.searchInput = '';
     this.chatService.searchResults = [];
   }
-  
+
   async onSearchInputChange(event: any) {
     const searchInput = event.target.value;
     console.log(searchInput)
     await this.chatService.search(searchInput)
   }
 
-  writeNewMessage(){
+  writeNewMessage() {
     this.chatService.setIsNewMessage(true);
     this.chatService.isDmRoom.next(false);
     this.chatService.currentChannel$.next('writeANewMessage');

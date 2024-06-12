@@ -70,7 +70,7 @@ export class ChatService implements OnDestroy {
 
   constructor(private profileAuth: ProfileAuthentication) {
     const activeChannel = this.getActiveChannel();
-    if (activeChannel && activeChannel.length < 25) {
+    if (activeChannel) {
       this.currentChannel$.next(activeChannel);
     }
     this.initializeUserAndMessages();
@@ -182,7 +182,7 @@ export class ChatService implements OnDestroy {
     await updateDoc(docRef, { messageId: docRefId });
     this.scrollToBottom$.next(true);
   }
-  
+
   /**
    * Update the messages array with new messages and remove duplicates
    * @param {Message[]} newMessages - The new messages to add
@@ -190,7 +190,7 @@ export class ChatService implements OnDestroy {
   private updateMessagesArray(newMessages: Message[]) {
     const newMessagesMap = new Map(newMessages.map(msg => [msg.messageId, msg]));
     const updatedMessages: Message[] = [];
-  
+
     this.messages.forEach(currentMessage => {
       if (!currentMessage.messageId) return;  // Skip messages without a valid messageId
       const newMessage = newMessagesMap.get(currentMessage.messageId);
@@ -201,15 +201,15 @@ export class ChatService implements OnDestroy {
         updatedMessages.push(currentMessage);
       }
     });
-  
+
     newMessagesMap.forEach(newMessage => {
       updatedMessages.push(newMessage);
     });
-  
+
     updatedMessages.sort((a, b) => a.time - b.time);
     this.messages = this.removeDuplicates(updatedMessages);
   }
-  
+
   async updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
     if (!this.currentChannel$.value || !this.users) {
@@ -227,7 +227,7 @@ export class ChatService implements OnDestroy {
     if (this.isFirstLoad) {
       this.isLoadingMessages.next(true); // Nachrichten werden geladen
     }
-  
+
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
       const messagesWithReplies = await Promise.all(snapshot.docs.map(async (doc) => {
         const messageData = new Message(doc.data());
@@ -237,32 +237,32 @@ export class ChatService implements OnDestroy {
         messageData.replies = replies;
         return messageData;
       }));
-  
+
       this.updateMessagesArray(messagesWithReplies);
       this.messageCount.next(this.messages.length);
-  
+
       if (this.isFirstLoad) {
         this.scrollToBottom$.next(true);
         this.isFirstLoad = false;
       }
-  
+
       setTimeout(() => {
-        this.isLoadingMessages.next(false); 
+        this.isLoadingMessages.next(false);
       }, 200);
-  
+
       this.noMessages = this.messages.length === 0;
     });
   }
-  
+
   private removeDuplicates(messages: Message[]): Message[] {
     const uniqueMessagesMap = new Map<number, Message>();
-    
+
     messages.forEach(message => {
       if (!uniqueMessagesMap.has(message.time)) {
         uniqueMessagesMap.set(message.time, message);
       }
     });
-  
+
     return Array.from(uniqueMessagesMap.values());
   }
 

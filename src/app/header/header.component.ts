@@ -79,8 +79,10 @@ export class HeaderComponent {
 
   /**
    * Logs out the current user using the authentication service.
-   */  
+   */
   logout() {
+    this.mobileService.setActiveChannel('pSBwciqiaOgtUayZaIgj');
+    this.chatService.currentChannel$.next('pSBwciqiaOgtUayZaIgj');
     this.profileAuth.userLogout();
   }
 
@@ -111,9 +113,9 @@ export class HeaderComponent {
     }
   }
 
-   /**
-   * Opens the profile edit view and closes the profile menu.
-   */
+  /**
+  * Opens the profile edit view and closes the profile menu.
+  */
   openProfile() {
     if (this.keepMenuOpen) {
       this.isProfileEditOpen = true;
@@ -121,7 +123,7 @@ export class HeaderComponent {
       this.isProfileEditOpen = true;
       this.isProfilMenuOpen = false;
     }
-    
+
   }
 
   /**
