@@ -33,8 +33,8 @@ export class ReplyInputBoxComponent {
     setup: (editor) => {
       editor.on('input', () => {
         const content = this.getInputContent(editor)
-        this.isContentEmpty = !content;
         this.checkButtonState();
+        this.isContentEmpty = !content;
         this.cdr.detectChanges();
       });
       editor.on('init', () => {
@@ -57,6 +57,11 @@ export class ReplyInputBoxComponent {
 
   getInputContent(input: any) {
     return input.getContent({ format: 'text' }).trim();
+  }
+
+  checkButtonState() {
+    const editorContent = this.getInputContent(this.chatService.editorReply);
+    this.isContentEmpty = !editorContent && this.selectedFiles.length === 0;
   }
 
   async sendMessage() {
@@ -114,6 +119,7 @@ export class ReplyInputBoxComponent {
         this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
       }
     }
+    this.checkButtonState();
   }
 
 
@@ -134,8 +140,7 @@ export class ReplyInputBoxComponent {
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1)
     this.selectedFileNames.splice(index, 1);
-    this.cdr.detectChanges();
-  }
+    this.checkButtonState()  }
 
   decodeHtmlEntities(encodedString: string) {
     const textArea = document.createElement('textarea');
@@ -148,11 +153,6 @@ export class ReplyInputBoxComponent {
     this.editMessageId = message.messageId;
     this.chatService.editorReply.setContent(message.content);
     this.chatService.editorReply.focus();
-  }
-
-  checkButtonState() {
-    const editorContent = this.getInputContent(this.chatService.editorReply);
-    this.isContentEmpty = !editorContent && this.selectedFiles.length === 0;
   }
 
 }

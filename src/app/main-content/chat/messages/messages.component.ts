@@ -368,6 +368,8 @@ export class MessagesComponent implements AfterViewInit {
     const parts = decodedUrl.split('/');
     let fileName = parts[parts.length - 1];
     fileName = fileName.split('?')[0];
+    const timestampRegex = /^[\d_]+_/;
+    fileName = fileName.replace(timestampRegex, '');
     return fileName;
   }
 
