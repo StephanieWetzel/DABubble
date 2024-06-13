@@ -87,7 +87,7 @@ export class HeadbarComponent {
       }
     })
     this.chatService.currentChannel$.subscribe(channelID => {
-      this.currentChannelId = channelID;
+      this.currentChannelId = channelID;      
       if (this.unsubscribeFromChannel) {
         this.unsubscribeFromChannel();
       }
@@ -304,9 +304,9 @@ export class HeadbarComponent {
       this.selectedUsers.push(user);
       this.chatService.selectedUsers = this.selectedUsers;
       this.searchInput.setValue(this.searchInput.value);
+     
       // this.searchResults = this.findResults(this.searchInput.value || "");
     }
-
   }
 
   findResults(searchTerm: string): any[] {

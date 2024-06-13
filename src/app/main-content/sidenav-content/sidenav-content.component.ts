@@ -232,7 +232,6 @@ export class SidenavContentComponent {
     this.checkScreenWidth();
     this.mobilService.setActiveChannel(channelID);
     this.selectedChannel = this.mobilService.getActiveChannel();
-
   }
 
   /**
@@ -241,6 +240,7 @@ export class SidenavContentComponent {
    */
   openDM(userId: string) {
     this.chatService.messages = [];
+    this.chatService.isFirstLoad = true
     const roomId = this.generateRoomId(this.currentUser, userId);
     this.firestore.checkIfRoomExists(roomId, this.currentUser, userId);
     this.chatService.currentChannel$.next(roomId);

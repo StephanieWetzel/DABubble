@@ -81,10 +81,18 @@ export class HeaderComponent {
    * Logs out the current user using the authentication service.
    */
   logout() {
-    this.mobileService.setActiveChannel('pSBwciqiaOgtUayZaIgj');
+    this.chatService.messages = [];
     this.chatService.currentChannel$.next('pSBwciqiaOgtUayZaIgj');
+    this.chatService.isFirstLoad = true
+    this.chatService.setIsDmRoom(false);
+    this.chatService.setIsNewMessage(false);
+    // this.chatService.unsubscribe();
+    this.mobileService.setActiveChannel('pSBwciqiaOgtUayZaIgj');
+    this.chatService.isFirstLoad = true;
     this.profileAuth.userLogout();
   }
+
+  
 
   /**
    * Closes the profile menu if a click occurs outside of it.

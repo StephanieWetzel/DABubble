@@ -177,6 +177,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
   editMessage(id: string, content: string) {
     this.closeEditor();
+
     this.editingMessageId = id;
     this.currentEditingContent = content;
   }
@@ -186,7 +187,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
     if (editorInstance) {
       editorInstance.remove();
     }
-    this.editingMessageId = '';
+    this.editingMessageId = 'editOver';
   }
 
   // safeMessage(safe: boolean, messageId: string = '') {
@@ -203,7 +204,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
       if (message) {
         message.content = content; // Update the message content immediately in the UI
       }
-      this.chatService.editMessage(messageId, content);
+      this.chatService.editReplyMessage(messageId, content);
     }
     this.closeEditor();
   }

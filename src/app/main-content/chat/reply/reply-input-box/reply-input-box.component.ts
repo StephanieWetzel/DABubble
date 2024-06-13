@@ -19,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ReplyInputBoxComponent {
   public inputInit: RawEditorOptions = {
     id: 'inputReply',
-    base_url: '/angular-projects/da-bubble/tinymce',
+    base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -34,6 +34,7 @@ export class ReplyInputBoxComponent {
       editor.on('input', () => {
         const content = this.getInputContent(editor)
         this.isContentEmpty = !content;
+        this.checkButtonState();
         this.cdr.detectChanges();
       });
       editor.on('init', () => {
@@ -47,6 +48,8 @@ export class ReplyInputBoxComponent {
   selectedFiles: File[] = []; // Speichert mehrere Dateien
   selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
   safeUrl: any;
+  isEditing: boolean = false;
+  editMessageId: string   = 'editOver';
 
   constructor(public dialog: MatDialog, private chatService: ChatService, private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer) {
 
@@ -139,4 +142,17 @@ export class ReplyInputBoxComponent {
     textArea.innerHTML = encodedString;
     return textArea.value;
   }
+
+  editMessage(message: Message) {
+    this.isEditing = true;
+    this.editMessageId = message.messageId;
+    this.chatService.editorReply.setContent(message.content);
+    this.chatService.editorReply.focus();
+  }
+
+  checkButtonState() {
+    const editorContent = this.getInputContent(this.chatService.editorReply);
+    this.isContentEmpty = !editorContent && this.selectedFiles.length === 0;
+  }
+
 }

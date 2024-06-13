@@ -144,6 +144,11 @@ section {
     position: relative;
 }
 
+.reply-edit-message-container{
+    display: flex;
+    justify-content: center;
+}
+
 .edit-visible{
     display: flex !important;
     justify-content: flex-end;
@@ -167,6 +172,22 @@ section {
     }
 }
 
+.reply-edit-message {
+    width: 80%;
+    position: relative;
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px solid #ADB0D9;
+    button {
+        font: inherit;
+        cursor: pointer;
+        outline: none;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-size: 18px;
+    }
+}
+
 .edit-btns {
     @include dFlex($jc: flex-end, $g: 16px);
     position: absolute;
@@ -175,6 +196,13 @@ section {
     z-index: 3;
 }
 
+.reply-edit-btns {
+    @include dFlex($jc: flex-end, $g: 10px);
+    position: absolute;
+    bottom: 21px;
+    right: 16px;
+    z-index: 3;
+}
 
 
 .safe-btn {

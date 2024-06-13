@@ -1,19 +1,18 @@
 <section>
-    <div  *ngIf="selectedFiles.length > 0" class="attachment-container">
+    <div *ngIf="selectedFiles.length > 0" class="attachment-container">
         <div class="attachment" *ngFor="let fileName of selectedFileNames; let i = index">
-            <p  (click)="openFilePreview(i)">{{ fileName }}</p>
-            <mat-icon (click)="removeFile(i)">close</mat-icon>
+          <p (click)="openFilePreview(i)">{{ fileName }}</p>
+          <mat-icon (click)="removeFile(i)">close</mat-icon>
         </div>
-    </div>
-
-
-    <editor id="inputReply" [init]="inputInit"></editor>
-    <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty || selectedFileNames.length === 0}" (click)="sendMessage()">
+      </div>
+    
+      <editor id="inputReply" [init]="inputInit"></editor>
+      <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty || selectedFileNames.length === 0}" (click)="sendMessage()">
         <img src="./../../../../assets/img/send-message.svg" alt="send message">
-    </button>
-
-    <input  type="file" id="fileInputReply" accept=".jpg, .png, .pdf" hidden (change)="openSelectedFile($event)">
-    <label class="add-file" for="fileInputReply" mat-icon-button>
+      </button>
+    
+      <input type="file" id="fileInputReply" accept=".jpg, .png, .pdf" hidden (change)="openSelectedFile($event)">
+      <label class="add-file" for="fileInputReply" mat-icon-button>
         <mat-icon>add</mat-icon>
-    </label>
+      </label>
 </section>

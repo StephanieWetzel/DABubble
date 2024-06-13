@@ -306,9 +306,13 @@ export class ChatService implements OnDestroy {
    * @param {string} input - The new content of the message
    */
   async editMessage(messageId: string, input: string) {
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages`, messageId), { content: input });
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/`, messageId), { content: input });
   }
 
+
+  async editReplyMessage(messageId: string, input: string) {
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.initialMessageForThread.messageId}/replies`, messageId), { content: input });
+  }
 
   /**
   * Add a reply to a message
