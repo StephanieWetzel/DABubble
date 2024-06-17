@@ -10,6 +10,7 @@ import { MobileService } from '../../assets/services/mobile.service';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../../assets/services/chat-service/chat.service';
 import { FormsModule, NgModel } from '@angular/forms';
+import { FirebaseService } from '../../assets/services/firebase-service';
 
 @Component({
   selector: 'app-header',
@@ -34,9 +35,10 @@ export class HeaderComponent {
   isChannelOpen!: boolean;
   isChannelOpenSub!: Subscription;
   keepMenuOpen: boolean = window.innerWidth <= 520;
+  selectedChannel: string | null = 'pSBwciqiaOgtUayZaIgj';
   @Output() openSidenav = new EventEmitter<void>();
 
-  constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService, public chatService: ChatService) {
+  constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService, public chatService: ChatService, private firestore: FirebaseService, private mobilService: MobileService) {
   }
 
   /**
@@ -147,13 +149,10 @@ export class HeaderComponent {
 
   async onSearchInputChange(event: any) {
     const searchInput = event.target.value;
-    console.log(searchInput)
     await this.chatService.search(searchInput)
   }
 
   jumpToChannel(result: any, channelId: string) {
-    console.log(result)
-    console.log(result.data.messageId)
     this.chatService.currentChannel$.next(channelId);
     this.chatService.setIsDmRoom(false);
     this.chatService.setIsNewMessage(false);
@@ -162,6 +161,27 @@ export class HeaderComponent {
     this.chatService.searchInput = '';
     this.chatService.searchResults = [];
     this.chatService.highlightMessage(result.data.messageId, channelId);
+  }
+
+  openDM(userId: string) {
+    this.chatService.messages = [];
+    this.chatService.isFirstLoad = true
+    const roomId = this.generateRoomId(this.user?.userId, userId);
+    this.firestore.checkIfRoomExists(roomId, this.user?.userId, userId);
+    this.chatService.currentChannel$.next(roomId);
+    this.chatService.setCurrenDmPartner(userId);
+    this.chatService.setIsDmRoom(true);
+    this.checkScreenWidth();
+    this.mobilService.setActiveChannel(userId);
+    this.chatService.searchInput = '';
+    this.chatService.searchResults = [];
+    this.selectedChannel = this.mobilService.getActiveChannel();
+    this.chatService.setIsNewMessage(false);
+  }
+
+  generateRoomId(userId1: string | undefined, userId2: string) {
+    //sort the userId's aplhabetical then add them together seperated with a _
+    return [userId1, userId2].sort().join('_');
   }
 
 }

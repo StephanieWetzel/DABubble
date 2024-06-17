@@ -116,6 +116,8 @@ export class ChatService implements OnDestroy {
   async search(searchInput: string) {
     this.searchResults = [];
     if (!searchInput) return;
+
+    // channel search
     const channelsSnapshot = await getDocs(collection(this.firestore, 'channel'));
     for (const channelDoc of channelsSnapshot.docs) {
       const channelId = channelDoc.id;
@@ -125,10 +127,19 @@ export class ChatService implements OnDestroy {
         if (messageData['content'].toLowerCase().includes(searchInput.toLowerCase())) {
           const channelName = await this.getNameChannel(channelId);
           const userName = await this.getNameUser(messageData['sendId']);
-          this.searchResults.push({ data: messageData, channelId, channelName, userName });
+          this.searchResults.push({type: 'message' ,data: messageData, channelId, channelName, userName });
         };
       };
     };
+
+    // user search
+    const usersSnapshot = await getDocs(collection(this.firestore, 'user'));
+    for (const userDoc of usersSnapshot.docs) {
+      const userData = userDoc.data();
+      if (userData['name'].toLowerCase().includes(searchInput.toLowerCase())) {
+        this.searchResults.push({ type: 'user', data: userData });
+      }
+    }
   }
 
   /**

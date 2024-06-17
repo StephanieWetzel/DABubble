@@ -244,7 +244,7 @@ export class FirebaseService {
  * @param {string} currentUserID - The ID of the current user.
  * @param {string} otherUserID - The ID of the other user in the direct message conversation.
  */
-  checkIfRoomExists(roomId: string, currentUserID: string, otherUserID: string) {
+  checkIfRoomExists(roomId: string, currentUserID: string | undefined, otherUserID: string) {
     const roomRef = doc(this.getColl("directMessages"), roomId)
     onSnapshot(roomRef, (docSnap) => {
       if (docSnap.exists()) {
@@ -304,7 +304,7 @@ export class FirebaseService {
  * @param {string} roomId - The ID of the direct message room.
  * @returns {Object} The transformed data for creating a direct message room.
  */
-  transformDmRoom(currentUserID: string, otherUserID: string, roomId: string) {
+  transformDmRoom(currentUserID: string | undefined, otherUserID: string, roomId: string) {
     return {
       member: [currentUserID, otherUserID],
       id: roomId,
