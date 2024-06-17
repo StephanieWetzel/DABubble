@@ -1,64 +1,16 @@
-// BACKGROUND ANIMATION
-@keyframes backgroundFadeOut {
-    0% {
-        opacity: 1; // background visible
-    }
-
-    100% {
-        opacity: 0; // background hidden (fading)
-        z-index: -1;
-    }
+@mixin image-start-animation-state {
+    transform: translateX(0) translateY(0) scale(1);
 }
 
-
-
-// IMAGE ANIMATION
-@keyframes imageAnimation {
-    0% {
-        transform: translateX(100%); // starting position
-    }
-
-    50% {
-        transform: translateX(100%); // starting position
-    }
-
-    100% {
-        transform: translateX(0%); // img stops left
-    }
+@mixin text-start-animation-state-0 {
+    transform: translateX(-100%) scale(1); // text out of sight to the left
 }
 
-
-
-// IMAGE UP ANIMATION
-@keyframes imageUpAnimation {
-    0% {
-        transform: translateX(0) translateY(0) scale(1); // starting position
-    }
-
-    100% {
-        transform: translateX(-300%) translateY(-240%) scale(0.3); // final position (upper left)
-
-    }
+@mixin text-start-animation-state-70 {
+    opacity: 1;
+    transform: translateX(0%) scale(1); // zooms out from behind img
 }
 
-
-
-// TEXT ANIMATION
-@keyframes textAnimation {
-    0% {
-        transform: translateX(-100%) scale(1); // text out of sight to the left
-    }
-
-    70% {
-        opacity: 1; // text remains visible
-        transform: translateX(0%) scale(1); // zooms out from behind img
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(-180%) translateY(-1800%) scale(0.4); // zooms to final position upper left and gets smaller
-    }
-}
 
 
 
@@ -94,349 +46,50 @@
             animation: textAnimation 2s 1s forwards;
             opacity: 0;
 
-            // desktop
+            @media (min-width: 1920px) {
+                animation: textAnimationMin1920 2s 1s forwards;
+            }
+
             @media (max-width: 1920px) {
-                @keyframes textAnimationMax1920 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-220%) translateY(-1800%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
                 animation: textAnimationMax1920 2s 1s forwards;
             }
 
-            @media (max-width: 1800px) {
-                @keyframes textAnimationMax1800 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-200%) translateY(-1700%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationMax1800 2s 1s forwards;
-            }
+            // @media (max-width: 1800px) {
+            //     animation: textAnimationMax1800 2s 1s forwards;
+            // }
 
             @media (max-width: 1650px) {
-                @keyframes textAnimationMax1650 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-180%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
                 animation: textAnimationMax1650 2s 1s forwards;
             }
 
-            @media (max-width: 1500px) {
-                @keyframes textAnimationMax1500 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-160%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationMax1500 2s 1s forwards;
-            }
+            // @media (max-width: 1500px) {
+            //     animation: textAnimationMax1500 2s 1s forwards;
+            // }
 
             @media (max-width: 1350px) {
-                @keyframes textAnimationMax1350 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-140%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
                 animation: textAnimationMax1350 2s 1s forwards;
             }
 
-            @media (max-width: 1200px) {
-                @keyframes textAnimationMax1200 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
+            // @media (max-width: 1200px) {
+            //     animation: textAnimationMax1200 2s 1s forwards;
+            // }
 
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-120%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationMax1200 2s 1s forwards;
-            }
-
-            @media (max-width: 1050px) {
-                @keyframes textAnimationMax1050 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-100%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationMax1050 2s 1s forwards;
-            }
+            // @media (max-width: 1050px) {
+            //     animation: textAnimationMax1050 2s 1s forwards;
+            // }
 
             @media (max-width: 900px) {
-                @keyframes textAnimationMax900 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-80%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
                 animation: textAnimationMax900 2s 1s forwards;
             }
 
-            @media (max-width: 750px) {
-                @keyframes textAnimationMax750 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1; // text remains visible
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-60%) translateY(-1900%) scale(0.4); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationMax750 2s 1s forwards;
-            }
+            // @media (max-width: 750px) {
+            //     animation: textAnimationMax750 2s 1s forwards;
+            // }
 
             // mobile
             @media (max-width: 600px) {
-                @keyframes textAnimationMax600 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateY(-1800%) scale(0.7); // zooms to final position upper left and gets smaller
-                    }
-                }
-
                 animation: textAnimationMax600 2s 1s forwards;
                 font-size: 40px;
-            }
-
-            // tablet
-            @media (min-height: 1200px) and (max-height: 1400px) {
-                @keyframes textAnimationHeight1400 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-100%) translateY(-2800%) scale(0.3); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight1400 2s 1s forwards;
-            }
-
-            @media (min-height: 1050px) and (max-height: 1200px) {
-                @keyframes textAnimationHeight1200 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-80%) translateY(-2500%) scale(0.3); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight1200 2s 1s forwards;
-            }
-
-            @media (min-height: 950px) and (max-height: 1050px) {
-                @keyframes textAnimationHeight1050 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-80%) translateY(-2200%) scale(0.3); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight1050 2s 1s forwards;
-            }
-
-            // mobile dimensions
-            @media (min-height: 800px) and (max-height: 900px) {
-                @keyframes textAnimationHeight900 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateY(-1750%) scale(0.8); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight900 2s 1s forwards;
-            }
-
-            @media (min-height: 740px) and (max-height: 800px) {
-                @keyframes textAnimationHeight800 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-140%) translateY(-1600%) scale(0.3); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight800 2s 1s forwards;
-            }
-
-            @media (min-height: 600px) and (max-height: 740px) {
-                @keyframes textAnimationHeight740 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-10%) translateY(-1500%) scale(0.5); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight740 2s 1s forwards;
-            }
-
-            @media (max-height: 600px) {
-                @keyframes textAnimationHeight600 {
-                    0% {
-                        transform: translateX(-100%) scale(1); // text out of sight to the left
-                    }
-
-                    70% {
-                        opacity: 1;
-                        transform: translateX(0%) scale(1); // zooms out from behind img
-                    }
-
-                    100% {
-                        opacity: 1;
-                        transform: translateX(-120%) translateY(-1200%) scale(0.3); // zooms to final position upper left and gets smaller
-                    }
-                }
-
-                animation: textAnimationHeight600 2s 1s forwards;
             }
         }
 
@@ -446,512 +99,425 @@
             width: auto;
             animation: imageAnimation 1s, imageUpAnimation 0.6s 2.4s;
 
-            // desktop
+            @media (min-width: 1920px) {
+                animation: imageAnimation 1s, imageUpAnimationMin1920 0.6s 2.4s;
+            }
+
             @media (max-width: 1920px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1920 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-400%) translateY(-220%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1920 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1920 0.6s 2.4s;
             }
 
             @media (max-width: 1800px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1800 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-360%) translateY(-220%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1800 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1800 0.6s 2.4s;
             }
 
             @media (max-width: 1650px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1650 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-320%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1650 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1650 0.6s 2.4s;
             }
 
             @media (max-width: 1500px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1500 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-270%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1500 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1500 0.6s 2.4s;
             }
 
             @media (max-width: 1350px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1350 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-210%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1350 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1350 0.6s 2.4s;
             }
 
             @media (max-width: 1200px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1200 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-170%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1200 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1200 0.6s 2.4s;
             }
 
             @media (max-width: 1050px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax1050 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-120%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax1050 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax1050 0.6s 2.4s;
             }
 
             @media (max-width: 900px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax900 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-80%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax900 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax900 0.6s 2.4s;
             }
 
             @media (max-width: 750px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax750 {
-                    0% {
-                        transform: translateX(0) translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-50%) translateY(-240%) scale(0.4); // final position (upper left)
-
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax750 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax750 0.6s 2.4s;
             }
 
             // mobile
             @media (max-width: 600px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationMax600 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateY(-450%) scale(1); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationMax600 0.6s 2.4s;
+                animation: imageAnimation 1s, imageUpAnimationMax600 0.6s 2.4s;
                 height: 80px;
             }
-
-            // tablet
-            @media (min-height: 1200px) and (max-height: 1400px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight1400 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-120%) translateY(-350%) scale(0.3); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight1400 0.6s 2.4s;
-            }
-
-            @media (min-height: 1050px) and (max-height: 1200px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight1200 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-80%) translateY(-320%) scale(0.3); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight1200 0.6s 2.4s;
-            }
-
-            @media (min-height: 950px) and (max-height: 1050px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight1050 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-70%) translateY(-270%) scale(0.3); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight1050 0.6s 2.4s;
-            }
-
-            // mobile dimensions
-            @media (min-height: 800px) and (max-height: 900px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight900 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(20%) translateY(-450%) scale(0.7); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight900 0.6s 2.4s;
-            }
-
-            @media (min-height: 740px) and (max-height: 800px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight800 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-210%) translateY(-200%) scale(0.3); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight800 0.6s 2.4s;
-            }
-
-            @media (min-height: 600px) and (max-height: 740px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight740 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(50%) translateY(-370%) scale(0.5); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight740 0.6s 2.4s;
-            }
-
-            @media (max-height: 600px) {
-                @keyframes imageAnimation {
-                    0% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    50% {
-                        transform: translateX(100%); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(0%); // img stops left
-                    }
-                }
-
-                @keyframes imageUpAnimationHeight600 {
-                    0% {
-                        transform: translateY(0) scale(1); // starting position
-                    }
-
-                    100% {
-                        transform: translateX(-170%) translateY(-150%) scale(0.3); // final position (top center)
-                    }
-                }
-
-                animation: imageAnimation 1s,
-                imageUpAnimationHeight600 0.6s 2.4s;
-            }
         }
+    }
+}
+
+
+
+// BACKGROUND ANIMATION
+@keyframes backgroundFadeOut {
+    0% {
+        opacity: 1; // background visible
+    }
+
+    100% {
+        opacity: 0; // background hidden (fading)
+        z-index: -1;
+    }
+}
+
+
+
+// IMAGE ANIMATION
+@keyframes imageAnimation {
+    0% {
+        transform: translateX(100%); // starting position
+    }
+
+    50% {
+        transform: translateX(100%); // starting position
+    }
+
+    100% {
+        transform: translateX(0%); // img stops left
+    }
+}
+
+
+
+// STANDARD IMAGE UP ANIMATION
+@keyframes imageUpAnimation {
+    0% {
+        transform: translateX(0) translateY(0) scale(1); // starting position
+    }
+
+    100% {
+        transform: translateX(-300%) translateY(-240%) scale(0.3); // final position (upper left)
+
+    }
+}
+
+
+
+// STANDARD TEXT ANIMATION
+@keyframes textAnimation {
+    0% {
+        transform: translateX(-100%) scale(1); // text out of sight to the left
+    }
+
+    70% {
+        opacity: 1; // text remains visible
+        transform: translateX(0%) scale(1); // zooms out from behind img
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(-180%) translateY(-1800%) scale(0.4); // zooms to final position upper left and gets smaller
+    }
+}
+
+
+
+
+
+// FOR MEDIA QUERIES
+
+// IMAGE-ANIMATION
+@keyframes imageUpAnimationMin1920 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(calc(-35vw - (100vw - 1920px) / 2)) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1920 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-35vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1800 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-34vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1650 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-32vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1500 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-30vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1350 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-26vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1200 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-25vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes imageUpAnimationMax1050 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-22vw) translateY(-43vh) scale(0.3);
+
+    }
+}
+
+
+@keyframes imageUpAnimationMax900 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-15vw) translateY(-42vh) scale(0.4);
+
+    }
+}
+
+
+@keyframes imageUpAnimationMax750 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateX(-10vw) translateY(-42vh) scale(0.4);
+
+    }
+}
+
+
+@keyframes imageUpAnimationMax600 {
+    0% {
+        @include image-start-animation-state;
+    }
+
+    100% {
+        transform: translateY(-42vh) scale(1);
+    }
+}
+
+
+
+// TEXT-ANIMATION
+
+@keyframes textAnimationMin1920 {
+    0% {
+        @include text-start-animation-state-0;
+    }
+
+    70% {
+        @include text-start-animation-state-70;
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(calc(-35vw - (100vw - 1920px) / 2)) translateY(-43vh) scale(0.4);
+        // transform: translateX(-43vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+@keyframes textAnimationMax1920 {
+    0% {
+        @include text-start-animation-state-0;
+    }
+
+    70% {
+        @include text-start-animation-state-70;
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(-43vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+// @keyframes textAnimationMax1800 {
+//     0% {
+//         @include text-start-animation-state-0;
+//     }
+
+//     70% {
+//         @include text-start-animation-state-70;
+//     }
+
+//     100% {
+//         opacity: 0.5;
+//         transform: translateX(-43vw) translateY(-43vh) scale(0.4);
+//     }
+// }
+
+
+@keyframes textAnimationMax1650 {
+    0% {
+        @include text-start-animation-state-0;
+    }
+
+    70% {
+        @include text-start-animation-state-70;
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(-42vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+// @keyframes textAnimationMax1500 {
+//     0% {
+//         @include text-start-animation-state-0;
+//     }
+
+//     70% {
+//         @include text-start-animation-state-70;
+//     }
+
+//     100% {
+//         opacity: 0.5;
+//         transform: translateX(-42vw) translateY(-43vh) scale(0.4);
+//     }
+// }
+
+
+@keyframes textAnimationMax1350 {
+    0% {
+        @include text-start-animation-state-0;
+    }
+
+    70% {
+        @include text-start-animation-state-70;
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(-40vw) translateY(-43vh) scale(0.4);
+    }
+}
+
+
+// @keyframes textAnimationMax1200 {
+//     0% {
+//         @include text-start-animation-state-0;
+//     }
+
+//     70% {
+//         @include text-start-animation-state-70;
+//     }
+
+//     100% {
+//         opacity: 0.5;
+//         transform: translateX(-40vw) translateY(-43vh) scale(0.4);
+//     }
+// }
+
+
+// @keyframes textAnimationMax1050 {
+//     0% {
+//         @include text-start-animation-state-0;
+//     }
+
+//     70% {
+//         @include text-start-animation-state-70;
+//     }
+
+//     100% {
+//         opacity: 0.5;
+//         transform: translateX(-40vw) translateY(-43vh) scale(0.4);
+//     }
+// }
+
+
+@keyframes textAnimationMax900 {
+    0% {
+        @include text-start-animation-state-0;
+    }
+
+    70% {
+        @include text-start-animation-state-70;
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateX(-35vw) translateY(-42vh) scale(0.4);
+    }
+}
+
+
+// @keyframes textAnimationMax750 {
+//     0% {
+//         @include text-start-animation-state-0;
+//     }
+
+//     70% {
+//         @include text-start-animation-state-70;
+//     }
+
+//     100% {
+//         opacity: 0.5;
+//         transform: translateX(-35vw) translateY(-42vh) scale(0.4);
+//     }
+// }
+
+
+@keyframes textAnimationMax600 {
+    0% {
+        @include text-start-animation-state-0;
+    }
+
+    70% {
+        @include text-start-animation-state-70;
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: translateY(-42vh) scale(1);
     }
 }
