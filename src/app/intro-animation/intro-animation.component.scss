@@ -94,7 +94,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 32px;
+        gap: 16px;
 
         @media (max-width: 500px) {
             gap: 16px;
@@ -182,6 +182,25 @@
                 animation: textAnimationMax1350 2s 1s forwards;
             }
 
+            @media (max-width: 1050px) {
+                @keyframes textAnimationMax1050 {
+                    0% {
+                        @include text-start-animation-state-0;
+                    }
+
+                    70% {
+                        @include text-start-animation-state-70;
+                    }
+
+                    100% {
+                        opacity: 0.5;
+                        transform: translateX(-38vw) translateY(-43vh) scale(0.4);
+                    }
+                }
+
+                animation: textAnimationMax1050 2s 1s forwards;
+            }
+
             @media (max-width: 900px) {
                 @keyframes textAnimationMax900 {
                     0% {
@@ -214,7 +233,7 @@
 
                     100% {
                         opacity: 0.5;
-                        transform: translateY(-42vh) scale(1);
+                        transform: translateY(-41vh) scale(1);
                     }
                 }
 
@@ -300,7 +319,7 @@
                     }
 
                     100% {
-                        transform: translateX(-30vw) translateY(-43vh) scale(0.4);
+                        transform: translateX(-31vw) translateY(-43vh) scale(0.4);
                     }
                 }
 
@@ -316,7 +335,7 @@
                     }
 
                     100% {
-                        transform: translateX(-26vw) translateY(-43vh) scale(0.4);
+                        transform: translateX(-28vw) translateY(-43vh) scale(0.4);
                     }
                 }
 
@@ -332,7 +351,7 @@
                     }
 
                     100% {
-                        transform: translateX(-25vw) translateY(-43vh) scale(0.4);
+                        transform: translateX(-26vw) translateY(-43vh) scale(0.4);
                     }
                 }
 
@@ -348,7 +367,7 @@
                     }
 
                     100% {
-                        transform: translateX(-22vw) translateY(-43vh) scale(0.3);
+                        transform: translateX(-22vw) translateY(-42vh) scale(0.3);
 
                     }
                 }
@@ -365,7 +384,7 @@
                     }
 
                     100% {
-                        transform: translateX(-15vw) translateY(-42vh) scale(0.4);
+                        transform: translateX(-17vw) translateY(-42vh) scale(0.4);
 
                     }
                 }
@@ -400,7 +419,7 @@
                     }
 
                     100% {
-                        transform: translateY(-42vh) scale(1);
+                        transform: translateX(2vw) translateY(-41vh) scale(1);
                     }
                 }
 
