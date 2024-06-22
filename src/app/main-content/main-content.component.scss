@@ -19,37 +19,45 @@
   transform: rotate(-90deg) scale(1.01);
   transform-origin: center;
   @include dFlex();
+
   @media (min-width: 1920px) {
     left: -172px;
   }
+
   @media(max-width: 820px) {
     width: 324px;
     height: 40px;
     left: -144px;
   }
-  > .drawer-button-content {
+
+  >.drawer-button-content {
     margin: 23px 14px;
+
     @media(max-width: 820px) {
       margin: 0;
     }
+
     @include dFlex(center, center, 10px);
-    > span {
-        font-size: 20px;
+
+    >span {
+      font-size: 20px;
     }
-    > .hide-navigation-icon {
-        width: 32px;
-        height: 32px;
-        transform: rotate(90deg) scale(1.01);
-        > .svg-icon{ 
-            stroke: currentColor;
-        }
+
+    >.hide-navigation-icon {
+      width: 32px;
+      height: 32px;
+      transform: rotate(90deg) scale(1.01);
+
+      >.svg-icon {
+        stroke: currentColor;
+      }
     }
   }
 }
 
 .drawer-toggle-btn:hover .svg-icon,
 .drawer-toggle-btn:hover span {
-    color: #444df2;
+  color: #444df2;
 }
 
 
@@ -57,7 +65,9 @@ mat-toolbar {
   width: 100%;
   height: fit-content;
 }
-mat-toolbar, .mat-toolbar-single-row {
+
+mat-toolbar,
+.mat-toolbar-single-row {
   padding: 0;
 }
 
@@ -76,13 +86,16 @@ app-header {
   box-sizing: border-box;
   background-color: $bgPage;
   border: none;
+
   @media(max-width: 820px) {
     width: 400px;
   }
+
   @media(max-width: 600px) {
-    width: 100%;  
-    padding: 12px 0 0 0;         
+    width: 100%;
+    padding: 12px 0 0 0;
   }
+
   @media(max-width: 380px) {
     padding-top: 0px;
   }
@@ -93,6 +106,7 @@ app-header {
   height: 100%;
   box-sizing: border-box;
   border-radius: 30px;
+
   @media(max-width: 600px) {
     border-radius: 0px;
   }
@@ -103,13 +117,16 @@ app-header {
   padding: 12px 12px 12px 0px;
   height: 100%;
   box-sizing: border-box;
+
   @media(max-width: 1000px) {
     padding-left: 0px;
     padding-right: 0px;
   }
+
   @media(max-width: 600px) {
     padding-bottom: 0px;
   }
+
   @media (max-height: 670px) {
     padding-top: 0px;
   }
@@ -122,6 +139,7 @@ app-header {
   box-sizing: border-box;
   border-radius: 30px;
   overflow: hidden;
+
   @media(max-width: 600px) {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;

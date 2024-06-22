@@ -25,6 +25,8 @@
         left: 0;
         right: 0;
         display: flex;
+        max-width: 1920px;
+        margin: 0 auto;
 
         @media (max-width: 600px) {
             justify-content: center;

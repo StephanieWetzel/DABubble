@@ -1,23 +1,18 @@
 html,
 body {
-    height: 100%;
     margin: 0;
-    overflow: hidden;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+    background-color: #ECEEFE;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
-    background-color: #ECEEFE;
-    font-family: 'Nunito', sans-serif;
-    font-size: 16px;
-    display: flex;
-    justify-content: center;
-}
-
-app-root {
-    width: 100%;
     max-width: 1920px;
-    position: relative;
+    margin: 0 auto;
 }
 
 body.mat-typography h2,
