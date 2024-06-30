@@ -19,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ReplyInputBoxComponent {
   public inputInit: RawEditorOptions = {
     id: 'inputReply',
-    base_url: '/angular-projects/da-bubble/tinymce',
+    base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -49,7 +49,7 @@ export class ReplyInputBoxComponent {
   selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
   safeUrl: any;
   isEditing: boolean = false;
-  editMessageId: string   = 'editOver';
+  editMessageId: string = 'editOver';
 
   constructor(public dialog: MatDialog, private chatService: ChatService, private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer) {
 
@@ -65,9 +65,9 @@ export class ReplyInputBoxComponent {
   }
 
   async sendMessage() {
-    
+
     let replyData = tinymce.get('inputReply');
-    if (replyData){
+    if (replyData) {
       await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
       this.clearSelectedFiles();
       replyData.setContent('');
@@ -140,7 +140,8 @@ export class ReplyInputBoxComponent {
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1)
     this.selectedFileNames.splice(index, 1);
-    this.checkButtonState()  }
+    this.checkButtonState()
+  }
 
   decodeHtmlEntities(encodedString: string) {
     const textArea = document.createElement('textarea');

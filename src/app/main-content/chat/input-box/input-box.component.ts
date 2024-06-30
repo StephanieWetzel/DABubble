@@ -27,7 +27,7 @@ export class InputBoxComponent {
   @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
 
   public editorInit: RawEditorOptions = {
-    base_url: '/angular-projects/da-bubble/tinymce',
+    base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',
@@ -198,16 +198,16 @@ export class InputBoxComponent {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         totalSize += file.size;
-        if (file.size > 5242880) { // 5 MB für Bilder
+        if (file.size > 5242880) {
           alert("Dateien dürfen nicht größer als 5 MB sein.");
         } else {
           this.selectedFiles.push(file);
           this.selectedFileNames.push(file.name);
         }
       }
-      if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
+      if (totalSize > 20971520) {
         alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
-        this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
+        this.selectedFiles = [];
       }
     }
   }

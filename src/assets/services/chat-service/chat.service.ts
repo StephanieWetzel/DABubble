@@ -127,7 +127,7 @@ export class ChatService implements OnDestroy {
         if (messageData['content'].toLowerCase().includes(searchInput.toLowerCase())) {
           const channelName = await this.getNameChannel(channelId);
           const userName = await this.getNameUser(messageData['sendId']);
-          this.searchResults.push({type: 'message' ,data: messageData, channelId, channelName, userName });
+          this.searchResults.push({ type: 'message', data: messageData, channelId, channelName, userName });
         };
       };
     };
@@ -636,10 +636,12 @@ export class ChatService implements OnDestroy {
 
 
   /**
-  * Sets focus to the message editor.
+  * Sets focus to the message editor, if it exists.
   */
   setEditorFocusMessage() {
-    this.editorMessage.focus()
+    if (this.editorMessage) {
+      this.editorMessage.focus()
+    }
   }
 
 
