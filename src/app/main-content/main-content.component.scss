@@ -118,11 +118,6 @@ app-header {
   height: 100%;
   box-sizing: border-box;
 
-  @media(max-width: 1000px) {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
   @media(max-width: 600px) {
     padding-bottom: 0px;
   }
