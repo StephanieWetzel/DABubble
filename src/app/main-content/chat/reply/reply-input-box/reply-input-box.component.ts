@@ -19,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ReplyInputBoxComponent {
   public inputInit: RawEditorOptions = {
     id: 'inputReply',
-    base_url: '/tinymce',
+    base_url: '/da-bubble/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',

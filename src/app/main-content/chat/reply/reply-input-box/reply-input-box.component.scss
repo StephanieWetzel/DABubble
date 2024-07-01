@@ -22,13 +22,25 @@ section {
     }
 
     position: absolute;
-    bottom: 5px;
+    bottom: 8px;
     left: 14px;
     z-index: 2;
 
     mat-icon {
-        padding-right: 8px;
-        border-right: 1px solid black;
+        height: 28px;
+        width: 34px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+
+        &:hover {
+            background: #cce2fa;
+            border: 0;
+            box-shadow: none;
+            color: #222f3e;
+        }
     }
 }
 

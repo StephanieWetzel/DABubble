@@ -26,7 +26,7 @@ export class InputBoxComponent {
   @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
 
   public editorInit: RawEditorOptions = {
-    base_url: '/tinymce',
+    base_url: '/da-bubble/tinymce',
     suffix: '.min',
     menubar: false,
     toolbar_location: 'bottom',

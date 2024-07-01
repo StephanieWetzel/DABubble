@@ -82,6 +82,11 @@
                 color: #444DF2;
                 font-size: 40px;
                 font-weight: bold;
+
+                @media (max-width: 600px),
+                (max-height: 600px) {
+                    font-size: 32px;
+                }
             }
         }
     }
