@@ -108,9 +108,11 @@ export class MessagesComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewChecked(): void {
-    this.changeDetRef.detectChanges();
-  }
+
+  // auskommentiert, da es einen Bug verursacht hat - lösche ich noch; Steffi
+  // ngAfterViewChecked(): void {
+  //   this.changeDetRef.detectChanges();
+  // }
 
 
   /**
