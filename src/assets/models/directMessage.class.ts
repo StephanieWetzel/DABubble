@@ -5,14 +5,15 @@ export class DirectMessage {
 
     /**
      * Constructs a new instance of the DirectMessage class
-     * @param {any} obj - An object containing values used to initialize the channel properties
-     *                    if not provided, defaults will be set.
+     * @param {any} obj - An object containing values used to initialize the channel properties. If not provided, defaults will be set.
      */
-    constructor(obj?:any) {
-        this.member = obj ? obj.member: [];
-        this.id = obj ? obj.id: '';
-        this.messages = obj ? obj.messages: []
+    constructor(obj?: any) {
+        this.member = obj ? obj.member : [];
+        this.id = obj ? obj.id : '';
+        this.messages = obj ? obj.messages : []
     }
+
+
     /**
      * Converts the directmessage instance to a JSON representative
      * @returns {object} - An object containing the properties of the directmessage

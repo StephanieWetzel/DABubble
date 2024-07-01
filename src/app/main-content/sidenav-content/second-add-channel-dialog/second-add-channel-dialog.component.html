@@ -1,17 +1,12 @@
 <section class="dialog">
   <div class="dialog-head">
     <h2>Leute hinzufügen</h2>
-    <mat-icon (click)="cancelCreation()" >close</mat-icon>
+    <mat-icon (click)="cancelCreation()">close</mat-icon>
   </div>
   <form [formGroup]="secondDialogGroup">
     <div class="check-flex">
       <label class="custom-radio-button">
-        <input
-          formControlName="selectedOption"
-          type="radio"
-          name="selectedOption"
-          value="entireTeam"
-        />
+        <input formControlName="selectedOption" type="radio" name="selectedOption" value="entireTeam" />
         <span class="checkmark"></span>
       </label>
       <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
@@ -19,46 +14,41 @@
 
     <div class="check-flex">
       <label class="custom-radio-button">
-        <input
-          formControlName="selectedOption"
-          type="radio"
-          name="selectedOption"
-          value="chooseUser"
-        />
+        <input formControlName="selectedOption" type="radio" name="selectedOption" value="chooseUser" />
         <span class="checkmark"></span>
       </label>
       <p>Bestimmte Leute hinzufügen</p>
     </div>
 
     <div class="channel-form ts125 search-input" *ngIf="secondDialogGroup.get('selectedOption').value === 'chooseUser'">
-      
+
       <mat-chip-listbox #chipList>
         <div class="input-search br-32">
           <div class="chip-cont">
             <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
-            <div class="selected-user-pair">
-              <img [src]="user.avatar">
-              <p>{{ user.name }}</p>
-            </div>
-            <mat-icon matChipRemove>cancel</mat-icon>
+              <div class="selected-user-pair">
+                <img [src]="user.avatar">
+                <p>{{ user.name }}</p>
+              </div>
+              <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
           </div>
           <input formControlName="searchInput" type="text" placeholder="Namen eingeben" />
         </div>
       </mat-chip-listbox>
-      
+
       <div class="search-results" *ngIf="searchResults.length > 0">
         <div>
-        <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
-          <div class="user-pair">
-            <img [src]="user.avatar">
-            <div class="online-attribut">
-              <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+          <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
+            <div class="user-pair">
+              <img [src]="user.avatar">
+              <div class="online-attribut">
+                <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+              </div>
             </div>
+            <p>{{ user.name }}</p>
           </div>
-          <p>{{ user.name }}</p>
         </div>
-      </div>
       </div>
     </div>
 

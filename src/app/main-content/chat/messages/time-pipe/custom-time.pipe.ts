@@ -12,5 +12,4 @@ export class CustomTimePipe implements PipeTransform {
     const minutes = date.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
   }
-
 }

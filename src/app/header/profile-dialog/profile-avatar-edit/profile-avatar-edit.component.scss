@@ -3,27 +3,33 @@
 .head-cont {
   @include dFlex(flex-start, center, 15px);
   margin-bottom: 32px;
-  > .close-btn {
+
+  >.close-btn {
     @include dFlex(center, center);
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    > mat-icon {
+
+    >mat-icon {
       font-family: 'Material Icons Outlined';
       font-weight: normal;
       font-size: 24px;
     }
+
     &:hover {
       cursor: pointer;
       background-color: #eceffe;
-      > mat-icon {
+
+      >mat-icon {
         color: #535af1;
       }
     }
   }
-  > span {
+
+  >span {
     font-size: 24px;
     font-weight: bold;
+
     @media (max-width: 400px) {
       font-size: 20px;
     }
@@ -33,10 +39,12 @@
 .user-pic-cont {
   @include dFlex(center, center);
   margin-bottom: 32px;
-  > img {
+
+  >img {
     width: 120px;
     height: 120px;
     border-radius: 50%;
+
     @media (max-width: 400px) {
       height: 100px;
       width: 100px;
@@ -47,10 +55,12 @@
 .user-name-cont {
   @include dFlex(center, center);
   margin-bottom: 32px;
-  > h3 {
+
+  >h3 {
     font-family: "Nunito";
     font-size: 32px;
     font-weight: bold;
+
     @media (max-width: 400px) {
       font-size: 24px;
     }
@@ -59,64 +69,80 @@
 
 .choose-avatar {
   margin-bottom: 32px;
-  > span {
+
+  >span {
     font-size: 20px;
+
     @media (max-width: 400px) {
       font-size: 18px;
     }
   }
-  > .avatar-list {
+
+  >.avatar-list {
     margin-top: 16px;
     @include dFlex(center, center, 8px);
     flex-wrap: wrap;
-    > .avatar {
+
+    >.avatar {
       @include dFlex(center, center);
       border-radius: 50%;
       cursor: pointer;
       width: 50px;
       height: 50px;
+
       &:hover {
         background-color: #959595;
       }
-      > img {
+
+      >img {
         width: 40px;
         height: 40px;
       }
     }
   }
-  > .upload-pic {
+
+  >.upload-pic {
     margin-top: 16px;
     @include dFlex(flex-start, center, 74px);
+
     @media (max-width: 450px) {
       justify-content: space-between;
     }
-    > span {
+
+    >span {
       font-size: 20px;
+
       @media (max-width: 400px) {
         font-size: 18px;
       }
     }
-    > .upload-btn {
+
+    >.upload-btn {
       @include dFlex(center, center);
       width: 187px;
       height: 49px;
       background-color: #ffffff;
       border-radius: 25px;
       border: 1px solid #797ef3;
+
       @media (max-width: 400px) {
         height: 40px;
         width: 156px;
       }
-      > span {
+
+      >span {
         color: #444df2;
+
         @media (max-width: 400px) {
           font-size: 16px;
         }
       }
+
       &:hover {
         cursor: pointer;
         background-color: #444df2;
-        > span {
+
+        >span {
           color: #ffffff;
         }
       }
@@ -126,51 +152,63 @@
 
 .cancel-save-btns {
   @include dFlex(center, center, 32px);
+
   @media (max-width: 450px) {
     justify-content: space-between;
     gap: 0px;
   }
-  > .cancel-btn {
+
+  >.cancel-btn {
     height: 49px;
     width: 141px;
     @include dFlex(center, center);
     border: 1px solid #444df2;
     background-color: #ffffff;
     border-radius: 25px;
+
     @media (max-width: 400px) {
       height: 40px;
       width: 121px;
     }
-    > span {
+
+    >span {
       color: #797ef3;
     }
+
     &:hover {
       cursor: pointer;
       background-color: #444df2;
-      > span {
+
+      >span {
         color: #ffffff;
+
         @media (max-width: 400px) {
           font-size: 16px;
         }
       }
     }
   }
-  > .save-btn {
+
+  >.save-btn {
     height: 49px;
     width: 141px;
     @include dFlex(center, center);
     background-color: #444df2;
     border-radius: 25px;
+
     @media (max-width: 400px) {
       height: 40px;
       width: 121px;
     }
-    > span {
+
+    >span {
       color: #ffffff;
+
       @media (max-width: 400px) {
         font-size: 16px;
       }
     }
+
     &:hover {
       cursor: pointer;
       background-color: #797ef3;

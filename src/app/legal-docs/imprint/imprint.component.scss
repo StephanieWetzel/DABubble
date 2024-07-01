@@ -1,5 +1,6 @@
 @import "./../../registration/login/login.component.scss";
 @import "./../../../styles.scss";
+
 .imprint-container {
   padding: 48px 56px;
   width: 450px;
@@ -8,37 +9,42 @@
   background-color: white;
   border-radius: 28px;
   box-shadow: #c2c4e3 0px 2px 8px;
+
   @media(max-width: 450px) {
     max-width: 80%;
     padding: 24px 28px;
   }
-  > .imprint-content {
+
+  >.imprint-content {
     @include dFlex(flex-start, flex-start, 32px, column);
-    > .imprint {
-        @include dFlex(flex-start, flex-start, 0px, column);
-        margin-bottom: 15px;
-        > span {
-            font-size: 20px;
-        }
+
+    >.imprint {
+      @include dFlex(flex-start, flex-start, 0px, column);
+      margin-bottom: 15px;
+
+      >span {
+        font-size: 20px;
+      }
     }
-    > .contact {
-        margin-bottom: 15px;
-        > span {
-            font-size: 20px;
-        }
+
+    >.contact {
+      margin-bottom: 15px;
+
+      >span {
+        font-size: 20px;
+      }
     }
   }
 }
 
-
-
 .headline {
-    font-size: 32px;
-    font-weight: bold;
-    color: #444df2;
-    margin-bottom: 16px;
-    @media(max-width: 500px) {
-        font-size: 28px;
-        
-    }
+  font-size: 32px;
+  font-weight: bold;
+  color: #444df2;
+  margin-bottom: 16px;
+
+  @media(max-width: 500px) {
+    font-size: 28px;
+
+  }
 }

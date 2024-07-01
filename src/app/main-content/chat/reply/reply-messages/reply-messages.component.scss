@@ -5,7 +5,7 @@ section {
     max-height: 400px;
 }
 
-.initial-message{
+.initial-message {
     padding: 30px;
 }
 
@@ -51,6 +51,7 @@ section {
     padding: 16px;
     border-radius: 20px;
     border: 1px solid #ADB0D9;
+
     button {
         font: inherit;
         cursor: pointer;
@@ -61,34 +62,31 @@ section {
     }
 }
 
-
-
-.edit-btns{
-    @include dFlex($jc:flex-end, $g: 16px);
+.edit-btns {
+    @include dFlex($jc: flex-end, $g: 16px);
     position: absolute;
     bottom: 16px;
     right: 16px;
     z-index: 3;
 }
 
-.avatar-and-message{
+.avatar-and-message {
     @include dFlex($ai: flex-start, $g: 24px);
 }
 
-.avatar-container{
+.avatar-container {
     border-radius: 100%;
 
-    img{
+    img {
         height: 70px;
         width: 70px;
         border-radius: 100%;
     }
 }
 
-.info-and-content{
-    
+.info-and-content {
+    @include dFlex($ai: flex-start, $fd: column);
 }
-
 
 .safe-btn {
     color: #444DF2;
@@ -391,11 +389,6 @@ ul {
     right: unset;
 }
 
-
-// .edit-menu-sender {
-//     display: unset;
-// }
-
-.d-none{
+.d-none {
     display: none;
 }

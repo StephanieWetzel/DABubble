@@ -1,11 +1,13 @@
 <section *ngIf="!isDmRoomOpen && !isNewMessage">
     <div (click)="openEditChannelDialog()" class="group-name">
         <img src="./assets/icons/tag.png">
-        <span [ngClass]="{'font-20': screenWidth < 1350 && this.chatService.showReply}" >{{ chatService.getChannelName() }}</span>
+        <span [ngClass]="{'font-20': screenWidth < 1350 && this.chatService.showReply}">{{ chatService.getChannelName()
+            }}</span>
     </div>
-    <div class="group-members" >
+    <div class="group-members">
         <div (click)="openMemberOversight()" class="member-grouped-cont">
-            <div *ngFor="let avatar of avatars" class="member-avatar" [ngClass]="{'m-l-35': screenWidth < 1450 && this.chatService.showReply, 'm-l-40': screenWidth < 1400 && this.chatService.showReply}">
+            <div *ngFor="let avatar of avatars" class="member-avatar"
+                [ngClass]="{'m-l-35': screenWidth < 1450 && this.chatService.showReply, 'm-l-40': screenWidth < 1400 && this.chatService.showReply}">
                 <img [src]="avatar">
             </div>
             <span>{{channel?.member?.length}}</span>
@@ -30,11 +32,12 @@
                 <mat-icon style="font-style: italic">tag</mat-icon>
                 <h2>{{ channel?.name }}</h2>
             </div>
-            <mat-icon (click)="handleCloseEvent(true)" >close</mat-icon>
+            <mat-icon (click)="handleCloseEvent(true)">close</mat-icon>
         </div>
-        <div id="infoMenu" class="channel-info brNoLeftTop32" [ngClass]="isDrawerOpen ? 'channel-info-opened' : 'channel-info-closed'">
-            <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)"
-            [currentChannel]="currentChannelId" [channelMobile]="channel" [membersMobile]="members"></app-edit-channel-dialog>
+        <div id="infoMenu" class="channel-info brNoLeftTop32"
+            [ngClass]="isDrawerOpen ? 'channel-info-opened' : 'channel-info-closed'">
+            <app-edit-channel-dialog (closeDialog)="handleCloseEvent($event)" [currentChannel]="currentChannelId"
+                [channelMobile]="channel" [membersMobile]="members"></app-edit-channel-dialog>
         </div>
     </div>
 </div>
@@ -42,7 +45,8 @@
 <div *ngIf="isMemberOversight" class="member-oversight-cont">
     <div class="centering">
         <div id="memberOversight" [ngClass]="isSearching ? 'member-search' : 'member-oversight'">
-            <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)" [openedInChannel]="false" [currentChannel]="channel"></app-member-oversight>
+            <app-member-oversight (isSearchOpen)="changeWidth($event)" (hasClosed)="handleCloseEventMember($event)"
+                [openedInChannel]="false" [currentChannel]="channel"></app-member-oversight>
         </div>
     </div>
 </div>
@@ -50,7 +54,8 @@
 <div *ngIf="isSearchOpen" class="member-oversight-cont">
     <div class="centering">
         <div id="memberSearch" class="member-search">
-            <app-add-member [currentMembers]="members" [channel]="channel" (isClosed)="searchClosed($event)"></app-add-member>
+            <app-add-member [currentMembers]="members" [channel]="channel"
+                (isClosed)="searchClosed($event)"></app-add-member>
         </div>
     </div>
 </div>
@@ -73,53 +78,54 @@
     </div>
 </section>
 
-
 <section *ngIf="isNewMessage && !isDmRoomOpen">
-<div class="w-100" #inputArea>
-    <h2 class="new-message-h">New Message</h2>
-    <mat-chip-listbox #chipList>
-        <mat-chip *ngFor="let user of selectedUsers">
-            <div class="selected-user-pair">
-                <img [src]="user.avatar">
-                <p>{{ user.name }}</p>
-                <span (click)="removeUser(user)">x</span>
-            </div>
-            <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <mat-chip *ngFor="let channel of selectedChannels">
-            <div class="selected-user-pair">
-                <mat-icon>tag</mat-icon>
-                <p>{{ channel.name }}</p>
-                <span (click)="removeChannel(channel)">x</span>
-            </div>
-            <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <div class="input-search br-32">
-            <!-- Geänderter Input mit der neuen Klasse und Placeholder -->
-            <input [formControl]="searchInput" type="text" placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
-        </div>
-    </mat-chip-listbox>
-    <div class="search-results" *ngIf="searchResults.length > 0">
-        <div>
-            <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
-                <div class="user-pair">
+    <div class="w-100" #inputArea>
+        <h2 class="new-message-h">New Message</h2>
+        <mat-chip-listbox #chipList>
+            <mat-chip *ngFor="let user of selectedUsers">
+                <div class="selected-user-pair">
                     <img [src]="user.avatar">
-                    <div class="online-attribut">
-                        <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+                    <p>{{ user.name }}</p>
+                    <span (click)="removeUser(user)">x</span>
+                </div>
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <mat-chip *ngFor="let channel of selectedChannels">
+                <div class="selected-user-pair">
+                    <mat-icon>tag</mat-icon>
+                    <p>{{ channel.name }}</p>
+                    <span (click)="removeChannel(channel)">x</span>
+                </div>
+                <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <div class="input-search br-32">
+                <!-- Changed input with new class and placeholder -->
+                <input [formControl]="searchInput" type="text"
+                    placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
+            </div>
+        </mat-chip-listbox>
+        <div class="search-results" *ngIf="searchResults.length > 0">
+            <div>
+                <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user)">
+                    <div class="user-pair">
+                        <img [src]="user.avatar">
+                        <div class="online-attribut">
+                            <img
+                                [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+                        </div>
+                    </div>
+                    <p>{{ user.name }}</p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="filteredChannels.length > 0" class="search-results">
+            <div>
+                <div class="user-result-list" *ngFor="let channel of filteredChannels" (click)="selectChannel(channel)">
+                    <div class="user-pair">
+                        <mat-icon>tag</mat-icon> <span> {{ channel.name }}</span>
                     </div>
                 </div>
-                <p>{{ user.name }}</p>
             </div>
         </div>
     </div>
-    <div *ngIf="filteredChannels.length > 0" class="search-results">
-        <div>
-            <div class="user-result-list" *ngFor="let channel of filteredChannels" (click)="selectChannel(channel)">
-                <div class="user-pair">
-                    <mat-icon>tag</mat-icon> <span> {{ channel.name }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </section>

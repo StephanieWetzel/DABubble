@@ -21,8 +21,14 @@ export class ProfileEditDialogComponent {
     profileMail: new FormControl('')
   })
 
-  constructor(private profileAuth: ProfileAuthentication){}
+  constructor(private profileAuth: ProfileAuthentication) { }
 
+
+  /**
+ * Initializes the component by initializing the user profile.
+ * Subscribes to changes in the user profile and updates the local user object accordingly.
+ * Calls `displayProfileData()` to display profile information after a short delay.
+ */
   ngOnInit() {
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
@@ -31,25 +37,25 @@ export class ProfileEditDialogComponent {
     this.displayProfileData();
   }
 
+
   /**
-   * Delays the retrieval and display of user profile data in a form group.
-   * This method sets a timeout to delay the fetching of profile information (name and email)
-   * from the user object. If the user's name or email isn't defined, it defaults to null.
-   * After the delay, it populates the 'editGroup' form group with the retrieved data.
-   */
+ * Displays profile data in the form after a short delay.
+ * Uses the `editGroup` form group to display profile name and email.
+ */
   displayProfileData() {
     setTimeout(() => {
-      const profileData = {profileName: this.user?.name ?? null, profileMail: this.user?.email ?? null};
+      const profileData = { profileName: this.user?.name ?? null, profileMail: this.user?.email ?? null };
       this.editGroup.setValue(profileData);
     }, 50);
   }
 
+
   /**
-   * Saves changes to the user's profile data and initiates a close event after a delay.
-   * This method calls `updateUserEdit` on `profileAuth` to save the updated profile name and email,
-   * based on the values provided in `editGroup`. It sets `isSaving` to true indicating that a save operation is ongoing.
-   * A close event is emitted after a 2005 milliseconds delay to signify the end of the edit process.
-   */
+ * Safely updates the user profile data.
+ * Updates the user's profile using `profileAuth.updateUserEdit`.
+ * Sets `isSaving` to true to indicate that saving is in progress.
+ * Emits a close event after a delay to close the profile editing dialog.
+ */
   safeUserEdit() {
     this.profileAuth.updateUserEdit(this.user?.userId, this.editGroup.value.profileName, this.editGroup.value.profileMail);
     this.isSaving = true;
@@ -57,6 +63,8 @@ export class ProfileEditDialogComponent {
       this.closeEvent.emit();
     }, 2005);
   }
+
+
   /**
    * Closes the overlay, by emitting the closing event.
    */

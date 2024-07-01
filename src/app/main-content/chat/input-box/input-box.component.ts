@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, AfterViewInit, OnInit, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { ChatService } from './../../../../assets/services/chat-service/chat.service';
@@ -21,7 +21,6 @@ import { FirebaseService } from '../../../../assets/services/firebase-service';
   templateUrl: './input-box.component.html',
   styleUrl: './input-box.component.scss'
 })
-
 
 export class InputBoxComponent {
   @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
@@ -52,11 +51,9 @@ export class InputBoxComponent {
     }
   };
 
-
-
   isContentEmpty: boolean = true;
-  selectedFiles: File[] = []; // Speichert mehrere Dateien
-  selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
+  selectedFiles: File[] = [];
+  selectedFileNames: string[] = [];
   safeUrl: any;
   currentUser!: User;
 

@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormGroup,
@@ -26,8 +26,6 @@ import { AuthenticationService } from '../../../assets/services/authentication.s
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  // firestore: Firestore = inject(Firestore)
-
   formData: FormGroup = this.fbuilder.group({
     name: ['', [Validators.required, this.fullNameValidator()]],
     email: ['', [Validators.required, Validators.email]],
@@ -130,5 +128,4 @@ export class RegisterComponent {
       password: this.formData.value.password
     }
   }
-
 }

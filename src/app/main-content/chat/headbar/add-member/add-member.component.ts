@@ -39,6 +39,7 @@ export class AddMemberComponent {
   @Output() isClosed = new EventEmitter<boolean>();
   @Output() hasAdded = new EventEmitter<boolean>();
 
+
   constructor(private firestore: FirebaseService) {
     this.unsubUser = this.firestore
       .fetchCollection('user')
@@ -50,13 +51,21 @@ export class AddMemberComponent {
     });
   }
 
+
+  /**
+ * Cleans up resources before component destruction.
+ * Unsubscribes from user subscription to avoid memory leaks.
+ */
   ngOnDestroy() {
     this.unsubUser.unsubscribe();
   }
 
+
   /**
-   * Finds search results based on the provided search term.
-   * @param {string} searchTerm - The term to search for.
+   * Finds and updates search results based on the given search term.
+   * Clears search results if the search term is empty.
+   * Filters fetched users to exclude current members and selected users.
+   * @param {string} searchTerm - The term to search for among users' names.
    */
   findResults(searchTerm: string) {
     if (!searchTerm) {
@@ -78,6 +87,7 @@ export class AddMemberComponent {
       ) || [];
   }
 
+
   /**
    * Selects a user from the search results and adds them to the selected users list.
    * @param {any} user - The user to select.
@@ -89,6 +99,7 @@ export class AddMemberComponent {
       this.searchResults = [];
     }
   }
+
 
   /**
    * Adds selected users as members to the current channel and emits an event to indicate the addition.
@@ -105,6 +116,7 @@ export class AddMemberComponent {
     }
   }
 
+
   /**
    * Removes a user from the selected users list.
    * @param {User} user - The user to remove.
@@ -112,6 +124,7 @@ export class AddMemberComponent {
   removeUser(user: User) {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }
+
 
   /**
    * Closes the component by emitting an event with a true value.

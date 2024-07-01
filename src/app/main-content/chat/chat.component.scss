@@ -1,47 +1,52 @@
 @import './../../../styles.scss';
 
-section{
+section {
     height: 100%;
     @include dFlex;
 }
-.chat-container{
+
+.chat-container {
     height: 100%;
     background-color: $bgPage;
     flex: 1;
+
     @media(max-width: 820px) {
-        padding-right: 0px;  
+        padding-right: 0px;
     }
 }
 
-.reply-container{
+.reply-container {
     height: 100%;
     padding-left: 12px;
     background-color: $bgPage;
+
     @media(max-width:820px) {
         width: 100%;
         padding-left: 0px;
-    } 
+    }
 }
 
-app-reply{
+app-reply {
     height: 100%;
     background-color: $bgContent;
     border-radius: 30px;
     overflow: hidden;
     transition: max-width 0.5s ease-out;
     width: fit-content;
+
     @media(max-width:820px) {
         width: 100%;
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
-    } 
+    }
 }
 
-.show-reply{
+.show-reply {
     max-width: 400px;
+
     @media(max-width:820px) {
         width: 100%;
-    } 
+    }
 }
 
 .chat {
@@ -50,10 +55,12 @@ app-reply{
     @include dFlex($fd: column);
     background-color: $bgContent;
     border-radius: 30px;
+
     @media(max-width: 820px) {
         border-bottom-left-radius: 0px;
         border-bottom-right-radius: 0px;
     }
+
     app-headbar {
         width: 100%;
         z-index: 10;
@@ -71,7 +78,7 @@ app-reply{
     }
 }
 
-.w-100{
+.w-100 {
     width: 100% !important;
 }
 
@@ -84,29 +91,3 @@ app-messages::-webkit-scrollbar {
     width: 0 !important;
     height: 0 !important;
 }
-
-// app-messages::-webkit-scrollbar {
-//     width: 6px;
-// }
-
-// /* Handle (der bewegliche Teil der Scrollbar) */
-// app-messages::-webkit-scrollbar-thumb {
-//     background-color: rgba($color: #686868, $alpha: 0.5);
-//     border-radius: 4px;
-// }
-
-// /* Handle Hover */
-// app-messages::-webkit-scrollbar-thumb:hover {
-//     background-color: rgba($color: #686868, $alpha: 0.7);
-// }
-
-// /* Der Hintergrund der Scrollbar (der Teil, auf dem der Handle bewegt wird) */
-// app-messages::-webkit-scrollbar-track {
-//     background: none;
-//     border-radius: 4px;
-// }
-
-// /* Optional: Das Styling für den Button der Scrollbar (die Pfeile oben und unten), falls vorhanden */
-// app-messages::-webkit-scrollbar-button {
-//     display: none;
-// }

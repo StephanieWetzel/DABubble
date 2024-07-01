@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Channel } from '../../../../../assets/models/channel.class';
 import { FirebaseService } from '../../../../../assets/services/firebase-service';
@@ -36,19 +35,24 @@ export class EditChannelDialogComponent {
     description: '',
   };
 
+
   constructor(
-    // public dialogref: MatDialogRef<EditChannelDialogComponent>,
-    //@Inject(MAT_DIALOG_DATA) public data: any,
     public firestore: FirebaseService,
     private auth: ProfileAuthentication,
     private chatService: ChatService
-  ) {}
+  ) { }
 
   @Input() currentChannel!: string;
   @Input() channelMobile: Channel | null = null;
   @Input() membersMobile: User[] | null = null;
   @Output() closeDialog = new EventEmitter<boolean>();
 
+
+  /**
+ * Initializes the component.
+ * Retrieves current channel data and related user information asynchronously.
+ * Sets `currentUser` based on logged-in user ID fetched from authentication service.
+ */
   async ngOnInit() {
     this.channel = await this.firestore.getCurrentChannelData(
       this.currentChannel
@@ -61,6 +65,7 @@ export class EditChannelDialogComponent {
     }
   }
 
+
   /**
    * Closes the dialog by emitting an event with a false value.
    */
@@ -68,9 +73,9 @@ export class EditChannelDialogComponent {
     this.closeDialog.emit(false);
   }
 
+
   /**
-   * Leaves the current channel by updating its member list, updating channel info in Firestore,
-   * and emitting an event to switch to a default channel.
+   * Leaves the current channel by updating its member list, updating channel info in Firestore, and emitting an event to switch to a default channel.
    */
   leaveChannel() {
     const updatedMember = this.channel?.member.filter(
@@ -85,6 +90,7 @@ export class EditChannelDialogComponent {
     this.closeDialog.emit(false);
   }
 
+
   /**
    * Toggles the state of editing the channel name.
    */
@@ -93,6 +99,7 @@ export class EditChannelDialogComponent {
     this.isEditNameOpen = !this.isEditNameOpen;
   }
 
+
   /**
    * Toggles the state of editing the channel description.
    */
@@ -100,6 +107,7 @@ export class EditChannelDialogComponent {
     this.channelData.description = this.channel?.description;
     this.isEditDescOpen = !this.isEditDescOpen;
   }
+
 
   /**
    * Safely edits the channel's name or description and updates the local and Firestore data accordingly.
@@ -119,6 +127,7 @@ export class EditChannelDialogComponent {
       this.isEditDescOpen = false;
     }
   }
+
 
   /**
    * Updates the edited channel attribute in Firestore.
@@ -141,6 +150,7 @@ export class EditChannelDialogComponent {
     }
   }
 
+
   /**
    * Updates the locally stored channel data after a safe edit.
    * @param {string} edit - The edited value.
@@ -154,6 +164,7 @@ export class EditChannelDialogComponent {
     }
   }
 
+
   /**
    * Handles the event for opening or closing the mobile overlay.
    * @param {boolean} event - Boolean indicating whether the mobile overlay is open.
@@ -162,6 +173,7 @@ export class EditChannelDialogComponent {
     this.isMobileOverlayOpen = event;
   }
 
+
   /**
    * Closes the add member overlay based on the event boolean.
    * @param {boolean} event - Boolean indicating whether the add member overlay should be closed.
@@ -169,6 +181,7 @@ export class EditChannelDialogComponent {
   closeAddMember(event: boolean) {
     this.isMobileOverlayOpen = !event;
   }
+
 
   /**
    * Closes the info dialog by closing the add member overlay and emitting a close event.

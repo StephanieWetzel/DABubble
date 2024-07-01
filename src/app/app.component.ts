@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { IntroAnimationComponent } from './intro-animation/intro-animation.component';
 import { MainContentComponent } from "./main-content/main-content.component"
@@ -19,5 +19,4 @@ import { MainContentComponent } from "./main-content/main-content.component"
 })
 export class AppComponent {
   title = 'DA-Bubble';
-
 }

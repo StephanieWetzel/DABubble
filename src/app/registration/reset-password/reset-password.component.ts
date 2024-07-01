@@ -83,6 +83,4 @@ export class ResetPasswordComponent {
     } catch (error) {
     }
   }
-
-
 }

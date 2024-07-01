@@ -45,8 +45,8 @@ export class ReplyInputBoxComponent {
   };
 
   isContentEmpty: boolean = true;
-  selectedFiles: File[] = []; // Speichert mehrere Dateien
-  selectedFileNames: string[] = []; // Optional: Speichert Dateinamen für die Anzeige
+  selectedFiles: File[] = [];
+  selectedFileNames: string[] = [];
   safeUrl: any;
   isEditing: boolean = false;
   editMessageId: string = 'editOver';
@@ -55,17 +55,33 @@ export class ReplyInputBoxComponent {
 
   }
 
+
+  /**
+ * Retrieves the text content from a given input object using the 'text' format.
+ * @param {any} input - The input object, typically from a text editor instance.
+ * @returns {string} The trimmed text content from the input.
+ */
   getInputContent(input: any) {
     return input.getContent({ format: 'text' }).trim();
   }
 
+
+  /**
+ * Checks and updates the state of the send message button based on input content and selected files.
+ * Updates the 'isContentEmpty' flag to indicate whether content is empty.
+ */
   checkButtonState() {
     const editorContent = this.getInputContent(this.chatService.editorReply);
     this.isContentEmpty = !editorContent && this.selectedFiles.length === 0;
   }
 
-  async sendMessage() {
 
+  /**
+ * Sends a single message, including text content and selected files, to the current channel.
+ * Clears selected files and resets editor content after sending the message.
+ * @returns {Promise<void>} A Promise that resolves once the message is sent.
+ */
+  async sendMessage() {
     let replyData = tinymce.get('inputReply');
     if (replyData) {
       await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
@@ -75,12 +91,22 @@ export class ReplyInputBoxComponent {
     }
   }
 
+
+  /**
+ * Clears the list of selected files and their names.
+ */
   clearSelectedFiles() {
     this.selectedFileNames = [];
     this.selectedFiles = [];
   }
 
 
+  /**
+ * Sends a single message to the specified channel, including text content and uploaded file URLs.
+ * @param {any} data - The data containing the message content (usually from an editor instance).
+ * @param {string} channel - The ID of the channel where the message will be sent.
+ * @returns {Promise<void>} A Promise that resolves once the message is successfully sent.
+ */
   async sendSingleMessage(data: any, channel: string) {
     if (data && this.getInputContent(data) || this.selectedFileNames.length > 0) {
       let content = data.getContent({ format: 'text' });
@@ -95,6 +121,12 @@ export class ReplyInputBoxComponent {
     }
   }
 
+
+  /**
+ * Handles the event when files are selected for upload.
+ * Validates file sizes and updates selected files and file names accordingly.
+ * @param {Event} event - The event containing the selected files.
+ */
   openSelectedFile(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input && input.files) {
@@ -106,7 +138,7 @@ export class ReplyInputBoxComponent {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         totalSize += file.size;
-        if (file.size > 5242880) { // 5 MB für Bilder
+        if (file.size > 5242880) {
           alert("Dateien dürfen nicht größer als 5 MB sein.");
         } else {
           this.selectedFiles.push(file);
@@ -114,17 +146,19 @@ export class ReplyInputBoxComponent {
         }
       }
 
-      if (totalSize > 20971520) { // 20 MB Gesamtgröße pro Nachricht
+      if (totalSize > 20971520) {
         alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
-        this.selectedFiles = []; // Löscht die ausgewählten Dateien, falls die Gesamtgröße überschritten wird
+        this.selectedFiles = [];
       }
     }
     this.checkButtonState();
   }
 
 
-
-
+  /**
+ * Opens a preview dialog for a selected file.
+ * @param {number} index - The index of the selected file in the 'selectedFiles' array.
+ */
   openFilePreview(index: number) {
     const file = this.selectedFiles[index];
     const reader = new FileReader();
@@ -137,23 +171,39 @@ export class ReplyInputBoxComponent {
     reader.readAsDataURL(file);
   }
 
+
+  /**
+ * Removes a selected file from the list of selected files and updates button state.
+ * @param {number} index - The index of the file to be removed in the 'selectedFiles' array.
+ */
   removeFile(index: number) {
     this.selectedFiles.splice(index, 1)
     this.selectedFileNames.splice(index, 1);
     this.checkButtonState()
   }
 
+
+  /**
+ * Decodes HTML entities from an encoded string.
+ * @param {string} encodedString - The encoded string containing HTML entities.
+ * @returns {string} The decoded string with HTML entities replaced by their corresponding characters.
+ */
   decodeHtmlEntities(encodedString: string) {
     const textArea = document.createElement('textarea');
     textArea.innerHTML = encodedString;
     return textArea.value;
   }
 
+
+  /**
+ * Initiates the editing mode for a selected message.
+ * Sets the editingMessageId and populates the editor content with the message content.
+ * @param {Message} message - The message object to be edited.
+ */
   editMessage(message: Message) {
     this.isEditing = true;
     this.editMessageId = message.messageId;
     this.chatService.editorReply.setContent(message.content);
     this.chatService.editorReply.focus();
   }
-
 }

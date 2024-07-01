@@ -18,14 +18,15 @@
       <div class="search-results" *ngIf="chatService.searchResults.length >= 1">
         <div class="results" *ngFor="let result of chatService.searchResults">
           <div *ngIf="result.type === 'message' ">
-          <span (click)="jumpToChannel(result, result.channelId)" >"{{result.data.content}}" von {{ result.userName }} &#64;{{result.channelName}}</span>
+            <span (click)="jumpToChannel(result, result.channelId)">"{{result.data.content}}" von {{ result.userName }}
+              &#64;{{result.channelName}}</span>
+          </div>
+          <div *ngIf="result.type === 'user' ">
+            <span (click)="openDM(result.data.userId)"> {{result.data.name}}</span>
+          </div>
         </div>
-        <div *ngIf="result.type === 'user' ">
-          <span (click)="openDM(result.data.userId)"> {{result.data.name}}</span>
-        </div>
-        </div>   
       </div>
-      
+
     </div>
     <div class="profile" (click)="openProfileMenu()">
       <span>{{ user?.name }}</span>
@@ -44,9 +45,6 @@
       <mat-icon>keyboard_arrow_down</mat-icon>
     </div>
   </div>
-
-
-
   <span class="example-spacer"></span>
 </section>
 
@@ -69,4 +67,3 @@
     </div>
   </div>
 </div>
-

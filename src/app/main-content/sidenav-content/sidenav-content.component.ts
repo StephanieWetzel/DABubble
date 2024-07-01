@@ -1,18 +1,17 @@
 import { Component, EventEmitter, HostListener, Output, ViewEncapsulation } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { AddChannelDialogComponent } from "./add-channel-dialog/add-channel-dialog.component";
 import { SecondAddChannelDialogComponent } from './second-add-channel-dialog/second-add-channel-dialog.component';
-import { DialogRef } from '@angular/cdk/dialog';
 import { Channel } from '../../../assets/models/channel.class';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { User } from '../../../assets/models/user.class';
 import { ProfileAuthentication } from '../../../assets/services/profileAuth.service';
 import { ChatService } from '../../../assets/services/chat-service/chat.service';
 import { FirebaseService } from '../../../assets/services/firebase-service';
-import { onValue, ref } from '@angular/fire/database';
+import { onValue } from '@angular/fire/database';
 import { UserSync } from '../../../assets/services/userSync.service';
 import { MobileService } from '../../../assets/services/mobile.service';
 import { FormsModule } from '@angular/forms';
@@ -37,6 +36,7 @@ export class SidenavContentComponent {
   showBlueEdit: boolean = false;
   @Output() closeSidenav = new EventEmitter<void>();
 
+
   constructor(public dialog: MatDialog, private firestore: FirebaseService, public chatService: ChatService, private auth: ProfileAuthentication, private realTimeDB: UserSync, private mobilService: MobileService) {
     this.getAuthUserId();
     this.fetchNavContent('channel', 'user', 'createdAt', 'asc');
@@ -44,6 +44,16 @@ export class SidenavContentComponent {
     this.realTimeDB.startMonitoringActivity(this.currentUser);
   }
 
+
+  /**
+ * Initializes the component when it is being loaded.
+ * Sets the selected channel to the last active channel retrieved from the `mobileService`.
+ *
+ * This method retrieves the last active channel from `mobileService` and assigns it to
+ * the `selectedChannel` property if available.
+ *
+ * @returns {void} Returns nothing.
+ */
   ngOnInit() {
     const lastChannel = this.mobilService.getActiveChannel();
     if (lastChannel) {
@@ -51,8 +61,15 @@ export class SidenavContentComponent {
     }
   }
 
+
   /**
-   * Listens to user activity events like mouse move and key down to reset the activity timer.
+   * Listens for user activity events such as mousemove and keydown on the window.
+   * Resets the timer in the real-time database for the current user to maintain active session.
+   *
+   * This method is triggered whenever there is mouse movement or key press events on the window.
+   * It invokes the `resetTimer` method of the `realTimeDB` service to reset the timer for the current user.
+   *
+   * @returns {void} Returns nothing.
    */
   @HostListener('window:mousemove')
   @HostListener('window:keydown')
@@ -60,10 +77,22 @@ export class SidenavContentComponent {
     this.realTimeDB.resetTimer(this.currentUser)
   }
 
+
+  /**
+ * Listens for the window resize event to update the screenWidth property.
+ * Updates the screenWidth property with the current inner width of the window.
+ *
+ * This method is triggered whenever the window is resized.
+ * It sets the screenWidth property of the component to the inner width of the window.
+ *
+ * @returns {void} Returns nothing.
+ */
   @HostListener('window:resize')
   checkScreenWisth() {
     this.screenWidth = window.innerWidth;
   }
+
+
   /**
    * Fetches navigation content for channels and users from Firestore.
    * @param {string} channelCollId - Firestore collection ID for channels.
@@ -84,8 +113,13 @@ export class SidenavContentComponent {
     });
   }
 
+
   /**
-   * Retrieves the authenticated user's ID and sets it as the current user.
+   * Retrieves the authenticated user's ID and assigns it to the currentUser property.
+   * Uses the authentication service to fetch the currently logged-in user's ID.
+   * Updates the component's currentUser property with the fetched user ID.
+   *
+   * @returns {void} Returns nothing.
    */
   getAuthUserId() {
     this.auth.fetchLoggedUser().then((userID) => {
@@ -93,24 +127,30 @@ export class SidenavContentComponent {
     })
   }
 
+
   /**
-   * Attaches real-time state listeners to each fetched user to track and update their state.
-   * @param {User[]} users - Array of users to attach state listeners to.
-   * 
+   * Attaches real-time state information to an array of User objects.
+   * Retrieves the current state of each user from the real-time database
+   * and updates their corresponding state property in the fetchedUser array.
+   * Also triggers a state refresh using the authentication service.
+   *
+   * @param {User[]} users - Array of User objects to attach state information to.
+   * @returns {void} Returns nothing.
    */
   attachStateToUsers(users: User[]) {
     users.forEach(user => {
-      const stateRef = this.realTimeDB.getDbRef(user.userId); //ref for realtime db
-      onValue(stateRef, (snapshot) => { // listener for realtime db -> is called if the state is changing (through logout, or connection lost i.e clsoing tab or window)
-        const state = snapshot.val(); // state value from user
-        const userToUpdate = this.fetchedUser.find(u => u.userId === user.userId); // search for specific user with the on top given user.userId at -> const stateRef; checks if the user in fetchedUser-Array matches the user whose status has updated 
-        if (userToUpdate) { // if a user has found, the state will be updated with the state from the realtime db
+      const stateRef = this.realTimeDB.getDbRef(user.userId);
+      onValue(stateRef, (snapshot) => {
+        const state = snapshot.val();
+        const userToUpdate = this.fetchedUser.find(u => u.userId === user.userId);
+        if (userToUpdate) {
           userToUpdate.state = state?.state || false;
           this.auth.refreshState(userToUpdate.userId, userToUpdate.state);
         }
       })
     })
   }
+
 
   /**
    * Prioritizes the current user in the list of fetched users, moving them to the top of the list.
@@ -122,13 +162,17 @@ export class SidenavContentComponent {
     const index = users.findIndex(user => user.userId === currentUserID);
     if (index > -1) {
       const currentUser = users.splice(index, 1)[0];
-      users.unshift(currentUser); //füge den user an die erste stelle des arrays
+      users.unshift(currentUser);
     }
     return users
   }
 
+
   /**
-   * Opens a dialog to add a new channel.
+   * Opens a dialog to add a new channel and handles the result.
+   * If a result is received from the dialog, opens a second dialog based on the result.
+   *
+   * @returns {void} Returns nothing.
    */
   openAddChannel() {
     const dialogRef = this.dialog.open(AddChannelDialogComponent, {
@@ -140,6 +184,7 @@ export class SidenavContentComponent {
       }
     });
   }
+
 
   /**
    * Opens a second dialog based on data from the first add channel dialog.
@@ -155,6 +200,7 @@ export class SidenavContentComponent {
       })
     });
   }
+
 
   /**
    * Transforms data from dialogs into a channel object for storage.
@@ -180,6 +226,7 @@ export class SidenavContentComponent {
     return channel;
   }
 
+
   /**
    * Transforms data from channel creation dialogs into a structured format for a new channel.
    * 
@@ -199,8 +246,12 @@ export class SidenavContentComponent {
     }
   }
 
+
   /**
-   * Checks the screen width and performs actions if it's less than 820 pixels.
+   * Checks the current screen width and performs actions based on the width threshold.
+   * If the screen width is less than 820 pixels, opens the channel in mobile view and emits a signal to close the sidenav.
+   *
+   * @returns {void} Returns nothing.
    */
   checkScreenWidth() {
     if (this.screenWidth < 820) {
@@ -209,13 +260,17 @@ export class SidenavContentComponent {
     }
   }
 
+
   /**
-   * Handles the click event on the channel.
-   * Opens the channel on mobile.
+   * Handles the click event when a channel is clicked.
+   * Opens the channel in mobile view using the MobileService.
+   *
+   * @returns {void} Returns nothing.
    */
   onChannelClick() {
     this.mobilService.openChannel(true);
   }
+
 
   /**
    * Opens a chat channel or DM based on the given channel ID.
@@ -223,7 +278,6 @@ export class SidenavContentComponent {
    * 
    */
   openChannel(channelID: string) {
-    // logik open channel 
     this.chatService.messages = [];
     this.chatService.currentChannel$.next(channelID);
     this.chatService.isFirstLoad = true
@@ -233,6 +287,7 @@ export class SidenavContentComponent {
     this.mobilService.setActiveChannel(channelID);
     this.selectedChannel = this.mobilService.getActiveChannel();
   }
+
 
   /**
    * Opens a direct message session between the current user and another user.
@@ -251,8 +306,8 @@ export class SidenavContentComponent {
     this.mobilService.setActiveChannel(userId);
     this.selectedChannel = this.mobilService.getActiveChannel();
     this.chatService.setIsNewMessage(false);
-    //this.chatService.getMessages();
   }
+
 
   /**
    * Generates a room ID for a DM session by concatenating the user IDs in alphabetical order.
@@ -261,10 +316,16 @@ export class SidenavContentComponent {
    * @returns {string} The generated room ID.
    */
   generateRoomId(userId1: string, userId2: string) {
-    //sort the userId's aplhabetical then add them together seperated with a _
     return [userId1, userId2].sort().join('_');
   }
 
+
+  /**
+ * Jumps to the specified channel ID, updating relevant states and services.
+ *
+ * @param {string} channelID The ID of the channel to jump to.
+ * @returns {void} Returns nothing.
+ */
   jumpToChannel(channelID: string) {
     this.chatService.currentChannel$.next(channelID);
     this.chatService.setIsDmRoom(false);
@@ -275,12 +336,23 @@ export class SidenavContentComponent {
     this.chatService.searchResults = [];
   }
 
+
+  /**
+ * Handles the change event when the search input value changes.
+ *
+ * @param {any} event The event object containing the search input value.
+ * @returns {Promise<void>} A Promise that resolves once the search operation is completed.
+ */
   async onSearchInputChange(event: any) {
     const searchInput = event.target.value;
-    console.log(searchInput)
     await this.chatService.search(searchInput)
   }
 
+
+  /**
+ * Initiates the process to write a new message in the chat.
+ * Sets the appropriate states and triggers necessary updates.
+ */
   writeNewMessage() {
     this.chatService.setIsNewMessage(true);
     this.chatService.isDmRoom.next(false);
@@ -291,4 +363,3 @@ export class SidenavContentComponent {
     this.selectedChannel = 'writeANewMessage'
   }
 }
-

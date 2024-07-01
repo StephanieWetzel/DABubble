@@ -10,18 +10,22 @@ import { RouterLink } from '@angular/router';
   styleUrl: './p-policy.component.scss'
 })
 export class PPolicyComponent {
-
   containerWidth: number;
   containerHeight: number;
   isHovered: boolean = false;
+
 
   constructor(private location: Location) {
     this.containerWidth = window.innerWidth;
     this.containerHeight = window.innerHeight;
   }
 
+
+  /**
+ * Navigates back to the previous location in the browser history.
+ * @returns {void} Returns nothing.
+ */
   goBack(): void {
     this.location.back();
   }
-
 }

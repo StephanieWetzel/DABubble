@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProfileAvatarEditComponent } from './profile-avatar-edit.component';
 
 describe('ProfileAvatarEditComponent', () => {
@@ -10,8 +9,8 @@ describe('ProfileAvatarEditComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ProfileAvatarEditComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ProfileAvatarEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

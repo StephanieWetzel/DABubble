@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
 import {
-  DocumentSnapshot,
   Firestore,
   Unsubscribe,
   addDoc,
@@ -8,8 +7,6 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
-  getFirestore,
   limit,
   onSnapshot,
   orderBy,
@@ -81,7 +78,6 @@ export class FirebaseService {
   async saveChannel(channel: Channel) {
     await addDoc(this.getColl('channel'), channel.toJSON())
       .catch((err) => {
-        console.error(err);
       })
       .then((dockRef) => {
         this.addIdToChannel(dockRef);
@@ -139,8 +135,6 @@ export class FirebaseService {
       } else {
         callback(null);
       }
-    }, (error) => {
-      console.error("error subscribing to channel updates", error);
     });
     return unsubscribe
   }
@@ -153,7 +147,6 @@ export class FirebaseService {
    */
   async getChannelMember(channel: Channel | null): Promise<User[]> {
     if (!channel || !channel.member) {
-      console.error('invalid channel data')
       return []
     }
     const membersData: User[] = [];
@@ -163,12 +156,9 @@ export class FirebaseService {
       members.forEach(doc => {
         if (doc) {
           membersData.push(doc)
-        } else {
-          console.log("no data found");
         }
       });
     } catch (error) {
-      console.error('error occured fetching member data', error);
     }
     return membersData
   }
@@ -257,6 +247,7 @@ export class FirebaseService {
     })
   }
 
+
   /**
    * Checks if a direct message room exists in the Firestore database; if not, it creates a new room.
    * This function first checks for the existence of a document corresponding to `roomId`.
@@ -274,7 +265,7 @@ export class FirebaseService {
     if (!docSnap.exists()) {
       const transformedRoomData = new DirectMessage(this.transformDmRoom(currentUserID, otherUserID, roomId));
       setDoc(roomRef, transformedRoomData.toJSON());
-    }    
+    }
   }
 
 
@@ -311,6 +302,8 @@ export class FirebaseService {
       messages: []
     }
   }
+
+
   /**
    * Checks if a channel name already exists in the Firestore database.
    * This method queries the Firestore for documents in the 'channel' collection
@@ -332,9 +325,11 @@ export class FirebaseService {
       }, (error) => {
         subscriber.error(error);
       });
-      return {unsubscribe};
+      return { unsubscribe };
     });
   }
+
+
   /**
    * Updates the avatar image of a user in the Firestore database.
    * 

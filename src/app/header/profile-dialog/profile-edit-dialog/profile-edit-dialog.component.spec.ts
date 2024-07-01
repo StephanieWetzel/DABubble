@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProfileEditDialogComponent } from './profile-edit-dialog.component';
 
 describe('ProfileEditDialogComponent', () => {
@@ -10,8 +9,8 @@ describe('ProfileEditDialogComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ProfileEditDialogComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(ProfileEditDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

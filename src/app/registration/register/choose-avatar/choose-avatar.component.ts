@@ -160,7 +160,4 @@ export class ChooseAvatarComponent {
     } catch (error) {
     }
   }
-
-
-
 }

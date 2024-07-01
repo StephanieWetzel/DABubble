@@ -1,43 +1,44 @@
 <section *ngIf="!isAdding" class="member-oversight">
-    <div class="head">
-        <span>Mitglieder</span>
-        <mat-icon *ngIf="!openedInChannel" (click)="close()">close</mat-icon>
-    </div>
-    <div class="members">
-        <div (click)="showProfile(user.userId)" *ngFor="let user of members" class="user-list">
-            <div class="user-pair">
-              <img [src]="user.avatar">
-              <div class="online-attribut">
-                <img *ngIf="user.state === 'true'; else awayOrOffline" src="./assets/icons/Online.png">
-                <ng-template #awayOrOffline>
-                  <img *ngIf="user.state === 'away'; else offline" src="./assets/icons/Away.png">
-                  <ng-template #offline>
-                    <img src="./assets/icons/Offline.png">
-                  </ng-template>
-                </ng-template>
-              </div>
-            </div>
-            <p>{{ user.name }} <span *ngIf="user.userId === currentUser">(Du)</span></p>
-        </div>
-    </div>
-    <div *ngIf="!openedInChannel" (click)="toggleAddMember(); $event.stopPropagation()" class="add-member">
-        <button class="add-member-btn">
-            <mat-icon class="outlined">person_add</mat-icon>
-        </button>
-        <span>Mitglieder hinzufügen</span>
-    </div>
-    <!--mobile button-->
-    <div *ngIf="openedInChannel" (click)="openMobileAddMemberOverlay(); $event.stopPropagation()" class="add-member">
-      <button class="add-member-btn">
-          <mat-icon class="outlined">person_add</mat-icon>
-      </button>
-      <span>Mitglieder hinzufügen</span>
+  <div class="head">
+    <span>Mitglieder</span>
+    <mat-icon *ngIf="!openedInChannel" (click)="close()">close</mat-icon>
   </div>
-    <div *ngIf="isShowingProfile" class="user-profile">
-        <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId" (hasClosed)="handleProfile($event)"></app-user-detail>
+  <div class="members">
+    <div (click)="showProfile(user.userId)" *ngFor="let user of members" class="user-list">
+      <div class="user-pair">
+        <img [src]="user.avatar">
+        <div class="online-attribut">
+          <img *ngIf="user.state === 'true'; else awayOrOffline" src="./assets/icons/Online.png">
+          <ng-template #awayOrOffline>
+            <img *ngIf="user.state === 'away'; else offline" src="./assets/icons/Away.png">
+            <ng-template #offline>
+              <img src="./assets/icons/Offline.png">
+            </ng-template>
+          </ng-template>
+        </div>
+      </div>
+      <p>{{ user.name }} <span *ngIf="user.userId === currentUser">(Du)</span></p>
     </div>
+  </div>
+  <div *ngIf="!openedInChannel" (click)="toggleAddMember(); $event.stopPropagation()" class="add-member">
+    <button class="add-member-btn">
+      <mat-icon class="outlined">person_add</mat-icon>
+    </button>
+    <span>Mitglieder hinzufügen</span>
+  </div>
+  <!--mobile button-->
+  <div *ngIf="openedInChannel" (click)="openMobileAddMemberOverlay(); $event.stopPropagation()" class="add-member">
+    <button class="add-member-btn">
+      <mat-icon class="outlined">person_add</mat-icon>
+    </button>
+    <span>Mitglieder hinzufügen</span>
+  </div>
+  <div *ngIf="isShowingProfile" class="user-profile">
+    <app-user-detail *ngIf="isShowingProfile" [userID]="selectedProfileId"
+      (hasClosed)="handleProfile($event)"></app-user-detail>
+  </div>
 </section>
 
 <!--search input content-->
-
-<app-add-member *ngIf="isAdding" [currentMembers]="members" [channel]="currentChannel" (isClosed)="searchClosed($event)" (hasAdded)="closeOversight($event)"></app-add-member>
+<app-add-member *ngIf="isAdding" [currentMembers]="members" [channel]="currentChannel" (isClosed)="searchClosed($event)"
+  (hasAdded)="closeOversight($event)"></app-add-member>

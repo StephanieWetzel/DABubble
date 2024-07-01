@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -63,16 +63,30 @@ export class HeadbarComponent {
 
   @ViewChild('inputArea', { static: false }) inputArea!: ElementRef;
 
+
   constructor(
-    public chatService: ChatService, 
-    private auth: ProfileAuthentication, 
-    public dialog: MatDialog, 
+    public chatService: ChatService,
+    private auth: ProfileAuthentication,
+    public dialog: MatDialog,
     public firestore: FirebaseService,
     public mobileService: MobileService
   ) {
     this.searchInput = new FormControl('');
   }
 
+
+  /**
+ * Initializes the component when it is being loaded.
+ * Subscribes to various observables to update component state based on user interactions.
+ * - Subscribes to `drawerOpened$` from `mobileService` to track drawer open/close state.
+ * - Subscribes to `isDmRoom` from `chatService` to track direct message room state.
+ * - Subscribes to `dmPartnerID$` from `chatService` to fetch partner user information when a direct message is active.
+ * - Subscribes to `currentChannel$` from `chatService` to update channel-related data and subscribe to channel updates.
+ * - Subscribes to `newMessage$` from `chatService` to handle new message notifications and update messages.
+ * - Subscribes to `valueChanges` from `searchInput` to handle user search input and filter results based on '@' or '#'.
+ *
+ * @returns {void} Returns nothing.
+ */
   async ngOnInit() {
     this.isDrawerOpenedSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
       this.isDrawerOpen = isOpen;
@@ -87,7 +101,7 @@ export class HeadbarComponent {
       }
     })
     this.chatService.currentChannel$.subscribe(channelID => {
-      this.currentChannelId = channelID;      
+      this.currentChannelId = channelID;
       if (this.unsubscribeFromChannel) {
         this.unsubscribeFromChannel();
       }
@@ -101,7 +115,6 @@ export class HeadbarComponent {
       })
     });
 
-
     this.chatService.newMessage$.subscribe(newMessage => {
       this.isNewMessage = newMessage;
       this.chatService.updateMessages();
@@ -109,8 +122,7 @@ export class HeadbarComponent {
 
     this.searchInput.valueChanges.subscribe(value => {
       if (value!.startsWith('@')) {
-        // Ruft Suchfunktion auf und zeigt Ergebnisse an
-        this.searchResults = this.findResults(value!.slice(1)); // Ignoriert das '@'
+        this.searchResults = this.findResults(value!.slice(1));
       } else {
         this.searchResults = [];
       }
@@ -125,11 +137,19 @@ export class HeadbarComponent {
     });
   }
 
+
+  /**
+ * Cleans up resources and subscriptions when the component is destroyed.
+ * - Unsubscribes from `unsubscribeFromChannel` if it exists to prevent memory leaks.
+ *
+ * @returns {void} Returns nothing.
+ */
   ngOnDestroy() {
     if (this.unsubscribeFromChannel) {
       this.unsubscribeFromChannel();
     }
   }
+
 
   /**
    * Retrieves the user ID of the currently logged-in user from an authentication service.
@@ -139,6 +159,7 @@ export class HeadbarComponent {
       this.currentUser = userId;
     })
   }
+
 
   /**
    * Fetches members from the specified channel in Firestore and prioritizes the current user in the list.
@@ -154,9 +175,18 @@ export class HeadbarComponent {
     }
   }
 
+
+  /**
+ * Toggles the search state based on the given event.
+ * - Updates the `isSearchOpen` flag to the opposite of its current value.
+ *
+ * @param {boolean} event - The event indicating whether the search is open (`true`) or closed (`false`).
+ * @returns {void} Returns nothing.
+ */
   searchClosed(event: boolean) {
     this.isSearchOpen = !this.isSearchOpen
   }
+
 
   /**
    * Modifies an array of users to prioritize the current user by moving their entry to the front of the array.
@@ -174,6 +204,7 @@ export class HeadbarComponent {
     return users
   }
 
+
   /**
    * Sets the searching status based on the given boolean event.
    *
@@ -182,6 +213,7 @@ export class HeadbarComponent {
   changeWidth(event: boolean) {
     this.isSearching = event;
   }
+
 
   /**
    * Toggles the member oversight status. If already enabled, it disables it immediately.
@@ -196,6 +228,7 @@ export class HeadbarComponent {
       }, 10);
     }
   }
+
 
   /**
    * Asynchronously fetches and stores the avatars of channel members.
@@ -212,10 +245,10 @@ export class HeadbarComponent {
     }
   }
 
+
   /**
    * Handles document-wide click events to manage visibility of various UI dialogs.
-   * This method checks if the click was outside the info menu, member oversight dialog,
-   * or member search dialog, and closes these dialogs if they are open and the click was outside their area.
+   * This method checks if the click was outside the info menu, member oversight dialog, or member search dialog, and closes these dialogs if they are open and the click was outside their area.
    * Additionally, it clears the search input if the click is outside the input message area.
    * 
    * @param {MouseEvent} event - The mouse event that triggered the handler.
@@ -242,11 +275,11 @@ export class HeadbarComponent {
     }
     // for input new message
     if (this.inputArea && this.inputArea.nativeElement && !this.inputArea.nativeElement.contains(event.target as Node)) {
-        this.searchInput.setValue('');
+      this.searchInput.setValue('');
     }
   }
 
-  
+
   /**
    * Listens for window resize events and updates the screenWidth property with the current window width.
    * This method is decorated with @HostListener to automatically capture window resize events.
@@ -269,6 +302,8 @@ export class HeadbarComponent {
       }, 10)
     }
   }
+
+
   /**
    * Handles the close event for an information dialog by setting its visibility state.
    * 
@@ -277,6 +312,8 @@ export class HeadbarComponent {
   handleCloseEvent(event: boolean) {
     this.isInfoOpen = event;
   }
+
+
   /**
    * Handles the close event for an information dialog by setting its visibility state.
    * 
@@ -285,6 +322,7 @@ export class HeadbarComponent {
   handleCloseEventMember(event: boolean) {
     this.isMemberOversight = event;
   }
+
 
   /**
    * Toggles the visibility of the member search dialog.
@@ -299,16 +337,28 @@ export class HeadbarComponent {
     }
   }
 
+
+  /**
+   * Adds the provided user to the selected users list if not already present.
+   * Updates `selectedUsers` and `chatService.selectedUsers`.
+   *
+   * @param {any} user - The user object to add.
+   */
   selectUser(user: any): void {
     if (!this.selectedUsers.some(u => u.userId === user.userId)) {
       this.selectedUsers.push(user);
       this.chatService.selectedUsers = this.selectedUsers;
       this.searchInput.setValue(this.searchInput.value);
-     
-      // this.searchResults = this.findResults(this.searchInput.value || "");
     }
   }
 
+
+  /**
+ * Finds and returns users matching the search term and not already selected.
+ *
+ * @param {string} searchTerm - The term to search for among users.
+ * @returns {any[]} Array of matching user objects.
+ */
   findResults(searchTerm: string): any[] {
     return this.chatService.users.filter(
       item => item.name?.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -316,31 +366,55 @@ export class HeadbarComponent {
     );
   }
 
-  
 
-  removeUser(userToRemove: User){
+  /**
+ * Removes the specified user from the selected users list.
+ * Updates `selectedUsers`.
+ *
+ * @param {User} userToRemove - The user object to remove.
+ */
+  removeUser(userToRemove: User) {
     this.selectedUsers = this.selectedUsers.filter(user => user.userId !== userToRemove.userId);
     this.searchInput.setValue(this.searchInput.value);
   }
 
+
+  /**
+ * Adds the provided channel to the selected channels list if not already present.
+ * Updates `selectedChannels` and `chatService.selectedChannels`.
+ *
+ * @param {any} channel - The channel object to add.
+ */
   selectChannel(channel: any): void {
     if (!this.selectedChannels.some(c => c.channelId === channel.channelId)) {
       this.selectedChannels.push(channel);
       this.chatService.selectedChannels = this.selectedChannels;
       this.searchInput.setValue(this.searchInput.value);
-      // this.filteredChannels = []; // Optional: Clear filteredChannels if you don't need it anymore
     }
   }
 
 
+  /**
+ * Finds and returns channels matching the search term and not already selected.
+ *
+ * @param {string} searchTerm - The term to search for among channels.
+ * @returns {any[]} Array of matching channel objects.
+ */
   findChannels(searchTerm: string): any[] {
     return this.chatService.allChannels.filter(channel =>
       channel.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !this.selectedChannels.some(c => c.channelId === channel.channelId) 
-    );  
+      !this.selectedChannels.some(c => c.channelId === channel.channelId)
+    );
   }
 
-  removeChannel(channelToRemove: Channel){
+
+  /**
+ * Removes the specified channel from the selected channels list.
+ * Updates `selectedChannels`.
+ *
+ * @param {Channel} channelToRemove - The channel object to remove.
+ */
+  removeChannel(channelToRemove: Channel) {
     this.selectedChannels = this.selectedChannels.filter(channel => channel.channelId !== channelToRemove.channelId);
     this.searchInput.setValue(this.searchInput.value);
   }

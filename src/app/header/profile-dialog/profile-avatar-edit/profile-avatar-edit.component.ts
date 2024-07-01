@@ -3,7 +3,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../../../assets/models/user.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { CommonModule } from '@angular/common';
-
 @Component({
   selector: 'app-profile-avatar-edit',
   standalone: true,
@@ -25,13 +24,20 @@ export class ProfileAvatarEditComponent {
   @Input() user: User | null = null;
   @Output() closeAvatarEditing = new EventEmitter<boolean>();
   @ViewChild('file') file: ElementRef | any;
-  constructor(private firestore: FirebaseService) {}
 
+  constructor(private firestore: FirebaseService) { }
+
+
+  /**
+ * Initializes the component by setting the userAvatar property to the avatar of the current user, if available.
+ * Checks if the user object is defined and assigns the avatar to the userAvatar property.
+ */
   ngOnInit() {
     if (this.user) {
       this.userAvatar = this.user.avatar;
     }
   }
+
 
   /**
    * Closes the avatar editing overlay by emitting the closing event.
@@ -39,6 +45,7 @@ export class ProfileAvatarEditComponent {
   closeAvatar() {
     this.closeAvatarEditing.emit(true);
   }
+
 
   /**
    * Sets the selected avatar for the user.
@@ -49,15 +56,13 @@ export class ProfileAvatarEditComponent {
     this.userAvatar = avatar;
   }
 
+
   /**
-   * Handles file selection events to update the user's avatar with the selected file.
-   * This method extracts the first file from the event's file input, reads it as a data URL
-   * using a FileReader, and sets the resulting base64 encoded string as the user's avatar.
-   * The avatar update occurs in the onload event handler of the FileReader.
-   *
-   * @param {any} event - The file input event containing the selected file.
+   * Handles the event when a file is selected.
+   * Reads the selected file using FileReader and sets the userAvatar to the resulting data URL.
+   * @param {any} event - The event object containing information about the selected file.
    */
-  onFileSelected(event:any) {
+  onFileSelected(event: any) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -65,6 +70,7 @@ export class ProfileAvatarEditComponent {
     };
     reader.readAsDataURL(file);
   }
+
 
   /**
    * Saves the user's avatar if the user is authenticated.
@@ -76,11 +82,11 @@ export class ProfileAvatarEditComponent {
     }
   }
 
+
   /**
    * Triggers the file input element to open a file selection dialog for uploading a picture.
    */
   uploadPic() {
     this.file.nativeElement.click();
   }
-
 }

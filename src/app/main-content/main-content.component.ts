@@ -10,7 +10,6 @@ import { SidenavContentComponent } from './sidenav-content/sidenav-content.compo
 import { ChatComponent } from './chat/chat.component';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ChatService } from '../../assets/services/chat-service/chat.service';
 import { MobileService } from '../../assets/services/mobile.service';
 
 @Component({
@@ -34,14 +33,13 @@ import { MobileService } from '../../assets/services/mobile.service';
   ],
 })
 export class MainContentComponent {
-  //isDrawerOpen: boolean = true;
   isChannelOpen!: boolean;
   isChannelOpenSub!: Subscription;
   screenWidth: number;
   isDrawerOpen: boolean = true;
   drawerSub!: Subscription;
 
-  constructor(private mobileService: MobileService){
+  constructor(private mobileService: MobileService) {
     this.screenWidth = window.innerWidth;
     this.drawerSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
       this.isDrawerOpen = isOpen;
@@ -49,11 +47,25 @@ export class MainContentComponent {
     this.mobileService.toggleDrawe(true);
   }
 
+
+  /**
+ * Listens to the window resize event and updates the screenWidth property.
+ * This method is triggered whenever the browser window is resized.
+ * 
+ * @returns {void} Returns nothing.
+ */
   @HostListener('window:resize')
   onResize() {
     this.screenWidth = window.innerWidth;
   }
 
+
+  /**
+ * Initializes the component and subscribes to changes in the mobile service.
+ * Updates the component's state based on the channelOpened$ observable.
+ * 
+ * @returns {void} Returns nothing.
+ */
   ngOnInit() {
     this.isChannelOpenSub = this.mobileService.channelOpened$.subscribe(
       (isChannelOpen) => {
@@ -62,15 +74,38 @@ export class MainContentComponent {
     )
   }
 
+
+  /**
+ * Cleans up subscriptions and resources when the component is destroyed.
+ * Unsubscribes from the `channelOpened$` and `drawerOpened$` subscriptions.
+ * 
+ * @returns {void} Returns nothing.
+ */
   ngOnDestroy() {
     this.isChannelOpenSub.unsubscribe();
     this.drawerSub.unsubscribe();
   }
 
+
+  /**
+ * Toggles the state of the drawer between open and closed.
+ *
+ * @param {boolean} isOpen - Boolean indicating whether the drawer should be open (`true`) or closed (`false`).
+ * @returns {void} Returns nothing.
+ */
   toggleDrawer(isOpen: boolean) {
     this.isDrawerOpen = isOpen;
   }
 
+
+  /**
+ * Toggles the state of the drawer and updates the state in the `mobileService`.
+ *
+ * This method toggles the `isDrawerOpen` property between `true` and `false` and
+ * also calls the `toggleDrawer` method from `mobileService` to update its state.
+ *
+ * @returns {void} Returns nothing.
+ */
   toggleDrawerVar() {
     this.isDrawerOpen = !this.isDrawerOpen;
     this.mobileService.toggleDrawe(this.isDrawerOpen);

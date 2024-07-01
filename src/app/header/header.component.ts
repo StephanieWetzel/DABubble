@@ -9,7 +9,7 @@ import { ProfileAuthentication } from '../../assets/services/profileAuth.service
 import { MobileService } from '../../assets/services/mobile.service';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../../assets/services/chat-service/chat.service';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../assets/services/firebase-service';
 
 @Component({
@@ -38,8 +38,10 @@ export class HeaderComponent {
   selectedChannel: string | null = 'pSBwciqiaOgtUayZaIgj';
   @Output() openSidenav = new EventEmitter<void>();
 
+
   constructor(private profileAuth: ProfileAuthentication, public mobileService: MobileService, public chatService: ChatService, private firestore: FirebaseService, private mobilService: MobileService) {
   }
+
 
   /**
    * Handles the window resize event to dynamically adjust UI elements based on the screen width.
@@ -53,6 +55,7 @@ export class HeaderComponent {
       this.keepMenuOpen = true;
     }
   }
+
 
   /**
    * Resets navigation settings by closing any open channel, toggling the navigation drawer,
@@ -79,6 +82,7 @@ export class HeaderComponent {
     )
   }
 
+
   /**
    * Logs out the current user using the authentication service.
    */
@@ -88,13 +92,11 @@ export class HeaderComponent {
     this.chatService.isFirstLoad = true
     this.chatService.setIsDmRoom(false);
     this.chatService.setIsNewMessage(false);
-    // this.chatService.unsubscribe();
     this.mobileService.setActiveChannel('pSBwciqiaOgtUayZaIgj');
     this.chatService.isFirstLoad = true;
     this.profileAuth.userLogout();
   }
 
-  
 
   /**
    * Closes the profile menu if a click occurs outside of it.
@@ -110,6 +112,7 @@ export class HeaderComponent {
     }
   }
 
+
   /**
    * Toggles the visibility of the profile menu.
    */
@@ -123,6 +126,7 @@ export class HeaderComponent {
     }
   }
 
+
   /**
   * Opens the profile edit view and closes the profile menu.
   */
@@ -133,8 +137,8 @@ export class HeaderComponent {
       this.isProfileEditOpen = true;
       this.isProfilMenuOpen = false;
     }
-
   }
+
 
   /**
    * Handles navigation back from the profile edit view to the profile menu.
@@ -147,11 +151,27 @@ export class HeaderComponent {
     }, 20);
   }
 
+
+  /**
+ * Handles the change event when the search input value changes.
+ * Triggers a search using the chat service based on the input value.
+ * @param event - The event object containing the search input value.
+ * @returns {void} Returns nothing.
+ */
   async onSearchInputChange(event: any) {
     const searchInput = event.target.value;
     await this.chatService.search(searchInput)
   }
 
+
+  /**
+ * Jumps to the specified channel based on the result and channel ID.
+ * Sets the current channel, resets screen width check, and clears search results.
+ * Also highlights the specified message in the channel.
+ * @param result - The result object containing information about the message.
+ * @param channelId - The ID of the channel to jump to.
+ * @returns {void} Returns nothing.
+ */
   jumpToChannel(result: any, channelId: string) {
     this.chatService.currentChannel$.next(channelId);
     this.chatService.setIsDmRoom(false);
@@ -163,6 +183,13 @@ export class HeaderComponent {
     this.chatService.highlightMessage(result.data.messageId, channelId);
   }
 
+
+  /**
+ * Opens a direct message (DM) chat with the specified user.
+ * Generates a room ID, sets current DM partner, and handles UI updates.
+ * @param userId - The ID of the user to open DM with.
+ * @returns {void} Returns nothing.
+ */
   openDM(userId: string) {
     this.chatService.messages = [];
     this.chatService.isFirstLoad = true
@@ -179,9 +206,15 @@ export class HeaderComponent {
     this.chatService.setIsNewMessage(false);
   }
 
+
+  /**
+ * Generates a unique room ID for a direct message (DM) chat based on user IDs.
+ * The IDs are sorted alphabetically and concatenated with an underscore.
+ * @param userId1 - The ID of the first user.
+ * @param userId2 - The ID of the second user.
+ * @returns {string} Returns the generated room ID.
+ */
   generateRoomId(userId1: string | undefined, userId2: string) {
-    //sort the userId's aplhabetical then add them together seperated with a _
     return [userId1, userId2].sort().join('_');
   }
-
 }

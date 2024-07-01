@@ -11,97 +11,119 @@ h3 {
   margin: 40px 40px;
   width: auto;
   max-width: 872px;
+
   @media (max-width: 400px) {
     margin: 20px;
   }
-  > .dialog-head {
+
+  >.dialog-head {
     width: 100%;
     @include dFlex(space-between);
-    > h2 {
+
+    >h2 {
       font-size: 24px;
       font-weight: bold;
       margin: 0;
     }
-    > mat-icon {
+
+    >mat-icon {
       border-radius: 50%;
       padding: 4px;
+
       &:hover {
         color: #444df2;
         cursor: pointer;
         background-color: #eceefe;
       }
     }
+
     margin-bottom: 20px;
   }
-  > .exmpl-text {
-    > p {
+
+  >.exmpl-text {
+    >p {
       font-size: 18px;
       margin: 0;
     }
+
     margin-bottom: 20px;
   }
-  > form {
+
+  >form {
     width: 100%;
-    > .channel-name {
+
+    >.channel-name {
       width: 100%;
       @include dFlex(flex-start, flex-start, 0, column);
       margin-bottom: 20px;
     }
-    > .channel-form {
+
+    >.channel-form {
       width: 100%;
       @include dFlex(flex-start, flex-start, 0, column);
       margin-bottom: 20px;
-      > .inputs {
+
+      >.inputs {
         width: 100%;
         max-width: 100%;
         @include dFlex(flex-start, center, 0px);
         border: 1px solid #adb0d9;
         overflow: hidden;
-        > mat-icon {
+
+        >mat-icon {
           padding-left: 20px;
           font-style: italic;
           opacity: 0.4;
         }
       }
-      > .error-handling {
+
+      >.error-handling {
         padding-left: 24px;
         padding-top: 8px;
-        > span {
+
+        >span {
           display: flex;
           color: #ed1e79;
           font-size: 14px;
         }
       }
-      > .tarea-input {
+
+      >.tarea-input {
         @include dFlex(center, center);
         width: 100%;
         max-width: 100%;
         border: 1px solid #adb0d9;
       }
     }
-    > .description {
+
+    >.description {
       @include dFlex(flex-start, center, 0, row);
       width: 100%;
 
       margin-bottom: 20px;
-      > p {
+
+      >p {
         margin: 0 8px;
       }
     }
-    > .create-btn {
+
+    >.create-btn {
       width: 100%;
       @include dFlex(flex-end, center, 0, row);
-      > div {
+
+      >div {
         @include dFlex(center, center);
         width: 125px;
         height: 49px;
         border-radius: 32px;
         background-color: #444df2;
         cursor: pointer;
+
         &:hover {
           background-color: #797ef3;
         }
-        > span {
+
+        >span {
           color: white;
           font-size: 18px;
           font-weight: bold;
@@ -119,6 +141,7 @@ textarea {
   width: 100% !important;
   max-width: 92% !important;
   vertical-align: middle;
+
   &::placeholder {
     font-size: 18px;
     vertical-align: middle;
@@ -135,9 +158,11 @@ textarea {
   padding: 18px 15px;
   font-family: "Nunito";
   font-size: 18px;
+
   &:hover {
     cursor: pointer;
   }
+
   ::placeholder {
     font-family: "Nunito";
     font-size: 18px;

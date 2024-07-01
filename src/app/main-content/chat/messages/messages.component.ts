@@ -1,17 +1,16 @@
-import { OnInit, Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
-import { CommonModule, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { CommonModule, KeyValuePipe, NgClass } from '@angular/common';
 import { CustomDatePipe } from './date-pipe/custom-date.pipe';
 import { CustomTimePipe } from './time-pipe/custom-time.pipe';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { Reaction } from '../../../../assets/models/reactions.class';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { Subscription, debounceTime } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { User } from '../../../../assets/models/user.class';
 import { UserDetailComponent } from './user-detail/user-detail.component';
@@ -83,15 +82,32 @@ export class MessagesComponent implements AfterViewInit {
     this.messages = this.chatService.messages;
   }
 
+
+  /**
+ * Sets the selected profile ID and displays the profile details.
+ * @param {string} id - The ID of the profile to display.
+ */
   showID(id: string) {
     this.selectedProfileId = id;
     this.isShowingProfile = true
   }
 
+
+  /**
+ * Handles the profile closing action.
+ * Toggles the 'isShowingProfile' property based on whether the profile has been closed.
+ * @param {boolean} hasClosed - Indicates whether the profile has been closed.
+ */
   handleProfile(hasClosed: boolean) {
     this.isShowingProfile = !hasClosed;
   }
 
+
+  /**
+ * Subscribes to 'scrollToBottom$' observable from 'chatService'.
+ * Scrolls to the bottom of the view when 'shouldScroll' is true.
+ * Unsubscribes after scrolling.
+ */
   ngAfterViewInit() {
     this.subscription.add(this.chatService.scrollToBottom$.subscribe(shouldScroll => {
       if (shouldScroll) {
@@ -101,6 +117,7 @@ export class MessagesComponent implements AfterViewInit {
         }, 100);
       }
     }));
+
     this.highlightSubscription = this.chatService.messageId$.subscribe(messageId => {
       if (messageId) {
         this.highlightMessage(messageId);
@@ -108,6 +125,11 @@ export class MessagesComponent implements AfterViewInit {
     });
   }
 
+
+  /**
+ * Detects changes manually after view checked.
+ * This is used to trigger change detection in Angular.
+ */
   ngAfterViewChecked(): void {
     this.changeDetRef.detectChanges();
   }
@@ -125,8 +147,12 @@ export class MessagesComponent implements AfterViewInit {
     })
   }
 
+
+  /**
+ * Highlights a message in the UI by scrolling it into view and applying a CSS class for a brief period.
+ * @param {string} messageId - The ID of the message element to highlight.
+ */
   highlightMessage(messageId: string) {
-    console.log(messageId)
     setTimeout(() => {
       const messageElement = document.getElementById(messageId);
       if (messageElement) {
@@ -138,6 +164,7 @@ export class MessagesComponent implements AfterViewInit {
       }
     }, 500);
   }
+
 
   /**
    * Determines if the current channel is a direct message based on the length of the channel ID.
@@ -176,6 +203,12 @@ export class MessagesComponent implements AfterViewInit {
     return lastReply.time;
   }
 
+
+  /**
+ * Initializes the TinyMCE editor for a specific message ID if it matches the currently editing message ID.
+ * Sets the content of the editor to the current editing content.
+ * @param {string} messageId - The ID of the message for which the editor is being initialized.
+ */
   onEditorInit(messageId: string) {
     if (this.editingMessageId === messageId) {
       const editorInstance = tinymce.get('editData-' + messageId);
@@ -224,12 +257,13 @@ export class MessagesComponent implements AfterViewInit {
       const content = this.getInputContent(tinymce.get('editData-' + messageId));
       const message = this.messages.find(msg => msg.messageId === messageId);
       if (message) {
-        message.content = content; // Update the message content immediately in the UI
+        message.content = content;
       }
       this.chatService.editMessage(messageId, content);
     }
     this.closeEditor();
   }
+
 
   /**
    * Retrieves the text content from a TinyMCE editor instance.
@@ -248,7 +282,7 @@ export class MessagesComponent implements AfterViewInit {
    * @returns {boolean} - True if the date is different from the previous message's date.
    */
   isDateDifferent(index: number) {
-    if (index === 0) return true; // Die erste Nachricht zeigt immer das Datum an
+    if (index === 0) return true;
     const currentDateFormatted = this.customDatePipe.transform(this.messages[index].time);
     const previousDateFormatted = this.customDatePipe.transform(this.messages[index - 1].time);
     return currentDateFormatted !== previousDateFormatted;
@@ -270,10 +304,6 @@ export class MessagesComponent implements AfterViewInit {
    * @returns {Message[]} - Array of filtered messages.
    */
   getFilteredMessages(): Message[] {
-    // // if (!this.chatService.searchInput) return this.getList();
-    // return this.getList().filter(message =>
-    //   message.content.toLowerCase().includes(this.chatService.searchInput.toLowerCase())
-    // );
     return this.getList()
   }
 
@@ -330,7 +360,6 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
-
   /**
    * Updates the user's last used reactions.
    * @param {string} emote - The new emote to set as the last reaction.
@@ -374,6 +403,10 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
+  /**
+ * Toggles the state of the edit message menu.
+ * If the menu is currently open, it closes it; if closed, it opens it.
+ */
   openEditMessage() {
     this.menuEditMessage = !this.menuEditMessage;
   }
@@ -400,7 +433,6 @@ export class MessagesComponent implements AfterViewInit {
       window.URL.revokeObjectURL(blobUrl);
       document.body.removeChild(a);
     } catch (error) {
-      console.error('Error downloading the file:', error);
     }
   }
 

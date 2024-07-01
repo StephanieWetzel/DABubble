@@ -55,40 +55,46 @@ export class SecondAddChannelDialogComponent {
       .valueChanges.subscribe((searchTerm: string) => {
         this.searchResults = searchTerm ? this.findResults(searchTerm) : [];
       });
-    
+
     this.unsubUser = this.firestore.fetchCollection('user').subscribe((users) => {
       this.fetchedUser = users;
       this.removeCurrentUser();
     });
   }
 
+
+  /**
+   * Initializes the component by fetching the currently logged-in user ID.
+   */
   async ngOnInit() {
     this.currentUser = await this.auth.fetchLoggedUser();
   }
+
 
   /**
    * Removes the current user from the list of fetched users if the current user is present.
    */
   removeCurrentUser() {
     if (this.currentUser && this.fetchedUser) {
-      
       this.fetchedUser = this.fetchedUser.filter(user => user.userId !== this.currentUser);
     }
   }
 
+
   /**
    * Cleans up the component by unsubscribing from any active subscriptions to prevent memory leaks.
-   */  
+   */
   ngOnDestroy() {
     this.unsubUser.unsubscribe();
   }
+
 
   /**
    * Filters the fetched users based on the search term and excludes already selected users.
    * @param {string} searchTerm - The term used to filter user results.
    * @returns {any[]} An array of users that match the search criteria.
    * 
-   */  
+   */
   private findResults(searchTerm: string): any[] {
     return this.fetchedUser.filter(
       (item) =>
@@ -97,9 +103,10 @@ export class SecondAddChannelDialogComponent {
     );
   }
 
+
   /**
    * Handles the closure of the dialog, returning the selected option and users if applicable.
-   */  
+   */
   onClose(): void {
     if (this.secondDialogGroup.get('selectedOption').value === 'chooseUser') {
       this.dialogRef.close({
@@ -110,6 +117,8 @@ export class SecondAddChannelDialogComponent {
       this.dialogRef.close(this.secondDialogGroup.get('selectedOption').value);
     }
   }
+
+
   /**
    * Cancels the channel creation process
    */
@@ -117,11 +126,12 @@ export class SecondAddChannelDialogComponent {
     this.dialogRef.close();
   }
 
+
   /**
    * Adds a user to the list of selected users and updates the search results.
    * @param {any} user - The user to add to the selected list.
    * 
-   */  
+   */
   selectUser(user: any): void {
     if (!this.selectedUsers.includes(user)) {
       this.selectedUsers.push(user);
@@ -132,11 +142,12 @@ export class SecondAddChannelDialogComponent {
     }
   }
 
+
   /**
    * Removes a user from the list of selected users.
    * @param {any} user - The user to remove from the selected list.
    * 
-   */  
+   */
   removeUser(user: any): void {
     this.selectedUsers = this.selectedUsers.filter((u) => u !== user);
   }

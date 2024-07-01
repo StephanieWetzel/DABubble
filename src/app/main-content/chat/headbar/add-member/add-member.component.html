@@ -14,11 +14,11 @@
     <div class="search">
       <div>
         <mat-chip *ngFor="let user of selectedUsers" (removed)="removeUser(user)">
-            <div class="selected-user-pair">
-                <img [src]="user.avatar">
-                <p>{{ user.name }}</p>
-                <mat-icon matChipRemove>close</mat-icon>
-            </div>
+          <div class="selected-user-pair">
+            <img [src]="user.avatar">
+            <p>{{ user.name }}</p>
+            <mat-icon matChipRemove>close</mat-icon>
+          </div>
         </mat-chip>
       </div>
       <input [formControl]="searchInput" type="text" placeholder="Name eingeben" />
@@ -26,17 +26,18 @@
   </mat-chip-listbox>
   <div class="search-results" *ngIf="searchResults.length > 0">
     <div>
-        <div class="user-result-list" *ngFor="let user of searchResults" (click)="selectUser(user); $event.stopPropagation()">
-            <div class="user-pair">
-            <img [src]="user.avatar">
-            <div class="online-attribut">
-                <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
-            </div>
+      <div class="user-result-list" *ngFor="let user of searchResults"
+        (click)="selectUser(user); $event.stopPropagation()">
+        <div class="user-pair">
+          <img [src]="user.avatar">
+          <div class="online-attribut">
+            <img [src]="user.state === 'true' ? './assets/icons/Online.png' : './assets/icons/Offline.png'">
+          </div>
         </div>
         <span>{{ user.name }}</span>
+      </div>
     </div>
   </div>
-</div>
-<div class="add-btn">
+  <div class="add-btn">
     <button [disabled]="selectedUsers.length === 0" (click)="addMember(); $event.stopPropagation()">Hinzufügen</button>
-</div>
+  </div>

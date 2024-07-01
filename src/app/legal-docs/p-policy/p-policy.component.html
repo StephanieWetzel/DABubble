@@ -1,33 +1,22 @@
 <div class="main-container">
   <div class="header-container">
-    <img
-      src="assets/img/logo-header_complete.svg"
-      alt=""
-      [ngStyle]="{ height: containerHeight <= 700 ? '48px' : '' }"
-    />
+    <img src="assets/img/logo-header_complete.svg" alt=""
+      [ngStyle]="{ height: containerHeight <= 700 ? '48px' : '' }" />
   </div>
 
   <div class="policy-container">
-    <img
-        (click)="goBack()"
-        [src]="
+    <img (click)="goBack()" [src]="
           isHovered
             ? 'assets/img/goBack_focused.svg'
             : 'assets/img/goBack_unfocused.svg'
-        "
-        (mouseover)="isHovered = true"
-        (mouseout)="isHovered = false"
-        src="assets/img/goBack_unfocused.svg"
-        alt=""
-      />
+        " (mouseover)="isHovered = true" (mouseout)="isHovered = false" src="assets/img/goBack_unfocused.svg" alt="" />
     <div class="policy-content">
-      
+
       <div class="policy">
         <h2 class="headline">Datenschutzerklärung:</h2>
         <h2 class="underhead">1. Datenschutz auf einen Blick</h2>
         <h3>Allgemeine Hinweise</h3>
-        <span
-          >Die folgenden Hinweise geben einen einfachen Überblick darüber, was
+        <span>Die folgenden Hinweise geben einen einfachen Überblick darüber, was
           mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website
           besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie
           persönlich identifiziert werden können. Ausführliche Informationen zum
@@ -38,8 +27,7 @@
         <h4>
           Wer ist verantwortlich für die Datenerfassung auf dieser Website?
         </h4>
-        <span
-          >Die Datenverarbeitung auf dieser Website erfolgt durch den
+        <span>Die Datenverarbeitung auf dieser Website erfolgt durch den
           Websitebetreiber. Dessen Kontaktdaten können Sie dem Abschnitt
           „Hinweis zur Verantwortlichen Stelle“ in dieser Datenschutzerklärung
           entnehmen
@@ -86,11 +74,11 @@
           Wir hosten die Inhalte unserer Website bei folgendem Anbieter:
         </span>
         <h3>All-Inkl</h3>
-        <span
-          >Anbieter ist die ALL-INKL.COM - Neue Medien Münnich, Inh. René
+        <span>Anbieter ist die ALL-INKL.COM - Neue Medien Münnich, Inh. René
           Münnich, Hauptstraße 68, 02742 Friedersdorf (nachfolgend All-Inkl).
           Details entnehmen Sie der Datenschutzerklärung von All-Inkl:
-          <a  href="https://all-inkl.com/datenschutzinformationen/">https://all-inkl.com/datenschutzinformationen/.</a> Die Verwendung von
+          <a href="https://all-inkl.com/datenschutzinformationen/">https://all-inkl.com/datenschutzinformationen/.</a>
+          Die Verwendung von
           All-Inkl erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Wir
           haben ein berechtigtes Interesse an einer möglichst zuverlässigen
           Darstellung unserer Website. Sofern eine entsprechende Einwilligung
@@ -363,7 +351,7 @@
           können Sie dieser Datenschutzerklärung entnehmen.
         </span>
         <span> Quelle: <br>
-        <a href="https://www.e-recht24.de">https://www.e-recht24.de</a>
+          <a href="https://www.e-recht24.de">https://www.e-recht24.de</a>
         </span>
       </div>
     </div>

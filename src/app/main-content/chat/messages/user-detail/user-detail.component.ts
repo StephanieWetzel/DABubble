@@ -3,7 +3,6 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -24,10 +23,12 @@ export class UserDetailComponent {
   @Input() userID: string | any;
   @Output() hasClosed = new EventEmitter<boolean>();
 
+
   constructor(
     private firestore: FirebaseService,
     private chatService: ChatService
   ) { }
+
 
   /**
    * Emits an event to indicate that the profile is being closed with the provided value.
@@ -36,6 +37,7 @@ export class UserDetailComponent {
   closeProfile(value: boolean) {
     this.hasClosed.emit(value);
   }
+
 
   /**
    * Lifecycle hook that is called when one or more data-bound input properties of a directive or a component change.
@@ -50,6 +52,7 @@ export class UserDetailComponent {
     }
   }
 
+
   /**
    * Loads user data asynchronously.
    * @param {string} userId - The ID of the user to load.
@@ -58,6 +61,7 @@ export class UserDetailComponent {
   async loadUser(userId: string): Promise<void> {
     this.pUser = await this.firestore.getCurrentUser(userId);
   }
+
 
   /**
    * Opens a direct message (DM) room between the current user and another user.
@@ -78,6 +82,7 @@ export class UserDetailComponent {
     this.closeProfile(true);
     this.chatService.showReply = false;
   }
+
 
   /**
    * Generates a unique room ID for a DM between two users.

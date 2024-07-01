@@ -11,9 +11,13 @@ import { ChatService } from '../../../../../assets/services/chat-service/chat.se
 })
 export class ReplyHeadbarComponent {
   constructor(private chatService: ChatService) {
-
   }
-  
+
+
+  /**
+ * Closes the reply section in the chat interface.
+ * Sets the 'showReply' property in the 'chatService' to false.
+ */
   closeReply() {
     this.chatService.showReply = false;
   }

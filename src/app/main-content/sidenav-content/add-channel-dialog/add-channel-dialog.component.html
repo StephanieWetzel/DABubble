@@ -1,7 +1,7 @@
 <section class="dialog">
   <div class="dialog-head">
     <h2>Channel erstellen</h2>
-    <mat-icon (click)="cancelCreation()" >close</mat-icon>
+    <mat-icon (click)="cancelCreation()">close</mat-icon>
   </div>
   <div class="exmpl-text">
     <p>
@@ -18,9 +18,12 @@
         <mat-icon>tag_outline</mat-icon>
         <input formControlName="channelName" type="text" placeholder="z.B. Kooperationsprojekte" required>
       </div>
-      <div class="error-handling" *ngIf="firstDialogGroup.get('channelName')?.invalid && firstDialogGroup.get('channelName')?.touched">
-        <span *ngIf="firstDialogGroup.get('channelName')?.errors?.['required']">*Ein Channel-Name ist erforderlich!</span>
-        <span *ngIf="firstDialogGroup.get('channelName')?.errors?.['channelNameTaken']">*Dieser Channel-Name ist bereits vergeben!</span>
+      <div class="error-handling"
+        *ngIf="firstDialogGroup.get('channelName')?.invalid && firstDialogGroup.get('channelName')?.touched">
+        <span *ngIf="firstDialogGroup.get('channelName')?.errors?.['required']">*Ein Channel-Name ist
+          erforderlich!</span>
+        <span *ngIf="firstDialogGroup.get('channelName')?.errors?.['channelNameTaken']">*Dieser Channel-Name ist bereits
+          vergeben!</span>
       </div>
     </div>
     <div class="description">

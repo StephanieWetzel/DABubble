@@ -1,10 +1,10 @@
 import { Injectable, OnDestroy, inject } from '@angular/core';
-import { Firestore, deleteDoc, getDoc, orderBy, query, updateDoc, where } from '@angular/fire/firestore';
-import { getFirestore, getDocs, DocumentReference, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
-import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { Firestore, getDoc, orderBy, query, updateDoc } from '@angular/fire/firestore';
+import { getDocs, collection, addDoc, doc, onSnapshot, Unsubscribe, DocumentData, QuerySnapshot } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Message } from '../../models/message.class';
 import { Reaction } from '../../models/reactions.class';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ProfileAuthentication } from '../profileAuth.service';
 import { User } from '../../models/user.class';
 import { Channel } from '../../models/channel.class';
@@ -58,15 +58,13 @@ export class ChatService implements OnDestroy {
   searchInput: string = '';
   searchResults: any[] = [];
 
-
   selectedUsers!: User[];
   selectedChannels!: Channel[];
 
   unsubscribe!: Unsubscribe;
   unsubreplies!: Unsubscribe;
   noMessages: boolean = false;
-  // unsubDirectMessages!: Unsubscribe;
-  // unsubReplies!: Unsubscribe;
+
 
   constructor(private profileAuth: ProfileAuthentication) {
     const activeChannel = this.getActiveChannel();
@@ -83,6 +81,7 @@ export class ChatService implements OnDestroy {
     this.unsubscribe();
   }
 
+
   /** Initialize user and message subscriptions */
   initializeUserAndMessages() {
     this.profileAuth.user$.subscribe(user => {
@@ -98,26 +97,56 @@ export class ChatService implements OnDestroy {
     });
   }
 
+
+  /**
+ * Highlights a specific message within a channel.
+ * 
+ * @param {string} messageId - The ID of the message to highlight.
+ * @param {string} channelId - The ID of the channel containing the message.
+ */
   highlightMessage(messageId: string, channelId: string) {
     this.channelIdSource.next(channelId);
     this.messageIdSource.next(messageId);
   }
 
+
+  /**
+ * Retrieves the name of a channel from Firestore based on the provided channelId.
+ * Returns 'Unknown Channel' if the channel does not exist.
+ * 
+ * @param {string} channelId - The ID of the channel to retrieve the name for.
+ * @returns {Promise<string>} A promise that resolves to the name of the channel.
+ */
   async getNameChannel(channelId: string): Promise<string> {
     const channelDoc = await getDoc(doc(this.firestore, `channel/${channelId}`));
     return channelDoc.exists() ? channelDoc.data()['name'] : 'Unknown Channel';
   }
 
+
+  /**
+ * Retrieves the name of a user from Firestore based on the provided userId.
+ * Returns 'Unknown User' if the user does not exist.
+ * 
+ * @param {string} userId - The ID of the user to retrieve the name for.
+ * @returns {Promise<string>} A promise that resolves to the name of the user.
+ */
   async getNameUser(userId: string): Promise<string> {
     const userDoc = await getDoc(doc(this.firestore, `user/${userId}`));
     return userDoc.exists() ? userDoc.data()['name'] : 'Unknown User';
   }
 
+
+  /**
+ * Searches for channels and users based on the provided search input.
+ * Populates the searchResults array with matching messages, channel names, usernames, and user data.
+ * 
+ * @param {string} searchInput - The search query input.
+ * @returns {Promise<void>} A promise that resolves once the search operation completes.
+ */
   async search(searchInput: string) {
     this.searchResults = [];
     if (!searchInput) return;
 
-    // channel search
     const channelsSnapshot = await getDocs(collection(this.firestore, 'channel'));
     for (const channelDoc of channelsSnapshot.docs) {
       const channelId = channelDoc.id;
@@ -132,7 +161,6 @@ export class ChatService implements OnDestroy {
       };
     };
 
-    // user search
     const usersSnapshot = await getDocs(collection(this.firestore, 'user'));
     for (const userDoc of usersSnapshot.docs) {
       const userData = userDoc.data();
@@ -141,6 +169,7 @@ export class ChatService implements OnDestroy {
       }
     }
   }
+
 
   /**
    * Get the avatar of a user by their ID
@@ -152,6 +181,7 @@ export class ChatService implements OnDestroy {
     return user ? user.avatar : 'assets/img/avatar_clean1.png';
   }
 
+
   /**
    * Set the current direct message partner
    * @param {string} value - The ID of the direct message partner
@@ -159,6 +189,7 @@ export class ChatService implements OnDestroy {
   setCurrenDmPartner(value: string) {
     this.dmPartnerID.next(value);
   }
+
 
   /**
    * Set the direct message room status
@@ -177,11 +208,21 @@ export class ChatService implements OnDestroy {
     this.newMessage.next(value)
   }
 
+
   /** Get the length of the replies for the current message */
   async getRepliesLength() {
     await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
   }
 
+
+  /**
+ * Adds a message to either a channel or direct messages based on the channel length.
+ * Updates the document with the generated message ID and triggers a scroll to bottom event.
+ * 
+ * @param {Message} message - The message object to be added.
+ * @param {string} channel - The channel identifier where the message will be added.
+ * @returns {Promise<void>} A promise that resolves once the message is successfully added.
+ */
   async addMessage(message: Message, channel: string) {
     let docRef;
     if (channel.length <= 27) {
@@ -194,6 +235,7 @@ export class ChatService implements OnDestroy {
     this.scrollToBottom$.next(true);
   }
 
+
   /**
    * Update the messages array with new messages and remove duplicates
    * @param {Message[]} newMessages - The new messages to add
@@ -203,11 +245,11 @@ export class ChatService implements OnDestroy {
     const updatedMessages: Message[] = [];
 
     this.messages.forEach(currentMessage => {
-      if (!currentMessage.messageId) return;  // Skip messages without a valid messageId
+      if (!currentMessage.messageId) return;
       const newMessage = newMessagesMap.get(currentMessage.messageId);
       if (newMessage) {
         updatedMessages.push(newMessage);
-        newMessagesMap.delete(currentMessage.messageId); // Ensure we don't add the same message twice
+        newMessagesMap.delete(currentMessage.messageId);
       } else {
         updatedMessages.push(currentMessage);
       }
@@ -221,10 +263,17 @@ export class ChatService implements OnDestroy {
     this.messages = this.removeDuplicates(updatedMessages);
   }
 
+
+  /**
+   * Updates the messages in the current channel or direct messages based on the current state.
+   * Fetches messages and their replies using Firestore queries and updates internal state accordingly.
+   * 
+   * @async
+   * @returns {void}
+   */
   async updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
     if (!this.currentChannel$.value || !this.users) {
-      console.error("currentChannel$ ist undefined.");
       return;
     }
     if (this.unsubscribe) {
@@ -232,11 +281,11 @@ export class ChatService implements OnDestroy {
     }
     if (this.currentChannel$.value === 'writeANewMessage') {
       this.messages = [];
-      this.isLoadingMessages.next(false); // Nachrichten sind geladen, auch wenn keine Nachrichten vorhanden sind
+      this.isLoadingMessages.next(false);
       return;
     }
     if (this.isFirstLoad) {
-      this.isLoadingMessages.next(true); // Nachrichten werden geladen
+      this.isLoadingMessages.next(true);
     }
 
     this.unsubscribe = onSnapshot(ref, async (snapshot) => {
@@ -265,6 +314,14 @@ export class ChatService implements OnDestroy {
     });
   }
 
+
+  /**
+ * Removes duplicate messages from the given array based on the 'time' property.
+ *
+ * @param {Message[]} messages - Array of Message objects to be processed
+ * @returns {Message[]} - Array of Message objects with duplicates removed
+ * @private
+ */
   private removeDuplicates(messages: Message[]): Message[] {
     const uniqueMessagesMap = new Map<number, Message>();
 
@@ -277,7 +334,13 @@ export class ChatService implements OnDestroy {
     return Array.from(uniqueMessagesMap.values());
   }
 
-  /** Get the list of replies for the current message */
+
+  /**
+   * Retrieves replies for a message using a Firestore snapshot listener.
+   * Updates the local `replies` array and `replyCount` observable with the fetched replies.
+   * 
+   * @returns {void}
+   */
   getReplies() {
     this.unsubreplies = onSnapshot(this.getRepliesQ(), (list) => {
       this.replies = [];
@@ -285,6 +348,7 @@ export class ChatService implements OnDestroy {
       this.replyCount.next(this.replies.length)
     })
   }
+
 
   /**
    * Retrieves the currently active channel ID from local storage.
@@ -321,9 +385,17 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+ * Edits the content of a specific reply message within a thread.
+ * 
+ * @param {string} messageId - The ID of the reply message to edit.
+ * @param {string} input - The new content to update for the reply message.
+ * @returns {Promise<void>} A promise that resolves once the message is successfully updated.
+ */
   async editReplyMessage(messageId: string, input: string) {
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.initialMessageForThread.messageId}/replies`, messageId), { content: input });
   }
+
 
   /**
   * Add a reply to a message
@@ -350,7 +422,6 @@ export class ChatService implements OnDestroy {
       const downloadURL: string = await getDownloadURL(uploadFile.ref);
       return downloadURL;
     } catch (error) {
-      console.error("Upload failed", error);
       throw new Error("Upload failed");
     }
   }
@@ -369,6 +440,15 @@ export class ChatService implements OnDestroy {
   }
 
 
+  /**
+ * Reacts to a message by adding or updating a reaction.
+ * 
+ * @param {string} messageId - The ID of the message to react to.
+ * @param {string} emote - The emote or reaction to add/update.
+ * @param {string} user - The user adding the reaction.
+ * @param {boolean} reply - Indicates whether the reaction is for a reply message.
+ * @returns {Promise<void>} A promise that resolves once the reaction is successfully added/updated.
+ */
   async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
     let path;
     if (reply) {
@@ -384,10 +464,9 @@ export class ChatService implements OnDestroy {
       const reactionIndex = this.getReactionIndex(reactions, emote);
       this.checkIfReactionExists(reactionIndex, reactions, user, emote);
       await updateDoc(messageRef, { reactions: reactions });
-    } else {
-      console.log("Dokument existiert nicht!");
     }
   }
+
 
   /**
  * Check if a reaction exists and handle it
@@ -401,12 +480,10 @@ export class ChatService implements OnDestroy {
       let reaction = reactions[reactionIndex];
       const userIndex = reaction.users.indexOf(user);
       if (userIndex > -1) {
-        // Remove the user's reaction
         reaction.users.splice(userIndex, 1);
         reaction.count--;
         this.deleteReactionAtZero(reactions, reaction, reactionIndex);
       } else {
-        // Add the user's reaction
         reaction.users.push(user);
         reaction.count++;
       }
@@ -414,76 +491,6 @@ export class ChatService implements OnDestroy {
       this.addTheNewReaction(reactions, user, emote);
     }
   }
-
-
-  // /**
-  //  * React to a message with an emoticon
-  //  * @param {string} messageId - The ID of the message
-  //  * @param {string} emote - The emoticon to react with
-  //  * @param {string} user - The user reacting
-  //  * @param {boolean} reply - Whether the reaction is to a reply
-  //  */
-  // async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
-  //   let path;
-  //   if (reply) {
-  //     path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`
-  //   } else {
-  //     path = `channel/${this.currentChannel$.value}/messages`
-  //   }
-  //   const messageRef = doc(this.firestore, path, messageId);
-  //   const docSnap = await getDoc(messageRef);
-
-  //   if (docSnap.exists()) {
-  //     let reactions = docSnap.data()['reactions'] || [];
-  //     let reactedEmote = this.removeAllUserReactions(reactions, user);
-  //     const reactionIndex = this.getReactionIndex(reactions, emote)
-  //     this.checkIfReactionExists(reactionIndex, reactions, user, emote, reactedEmote);
-  //     await updateDoc(messageRef, { reactions: reactions });
-  //   } else {
-  //     console.log("Dokument existiert nicht!");
-  //   }
-  // }
-
-
-  // /**
-  //  * Remove all reactions by a user
-  //  * @param {Reaction[]} reactions - The list of reactions
-  //  * @param {string} user - The user removing reactions
-  //  * @returns {string} - The emoticon that was removed
-  //  */
-  // removeAllUserReactions(reactions: Reaction[], user: string) {
-  //   let reactedEmote = '';
-  //   reactions.forEach((reaction, index) => {
-  //     const userIndex = reaction.users.indexOf(user);
-  //     if (userIndex > -1) {
-  //       reactedEmote = reaction.emote
-  //       reaction.users.splice(userIndex, 1);
-  //       reaction.count--;
-  //       this.deleteReactionAtZero(reactions, reaction, index);
-  //     }
-  //   });
-  //   return reactedEmote;
-  // }
-
-
-  // /**
-  //  * Check if a reaction exists and handle it
-  //  * @param {number} reactionIndex - The index of the reaction
-  //  * @param {Reaction[]} reactions - The list of reactions
-  //  * @param {string} user - The user reacting
-  //  * @param {string} emote - The emoticon being added
-  //  * @param {string} reactedEmote - The emoticon that was reacted with
-  //  */
-  // checkIfReactionExists(reactionIndex: number, reactions: Reaction[], user: string, emote: string, reactedEmote: string) {
-  //   let addedEmote = emote;
-  //   if (reactionIndex > -1) {
-  //     let reaction = reactions[reactionIndex];
-  //     this.checkIfUserReacted(reactions, reaction, user, emote, reactedEmote);
-  //   }
-  //   if (reactionIndex === -1 && reactedEmote != addedEmote) {
-  //     this.addTheNewReaction(reactions, user, emote);
-  //   }
-  // }
 
 
   /**
@@ -511,7 +518,6 @@ export class ChatService implements OnDestroy {
    */
   checkIfUserReacted(reactions: Reaction[], reaction: Reaction, user: string, emote: string, reactedEmote: string) {
     if (this.userReactedWithEmote(reaction, user, emote, reactedEmote)) {
-      // Benutzer hat noch nicht reagiert, füge ihn hinzu
       reaction.users.push(user);
       reaction.count++;
     }

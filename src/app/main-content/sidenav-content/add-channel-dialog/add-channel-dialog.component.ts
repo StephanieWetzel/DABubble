@@ -4,7 +4,6 @@ import {
   FormGroup,
   FormControl,
   Validators,
-  FormsModule,
   ReactiveFormsModule,
   ValidationErrors,
   AsyncValidatorFn,
@@ -21,7 +20,6 @@ import {
   distinctUntilChanged,
   map,
   of,
-  switchMap,
 } from 'rxjs';
 
 @Component({
@@ -34,11 +32,16 @@ import {
 export class AddChannelDialogComponent {
   firstDialogGroup: FormGroup | any;
 
+
   constructor(
     public dialogRef: MatDialogRef<AddChannelDialogComponent>,
     public firestore: FirebaseService
-  ) {}
+  ) { }
 
+
+  /**
+ * Initializes the component by creating a form group for the first dialog.
+ */
   ngOnInit() {
     this.firstDialogGroup = new FormGroup({
       channelName: new FormControl('', {
@@ -50,6 +53,7 @@ export class AddChannelDialogComponent {
     });
   }
 
+
   /**
    * Handles the closure of the dialog, returning the selected option.
    */
@@ -58,9 +62,15 @@ export class AddChannelDialogComponent {
       this.dialogRef.close(this.firstDialogGroup.value);
     }
   }
+
+
+  /**
+ * Closes the dialog without saving changes.
+ */
   cancelCreation() {
     this.dialogRef.close();
   }
+
 
   /**
    * Creates an asynchronous validator function to check if a channel name already exists.
@@ -72,9 +82,9 @@ export class AddChannelDialogComponent {
         return of(null);
       }
       return this.firestore.checkChannelNameExists(control.value).pipe(
-        debounceTime(300), // debounce the validation to avoid making requests too frequently
-        distinctUntilChanged(), // only emit distinct values to avoid redundant checks
-        map((exists) => (exists ? { channelNameTaken: true } : null)), // map the result of the Firestore check to a validation error if the channel name exists
+        debounceTime(300),
+        distinctUntilChanged(),
+        map((exists) => (exists ? { channelNameTaken: true } : null)),
         catchError(() => of(null))
       );
     };

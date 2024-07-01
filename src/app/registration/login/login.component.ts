@@ -133,7 +133,6 @@ export class LoginComponent {
       await setDoc(userRef, transformedData);
       this.router.navigate(['/main']);
     } catch (error) {
-      console.error(error);
     }
   }
 

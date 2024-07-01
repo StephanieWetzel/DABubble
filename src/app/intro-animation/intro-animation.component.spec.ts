@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { IntroAnimationComponent } from './intro-animation.component';
 
 describe('IntroAnimationComponent', () => {
@@ -10,8 +9,8 @@ describe('IntroAnimationComponent', () => {
     await TestBed.configureTestingModule({
       imports: [IntroAnimationComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(IntroAnimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -103,6 +103,4 @@ export class NewPasswordComponent {
     } catch (error) {
     }
   }
-
-
 }

@@ -11,6 +11,7 @@ export class MobileService {
   drawerOpened = new BehaviorSubject<boolean>(false);
   drawerOpened$ = this.drawerOpened.asObservable();
 
+
   /**
    * Notifies subscribers that a channel has been opened or closed.
    * @param {boolean} isOpen - A boolean indicating whether the channel is open.
@@ -19,6 +20,7 @@ export class MobileService {
     this.channelOpened.next(isOpen);
   }
 
+
   /**
    * Notifies subscribers that a drawer has been toggled.
    * @param {boolean} isOpen - A boolean indicating whether the drawer is open.
@@ -26,6 +28,7 @@ export class MobileService {
   toggleDrawe(isOpen: boolean) {
     this.drawerOpened.next(isOpen);
   }
+
 
   /*local storage */
 
@@ -36,10 +39,12 @@ export class MobileService {
   getActiveChannel() {
     return localStorage.getItem('selectedChannelId');
   }
-/**
- * Sets the active channel ID in local storage.
- * @param {string} channelId - The ID of the channel to set as active.
- */
+
+
+  /**
+   * Sets the active channel ID in local storage.
+   * @param {string} channelId - The ID of the channel to set as active.
+   */
   setActiveChannel(channelId: string): void {
     localStorage.setItem('selectedChannelId', channelId);
   }

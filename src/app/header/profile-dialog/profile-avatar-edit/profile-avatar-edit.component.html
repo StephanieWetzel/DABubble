@@ -16,8 +16,9 @@
 <div class="choose-avatar">
   <span>Aus der Liste wählen</span>
   <div class="avatar-list">
-    <div class="avatar" [ngClass]="userAvatar === avatar ? 'selectedAvatar' : ''" *ngFor="let avatar of AVATAR_LIST" (click)="selectAvatar(avatar)">
-        <img [src]="avatar" alt="avatarPic">
+    <div class="avatar" [ngClass]="userAvatar === avatar ? 'selectedAvatar' : ''" *ngFor="let avatar of AVATAR_LIST"
+      (click)="selectAvatar(avatar)">
+      <img [src]="avatar" alt="avatarPic">
     </div>
   </div>
   <div class="upload-pic">

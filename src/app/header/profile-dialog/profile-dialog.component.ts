@@ -19,7 +19,8 @@ export class ProfileDialogComponent {
   isAvatarEditing: boolean = false;
   @Output() closeEvent = new EventEmitter<boolean>();
 
-  constructor(private profileAuth: ProfileAuthentication){}
+  constructor(private profileAuth: ProfileAuthentication) { }
+
 
   /**
    * Initializes the component by setting up user authentication and subscribing to user data changes.
@@ -32,6 +33,7 @@ export class ProfileDialogComponent {
     })
   }
 
+
   /**
    * Emits an event to close the profile menu. This method can be tied to UI elements to close the profile menu
    * through an event binding, improving component interaction.
@@ -40,6 +42,7 @@ export class ProfileDialogComponent {
     this.closeEvent.emit(true);
   }
 
+
   /**
    * Toggles the editing state of the user's profile. This method switches the state of `isEditing`,
    * allowing the component to react dynamically to user actions for editing the profile.
@@ -47,6 +50,8 @@ export class ProfileDialogComponent {
   userIsEditing() {
     this.isEditing = !this.isEditing;
   }
+
+
   /**
    * Toggles the editing dialog of the user's avatar. This method switches the state of `isAvatarEditing`,
    * allowing the component to react dynamically to user actions for editing the avatar.
@@ -54,5 +59,4 @@ export class ProfileDialogComponent {
   openEditAvatar() {
     this.isAvatarEditing = !this.isAvatarEditing;
   }
-
 }

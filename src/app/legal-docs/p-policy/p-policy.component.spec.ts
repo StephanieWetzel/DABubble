@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PPolicyComponent } from './p-policy.component';
 
 describe('PPolicyComponent', () => {
@@ -10,8 +9,8 @@ describe('PPolicyComponent', () => {
     await TestBed.configureTestingModule({
       imports: [PPolicyComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(PPolicyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

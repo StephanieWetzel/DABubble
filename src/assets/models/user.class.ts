@@ -2,7 +2,7 @@ export class User {
     name: string;
     userId: string;
     email: string;
-    state: string; //online / offline state
+    state: string; //online / offline
     avatar: string;
     password: string;
     lastReaction1: string;
@@ -10,8 +10,7 @@ export class User {
 
     /**
      * Constructs a new instance of the User class.
-     * @param {any} [obj] - An object containing values used to initialize the user properties.
-     *                      If not provided, defaults will be set.
+     * @param {any} [obj] - An object containing values used to initialize the user properties. If not provided, defaults will be set.
      */
     constructor(obj?: any) {
         this.name = obj ? obj.name : '';
@@ -23,6 +22,7 @@ export class User {
         this.lastReaction1 = obj ? obj.lastReaction1 : '🙌🏻';
         this.lastReaction2 = obj ? obj.lastReaction2 : '✅';
     }
+
 
     /**
      * Converts the user instance to a JSON representation.

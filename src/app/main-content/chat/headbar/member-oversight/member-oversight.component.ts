@@ -34,11 +34,18 @@ export class MemberOversightComponent {
   selectedProfileId: string = '';
   isAdding: boolean = false;
 
+
   constructor(
     private firestore: FirebaseService,
     private auth: ProfileAuthentication
-  ) {}
+  ) { }
 
+
+  /**
+   * Initializes the component.
+   * Retrieves the authenticated user ID and channel members if available.
+   * Prioritizes the current user within the members list if both are present.
+   */
   async ngOnInit() {
     this.getAuthUserID();
     if (this.currentChannel) {
@@ -52,6 +59,7 @@ export class MemberOversightComponent {
     }
   }
 
+
   /**
    * Closes the oversight component based on the event boolean.
    * Emits an event indicating that the oversight has been closed if the event is true.
@@ -62,12 +70,15 @@ export class MemberOversightComponent {
       this.hasClosed.emit();
     }
   }
+
+
   /**
    * Closes the oversight component by emitting an event with a false value.
    */
   close() {
     this.hasClosed.emit(false);
   }
+
 
   /**
    * Handles the search closed event by updating the component state.
@@ -78,6 +89,7 @@ export class MemberOversightComponent {
     this.isSearchOpen.emit(false);
   }
 
+
   /**
    * Fetches the ID of the currently authenticated user.
    */
@@ -86,6 +98,7 @@ export class MemberOversightComponent {
       this.currentUser = userId;
     });
   }
+
 
   /**
    * Prioritizes the current user within a list of users.
@@ -102,6 +115,7 @@ export class MemberOversightComponent {
     return users;
   }
 
+
   /**
    * Sets the selected profile ID and updates the state to show the profile.
    * @param {string} userId - ID of the selected user profile.
@@ -111,6 +125,7 @@ export class MemberOversightComponent {
     this.isShowingProfile = true;
   }
 
+
   /**
    * Handles the profile event by updating the state to hide the profile.
    * @param {boolean} event - Boolean indicating whether to hide the profile.
@@ -119,6 +134,7 @@ export class MemberOversightComponent {
     this.isShowingProfile = false;
   }
 
+
   /**
    * Toggles the state of adding a member and emits an event to indicate whether the search is open.
    */
@@ -126,6 +142,7 @@ export class MemberOversightComponent {
     this.isAdding = !this.isAdding;
     this.isSearchOpen.emit(true);
   }
+
 
   /**
    * Opens the mobile add member overlay by emitting an event.

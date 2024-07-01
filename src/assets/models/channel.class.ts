@@ -1,5 +1,3 @@
-
-
 interface Member {
     id: string;
     name: string
@@ -16,18 +14,18 @@ export class Channel {
 
     /**
      * Constructs a new instance of the channel class
-     * @param {any} obj - An object containing values used to initialize the channel properties.
-     *                    if not provided, defaults will be set.
+     * @param {any} obj - An object containing values used to initialize the channel properties. If not provided, defaults will be set.
      */
-    constructor(obj?:any){
+    constructor(obj?: any) {
         this.name = obj ? obj.name : '',
-        this.channelId = obj ? obj.channelId: '',
-        this.description = obj ? obj.description: '',
-        this.member = obj ? obj.member: [],
-        this.messages = obj ? obj.messages: [],
-        this.createdAt = obj ? obj.createdAt: new Date().getTime(),
-        this.creator = obj ? obj.creator : ''
+            this.channelId = obj ? obj.channelId : '',
+            this.description = obj ? obj.description : '',
+            this.member = obj ? obj.member : [],
+            this.messages = obj ? obj.messages : [],
+            this.createdAt = obj ? obj.createdAt : new Date().getTime(),
+            this.creator = obj ? obj.creator : ''
     }
+
 
     /**
      * Converts the channel instance to a JSON representation.

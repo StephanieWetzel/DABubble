@@ -10,7 +10,7 @@ import {
 import { getAuth, onAuthStateChanged, signOut, updateEmail } from "@angular/fire/auth";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { Database, ref, set, onDisconnect } from '@angular/fire/database';
+import { set } from '@angular/fire/database';
 import { UserSync } from "./userSync.service";
 
 @Injectable({
@@ -28,13 +28,12 @@ export class ProfileAuthentication {
      * Initializes the user by checking if a user is logged in and then fetching that user's details from firestore.
      */
     initializeUser() {
-        
+
         this.fetchLoggedUser().then((userID) => {
             if (userID) {
                 this.fetchUserFromFirestore(userID)
             }
         }).catch(error => {
-            //console.log('No such user lul', error);
         })
     }
 
@@ -44,7 +43,7 @@ export class ProfileAuthentication {
      * @returns {Promise<string>} - A promise that resolves with the user ID of the currently logged-in user.
      */
     async fetchLoggedUser(): Promise<string> {
-        
+
         const auth = getAuth();
         return new Promise((resolve, reject) => {
             onAuthStateChanged(auth, (user) => {
@@ -64,7 +63,7 @@ export class ProfileAuthentication {
      * 
      */
     async fetchUserFromFirestore(userID: string) {
-        
+
         const docRef = doc(this.firestore, 'user', userID);
         this.refreshState(userID, 'true');
         this.realTimeDB.setUserState(userID, 'true');
@@ -85,7 +84,7 @@ export class ProfileAuthentication {
      * @returns {Promise<User | null>} - A promise that resolves with the user data or null if not found.
      */
     async fetchPartnerFromFirestore(userID: string): Promise<User | null> {
-        
+
         const docRef = doc(this.firestore, 'user', userID);
         try {
             const userSnap = await getDoc(docRef);
@@ -95,21 +94,9 @@ export class ProfileAuthentication {
                 return null;
             }
         } catch (error) {
-            console.error('error ', error);
             return null;
         }
     }
-
-
-    // setUserState(userID: string, userState: string) {
-    //     if (userID) {
-    //         const stateRef = ref(this.realTimeDB, `state/${userID}`);
-    //         set(stateRef, { state: userState });
-    //         if (userState === 'true') {
-    //             onDisconnect(stateRef).set({ state: 'false' })
-    //         }
-    //     }
-    // }
 
 
     /**
@@ -119,14 +106,12 @@ export class ProfileAuthentication {
      * 
      */
     async refreshState(userID: string | undefined, uState: string) {
-        
+
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID)
             await updateDoc(docRef, {
                 state: uState
             })
-        } else {
-            console.log(new Error("User not found !"))
         }
     }
 
@@ -139,7 +124,7 @@ export class ProfileAuthentication {
      * 
      */
     async updateUserEdit(userID: string | undefined, editName: string | any, editMail: string | any) {
-        
+
         const auth = getAuth();
         if (userID) {
             const docRef = doc(this.firestore, 'user', userID);
@@ -147,14 +132,11 @@ export class ProfileAuthentication {
                 name: editName,
                 email: editMail
             });
-        } else {
-            console.log(new Error("User not found"));
         }
+
         if (auth.currentUser) {
             updateEmail(auth.currentUser, editMail).then(() => {
-                console.log("Mail was updated");
             }).catch((error) => {
-                console.log("Something happend: ", error)
             })
         }
     }
@@ -164,16 +146,13 @@ export class ProfileAuthentication {
      * Logs out the current user, updates their state to 'false', and navigates to the login screen.
      */
     async userLogout() {
-        
+
         const auth = getAuth();
         await this.refreshState(auth.currentUser?.uid, 'false');
         const stateRef = this.realTimeDB.getDbRef(auth.currentUser?.uid)
         set(stateRef, { state: 'false' })
         signOut(auth).then(() => {
-            //console.log("Logout successful !")
             this.router.navigate(['/']);
         })
     }
-
-
 }

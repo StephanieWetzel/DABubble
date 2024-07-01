@@ -10,7 +10,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './imprint.component.scss'
 })
 export class ImprintComponent {
-
   containerWidth: number;
   containerHeight: number;
   isHovered: boolean = false;
@@ -20,6 +19,11 @@ export class ImprintComponent {
     this.containerHeight = window.innerHeight;
   }
 
+
+  /**
+ * Navigates back to the previous location in the browser history.
+ * @returns {void} Returns nothing.
+ */
   goBack(): void {
     this.location.back();
   }
