@@ -8,7 +8,7 @@
 
   <editor id="inputReply" [init]="inputInit"></editor>
   <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty}" (click)="sendMessage()">
-    <img src="/assets/img/send-message.svg" alt="send message">
+    <img src="assets/img/send-message.svg" alt="send message">
   </button>
 
   <input type="file" id="fileInputReply" accept=".jpg, .png, .pdf" hidden (change)="openSelectedFile($event)">
