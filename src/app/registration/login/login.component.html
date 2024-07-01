@@ -71,6 +71,11 @@
                 <button type="button" (click)="guestLogin()" class="guest-login-btn br-32 tr-150ms btn-padding-20"
                     mat-flat-button>Gäste-Login</button>
             </div>
+
+            <!-- login-data incorrect -->
+            <div *ngIf="loginError" class="error-message">
+                Login-Daten sind unvollständig oder stimmen nicht überein.
+            </div>
         </form>
     </div>
 

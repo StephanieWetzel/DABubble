@@ -53,6 +53,8 @@ export class LoginComponent {
   containerWidth: number;
   containerHeight: number;
 
+  loginError: boolean = false;
+
 
   constructor(
     private fbuilder: FormBuilder,
@@ -90,6 +92,7 @@ export class LoginComponent {
           this.router.navigate(['/main']);
         });
       } catch (error) {
+        this.loginError = true;
       }
     }
   }
