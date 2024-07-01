@@ -7,7 +7,6 @@ import { Firestore } from "@angular/fire/firestore";
 })
 
 export class UserSync {
-
     private timeOutID: any;
     private inactivityTime: number = 15 * 60 * 1000;
 
@@ -40,6 +39,13 @@ export class UserSync {
     }
 
 
+    /**
+ * Synchronizes the state of a user in the real-time database.
+ * 
+ * This method checks the current state of the user. If the current state is 'away', it updates the state to 'true'.
+ * 
+ * @param {string | undefined} userId - The unique identifier of the user. If undefined, the method will not perform any action.
+ */
     syncState(userId: string | undefined) {
         const stateRef = ref(this.realTimeDB, `state/${userId}`)
         get(stateRef).then((snapshot) => {

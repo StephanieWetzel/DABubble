@@ -127,15 +127,6 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
- * Detects changes manually after view checked.
- * This is used to trigger change detection in Angular.
- */
-  ngAfterViewChecked(): void {
-    this.changeDetRef.detectChanges();
-  }
-
-
-  /**
     * Initializes user information when the component is first created.
     */
   ngOnInit() {

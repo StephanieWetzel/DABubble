@@ -11,7 +11,7 @@
   position: absolute;
   width: 347px;
   height: 60px;
-  left: -162px;
+  left: -152px;
   top: 70%;
   z-index: 2;
   background-color: #FFFFFF;
@@ -20,8 +20,12 @@
   transform-origin: center;
   @include dFlex();
 
+  &:hover {
+    cursor: pointer;
+  }
+
   @media (min-width: 1920px) {
-    left: -172px;
+    left: -188px;
   }
 
   @media(max-width: 820px) {

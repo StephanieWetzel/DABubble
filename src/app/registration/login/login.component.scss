@@ -7,10 +7,6 @@
     align-items: center;
     flex-direction: column;
 
-    @media (max-width: 600px) {
-        height: 90%;
-    }
-
     .header-container {
         padding: 48px;
         display: flex;
@@ -55,7 +51,6 @@
         @media (max-width: 600px),
         (max-height: 600px) {
             padding: 16px 32px;
-            max-width: 70%;
         }
 
         @media (min-width: 1024px) and (min-height: 600px) {
@@ -76,6 +71,13 @@
             }
         }
     }
+}
+
+// login-data false
+.error-message {
+    color: #ED1E79;
+    font-size: 14px;
+    margin-top: 16px;
 }
 
 .new-account-container {
