@@ -47,7 +47,7 @@ export class UserSync {
         get(stateRef).then((snapshot) => {
             const currentState = snapshot.val();
             if (currentState === 'away') {
-                set(stateRef, { state: 'true'});
+                set(stateRef, { state: 'true' });
             }
         })
     }

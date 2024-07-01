@@ -36,10 +36,10 @@ export class MobileService {
   getActiveChannel() {
     return localStorage.getItem('selectedChannelId');
   }
-/**
- * Sets the active channel ID in local storage.
- * @param {string} channelId - The ID of the channel to set as active.
- */
+  /**
+   * Sets the active channel ID in local storage.
+   * @param {string} channelId - The ID of the channel to set as active.
+   */
   setActiveChannel(channelId: string): void {
     localStorage.setItem('selectedChannelId', channelId);
   }
