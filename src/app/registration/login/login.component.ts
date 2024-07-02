@@ -40,7 +40,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   guestUser: User = new User;
-  developerChannelId: string = 'pSBwciqiaOgtUayZaIgj'
+  developerChannelId: string = 'aeeB5eeIGg0IbyFXGefg'
 
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]],
@@ -151,7 +151,7 @@ export class LoginComponent {
       email: result.user.email ? result.user.email : "Keine E-Mail",
       name: result.user.displayName ? result.user.displayName : "Unbekannt",
       userId: result.user.uid,
-      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/dabubble-172c7.appspot.com/o/avatar_default.svg?alt=media&token=74962018-533b-4c83-9ceb-8cbca7eb603a'
+      avatar: result.user.photoURL ? result.user.photoURL : 'https://firebasestorage.googleapis.com/v0/b/mydabubble-c6be2.appspot.com/o/avatar_default.svg?alt=media&token=d301fcae-9a4e-47b9-8b31-d5f5cceaf8ea'
     };
   }
 }

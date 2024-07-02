@@ -14,13 +14,13 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(
       provideFirebaseApp(() =>
         initializeApp({
-          projectId: 'dabubble-172c7',
-          appId: '1:1098632374519:web:2f7a316a716c775b1f4bf2',
-          storageBucket: 'dabubble-172c7.appspot.com',
-          apiKey: 'AIzaSyBcMF4K_odDgT1p9mYESQ--a5Et3BJgLzk',
-          authDomain: 'dabubble-172c7.firebaseapp.com',
-          messagingSenderId: '1098632374519',
-          databaseURL: 'https://dabubble-172c7-default-rtdb.europe-west1.firebasedatabase.app'
+          apiKey: "AIzaSyAtt46O_zsuyolqF74hLwSwdMiIdr4NBJU",
+          authDomain: "mydabubble-c6be2.firebaseapp.com",
+          projectId: "mydabubble-c6be2",
+          storageBucket: "mydabubble-c6be2.appspot.com",
+          messagingSenderId: "870077240971",
+          appId: "1:870077240971:web:dadfe993c51ea61535668e",
+          databaseURL: 'https://mydabubble-c6be2-default-rtdb.europe-west1.firebasedatabase.app'
         })
       )
     ),

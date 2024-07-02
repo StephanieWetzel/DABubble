@@ -83,7 +83,7 @@ export class AuthenticationService {
    * 
    */
   async fetchGuestData() {
-    const guestID = 'ck4vudalTaUgOYeatRsBQhoCqr12';
+    const guestID = 'rDfoK7akjnaEGC7N7tZfaURLiDr1';
     const docRef = doc(this.firestore, 'user', guestID)
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {

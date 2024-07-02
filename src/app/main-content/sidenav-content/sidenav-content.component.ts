@@ -32,7 +32,7 @@ export class SidenavContentComponent {
   unsubUsers: Subscription | undefined;
   currentUser: string = '';
   screenWidth: number;
-  selectedChannel: string | null = 'pSBwciqiaOgtUayZaIgj';
+  selectedChannel: string | null = 'aeeB5eeIGg0IbyFXGefg';
   showBlueEdit: boolean = false;
   @Output() closeSidenav = new EventEmitter<void>();
 
@@ -195,9 +195,11 @@ export class SidenavContentComponent {
       panelClass: 'custom-add-channel-dialog'
     });
     secondDialogRef.afterClosed().subscribe(secondDialogData => {
-      this.cacheChannel(firstDialogData, secondDialogData).then(channel => {
-        this.firestore.saveChannel(channel);
-      })
+      if (secondDialogData) {
+        this.cacheChannel(firstDialogData, secondDialogData).then(channel => {
+          this.firestore.saveChannel(channel);
+        })
+      }
     });
   }
 
@@ -215,12 +217,12 @@ export class SidenavContentComponent {
       members = secondDialogData.selectedUsers.map((user: any) => {
         return { id: user.userId, name: user.name }
       })
+      members.push({ id: currentUser?.userId, name: currentUser?.name });
     } else {
       members = this.fetchedUser.map((user: any) => {
         return { id: user.userId, name: user.name }
       })
     }
-    members.push({ id: currentUser?.userId, name: currentUser?.name });
     const dialogData = this.transformChannelData(firstDialogData, members)
     const channel = new Channel(dialogData)
     return channel;

@@ -37,7 +37,7 @@ export class RegisterComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
   isHovered: boolean = false;
-  developerChannelId: string = 'pSBwciqiaOgtUayZaIgj'
+  developerChannelId: string = 'aeeB5eeIGg0IbyFXGefg'
 
   containerWidth: number;
   containerHeight: number;

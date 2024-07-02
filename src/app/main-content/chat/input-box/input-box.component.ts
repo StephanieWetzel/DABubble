@@ -7,19 +7,19 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { User } from '../../../../assets/models/user.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
+import { MatDialog } from '@angular/material/dialog';
+import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
 
 @Component({
   selector: 'app-input-box',
   standalone: true,
-  imports: [EditorModule, CommonModule, MatInputModule, MatIconModule, MatButtonModule, FilePreviewDialogComponent],
+  imports: [EditorModule, CommonModule, MatInputModule, MatIconModule, MatButtonModule],
   templateUrl: './input-box.component.html',
-  styleUrl: './input-box.component.scss'
+  styleUrls: ['./input-box.component.scss']
 })
 
 export class InputBoxComponent {
@@ -40,7 +40,7 @@ export class InputBoxComponent {
     entity_encoding: 'raw',
     setup: (editor) => {
       editor.on('input', () => {
-        const content = this.getInputContent(editor)
+        const content = this.getInputContent(editor);
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
       });
@@ -54,12 +54,19 @@ export class InputBoxComponent {
   isContentEmpty: boolean = true;
   selectedFiles: File[] = [];
   selectedFileNames: string[] = [];
-  safeUrl: any;
+  fileUrls: SafeResourceUrl[] = [];
+  data: any = {};
+  safeUrl: SafeResourceUrl | undefined;
   currentUser!: User;
 
-
-  constructor(private chatService: ChatService, private cdr: ChangeDetectorRef, public dialog: MatDialog, private sanitizer: DomSanitizer, private profileAuth: ProfileAuthentication, public firestore: FirebaseService) {
-  }
+  constructor(
+    private chatService: ChatService,
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer,
+    private profileAuth: ProfileAuthentication,
+    public firestore: FirebaseService,
+    public dialog: MatDialog
+  ) { }
 
 
   /**
@@ -78,7 +85,7 @@ export class InputBoxComponent {
    * Clears input and selected files after sending.
    */
   async sendMessage() {
-    let data = tinymce.get("inputData")
+    let data = tinymce.get("inputData");
     if (this.isInNewMessageInterface()) {
       await this.sendNewMessage(data);
     } else {
@@ -95,7 +102,7 @@ export class InputBoxComponent {
    * @returns {boolean} - True if the current interface is for new messages, false otherwise.
    */
   isInNewMessageInterface() {
-    return this.chatService.currentChannel$.value === 'writeANewMessage'
+    return this.chatService.currentChannel$.value === 'writeANewMessage';
   }
 
 
@@ -105,7 +112,7 @@ export class InputBoxComponent {
    */
   async sendNewMessage(data: any) {
     if (this.chatService.selectedChannels && this.chatService.selectedChannels.length > 0) {
-      this.chatService.isChannel = true
+      this.chatService.isChannel = true;
       for (const channel of this.chatService.selectedChannels) {
         await this.sendSingleMessage(data, channel.channelId);
       }
@@ -154,6 +161,8 @@ export class InputBoxComponent {
   clearSelectedFiles() {
     this.selectedFileNames = [];
     this.selectedFiles = [];
+    this.fileUrls = [];
+    this.data = {};
   }
 
 
@@ -181,32 +190,51 @@ export class InputBoxComponent {
 
 
   /**
-   * Handles file selection from an input element, enforcing file size restrictions.
-   * Adds files to selectedFiles array if they meet the size requirements.
-   * @param {Event} event - The event triggered by file selection.
+   * Handles the file selection event, adds valid files to the selected files list, and updates the UI.
+   *
+   * @param {Event} event - The file input change event.
+   * @listens Event
    */
   openSelectedFile(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input && input.files) {
-      const files = input.files;
-      let totalSize = 0;
-      this.selectedFiles = [];
-      this.selectedFileNames = [];
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      const files = Array.from(input.files);
+      let totalSize = this.selectedFiles.reduce((acc, file) => acc + file.size, 0);
+
+      files.forEach((file, index) => {
         totalSize += file.size;
         if (file.size > 5242880) {
           alert("Dateien dürfen nicht größer als 5 MB sein.");
         } else {
           this.selectedFiles.push(file);
           this.selectedFileNames.push(file.name);
+          this.previewFile(file, this.selectedFiles.length - 1);
         }
-      }
+      });
+
       if (totalSize > 20971520) {
         alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
-        this.selectedFiles = [];
+        this.clearSelectedFiles();
+      } else {
+        this.cdr.detectChanges();
       }
     }
+  }
+
+
+  /**
+ * Reads the contents of a file and generates a secure URL for previewing.
+ *
+ * @param {File} file - The file object to preview.
+ * @param {number} index - The index of the file in the collection.
+ */
+  previewFile(file: File, index: number) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.fileUrls[index] = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
   }
 
 
@@ -232,8 +260,9 @@ export class InputBoxComponent {
    * @param {number} index - The index of the file to remove.
    */
   removeFile(index: number) {
-    this.selectedFiles.splice(index, 1)
+    this.selectedFiles.splice(index, 1);
     this.selectedFileNames.splice(index, 1);
+    this.fileUrls.splice(index, 1);
     this.cdr.detectChanges();
   }
 
@@ -247,5 +276,16 @@ export class InputBoxComponent {
     const textArea = document.createElement('textarea');
     textArea.innerHTML = encodedString;
     return textArea.value;
+  }
+
+
+  /**
+ * Checks if the given file is an image based on its MIME type.
+ *
+ * @param {File} file - The file to check.
+ * @returns {boolean} True if the file is an image; otherwise, false.
+ */
+  isImageFile(file: File): boolean {
+    return file.type.startsWith('image');
   }
 }

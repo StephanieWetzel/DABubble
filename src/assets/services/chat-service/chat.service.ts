@@ -21,9 +21,9 @@ export class ChatService implements OnDestroy {
   messageIdReply = '';
   messages: any[] = [];
   replies: Message[] = [];
-  currentChannel$: BehaviorSubject<string> = new BehaviorSubject<string>('pSBwciqiaOgtUayZaIgj');
-  messageCount = new BehaviorSubject<number>(0); // initialer Wert
-  messageCount$ = this.messageCount.asObservable(); // Veröffentlichtes Observable
+  currentChannel$: BehaviorSubject<string> = new BehaviorSubject<string>('aeeB5eeIGg0IbyFXGefg');
+  messageCount = new BehaviorSubject<number>(0);
+  messageCount$ = this.messageCount.asObservable();
   dmPartnerID = new BehaviorSubject<string>('');
   dmPartnerID$ = this.dmPartnerID.asObservable();
   isDmRoom = new BehaviorSubject<boolean>(false);
@@ -33,8 +33,8 @@ export class ChatService implements OnDestroy {
   newMessage$ = this.newMessage.asObservable();
   scrollToBottom$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  replyCount = new BehaviorSubject<number>(0); // initialer Wert
-  replyCount$ = this.replyCount.asObservable(); // Veröffentlichtes Observable
+  replyCount = new BehaviorSubject<number>(0);
+  replyCount$ = this.replyCount.asObservable();
   currentUser!: User;
   userInitialized = new BehaviorSubject<boolean>(false);
   messageIdSource = new BehaviorSubject<string | null>(null);

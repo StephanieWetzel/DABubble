@@ -1,8 +1,20 @@
 <section>
     <div *ngIf="selectedFiles.length > 0" class="attachment-container">
-        <div class="attachment" *ngFor="let fileName of selectedFileNames; let i = index">
-            <p (click)="openFilePreview(i)">{{ fileName }}</p>
-            <mat-icon (click)="removeFile(i)">close</mat-icon>
+        <div *ngFor="let file of selectedFiles; let i = index" class="attachment-preview-container"
+            (click)="openFilePreview(i)">
+            <div class="attachment">
+                <p>{{ selectedFileNames[i] }}</p>
+                <mat-icon (click)="removeFile(i); $event.stopPropagation()">close</mat-icon>
+            </div>
+            <div class="file-preview">
+                <div class="img-container" *ngIf="isImageFile(file)">
+                    <img [src]="fileUrls[i]" alt="Vorschau" style="max-width: 100%; height: auto;">
+                </div>
+
+                <div *ngIf="file.type === 'application/pdf'" class="pdf-container">
+                    <embed [src]="fileUrls[i]" type="application/pdf">
+                </div>
+            </div>
         </div>
     </div>
 
@@ -12,7 +24,7 @@
         <img src="./assets/img/send-message.svg" alt="send message">
     </button>
 
-    <input type="file" id="fileInput" accept=".jpg, .png, .pdf" hidden (change)="openSelectedFile($event)">
+    <input type="file" id="fileInput" accept=".jpg, .png, .pdf" hidden (change)="openSelectedFile($event)" multiple>
     <label class="add-file" for="fileInput" mat-icon-button>
         <mat-icon>add</mat-icon>
     </label>

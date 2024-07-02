@@ -30,8 +30,6 @@ export class MobileService {
   }
 
 
-  /*local storage */
-
   /**
    * Retrieves the currently active channel ID from local storage.
    * @returns {string} The ID of the currently active channel.
