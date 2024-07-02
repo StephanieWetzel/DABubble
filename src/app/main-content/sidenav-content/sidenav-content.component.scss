@@ -159,10 +159,12 @@
   @include dFlex(flex-end, center);
   position: absolute;
   z-index: 4;
-  right: -13px;
+  right: -34px;
   top: 7px;
+  margin-left: 78px;
 
   @media (max-width: 820px) {
+    margin-left: 0;
     right: -10px;
   }
 
