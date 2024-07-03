@@ -86,7 +86,7 @@ export class EditChannelDialogComponent {
       updatedMember,
       'member'
     );
-    this.chatService.currentChannel$.next('aeeB5eeIGg0IbyFXGefg');
+    this.chatService.currentChannel$.next('V4fl3CDNCrJMOp6Dro36');
     this.closeDialog.emit(false);
   }
 

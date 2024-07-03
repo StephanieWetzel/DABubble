@@ -103,12 +103,20 @@ export class ChooseAvatarComponent {
  */
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.selectedAvatarURL = e.target.result;
-      this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      // Check file size (max size 1 MB)
+      if (file.size > 1024 * 1024) {
+        alert("Die Datei darf maximal 1 MB groß sein.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedAvatarURL = e.target.result;
+        this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
 

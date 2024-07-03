@@ -40,7 +40,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   guestUser: User = new User;
-  developerChannelId: string = 'aeeB5eeIGg0IbyFXGefg'
+  developerChannelId: string = 'V4fl3CDNCrJMOp6Dro36'
 
   formData: FormGroup = this.fbuilder.group({
     email: ['', [Validators.required, Validators.email]],
