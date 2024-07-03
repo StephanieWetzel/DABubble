@@ -69,6 +69,9 @@
                         <span class="invalid-text" *ngIf="formData.get('password')?.errors?.['required']">
                             *Bitte Passwort eingeben.
                         </span>
+                        <span class="invalid-text" *ngIf="formData.get('password')?.errors?.['minlength']">
+                            *Das Passwort muss mindestens 6 Zeichen lang sein.
+                        </span>
                     </div>
                 </div>
             </div>

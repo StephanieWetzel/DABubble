@@ -3,8 +3,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { IntroAnimationComponent } from './intro-animation/intro-animation.component';
 import { MainContentComponent } from "./main-content/main-content.component"
 
-
-
 @Component({
   selector: 'app-root',
   standalone: true,

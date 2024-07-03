@@ -3,20 +3,23 @@
     <img src="./assets/img/Workspace logo.png" alt="logo" />
     <h3>Devspace</h3>
   </div>
-  <div [ngClass]="!showBlueEdit ? 'edit' : 'edit-blue'" (mouseenter)="showBlueEdit = true" (mouseleave)="showBlueEdit = false" (click)="writeNewMessage()">  
-    <img src="./assets/icons/edit_square.png"  *ngIf="!showBlueEdit"/>
-    <img *ngIf="showBlueEdit" src="./assets/icons/edit_square_blue.png"/>
+  <div [ngClass]="!showBlueEdit ? 'edit' : 'edit-blue'" (mouseenter)="showBlueEdit = true"
+    (mouseleave)="showBlueEdit = false" (click)="writeNewMessage()">
+    <img src="./assets/icons/edit_square.png" *ngIf="!showBlueEdit" />
+    <img *ngIf="showBlueEdit" src="./assets/icons/edit_square_blue.png" />
   </div>
 </section>
 <section class="search-mobile">
   <div class="search">
-    <input matInput placeholder="Gehe zu..." value="" [(ngModel)]="chatService.searchInput" (input)="onSearchInputChange($event)"/>
+    <input matInput placeholder="Gehe zu..." value="" [(ngModel)]="chatService.searchInput"
+      (input)="onSearchInputChange($event)" />
     <mat-icon>search</mat-icon>
   </div>
 
   <div class="search-results" *ngIf="chatService.searchResults.length >= 1">
     <div class="results" *ngFor="let result of chatService.searchResults">
-      <span (click)="jumpToChannel(result.channelId)" >"{{result.data.content}}" von {{ result.userName }} &#64;{{result.channelName}}</span>
+      <span (click)="jumpToChannel(result.channelId)">"{{result.data.content}}" von {{ result.userName }}
+        &#64;{{result.channelName}}</span>
     </div>
   </div>
 
@@ -31,27 +34,29 @@
         <mat-icon>add</mat-icon>
       </button>
     </div>
-  <mat-expansion-panel [expanded]="true" hideToggle class="expansion-panel-main">
-    <mat-expansion-panel-header>
-      <div class="channels-head">
-        <mat-icon class="arrow-drop-down" style="margin-right: 15px;">arrow_drop_down</mat-icon>
-        <div class="icon-with-name">
-          <mat-icon style="margin-right: 10px;">workspaces_outline</mat-icon>
-          <h3>Channels</h3>
+    <mat-expansion-panel [expanded]="true" hideToggle class="expansion-panel-main">
+      <mat-expansion-panel-header>
+        <div class="channels-head">
+          <mat-icon class="arrow-drop-down" style="margin-right: 15px;">arrow_drop_down</mat-icon>
+          <div class="icon-with-name">
+            <mat-icon style="margin-right: 10px;">workspaces_outline</mat-icon>
+            <h3>Channels</h3>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+      <div class="list">
+        <span class="list-enumeration channel-enumeration"
+          [ngClass]="{'active-channel': selectedChannel === channel.channelId}" *ngFor="let channel of fetchedChannels"
+          (click)="openChannel(channel.channelId)">
+          <mat-icon style="font-style: italic;">tag</mat-icon>
+          {{ channel.name }}
+        </span>
+        <div class="list-enumeration add-effect">
+          <mat-icon>add_circle_outline</mat-icon>
+          <span (click)="openAddChannel()">Channel hinzufügen</span>
         </div>
       </div>
-    </mat-expansion-panel-header>
-    <div class="list">
-      <span class="list-enumeration channel-enumeration" [ngClass]="{'active-channel': selectedChannel === channel.channelId}" *ngFor="let channel of fetchedChannels" (click)="openChannel(channel.channelId)">
-        <mat-icon style="font-style: italic;">tag</mat-icon>
-         {{ channel.name }}
-      </span>
-      <div class="list-enumeration add-effect">
-        <mat-icon>add_circle_outline</mat-icon>
-        <span (click)="openAddChannel()">Channel hinzufügen</span>
-      </div>
-    </div>
-  </mat-expansion-panel>
+    </mat-expansion-panel>
   </div>
 </section>
 
@@ -70,7 +75,8 @@
       </div>
     </mat-expansion-panel-header>
     <div class="list">
-      <div *ngFor="let user of fetchedUser" class="user-list" [ngClass]="{'active-channel': selectedChannel === user.userId}" (click)="openDM(user.userId)">
+      <div *ngFor="let user of fetchedUser" class="user-list"
+        [ngClass]="{'active-channel': selectedChannel === user.userId}" (click)="openDM(user.userId)">
         <div class="user-pair">
           <img [src]="user.avatar">
           <div class="online-attribut">
@@ -88,7 +94,3 @@
     </div>
   </mat-expansion-panel>
 </section>
-
-<div (click)="writeNewMessage()" class="mobile-send-all-btn">
-  <img src="./assets/icons/edit_square_white.png">
-</div>

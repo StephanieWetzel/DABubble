@@ -29,7 +29,7 @@ export class RegisterComponent {
   formData: FormGroup = this.fbuilder.group({
     name: ['', [Validators.required, this.fullNameValidator()]],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
     checkbox: [false, Validators.requiredTrue]
   })
 
