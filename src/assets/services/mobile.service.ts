@@ -11,6 +11,9 @@ export class MobileService {
   drawerOpened = new BehaviorSubject<boolean>(false);
   drawerOpened$ = this.drawerOpened.asObservable();
 
+  activeChannel = new BehaviorSubject<string | null>('V4fl3CDNCrJMOp6Dro36');
+  activeChannel$ = this.activeChannel.asObservable();
+
 
   /**
    * Notifies subscribers that a channel has been opened or closed.
@@ -35,7 +38,8 @@ export class MobileService {
    * @returns {string} The ID of the currently active channel.
    */
   getActiveChannel() {
-    return localStorage.getItem('selectedChannelId');
+    let channelID = localStorage.getItem('selectedChannelId');
+    this.activeChannel.next(channelID)
   }
 
 

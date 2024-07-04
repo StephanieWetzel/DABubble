@@ -36,6 +36,8 @@ export class HeaderComponent {
   isChannelOpenSub!: Subscription;
   keepMenuOpen: boolean = window.innerWidth <= 520;
   selectedChannel: string | null = 'V4fl3CDNCrJMOp6Dro36';
+  selectedChannelSub!: Subscription;
+  debounceTime: any;
   @Output() openSidenav = new EventEmitter<void>();
 
 
@@ -78,6 +80,11 @@ export class HeaderComponent {
     this.isChannelOpenSub = this.mobileService.channelOpened$.subscribe(
       (isChannelOpen) => {
         this.isChannelOpen = isChannelOpen;
+      }
+    )
+    this.selectedChannelSub = this.mobileService.activeChannel$.subscribe(
+      (isActiveChannel) => {
+        this.selectedChannel = isActiveChannel
       }
     )
   }
@@ -160,7 +167,12 @@ export class HeaderComponent {
  */
   async onSearchInputChange(event: any) {
     const searchInput = event.target.value;
-    await this.chatService.search(searchInput)
+    if (this.debounceTime) {
+      clearTimeout(this.debounceTime)
+    }
+    this.debounceTime = setTimeout(async () => {
+      await this.chatService.search(searchInput);
+    }, 800)
   }
 
 
@@ -173,14 +185,16 @@ export class HeaderComponent {
  * @returns {void} Returns nothing.
  */
   jumpToChannel(result: any, channelId: string) {
+    this.chatService.messages = [];
     this.chatService.currentChannel$.next(channelId);
     this.chatService.setIsDmRoom(false);
     this.chatService.setIsNewMessage(false);
     this.checkScreenWidth();
-    this.mobileService.setActiveChannel(channelId);
     this.chatService.searchInput = '';
     this.chatService.searchResults = [];
     this.chatService.highlightMessage(result.data.messageId, channelId);
+    this.mobileService.setActiveChannel(channelId);
+    this.mobilService.getActiveChannel();
   }
 
 
@@ -202,7 +216,7 @@ export class HeaderComponent {
     this.mobilService.setActiveChannel(userId);
     this.chatService.searchInput = '';
     this.chatService.searchResults = [];
-    this.selectedChannel = this.mobilService.getActiveChannel();
+    this.mobilService.getActiveChannel();
     this.chatService.setIsNewMessage(false);
   }
 

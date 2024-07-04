@@ -33,7 +33,9 @@ export class SidenavContentComponent {
   currentUser: string = '';
   screenWidth: number;
   selectedChannel: string | null = 'V4fl3CDNCrJMOp6Dro36';
+  selectedChannelSub!: Subscription;
   showBlueEdit: boolean = false;
+  debounceTime: any;
   @Output() closeSidenav = new EventEmitter<void>();
 
 
@@ -55,10 +57,12 @@ export class SidenavContentComponent {
  * @returns {void} Returns nothing.
  */
   ngOnInit() {
-    const lastChannel = this.mobilService.getActiveChannel();
-    if (lastChannel) {
-      this.selectedChannel = lastChannel;
-    }
+    this.mobilService.getActiveChannel();
+    this.selectedChannelSub = this.mobilService.activeChannel$.subscribe(
+      (isActiveChannel) => {
+        this.selectedChannel = isActiveChannel
+      }
+    )
   }
 
 
@@ -287,7 +291,7 @@ export class SidenavContentComponent {
     this.chatService.setIsNewMessage(false);
     this.checkScreenWidth();
     this.mobilService.setActiveChannel(channelID);
-    this.selectedChannel = this.mobilService.getActiveChannel();
+    this.mobilService.getActiveChannel();
   }
 
 
@@ -306,7 +310,7 @@ export class SidenavContentComponent {
     this.checkScreenWidth();
     this.chatService.setEditorFocusMessage();
     this.mobilService.setActiveChannel(userId);
-    this.selectedChannel = this.mobilService.getActiveChannel();
+    this.mobilService.getActiveChannel();
     this.chatService.setIsNewMessage(false);
   }
 
@@ -347,7 +351,12 @@ export class SidenavContentComponent {
  */
   async onSearchInputChange(event: any) {
     const searchInput = event.target.value;
-    await this.chatService.search(searchInput)
+    if (this.debounceTime) {
+      clearTimeout(this.debounceTime)
+    }
+    this.debounceTime = setTimeout(async () => {
+      await this.chatService.search(searchInput);
+    }, 800)
   }
 
 

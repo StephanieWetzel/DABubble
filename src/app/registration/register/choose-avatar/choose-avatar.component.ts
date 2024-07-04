@@ -155,6 +155,29 @@ export class ChooseAvatarComponent {
   }
 
 
+  /**
+ * Signs up the user and saves the selected avatar URL to Firebase.
+ * 
+ * @param userId - The ID of the user.
+ */
+  async signUp(userId: string) {
+    try {
+      const userRef = doc(this.firestore, "user", userId);
+      await setDoc(userRef, { avatar: this.selectedAvatarURL }, { merge: true });
+      this.showOverlay = true;
+      setTimeout(() => {
+        this.router.navigate(['/main']);
+      }, 2000);
+    } catch (error) {
+    }
+  }
+
+
+  /**
+ * Deletes the current user's data from Firestore and Firebase Authentication.
+ * 
+ * @async
+ */
   async deleteUserFromFirebase() {
     await this.deleteUserFromDatabase();
     await this.auth.deleteUserFromAuth();
@@ -162,6 +185,11 @@ export class ChooseAvatarComponent {
   }
 
 
+  /**
+ * Deletes the current user's document from the 'user' collection in Firestore.
+ * 
+ * @async
+ */
   async deleteUserFromDatabase() {
     try {
       const userRef = doc(this.firestore, 'user', this.userId);
@@ -184,21 +212,4 @@ export class ChooseAvatarComponent {
   //   }
   // }
 
-
-  /**
- * Signs up the user and saves the selected avatar URL to Firebase.
- * 
- * @param userId - The ID of the user.
- */
-  async signUp(userId: string) {
-    try {
-      const userRef = doc(this.firestore, "user", userId);
-      await setDoc(userRef, { avatar: this.selectedAvatarURL }, { merge: true });
-      this.showOverlay = true;
-      setTimeout(() => {
-        this.router.navigate(['/main']);
-      }, 2000);
-    } catch (error) {
-    }
-  }
 }
