@@ -107,12 +107,19 @@ export class ChooseAvatarComponent {
  */
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.selectedAvatarURL = e.target.result;
-      this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      if (file.size > 1024 * 1024) {
+        alert("Die Datei darf maximal 1 MB groß sein!");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedAvatarURL = e.target.result;
+        this.chosenAvatar.nativeElement.src = this.selectedAvatarURL;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
 
@@ -151,7 +158,7 @@ export class ChooseAvatarComponent {
   async deleteUserFromFirebase() {
     await this.deleteUserFromDatabase();
     await this.auth.deleteUserFromAuth();
-    await this.deleteAvatarFromChannel();
+    // await this.deleteAvatarFromChannel();
   }
 
 
@@ -166,16 +173,16 @@ export class ChooseAvatarComponent {
     }
   }
 
-  async deleteAvatarFromChannel() {
-    try {
-      const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
-      const userDocRef = doc(channelDocRef, 'member', this.userId);
-      console.log(this.userId);
-      await deleteDoc(userDocRef);
-      console.log(this.userId);
-    } catch (error) {
-    }
-  }
+  // async deleteAvatarFromChannel() {
+  //   try {
+  //     const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
+  //     const userDocRef = doc(channelDocRef, 'member', this.userId);
+  //     console.log(this.userId);
+  //     await deleteDoc(userDocRef);
+  //     console.log(this.userId);
+  //   } catch (error) {
+  //   }
+  // }
 
 
   /**
