@@ -7,7 +7,7 @@ import { ChatService } from '../../../../../assets/services/chat-service/chat.se
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { FilePreviewDialogComponent } from '../../input-box/file-preview-dialog/file-preview-dialog.component';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reply-input-box',
@@ -47,7 +47,9 @@ export class ReplyInputBoxComponent {
   isContentEmpty: boolean = true;
   selectedFiles: File[] = [];
   selectedFileNames: string[] = [];
-  safeUrl: any;
+  fileUrls: SafeResourceUrl[] = [];
+  data: any = {};
+  safeUrl: SafeResourceUrl | undefined;
   isEditing: boolean = false;
   editMessageId: string = 'editOver';
 
@@ -92,13 +94,16 @@ export class ReplyInputBoxComponent {
   }
 
 
-  /**
- * Clears the list of selected files and their names.
- */
+  //   /**
+  //  * Clears the list of selected files and their names.
+  //  */
   clearSelectedFiles() {
     this.selectedFileNames = [];
     this.selectedFiles = [];
+    this.fileUrls = [];
+    this.data = {};
   }
+
 
 
   /**
@@ -108,15 +113,18 @@ export class ReplyInputBoxComponent {
  * @returns {Promise<void>} A Promise that resolves once the message is successfully sent.
  */
   async sendSingleMessage(data: any, channel: string) {
-    if (data && this.getInputContent(data) || this.selectedFileNames.length > 0) {
+    if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
       message.sendId = this.chatService.currentUser.userId;
-      for (const file of this.selectedFiles) {
+
+      if (this.selectedFiles.length > 0) {
+        const file = this.selectedFiles[0]; // Es wird nur die erste Datei verwendet
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
       }
+
       await this.chatService.addReply(message);
     }
   }
@@ -129,29 +137,33 @@ export class ReplyInputBoxComponent {
  */
   openSelectedFile(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input && input.files) {
-      const files = input.files;
-      let totalSize = 0;
-      this.selectedFiles = [];
-      this.selectedFileNames = [];
+    if (input && input.files && input.files.length > 0) {
+      const file = input.files[0];
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        totalSize += file.size;
-        if (file.size > 5242880) {
-          alert("Dateien dürfen nicht größer als 5 MB sein.");
-        } else {
-          this.selectedFiles.push(file);
-          this.selectedFileNames.push(file.name);
-        }
-      }
-
-      if (totalSize > 20971520) {
-        alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
-        this.selectedFiles = [];
+      if (file.size > 1024 * 1024) {
+        alert("Dateien dürfen nicht größer als 1 MB sein.");
+      } else {
+        this.selectedFiles = [file];
+        this.selectedFileNames = [file.name];
+        this.previewFile(file);
       }
     }
-    this.checkButtonState();
+  }
+
+
+  /**
+* Reads the contents of a file and generates a secure URL for previewing.
+*
+* @param {File} file - The file object to preview.
+* @param {number} index - The index of the file in the collection.
+*/
+  previewFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.fileUrls[0] = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
   }
 
 
@@ -159,8 +171,8 @@ export class ReplyInputBoxComponent {
  * Opens a preview dialog for a selected file.
  * @param {number} index - The index of the selected file in the 'selectedFiles' array.
  */
-  openFilePreview(index: number) {
-    const file = this.selectedFiles[index];
+  openFilePreview() {
+    const file = this.selectedFiles[0];
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
@@ -176,10 +188,16 @@ export class ReplyInputBoxComponent {
  * Removes a selected file from the list of selected files and updates button state.
  * @param {number} index - The index of the file to be removed in the 'selectedFiles' array.
  */
-  removeFile(index: number) {
-    this.selectedFiles.splice(index, 1)
-    this.selectedFileNames.splice(index, 1);
-    this.checkButtonState()
+  removeFile() {
+    this.selectedFiles = [];
+    this.selectedFileNames = [];
+    this.fileUrls = [];
+    this.cdr.detectChanges();
+
+    const input = document.getElementById('fileInputReply') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+    }
   }
 
 
@@ -195,15 +213,26 @@ export class ReplyInputBoxComponent {
   }
 
 
-  /**
- * Initiates the editing mode for a selected message.
- * Sets the editingMessageId and populates the editor content with the message content.
- * @param {Message} message - The message object to be edited.
- */
+  //   /**
+  //  * Initiates the editing mode for a selected message.
+  //  * Sets the editingMessageId and populates the editor content with the message content.
+  //  * @param {Message} message - The message object to be edited.
+  //  */
   editMessage(message: Message) {
     this.isEditing = true;
     this.editMessageId = message.messageId;
     this.chatService.editorReply.setContent(message.content);
     this.chatService.editorReply.focus();
+  }
+
+
+  /**
+* Checks if the given file is an image based on its MIME type.
+*
+* @param {File} file - The file to check.
+* @returns {boolean} True if the file is an image; otherwise, false.
+*/
+  isImageFile(file: File): boolean {
+    return file.type.startsWith('image');
   }
 }

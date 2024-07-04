@@ -132,19 +132,21 @@ export class InputBoxComponent {
    * @param {string} channel - The channel ID to send the message to.
    */
   async sendSingleMessage(data: any, channel: string) {
-    if ((data && this.getInputContent(data)) || this.selectedFileNames.length > 0) {
+    if (data && this.getInputContent(data)) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
       message.sendId = this.chatService.currentUser.userId;
-      for (const file of this.selectedFiles) {
+
+      if (this.selectedFiles.length > 0) {
+        const file = this.selectedFiles[0]; // Es wird nur die erste Datei verwendet
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
       }
+
       await this.chatService.addMessage(message, channel);
     }
   }
-
 
   /**
    * Clears the input in the editor.
@@ -190,33 +192,23 @@ export class InputBoxComponent {
 
 
   /**
-   * Handles the file selection event, adds valid files to the selected files list, and updates the UI.
-   *
-   * @param {Event} event - The file input change event.
-   * @listens Event
+   * Handles the selection of a file from an input element.
+   * Allows only one file to be selected and checks if the file size exceeds 1 MB.
+   * Displays an alert if the file size limit is exceeded.
+   * 
+   * @param {Event} event - The event triggered when a file is selected.
    */
   openSelectedFile(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input && input.files) {
-      const files = Array.from(input.files);
-      let totalSize = this.selectedFiles.reduce((acc, file) => acc + file.size, 0);
+    if (input && input.files && input.files.length > 0) {
+      const file = input.files[0];
 
-      files.forEach((file, index) => {
-        totalSize += file.size;
-        if (file.size > 5242880) {
-          alert("Dateien dürfen nicht größer als 5 MB sein.");
-        } else {
-          this.selectedFiles.push(file);
-          this.selectedFileNames.push(file.name);
-          this.previewFile(file, this.selectedFiles.length - 1);
-        }
-      });
-
-      if (totalSize > 20971520) {
-        alert("Die Gesamtgröße der Dateien pro Nachricht darf 20 MB nicht überschreiten.");
-        this.clearSelectedFiles();
+      if (file.size > 1024 * 1024) {
+        alert("Dateien dürfen nicht größer als 1 MB sein.");
       } else {
-        this.cdr.detectChanges();
+        this.selectedFiles = [file];
+        this.selectedFileNames = [file.name];
+        this.previewFile(file);
       }
     }
   }
@@ -228,10 +220,10 @@ export class InputBoxComponent {
  * @param {File} file - The file object to preview.
  * @param {number} index - The index of the file in the collection.
  */
-  previewFile(file: File, index: number) {
+  previewFile(file: File) {
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      this.fileUrls[index] = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
+      this.fileUrls[0] = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
       this.cdr.detectChanges();
     };
     reader.readAsDataURL(file);
@@ -242,8 +234,8 @@ export class InputBoxComponent {
    * Opens a file preview dialog for the selected file.
    * @param {number} index - The index of the file in the selectedFiles array.
    */
-  openFilePreview(index: number) {
-    const file = this.selectedFiles[index];
+  openFilePreview() {
+    const file = this.selectedFiles[0];
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
@@ -256,14 +248,18 @@ export class InputBoxComponent {
 
 
   /**
-   * Removes a selected file from the selectedFiles and selectedFileNames arrays.
-   * @param {number} index - The index of the file to remove.
+   * Clears the selected file and its associated data, and resets the file input element.
    */
-  removeFile(index: number) {
-    this.selectedFiles.splice(index, 1);
-    this.selectedFileNames.splice(index, 1);
-    this.fileUrls.splice(index, 1);
+  removeFile() {
+    this.selectedFiles = [];
+    this.selectedFileNames = [];
+    this.fileUrls = [];
     this.cdr.detectChanges();
+
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+    }
   }
 
 

@@ -1,8 +1,9 @@
 @import './../../../../../styles.scss';
+@import './../../input-box/input-box.component.scss';
 
 section {
     position: relative;
-    max-height: 200px;
+    // max-height: 300px;
     overflow: hidden;
     margin: 30px;
     border: 1px solid #ADB0D9;
@@ -73,9 +74,12 @@ section {
 .attachment {
     border: 1px solid $bgPage;
     background-color: $bgPage;
-    padding: 8px;
-    border-radius: 16px;
-    @include dFlex();
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
 
     p {
         margin: 0;
@@ -89,3 +93,50 @@ section {
         }
     }
 }
+
+.attachment-container {
+    @include dFlex($jc: flex-start);
+    // height: 200px;
+    height: 160px;
+    width: 100%;
+    padding: 0 16px;
+    // cursor: pointer;
+}
+
+.attachment-preview-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    max-height: 100%;
+}
+
+.file-preview {
+    cursor: pointer;
+
+    img,
+    embed {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        filter: drop-shadow(2px 4px 6px black);
+        border-radius: 16px;
+    }
+}
+
+// .pdf-container {
+//     overflow: hidden;
+// }
+
+// .pdf-container {
+//     width: 100%;
+//     height: 100%;
+//     overflow: scroll;
+//     /* sorgt dafür, dass nur der Container scrollt */
+// }
+
+// .pdf-container {
+//     width: 100%;
+//     height: 100%;
+//     overflow: auto;
+//     /* sorgt dafür, dass nur der Container scrollt */
+// }

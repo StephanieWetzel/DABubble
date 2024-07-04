@@ -378,6 +378,7 @@ section {
 
 .initial-message {
     @include dFlex($fd: column);
+    padding: 10px 45px;
 }
 
 .info {

@@ -1,14 +1,30 @@
 <section>
   <div *ngIf="selectedFiles.length > 0" class="attachment-container">
-    <div class="attachment" *ngFor="let fileName of selectedFileNames; let i = index">
-      <p (click)="openFilePreview(i)">{{ fileName }}</p>
-      <mat-icon (click)="removeFile(i)">close</mat-icon>
+    <div (click)="openFilePreview()" *ngFor="let file of selectedFiles; let i = index"
+      class="attachment-preview-container">
+
+      <div class="attachment">
+        <!-- <p>{{ selectedFileNames[i] }}</p> -->
+        <mat-icon (click)="removeFile(); $event.stopPropagation()">close</mat-icon>
+      </div>
+
+      <div class="file-preview">
+        <div *ngIf="isImageFile(file)">
+          <img [src]="fileUrls[i]" alt="Vorschau">
+        </div>
+
+        <div *ngIf="file.type === 'application/pdf'" class="pdf-container">
+          <embed [src]="fileUrls[i]" type="application/pdf">
+        </div>
+      </div>
     </div>
   </div>
 
   <editor id="inputReply" [init]="inputInit"></editor>
-  <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty}" (click)="sendMessage()">
-    <img src="assets/img/send-message.svg" alt="send message">
+
+  <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty && selectedFileNames.length === 0}"
+    (click)="sendMessage()">
+    <img src="./assets/img/send-message.svg" alt="send message">
   </button>
 
   <input type="file" id="fileInputReply" accept=".jpg, .png, .pdf" hidden (change)="openSelectedFile($event)">

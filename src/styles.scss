@@ -54,7 +54,6 @@ app-reply-input-box div .tox-toolbar__primary {
     padding-left: 40px !important;
 }
 
-
 .btnDisabled {
     background-color: #797EF3 !important;
     cursor: not-allowed !important;
@@ -149,20 +148,15 @@ app-reply-input-box div .tox-toolbar__primary {
     overflow-y: visible !important;
 }
 
-.mat-drawer-inner-container {
-    overflow: hidden !important;
-}
+// .mat-drawer-inner-container {
+//     overflow: hidden !important;
+// }
 
 
 
 /* width */
 ::-webkit-scrollbar {
     width: 4px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    background: #ECEEFE;
 }
 
 /* Handle */
@@ -172,24 +166,8 @@ app-reply-input-box div .tox-toolbar__primary {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #797EF3;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
