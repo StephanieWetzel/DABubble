@@ -76,17 +76,14 @@ export class HeadbarComponent {
 
 
   /**
- * Initializes the component when it is being loaded.
- * Subscribes to various observables to update component state based on user interactions.
- * - Subscribes to `drawerOpened$` from `mobileService` to track drawer open/close state.
- * - Subscribes to `isDmRoom` from `chatService` to track direct message room state.
- * - Subscribes to `dmPartnerID$` from `chatService` to fetch partner user information when a direct message is active.
- * - Subscribes to `currentChannel$` from `chatService` to update channel-related data and subscribe to channel updates.
- * - Subscribes to `newMessage$` from `chatService` to handle new message notifications and update messages.
- * - Subscribes to `valueChanges` from `searchInput` to handle user search input and filter results based on '@' or '#'.
- *
- * @returns {void} Returns nothing.
- */
+   * Initializes the component and sets up subscriptions to update state based on user interactions:
+   * - Tracks drawer open/close state with `drawerOpened$`.
+   * - Manages direct message room state with `isDmRoom`.
+   * - Fetches partner user info when in a direct message with `dmPartnerID$`.
+   * - Updates channel-related data and subscribes to channel updates with `currentChannel$`.
+   * - Handles new message notifications and updates messages with `newMessage$`.
+   * - Filters search results based on user input from `searchInput`.
+   */
   async ngOnInit() {
     this.isDrawerOpenedSub = this.mobileService.drawerOpened$.subscribe(isOpen => {
       this.isDrawerOpen = isOpen;

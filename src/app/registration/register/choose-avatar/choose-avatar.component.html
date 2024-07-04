@@ -10,7 +10,7 @@
 
     <div class="content-container">
         <div class="content-header">
-            <img [routerLink]="['/../../registration']"
+            <img (click)="deleteUserFromFirebase()" [routerLink]="['/../../registration']"
                 [src]="isHovered ? 'assets/img/goBack_focused.svg' : 'assets/img/goBack_unfocused.svg'"
                 (mouseover)="isHovered = true" (mouseout)="isHovered = false">
             <h2>Wähle deinen Avatar</h2>

@@ -9,7 +9,7 @@ import {
   getDoc
 } from '@angular/fire/firestore';
 import { Injectable } from '@angular/core';
-import { Auth, signInWithPopup, signOut } from '@angular/fire/auth';
+import { Auth, signInWithPopup, signOut, user } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
 import { Router } from '@angular/router';
 
@@ -90,6 +90,21 @@ export class AuthenticationService {
       return docSnap.data() as User;
     } else {
       return null;
+    }
+  }
+
+
+  /**
+  * Deletes the current authenticated user from Firebase Authentication.
+  * @returns {Promise<void>} A promise that resolves when the user deletion is successful.
+  */
+  async deleteUserFromAuth() {
+    try {
+      const userAuth = this.auth.currentUser;
+      if (userAuth) {
+        await userAuth.delete();
+      }
+    } catch (error) {
     }
   }
 }

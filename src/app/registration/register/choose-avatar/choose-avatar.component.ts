@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, deleteDoc, doc, docData, getDoc, setDoc } from '@angular/fire/firestore';
 import { trigger, transition, animate, style } from '@angular/animations';
+import { AuthenticationService } from '../../../../assets/services/authentication.service';
+import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -46,13 +48,15 @@ export class ChooseAvatarComponent {
 
 
   constructor(
+    public auth: AuthenticationService,
     private router: Router,
     private route: ActivatedRoute,
-    private firestore: Firestore
+    private firestore: Firestore,
+    private profileAuth: ProfileAuthentication
   ) {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
-      this.getNameFromFirebase(this.userId);
+      this.getNameFromFirebase();
     });
 
     this.containerWidth = window.innerWidth;
@@ -133,12 +137,42 @@ export class ChooseAvatarComponent {
  * @param {string} userId - The ID of the user whose name is to be retrieved from Firebase.
  * @returns {Promise<void>} - A promise that resolves when the user name is successfully retrieved.
  */
-  async getNameFromFirebase(userId: string) {
+  async getNameFromFirebase() {
     try {
-      const userDoc = await getDoc(doc(this.firestore, "user", userId));
+      const userDoc = await getDoc(doc(this.firestore, "user", this.userId));
       if (userDoc.exists()) {
         this.name = userDoc.data()['name'];
       }
+    } catch (error) {
+    }
+  }
+
+
+  async deleteUserFromFirebase() {
+    await this.deleteUserFromDatabase();
+    await this.auth.deleteUserFromAuth();
+    await this.deleteAvatarFromChannel();
+  }
+
+
+  async deleteUserFromDatabase() {
+    try {
+      const userRef = doc(this.firestore, 'user', this.userId);
+      const userDoc = await getDoc(userRef);
+      if (userDoc.exists()) {
+        await deleteDoc(userRef);
+      }
+    } catch (error) {
+    }
+  }
+
+  async deleteAvatarFromChannel() {
+    try {
+      const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
+      const userDocRef = doc(channelDocRef, 'member', this.userId);
+      console.log(this.userId);
+      await deleteDoc(userDocRef);
+      console.log(this.userId);
     } catch (error) {
     }
   }
