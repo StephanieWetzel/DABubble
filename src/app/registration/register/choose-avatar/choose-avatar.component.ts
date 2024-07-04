@@ -181,7 +181,7 @@ export class ChooseAvatarComponent {
   async deleteUserFromFirebase() {
     await this.deleteUserFromDatabase();
     await this.auth.deleteUserFromAuth();
-    // await this.deleteAvatarFromChannel();
+    // await this.deleteUserFromChannel();
   }
 
 
@@ -201,7 +201,7 @@ export class ChooseAvatarComponent {
     }
   }
 
-  // async deleteAvatarFromChannel() {
+  // async deleteUserFromChannel() {
   //   try {
   //     const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
   //     const userDocRef = doc(channelDocRef, 'member', this.userId);
