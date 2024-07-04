@@ -97,6 +97,11 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   }
 
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+
   /**
  * Scrolls to the bottom of the reply container using smooth animation.
  * Uses requestAnimationFrame for optimal performance.
