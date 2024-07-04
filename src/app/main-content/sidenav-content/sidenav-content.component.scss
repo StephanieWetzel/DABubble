@@ -436,24 +436,6 @@
   border-radius: 50%;
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgba($color: #686868, $alpha: 0.5);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgba($color: #686868, $alpha: 0.7);
-}
-
-::-webkit-scrollbar-track {
-  background-color: none;
-  border: 1px solid none;
-}
-
 .cdk-global-overlay-wrapper {
   @media (max-width: 820px) {
     align-items: flex-start !important;

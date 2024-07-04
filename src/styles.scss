@@ -153,6 +153,46 @@ app-reply-input-box div .tox-toolbar__primary {
     overflow: hidden !important;
 }
 
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ECEEFE;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #b2b4f4;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // FONTS
 /* nunito-200 - latin */
 @font-face {
