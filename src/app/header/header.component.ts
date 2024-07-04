@@ -172,7 +172,7 @@ export class HeaderComponent {
     }
     this.debounceTime = setTimeout(async () => {
       await this.chatService.search(searchInput);
-    }, 800)
+    }, 500)
   }
 
 
