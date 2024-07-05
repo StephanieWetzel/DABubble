@@ -1,6 +1,7 @@
-<section class="show-reply"  [ngClass]="{'w-100': screenWidth < 1300}">
+<section class="show-reply" [ngClass]="{'w-100': screenWidth < 1300}">
     <app-reply-headbar></app-reply-headbar>
     <app-reply-messages (hasOpened)="handleProfile($event)"></app-reply-messages>
     <app-reply-input-box></app-reply-input-box>
-    <app-user-detail (hasClosed)="closeProfile($event)" *ngIf="isShowingProfile" [userID]="selectedProfileId"></app-user-detail>
+    <app-user-detail (hasClosed)="closeProfile($event)" *ngIf="isShowingProfile"
+        [userID]="selectedProfileId"></app-user-detail>
 </section>

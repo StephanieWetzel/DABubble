@@ -31,6 +31,8 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   currentEditingContent: string = '';
   menuEditMessage: boolean = false;
 
+  highlightSubscription!: Subscription;
+
 
   public replyEditEditorInit: RawEditorOptions = {
     suffix: '.min',
@@ -89,16 +91,14 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
    * Subscribes to message count changes and scrolls to the bottom of the view.
    */
   ngAfterViewInit() {
-    this.subscription.add(this.chatService.messageCount$.subscribe({
-      next: (count) => {
+    this.subscription.add(this.chatService.scrollToBottom$.subscribe(shouldScroll => {
+      // if (shouldScroll) {
+      setTimeout(() => {
         this.scrollToBottom();
-      }
+        this.chatService.scrollToBottom$.next(false);
+      }, 300);
+      // }
     }));
-  }
-
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 
 
@@ -112,7 +112,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
       if (this.replyContainer && this.replyContainer.nativeElement) {
         const lastMessageElement = this.replyContainer.nativeElement.lastElementChild;
         if (lastMessageElement) {
-          lastMessageElement.scrollIntoView({ block: 'end', behavior: 'auto' });
+          lastMessageElement.scrollIntoView({ block: 'end', behavior: 'smooth' });
         }
       }
     });
@@ -331,5 +331,17 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  */
   getReactionEmote2(): string {
     return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
+  }
+
+
+  /**
+ * Lifecycle hook that is called when the component is destroyed.
+ * 
+ * This method ensures that any subscriptions are properly unsubscribed to prevent memory leaks.
+ */
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

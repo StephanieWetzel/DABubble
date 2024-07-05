@@ -114,7 +114,7 @@ export class MessagesComponent implements AfterViewInit {
         setTimeout(() => {
           this.scrollToBottom();
           this.chatService.scrollToBottom$.next(false);
-        }, 100);
+        }, 300);
       }
     }));
 
@@ -174,7 +174,7 @@ export class MessagesComponent implements AfterViewInit {
       if (this.chatContainer && this.chatContainer.nativeElement) {
         const lastMessageElement = this.chatContainer.nativeElement.lastElementChild;
         if (lastMessageElement) {
-          lastMessageElement.scrollIntoView({ block: 'end', behavior: 'auto' });
+          lastMessageElement.scrollIntoView({ block: 'end', behavior: 'smooth' });
         }
       }
     });
@@ -497,5 +497,17 @@ export class MessagesComponent implements AfterViewInit {
    */
   trackByMessageId(index: number, message: Message): string {
     return message.messageId;
+  }
+
+
+  /**
+* Lifecycle hook that is called when the component is destroyed.
+* 
+* This method ensures that any subscriptions are properly unsubscribed to prevent memory leaks.
+*/
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

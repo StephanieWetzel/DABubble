@@ -405,6 +405,7 @@ export class ChatService implements OnDestroy {
     const docRef = await addDoc(this.getReplyRef(), message.toJSON(message));
     const docRefId = docRef.id;
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`, docRefId), { messageId: docRefId });
+    this.scrollToBottom$.next(true);
   }
 
 

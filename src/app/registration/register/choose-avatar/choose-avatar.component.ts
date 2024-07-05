@@ -181,7 +181,7 @@ export class ChooseAvatarComponent {
   async deleteUserFromFirebase() {
     await this.deleteUserFromDatabase();
     await this.auth.deleteUserFromAuth();
-    // await this.deleteUserFromChannel();
+    await this.deleteUserFromChannel();
   }
 
 
@@ -201,15 +201,18 @@ export class ChooseAvatarComponent {
     }
   }
 
-  // async deleteUserFromChannel() {
-  //   try {
-  //     const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
-  //     const userDocRef = doc(channelDocRef, 'member', this.userId);
-  //     console.log(this.userId);
-  //     await deleteDoc(userDocRef);
-  //     console.log(this.userId);
-  //   } catch (error) {
-  //   }
-  // }
+
+
+
+  async deleteUserFromChannel() {
+    try {
+      const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
+      const userDocRef = doc(channelDocRef, 'member', this.userId);
+      console.log(this.userId);
+      await deleteDoc(userDocRef);
+      console.log(this.userId);
+    } catch (error) {
+    }
+  }
 
 }
