@@ -308,13 +308,11 @@ section {
 }
 
 .attached-file {
-    background-color: rgba(0, 0, 0, 0.08);
     padding: 4px 8px;
     border-radius: 15px;
 
     &:hover {
         cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.1);
     }
 
     max-width: 100%;
@@ -515,7 +513,8 @@ section {
     width: fit-content;
 
     img {
-        height: 30px;
+        height: 200px;
+        width: auto;
     }
 }
 
@@ -687,17 +686,4 @@ app-user-detail {
 .highlight {
     background-color: #8c91dd;
     transition: background-color 0.5s ease;
-}
-
-
-
-
-
-
-
-.attached-image {
-    max-width: 100%;
-    /* Stelle sicher, dass das Bild nicht den Container überläuft */
-    height: auto;
-    /* Behalte das Seitenverhältnis bei */
 }

@@ -1,7 +1,6 @@
 <section>
   <div *ngIf="selectedFiles.length > 0" class="attachment-container">
-    <div (click)="openFilePreview()" *ngFor="let file of selectedFiles; let i = index"
-      class="attachment-preview-container">
+    <div *ngFor="let file of selectedFiles; let i = index" class="attachment-preview-container">
 
       <div class="attachment">
         <!-- <p>{{ selectedFileNames[i] }}</p> -->
@@ -20,7 +19,7 @@
     </div>
   </div>
 
-  <editor id="inputReply" [init]="inputInit"></editor>
+  <editor [id]="editorId" [init]="inputInit"></editor>
 
   <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty && selectedFileNames.length === 0}"
     (click)="sendMessage()">

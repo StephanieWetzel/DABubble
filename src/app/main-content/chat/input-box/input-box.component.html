@@ -1,7 +1,6 @@
 <section>
     <div *ngIf="selectedFiles.length > 0" class="attachment-container">
-        <div *ngFor="let file of selectedFiles; let i = index" class="attachment-preview-container"
-            (click)="openFilePreview()">
+        <div *ngFor="let file of selectedFiles; let i = index" class="attachment-preview-container">
             <div class="attachment">
                 <!-- <p>{{ selectedFileNames[i] }}</p> -->
                 <mat-icon (click)="removeFile(); $event.stopPropagation()">close</mat-icon>
@@ -18,7 +17,8 @@
         </div>
     </div>
 
-    <editor id="inputData" #inputData [init]="editorInit"></editor>
+    <editor [id]="editorId" [init]="editorInit">
+    </editor>
     <button class="submit-btn" [ngClass]="{'disabled': isContentEmpty && selectedFileNames.length === 0}"
         (click)="sendMessage()">
         <img src="./assets/img/send-message.svg" alt="send message">

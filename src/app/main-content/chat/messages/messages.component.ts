@@ -15,6 +15,10 @@ import { ProfileAuthentication } from '../../../../assets/services/profileAuth.s
 import { User } from '../../../../assets/models/user.class';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { FilePreviewDialogComponent } from '../input-box/file-preview-dialog/file-preview-dialog.component';
+
 
 @Component({
   selector: 'app-messages',
@@ -77,9 +81,33 @@ export class MessagesComponent implements AfterViewInit {
     }
   };
 
+  fileUrls: SafeResourceUrl[] = [];
+  selectedFiles: File[] = [];
+  safeUrl: SafeResourceUrl | undefined;
 
-  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication, private changeDetRef: ChangeDetectorRef, public firebaseService: FirebaseService) {
+
+  constructor(
+    public chatService: ChatService,
+    private profileAuth: ProfileAuthentication,
+    private changeDetRef: ChangeDetectorRef,
+    public firebaseService: FirebaseService,
+    private sanitizer: DomSanitizer,
+    public dialog: MatDialog
+  ) {
     this.messages = this.chatService.messages;
+  }
+
+
+  /**
+  * Initializes user information when the component is first created.
+  */
+  ngOnInit() {
+    this.profileAuth.initializeUser();
+    this.profileAuth.user$.subscribe((user) => {
+      if (user) {
+        this.currentUser = new User(user);
+      }
+    })
   }
 
 
@@ -123,19 +151,6 @@ export class MessagesComponent implements AfterViewInit {
         this.highlightMessage(messageId);
       }
     });
-  }
-
-
-  /**
-    * Initializes user information when the component is first created.
-    */
-  ngOnInit() {
-    this.profileAuth.initializeUser();
-    this.profileAuth.user$.subscribe((user) => {
-      if (user) {
-        this.currentUser = new User(user);
-      }
-    })
   }
 
 
@@ -309,6 +324,19 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
+
+  /**
+   * Determines the border radius style based on whether the sender matches the current user.
+   * @param {string} sender - The ID of the message sender.
+   * @returns {object} CSS style object with border-radius property.
+   */
+  getMessageStyle(sender: string) {
+    return this.isCurrentUserSender(sender) ?
+      { 'border-radius': '30px 0 30px 30px' } :
+      { 'border-radius': '0 30px 30px 30px' };
+  }
+
+
   /**
    * Prepares the reply view for a specific message.
    * @param {Message} message - The message to reply to.
@@ -383,14 +411,23 @@ export class MessagesComponent implements AfterViewInit {
    * @param {string} url - The URL from which to extract the file name.
    * @returns {string} - The extracted file name.
    */
+  // urlToFileName(url: string): string {
+  //   const decodedUrl = decodeURIComponent(url);
+  //   const parts = decodedUrl.split('/');
+  //   let fileName = parts[parts.length - 1];
+  //   fileName = fileName.split('?')[0];
+  //   const timestampRegex = /^[\d_]+_/;
+  //   fileName = fileName.replace(timestampRegex, '');
+  //   return fileName;
+  // }
+
+  /**
+ * Extracts the file name from a URL.
+ * @param {string} url - The URL to extract the file name from.
+ * @returns {string} - The extracted file name.
+ */
   urlToFileName(url: string): string {
-    const decodedUrl = decodeURIComponent(url);
-    const parts = decodedUrl.split('/');
-    let fileName = parts[parts.length - 1];
-    fileName = fileName.split('?')[0];
-    const timestampRegex = /^[\d_]+_/;
-    fileName = fileName.replace(timestampRegex, '');
-    return fileName;
+    return url.split('/').pop() || '';
   }
 
 
@@ -497,6 +534,45 @@ export class MessagesComponent implements AfterViewInit {
    */
   trackByMessageId(index: number, message: Message): string {
     return message.messageId;
+  }
+
+
+  /**
+   * Determines the file type based on the file extension.
+   * @param {string} url - The URL of the file.
+   * @returns {string} - The file type (e.g., 'image', 'pdf', etc.).
+   */
+  // getFileType(url: string): string {
+  //   const extension: string | any = url.split('.').pop()?.toLowerCase();
+  //   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
+
+  //   if (imageExtensions.includes(extension)) {
+  //     return 'image';
+  //   } else if (extension === 'pdf') {
+  //     return 'pdf';
+  //   } else {
+  //     return 'other';
+  //   }
+  // }
+
+
+  // /**
+  //  * Checks if the given URL points to an image.
+  //  * @param {string} url - The URL to check.
+  //  * @returns {boolean} - True if the URL points to an image, false otherwise.
+  //  */
+  // isImage(url: string): boolean {
+  //   return /\.(jpg|jpeg|png|gif|bmp|svg)$/.test(url);
+  // }
+
+
+  /**
+   * Opens a file preview dialog for the selected file.
+   */
+  openFilePreview(url: string) {
+    this.dialog.open(FilePreviewDialogComponent, {
+      data: { fileUrl: url, fileType: 'image' }
+    });
   }
 
 

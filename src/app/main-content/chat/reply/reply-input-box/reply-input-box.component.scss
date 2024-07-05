@@ -3,7 +3,6 @@
 
 section {
     position: relative;
-    // max-height: 300px;
     overflow: hidden;
     margin: 30px;
     border: 1px solid #ADB0D9;
@@ -111,7 +110,6 @@ section {
 }
 
 .file-preview {
-    cursor: pointer;
 
     img,
     embed {

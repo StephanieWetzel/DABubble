@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { FilePreviewDialogComponent } from '../../input-box/file-preview-dialog/file-preview-dialog.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -17,8 +16,10 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrl: './reply-input-box.component.scss'
 })
 export class ReplyInputBoxComponent {
+
+  public editorId: string = `inputReply-${Date.now()}`;
+
   public inputInit: RawEditorOptions = {
-    id: 'inputReply',
     base_url: '/tinymce',
     suffix: '.min',
     menubar: false,
@@ -84,7 +85,7 @@ export class ReplyInputBoxComponent {
  * @returns {Promise<void>} A Promise that resolves once the message is sent.
  */
   async sendMessage() {
-    let replyData = tinymce.get('inputReply');
+    let replyData = tinymce.get(this.editorId);
     if (replyData) {
       await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
       this.clearSelectedFiles();
@@ -110,7 +111,6 @@ export class ReplyInputBoxComponent {
   }
 
 
-
   /**
  * Sends a single message to the specified channel, including text content and uploaded file URLs.
  * @param {any} data - The data containing the message content (usually from an editor instance).
@@ -125,7 +125,7 @@ export class ReplyInputBoxComponent {
       message.sendId = this.chatService.currentUser.userId;
 
       if (this.selectedFiles.length > 0) {
-        const file = this.selectedFiles[0]; // Es wird nur die erste Datei verwendet
+        const file = this.selectedFiles[0];
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
       }
@@ -167,23 +167,6 @@ export class ReplyInputBoxComponent {
     reader.onload = (e: any) => {
       this.fileUrls[0] = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
       this.cdr.detectChanges();
-    };
-    reader.readAsDataURL(file);
-  }
-
-
-  /**
- * Opens a preview dialog for a selected file.
- * @param {number} index - The index of the selected file in the 'selectedFiles' array.
- */
-  openFilePreview() {
-    const file = this.selectedFiles[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
-      this.dialog.open(FilePreviewDialogComponent, {
-        data: { fileUrl: this.safeUrl, fileType: file.type }
-      });
     };
     reader.readAsDataURL(file);
   }

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { CustomDatePipe } from "../../messages/date-pipe/custom-date.pipe";
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { ChatService } from '../../../../../assets/services/chat-service/chat.service';
 import { Subscription } from 'rxjs';
 import { Message } from '../../../../../assets/models/message.class';
@@ -12,13 +12,16 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FirebaseService } from '../../../../../assets/services/firebase-service';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { FilePreviewDialogComponent } from '../../input-box/file-preview-dialog/file-preview-dialog.component';
 
 @Component({
   selector: 'app-reply-messages',
   standalone: true,
   templateUrl: './reply-messages.component.html',
   styleUrl: './../../messages/messages.component.scss',
-  imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule, EditorModule]
+  imports: [CustomDatePipe, NgIf, NgFor, NgClass, CustomTimePipe, MatIconModule, MatMenuModule, EditorModule, CommonModule]
 })
 export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   @ViewChild('replyContainer') private replyContainer!: ElementRef<HTMLDivElement>;
@@ -58,7 +61,13 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   @Output() hasOpened = new EventEmitter<{ opened: boolean, userId: string }>();
 
 
-  constructor(public chatService: ChatService, private profileAuth: ProfileAuthentication, public firebaseService: FirebaseService) {
+  constructor(
+    public chatService: ChatService,
+    private profileAuth: ProfileAuthentication,
+    public firebaseService: FirebaseService,
+    private sanitizer: DomSanitizer,
+    public dialog: MatDialog
+  ) {
   }
 
 
@@ -141,6 +150,18 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
+ * Determines the border radius style based on whether the sender matches the current user.
+ * @param {string} sender - The ID of the message sender.
+ * @returns {object} CSS style object with border-radius property.
+ */
+  getMessageStyle(sender: string) {
+    return this.isCurrentUserSender(sender) ?
+      { 'border-radius': '30px 0 30px 30px' } :
+      { 'border-radius': '0 30px 30px 30px' };
+  }
+
+
+  /**
  * Checks if the date of the message at the specified index is different from the previous message.
  * @param {number} index The index of the message to compare with the previous one.
  * @returns {boolean} Returns true if the date of the current message is different from the previous one, otherwise false.
@@ -158,13 +179,23 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 * @param {string} url - The URL from which to extract the file name.
 * @returns {string} - The extracted file name.
 */
+  // urlToFileName(url: string): string {
+  //   const decodedUrl = decodeURIComponent(url);
+  //   const parts = decodedUrl.split('/');
+  //   let fileName = parts[parts.length - 1];
+  //   fileName = fileName.split('?')[0];
+  //   return fileName;
+  // }
+
+  /**
+* Extracts the file name from a URL.
+* @param {string} url - The URL to extract the file name from.
+* @returns {string} - The extracted file name.
+*/
   urlToFileName(url: string): string {
-    const decodedUrl = decodeURIComponent(url);
-    const parts = decodedUrl.split('/');
-    let fileName = parts[parts.length - 1];
-    fileName = fileName.split('?')[0];
-    return fileName;
+    return url.split('/').pop() || '';
   }
+
 
 
   /**
@@ -331,6 +362,16 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  */
   getReactionEmote2(): string {
     return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
+  }
+
+
+  /**
+   * Opens a file preview dialog for the selected file.
+   */
+  openFilePreview(url: string) {
+    this.dialog.open(FilePreviewDialogComponent, {
+      data: { fileUrl: url, fileType: 'image' }
+    });
   }
 
 

@@ -12,7 +12,6 @@ import { ProfileAuthentication } from '../../../../assets/services/profileAuth.s
 import { User } from '../../../../assets/models/user.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { MatDialog } from '@angular/material/dialog';
-import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-dialog.component';
 
 @Component({
   selector: 'app-input-box',
@@ -23,7 +22,9 @@ import { FilePreviewDialogComponent } from './file-preview-dialog/file-preview-d
 })
 
 export class InputBoxComponent {
-  @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
+  // @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
+
+  public editorId: string = `input-${Date.now()}`;
 
   public editorInit: RawEditorOptions = {
     base_url: '/tinymce',
@@ -85,7 +86,7 @@ export class InputBoxComponent {
    * Clears input and selected files after sending.
    */
   async sendMessage() {
-    let data = tinymce.get("inputData");
+    let data = tinymce.get(this.editorId);
     if (this.isInNewMessageInterface()) {
       await this.sendNewMessage(data);
     } else {
@@ -230,23 +231,6 @@ export class InputBoxComponent {
     reader.onload = (e: any) => {
       this.fileUrls[0] = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
       this.cdr.detectChanges();
-    };
-    reader.readAsDataURL(file);
-  }
-
-
-  /**
-   * Opens a file preview dialog for the selected file.
-   * @param {number} index - The index of the file in the selectedFiles array.
-   */
-  openFilePreview() {
-    const file = this.selectedFiles[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(e.target.result);
-      this.dialog.open(FilePreviewDialogComponent, {
-        data: { fileUrl: this.safeUrl, fileType: file.type }
-      });
     };
     reader.readAsDataURL(file);
   }
