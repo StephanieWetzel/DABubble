@@ -688,3 +688,16 @@ app-user-detail {
     background-color: #8c91dd;
     transition: background-color 0.5s ease;
 }
+
+
+
+
+
+
+
+.attached-image {
+    max-width: 100%;
+    /* Stelle sicher, dass das Bild nicht den Container überläuft */
+    height: auto;
+    /* Behalte das Seitenverhältnis bei */
+}

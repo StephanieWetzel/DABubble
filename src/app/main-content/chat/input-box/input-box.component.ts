@@ -94,6 +94,11 @@ export class InputBoxComponent {
     this.clearSelectedFiles();
     this.clearInput(data);
     this.cdr.detectChanges();
+
+    const input = document.getElementById('fileInput') as HTMLInputElement;
+    if (input) {
+      input.value = '';
+    }
   }
 
 
@@ -132,7 +137,7 @@ export class InputBoxComponent {
    * @param {string} channel - The channel ID to send the message to.
    */
   async sendSingleMessage(data: any, channel: string) {
-    if (data && this.getInputContent(data)) {
+    if (data && this.getInputContent(data) || this.selectedFileNames.length > 0) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;

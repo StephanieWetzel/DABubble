@@ -55,13 +55,28 @@
                         <div class="message-content"
                             [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
                             <p (ngModel)="currentContent">{{ message.content }}</p>
+
+
+
                             <div class="files-container" *ngIf="message.fileUrls.length > 0">
                                 <div *ngFor="let url of message.fileUrls" class="attached-file"
-                                    (click)="downloadFile(url, urlToFileName(url))"><img
-                                        *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
+                                    (click)="downloadFile(url, urlToFileName(url))">
+                                    <img *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
                                         alt="pdf:"><span>{{ urlToFileName(url) }}</span>
                                 </div>
                             </div>
+
+                            <!-- <div class="files-container" *ngIf="message.fileUrls.length > 0">
+                                <div *ngFor="let url of message.fileUrls" class="attached-file">
+                                    <img *ngIf="isImageFile(url)" [src]="url" alt="Bild" class="attached-image">
+                                    <div *ngIf="!isImageFile(url)" (click)="downloadFile(url, urlToFileName(url))">
+                                        <img *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
+                                            alt="pdf:">
+                                        <span>{{ urlToFileName(url) }}</span>
+                                    </div>
+                                </div>
+                            </div> -->
+
                         </div>
 
 

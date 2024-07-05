@@ -90,6 +90,11 @@ export class ReplyInputBoxComponent {
       this.clearSelectedFiles();
       replyData.setContent('');
       this.cdr.detectChanges();
+
+      const input = document.getElementById('fileInputReply') as HTMLInputElement;
+      if (input) {
+        input.value = '';
+      }
     }
   }
 
@@ -113,7 +118,7 @@ export class ReplyInputBoxComponent {
  * @returns {Promise<void>} A Promise that resolves once the message is successfully sent.
  */
   async sendSingleMessage(data: any, channel: string) {
-    if (data && this.getInputContent(data)) {
+    if (data && this.getInputContent(data) || this.selectedFileNames.length > 0) {
       let content = data.getContent({ format: 'text' });
       let message = new Message();
       message.content = content;
