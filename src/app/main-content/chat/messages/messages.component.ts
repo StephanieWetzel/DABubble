@@ -15,7 +15,7 @@ import { ProfileAuthentication } from '../../../../assets/services/profileAuth.s
 import { User } from '../../../../assets/models/user.class';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer, SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { FilePreviewDialogComponent } from '../input-box/file-preview-dialog/file-preview-dialog.component';
 
@@ -86,6 +86,22 @@ export class MessagesComponent implements AfterViewInit {
   safeUrl: SafeResourceUrl | undefined;
 
 
+  isImage(url: string): boolean {
+    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+    const extension = this.getFileExtension(url).toLowerCase();
+    return imageExtensions.includes(extension);
+  }
+
+  isPdf(url: string): boolean {
+    return this.getFileExtension(url).toLowerCase() === 'pdf';
+  }
+
+  getFileExtension(url: string): string {
+    return url.split('.').pop() || '';
+  }
+
+
+
   constructor(
     public chatService: ChatService,
     private profileAuth: ProfileAuthentication,
@@ -95,6 +111,11 @@ export class MessagesComponent implements AfterViewInit {
     public dialog: MatDialog
   ) {
     this.messages = this.chatService.messages;
+  }
+
+
+  sanitizeUrl(url: string): SafeUrl {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
 
@@ -556,16 +577,6 @@ export class MessagesComponent implements AfterViewInit {
   // }
 
 
-  // /**
-  //  * Checks if the given URL points to an image.
-  //  * @param {string} url - The URL to check.
-  //  * @returns {boolean} - True if the URL points to an image, false otherwise.
-  //  */
-  // isImage(url: string): boolean {
-  //   return /\.(jpg|jpeg|png|gif|bmp|svg)$/.test(url);
-  // }
-
-
   /**
    * Opens a file preview dialog for the selected file.
    */
@@ -574,6 +585,7 @@ export class MessagesComponent implements AfterViewInit {
       data: { fileUrl: url, fileType: 'image' }
     });
   }
+
 
 
   /**

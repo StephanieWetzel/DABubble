@@ -60,6 +60,9 @@ export class InputBoxComponent {
   safeUrl: SafeResourceUrl | undefined;
   currentUser!: User;
 
+  public sendButtonDisabled: boolean = true;
+
+
   constructor(
     private chatService: ChatService,
     private cdr: ChangeDetectorRef,
@@ -94,7 +97,7 @@ export class InputBoxComponent {
     }
     this.clearSelectedFiles();
     this.clearInput(data);
-    this.cdr.detectChanges();
+    this.updateSendButtonState();
 
     const input = document.getElementById('fileInput') as HTMLInputElement;
     if (input) {
@@ -240,10 +243,7 @@ export class InputBoxComponent {
    * Clears the selected file and its associated data, and resets the file input element.
    */
   removeFile() {
-    this.selectedFiles = [];
-    this.selectedFileNames = [];
-    this.fileUrls = [];
-    this.cdr.detectChanges();
+    this.clearSelectedFiles();
 
     const input = document.getElementById('fileInput') as HTMLInputElement;
     if (input) {
@@ -272,5 +272,16 @@ export class InputBoxComponent {
  */
   isImageFile(file: File): boolean {
     return file.type.startsWith('image');
+  }
+
+
+  /**
+ * Updates the state of the send button based on the content in the editor and selected files.
+ */
+  updateSendButtonState() {
+    const editor = tinymce.get(this.editorId);
+    this.isContentEmpty = !this.getInputContent(editor);
+    this.sendButtonDisabled = this.isContentEmpty && this.selectedFileNames.length === 0;
+    this.cdr.detectChanges();
   }
 }

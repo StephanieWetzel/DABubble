@@ -34,7 +34,7 @@ export class ReplyInputBoxComponent {
     setup: (editor) => {
       editor.on('input', () => {
         const content = this.getInputContent(editor)
-        this.checkButtonState();
+        // this.checkButtonState();
         this.isContentEmpty = !content;
         this.cdr.detectChanges();
       });
@@ -53,6 +53,9 @@ export class ReplyInputBoxComponent {
   safeUrl: SafeResourceUrl | undefined;
   isEditing: boolean = false;
   editMessageId: string = 'editOver';
+
+  public sendButtonDisabled: boolean = true;
+
 
   constructor(public dialog: MatDialog, private chatService: ChatService, private cdr: ChangeDetectorRef, private sanitizer: DomSanitizer) {
 
@@ -90,7 +93,8 @@ export class ReplyInputBoxComponent {
       await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
       this.clearSelectedFiles();
       replyData.setContent('');
-      this.cdr.detectChanges();
+      // this.cdr.detectChanges();
+      this.updateSendButtonState();
 
       const input = document.getElementById('fileInputReply') as HTMLInputElement;
       if (input) {
@@ -222,5 +226,16 @@ export class ReplyInputBoxComponent {
 */
   isImageFile(file: File): boolean {
     return file.type.startsWith('image');
+  }
+
+
+  /**
+ * Updates the state of the send button based on the content in the editor and selected files.
+ */
+  updateSendButtonState() {
+    const editor = tinymce.get(this.editorId);
+    this.isContentEmpty = !this.getInputContent(editor);
+    this.sendButtonDisabled = this.isContentEmpty && this.selectedFileNames.length === 0;
+    this.cdr.detectChanges();
   }
 }
