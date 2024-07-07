@@ -59,6 +59,7 @@ export class MessagesComponent implements AfterViewInit {
 
   currentUser!: User;
 
+  public editorId: string = `messages-${Date.now()}`;
 
   public editEditorInit: RawEditorOptions = {
     suffix: '.min',

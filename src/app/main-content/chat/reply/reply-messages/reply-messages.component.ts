@@ -37,6 +37,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
   highlightSubscription!: Subscription;
 
+  public editorId: string = `replyMessages-${Date.now()}`;
 
   public replyEditEditorInit: RawEditorOptions = {
     suffix: '.min',
