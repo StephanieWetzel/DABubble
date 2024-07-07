@@ -30,12 +30,12 @@ export class InputBoxComponent {
     menubar: false,
     toolbar_location: 'bottom',
     border: 'none',
-    plugins: 'autoresize emoticons link',
+    plugins: 'autoresize emoticons',
     autoresize_bottom_margin: 0,
     max_height: 500,
     placeholder: 'Nachricht an Chat ... ',
     statusbar: false,
-    toolbar: 'link emoticons',
+    toolbar: 'emoticons',
     entity_encoding: 'raw',
     setup: (editor) => {
       editor.on('init', () => {
