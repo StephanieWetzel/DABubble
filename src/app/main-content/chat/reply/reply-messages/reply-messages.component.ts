@@ -25,6 +25,7 @@ import { FilePreviewDialogComponent } from '../../input-box/file-preview-dialog/
 })
 export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   @ViewChild('replyContainer') private replyContainer!: ElementRef<HTMLDivElement>;
+
   subscription = new Subscription;
   replies!: Message[];
   customDatePipe = new CustomDatePipe();
@@ -71,6 +72,19 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   }
 
 
+  // isImage(url: string): boolean {
+  //   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+  //   const extension = this.getFileExtension(url).toLowerCase();
+  //   return imageExtensions.includes(extension);
+  // }
+
+
+  // getFileExtension(url: string): string {
+  //   return url.split('.').pop() || '';
+  // }
+
+
+
   /**
  * Emits an event indicating that a profile with the specified ID should be opened.
  * @param id The ID of the profile to open.
@@ -101,12 +115,12 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
    */
   ngAfterViewInit() {
     this.subscription.add(this.chatService.scrollToBottom$.subscribe(shouldScroll => {
-      // if (shouldScroll) {
-      setTimeout(() => {
-        this.scrollToBottom();
-        this.chatService.scrollToBottom$.next(false);
-      }, 300);
-      // }
+      if (shouldScroll) {
+        setTimeout(() => {
+          this.scrollToBottom();
+          this.chatService.scrollToBottom$.next(false);
+        }, 300);
+      }
     }));
   }
 

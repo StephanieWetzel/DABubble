@@ -75,13 +75,6 @@ export class ChatService implements OnDestroy {
   }
 
 
-  /** Clean up subscriptions on component destroy */
-  ngOnDestroy(): void {
-    this.unsubreplies();
-    this.unsubscribe();
-  }
-
-
   /** Initialize user and message subscriptions */
   initializeUserAndMessages() {
     this.profileAuth.user$.subscribe(user => {
@@ -95,6 +88,33 @@ export class ChatService implements OnDestroy {
     this.currentChannel$.subscribe(channel => {
       this.updateMessages();
     });
+  }
+
+
+  /**
+   * Loads the initial message for a thread based on messageId.
+   * @param {string} messageId - The ID of the message to load.
+   */
+  async loadInitialMessageForThread(messageId: string) {
+    const messageRef = doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${messageId}`);
+    const messageDoc = await getDoc(messageRef);
+    if (messageDoc.exists()) {
+      const messageData = messageDoc.data();
+      this.initialMessageForThread = new Message(messageData);
+      await this.loadFileUrlsForMessage(this.initialMessageForThread);
+    }
+  }
+
+
+  /**
+   * Load file URLs for a given message.
+   * @param {Message} message - The message object to load file URLs for.
+   */
+  async loadFileUrlsForMessage(message: Message) {
+    const urls = await Promise.all(message.fileUrls.map(async url => {
+      return url;
+    }));
+    message.fileUrls = urls;
   }
 
 
@@ -659,5 +679,12 @@ export class ChatService implements OnDestroy {
     if (this.editorReply) {
       this.editorReply.focus()
     }
+  }
+
+
+  /** Clean up subscriptions on component destroy */
+  ngOnDestroy(): void {
+    this.unsubreplies();
+    this.unsubscribe();
   }
 }

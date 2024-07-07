@@ -40,14 +40,14 @@ export class InputBoxComponent {
     toolbar: 'link emoticons',
     entity_encoding: 'raw',
     setup: (editor) => {
-      editor.on('input', () => {
-        const content = this.getInputContent(editor);
-        this.isContentEmpty = !content;
-        this.cdr.detectChanges();
-      });
       editor.on('init', () => {
         editor.focus();
       });
+      editor.on('input', () => {
+        const content = this.getInputContent(editor);
+        this.isContentEmpty = !content;
+      });
+
       this.chatService.editorMessage = editor;
     }
   };
@@ -78,8 +78,8 @@ export class InputBoxComponent {
    * @param {any} input - The editor instance from which to retrieve content.
    * @returns {boolean} - The trimmed text content from the editor.
    */
-  getInputContent(input: any): boolean {
-    const content = input.getContent({ format: 'text' }).trim();
+  getInputContent(editor: any): boolean {
+    const content = editor.getContent({ format: 'text' }).trim();
     return content;
   }
 

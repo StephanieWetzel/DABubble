@@ -2,11 +2,11 @@
     <div class="messages-section">
         <div class="initial-message" *ngIf="chatService.initialMessageForThread">
             <div class="avatar-and-message">
-
                 <div class="avatar-container">
                     <img (click)="openProfile(chatService.initialMessageForThread.sendId)"
                         [src]="chatService.getUserAvatar(chatService.initialMessageForThread.sendId)">
                 </div>
+
                 <div class="info-and-content">
                     <div class="info"
                         [ngClass]="{'info-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
@@ -14,12 +14,22 @@
                             }}</span>
                         <span class="time">{{ chatService.initialMessageForThread.time | customTime }}</span>
                     </div>
+
                     <div class="message-content"
                         [ngClass]="{'message-content-sender': isCurrentUserSender(chatService.initialMessageForThread.sendId)}">
                         <p (ngModel)="currentContent">{{ chatService.initialMessageForThread.content }}</p>
 
+                        <div class="files-container" *ngIf="chatService.initialMessageForThread.fileUrls.length > 0">
+                            <div class="attached-file">
+                                <img (click)="openFilePreview(url)"
+                                    [ngStyle]="getMessageStyle(chatService.initialMessageForThread.sendId)"
+                                    *ngFor="let url of chatService.initialMessageForThread.fileUrls" [src]="url"
+                                    alt="Vorschau" class="attached-img">
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="answer-count-border">
                 <span>{{ chatService.initialMessageForThread.replies.length }} Antworten</span>
@@ -27,6 +37,8 @@
                 </div>
             </div>
         </div>
+
+
         <div *ngFor="let message of getList(); let i = index" class="message">
             <div class="reply-edit-message-container" *ngIf="editingMessageId === message.messageId">
                 <div class="reply-edit-message">
@@ -51,35 +63,22 @@
                             <span class="name">{{ chatService.getUserName(message.sendId) }} </span>
                             <span class="time">{{ message.time | customTime }}</span>
                         </div>
+
+
                         <div class="message-content"
                             [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
                             <p (ngModel)="currentContent">{{ message.content }}</p>
 
-                            <!-- <div class="files-container" *ngIf="message.fileUrls.length > 0">
-                                <div *ngFor="let url of message.fileUrls" class="attached-file"
-                                    (click)="downloadFile(url, urlToFileName(url))">
-                                    <img *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
-                                        alt="pdf:"><span>{{ urlToFileName(url) }}</span>
-                                </div>
-                            </div> -->
-
                             <div class="files-container" *ngIf="message.fileUrls.length > 0">
                                 <div class="attached-file">
                                     <img (click)="openFilePreview(url)" [ngStyle]="getMessageStyle(message.sendId)"
-                                        *ngFor="let url of message.fileUrls" [src]="url" alt="image"
+                                        *ngFor="let url of message.fileUrls" [src]="url" alt="Vorschau"
                                         class="attached-img">
-                                    <!-- <div *ngIf="!isImage(url)">
-                                        <img [ngStyle]="getMessageStyle(message.sendId)"
-                                            *ngFor="let url of message.fileUrls"
-                                            *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
-                                            alt="pdf:">
-                                    </div> -->
                                 </div>
                             </div>
-
-
-
                         </div>
+
+
                     </div>
                 </div>
 

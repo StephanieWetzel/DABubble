@@ -34,9 +34,7 @@ export class ReplyInputBoxComponent {
     setup: (editor) => {
       editor.on('input', () => {
         const content = this.getInputContent(editor)
-        // this.checkButtonState();
         this.isContentEmpty = !content;
-        this.cdr.detectChanges();
       });
       editor.on('init', () => {
         editor.focus();
