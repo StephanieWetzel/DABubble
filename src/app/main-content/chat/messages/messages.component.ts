@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
 import { CommonModule, KeyValuePipe, NgClass } from '@angular/common';
@@ -15,7 +15,6 @@ import { ProfileAuthentication } from '../../../../assets/services/profileAuth.s
 import { User } from '../../../../assets/models/user.class';
 import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
-import { DomSanitizer, SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { FilePreviewDialogComponent } from '../input-box/file-preview-dialog/file-preview-dialog.component';
 
@@ -82,41 +81,14 @@ export class MessagesComponent implements AfterViewInit {
     }
   };
 
-  fileUrls: SafeResourceUrl[] = [];
-  selectedFiles: File[] = [];
-  safeUrl: SafeResourceUrl | undefined;
-
-
-  isImage(url: string): boolean {
-    const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
-    const extension = this.getFileExtension(url).toLowerCase();
-    return imageExtensions.includes(extension);
-  }
-
-  isPdf(url: string): boolean {
-    return this.getFileExtension(url).toLowerCase() === 'pdf';
-  }
-
-  getFileExtension(url: string): string {
-    return url.split('.').pop() || '';
-  }
-
-
 
   constructor(
     public chatService: ChatService,
     private profileAuth: ProfileAuthentication,
-    private changeDetRef: ChangeDetectorRef,
     public firebaseService: FirebaseService,
-    private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {
     this.messages = this.chatService.messages;
-  }
-
-
-  sanitizeUrl(url: string): SafeUrl {
-    return this.sanitizer.bypassSecurityTrustUrl(url);
   }
 
 
@@ -346,19 +318,6 @@ export class MessagesComponent implements AfterViewInit {
   }
 
 
-
-  /**
-   * Determines the border radius style based on whether the sender matches the current user.
-   * @param {string} sender - The ID of the message sender.
-   * @returns {object} CSS style object with border-radius property.
-   */
-  getMessageStyle(sender: string) {
-    return this.isCurrentUserSender(sender) ?
-      { 'border-radius': '30px 0 30px 30px' } :
-      { 'border-radius': '0 30px 30px 30px' };
-  }
-
-
   /**
    * Prepares the reply view for a specific message.
    * @param {Message} message - The message to reply to.
@@ -429,61 +388,11 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
-   * Extracts the file name from a URL.
-   * @param {string} url - The URL from which to extract the file name.
-   * @returns {string} - The extracted file name.
-   */
-  // urlToFileName(url: string): string {
-  //   const decodedUrl = decodeURIComponent(url);
-  //   const parts = decodedUrl.split('/');
-  //   let fileName = parts[parts.length - 1];
-  //   fileName = fileName.split('?')[0];
-  //   const timestampRegex = /^[\d_]+_/;
-  //   fileName = fileName.replace(timestampRegex, '');
-  //   return fileName;
-  // }
-
-  /**
- * Extracts the file name from a URL.
- * @param {string} url - The URL to extract the file name from.
- * @returns {string} - The extracted file name.
- */
-  urlToFileName(url: string): string {
-    return url.split('/').pop() || '';
-  }
-
-
-  /**
  * Toggles the state of the edit message menu.
  * If the menu is currently open, it closes it; if closed, it opens it.
  */
   openEditMessage() {
     this.menuEditMessage = !this.menuEditMessage;
-  }
-
-
-  /**
-   * Initiates the file download process from a specified URL.
-   * @param {string} url - The URL of the file to download.
-   * @param {string} filename - The name to assign to the downloaded file.
-   */
-  async downloadFile(url: string, filename: string): Promise<void> {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Network response was not ok. Status: ${response.status}`);
-      }
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = filename || 'downloaded-file';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(blobUrl);
-      document.body.removeChild(a);
-    } catch (error) {
-    }
   }
 
 
@@ -560,25 +469,6 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
-   * Determines the file type based on the file extension.
-   * @param {string} url - The URL of the file.
-   * @returns {string} - The file type (e.g., 'image', 'pdf', etc.).
-   */
-  // getFileType(url: string): string {
-  //   const extension: string | any = url.split('.').pop()?.toLowerCase();
-  //   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg', 'webp'];
-
-  //   if (imageExtensions.includes(extension)) {
-  //     return 'image';
-  //   } else if (extension === 'pdf') {
-  //     return 'pdf';
-  //   } else {
-  //     return 'other';
-  //   }
-  // }
-
-
-  /**
    * Opens a file preview dialog for the selected file.
    */
   openFilePreview(url: string) {
@@ -587,6 +477,17 @@ export class MessagesComponent implements AfterViewInit {
     });
   }
 
+
+  /**
+ * Determines the border radius style based on whether the sender matches the current user.
+ * @param {string} sender - The ID of the message sender.
+ * @returns {object} CSS style object with border-radius property.
+ */
+  getMessageStyle(sender: string) {
+    return this.isCurrentUserSender(sender) ?
+      { 'border-radius': '30px 0 30px 30px' } :
+      { 'border-radius': '0 30px 30px 30px' };
+  }
 
 
   /**

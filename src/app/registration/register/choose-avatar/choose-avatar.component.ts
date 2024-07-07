@@ -5,7 +5,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Firestore, collection, deleteDoc, doc, docData, getDoc, setDoc } from '@angular/fire/firestore';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { AuthenticationService } from '../../../../assets/services/authentication.service';
-import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -52,7 +51,6 @@ export class ChooseAvatarComponent {
     private router: Router,
     private route: ActivatedRoute,
     private firestore: Firestore,
-    private profileAuth: ProfileAuthentication
   ) {
     this.route.params.subscribe((params) => {
       this.userId = params['id'];
@@ -181,7 +179,7 @@ export class ChooseAvatarComponent {
   async deleteUserFromFirebase() {
     await this.deleteUserFromDatabase();
     await this.auth.deleteUserFromAuth();
-    await this.deleteUserFromChannel();
+    // await this.deleteUserFromChannel();
   }
 
 
@@ -204,15 +202,13 @@ export class ChooseAvatarComponent {
 
 
 
-  async deleteUserFromChannel() {
-    try {
-      const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
-      const userDocRef = doc(channelDocRef, 'member', this.userId);
-      console.log(this.userId);
-      await deleteDoc(userDocRef);
-      console.log(this.userId);
-    } catch (error) {
-    }
-  }
+  // async deleteUserFromChannel() {
+  //   try {
+  //     const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
+  //     const userDocRef = doc(channelDocRef, 'member', this.userId);
+  //     await deleteDoc(userDocRef);
+  //   } catch (error) {
+  //   }
+  // }
 
 }

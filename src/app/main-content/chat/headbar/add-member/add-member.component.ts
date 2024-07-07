@@ -53,15 +53,6 @@ export class AddMemberComponent {
 
 
   /**
- * Cleans up resources before component destruction.
- * Unsubscribes from user subscription to avoid memory leaks.
- */
-  ngOnDestroy() {
-    this.unsubUser.unsubscribe();
-  }
-
-
-  /**
    * Finds and updates search results based on the given search term.
    * Clears search results if the search term is empty.
    * Filters fetched users to exclude current members and selected users.
@@ -131,5 +122,14 @@ export class AddMemberComponent {
    */
   close() {
     this.isClosed.emit(true);
+  }
+
+
+  /**
+ * Cleans up resources before component destruction.
+ * Unsubscribes from user subscription to avoid memory leaks.
+ */
+  ngOnDestroy() {
+    this.unsubUser.unsubscribe();
   }
 }

@@ -99,12 +99,11 @@ export class LoginComponent {
 
 
   /**
- * Attempts to log in a guest user using fetched guest data.
- * If guest data is available, it tries to sign in the user using the retrieved email and password.
- * If the sign-in is successful, it navigates the user to the main page.
- * @returns {Promise<void>} A promise that resolves when the login process is completed.
- * @throws {Error} An error that occurs if the login process fails.
- */
+   * Handles guest login by fetching guest data and signing in.
+   *
+   * Fetches guest data from the authentication service, then attempts to sign in with the provided email and password.
+   * If the sign-in is successful, navigates to the main page.
+   */
   async guestLogin() {
     const guestData = await this.auth.fetchGuestData();
     if (guestData) {
@@ -118,12 +117,11 @@ export class LoginComponent {
 
 
   /**
-* Attempts to log in the user using Google authentication.
-* If the sign-in is successful, it retrieves user data, transforms it, and stores it in the Firestore database.
-* Finally, it navigates the user to the main page.
-* @returns {Promise<void>} A promise that resolves when the login process is completed.
-* @throws {Error} An error that occurs if the login process fails.
-*/
+   * Handles user login via Google authentication.
+   *
+   * Signs in the user using Google authentication, transforms the sign-in data, updates the Firestore user and channel
+   * documents, and navigates to the main page.
+   */
   async googleLogin() {
     try {
       const result = await this.auth.signInWithGoogle();

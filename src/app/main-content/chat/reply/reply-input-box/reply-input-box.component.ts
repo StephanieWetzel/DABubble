@@ -48,7 +48,6 @@ export class ReplyInputBoxComponent {
   selectedFileNames: string[] = [];
   fileUrls: SafeResourceUrl[] = [];
   data: any = {};
-  safeUrl: SafeResourceUrl | undefined;
   isEditing: boolean = false;
   editMessageId: string = 'editOver';
 
@@ -71,19 +70,8 @@ export class ReplyInputBoxComponent {
 
 
   /**
- * Checks and updates the state of the send message button based on input content and selected files.
- * Updates the 'isContentEmpty' flag to indicate whether content is empty.
- */
-  checkButtonState() {
-    const editorContent = this.getInputContent(this.chatService.editorReply);
-    this.isContentEmpty = !editorContent && this.selectedFiles.length === 0;
-  }
-
-
-  /**
  * Sends a single message, including text content and selected files, to the current channel.
  * Clears selected files and resets editor content after sending the message.
- * @returns {Promise<void>} A Promise that resolves once the message is sent.
  */
   async sendMessage() {
     let replyData = tinymce.get(this.editorId);
@@ -91,7 +79,6 @@ export class ReplyInputBoxComponent {
       await this.sendSingleMessage(replyData, this.chatService.currentChannel$.value);
       this.clearSelectedFiles();
       replyData.setContent('');
-      // this.cdr.detectChanges();
       this.updateSendButtonState();
 
       const input = document.getElementById('fileInputReply') as HTMLInputElement;
@@ -102,9 +89,9 @@ export class ReplyInputBoxComponent {
   }
 
 
-  //   /**
-  //  * Clears the list of selected files and their names.
-  //  */
+  /**
+ * Clears the list of selected files and their names.
+ */
   clearSelectedFiles() {
     this.selectedFileNames = [];
     this.selectedFiles = [];
@@ -117,7 +104,6 @@ export class ReplyInputBoxComponent {
  * Sends a single message to the specified channel, including text content and uploaded file URLs.
  * @param {any} data - The data containing the message content (usually from an editor instance).
  * @param {string} channel - The ID of the channel where the message will be sent.
- * @returns {Promise<void>} A Promise that resolves once the message is successfully sent.
  */
   async sendSingleMessage(data: any, channel: string) {
     if (data && this.getInputContent(data) || this.selectedFileNames.length > 0) {
@@ -203,11 +189,11 @@ export class ReplyInputBoxComponent {
   }
 
 
-  //   /**
-  //  * Initiates the editing mode for a selected message.
-  //  * Sets the editingMessageId and populates the editor content with the message content.
-  //  * @param {Message} message - The message object to be edited.
-  //  */
+  /**
+ * Initiates the editing mode for a selected message.
+ * Sets the editingMessageId and populates the editor content with the message content.
+ * @param {Message} message - The message object to be edited.
+ */
   editMessage(message: Message) {
     this.isEditing = true;
     this.editMessageId = message.messageId;

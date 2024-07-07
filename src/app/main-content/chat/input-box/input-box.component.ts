@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { ChatService } from './../../../../assets/services/chat-service/chat.service';
@@ -22,8 +22,6 @@ import { MatDialog } from '@angular/material/dialog';
 })
 
 export class InputBoxComponent {
-  // @ViewChild('inputData', { static: false }) myEditor!: ElementRef;
-
   public editorId: string = `input-${Date.now()}`;
 
   public editorInit: RawEditorOptions = {

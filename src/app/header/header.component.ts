@@ -60,16 +60,6 @@ export class HeaderComponent {
 
 
   /**
-   * Resets navigation settings by closing any open channel, toggling the navigation drawer,
-   */
-  getBackToNav() {
-    this.mobileService.openChannel(false);
-    this.mobileService.toggleDrawe(true);
-    this.mobileService.setActiveChannel('');
-  }
-
-
-  /**
    * Initializes the component by fetching and subscribing to the user data from the authentication service.
    */
   ngOnInit() {
@@ -87,6 +77,16 @@ export class HeaderComponent {
         this.selectedChannel = isActiveChannel
       }
     )
+  }
+
+
+  /**
+ * Resets navigation settings by closing any open channel, toggling the navigation drawer,
+ */
+  getBackToNav() {
+    this.mobileService.openChannel(false);
+    this.mobileService.toggleDrawe(true);
+    this.mobileService.setActiveChannel('');
   }
 
 

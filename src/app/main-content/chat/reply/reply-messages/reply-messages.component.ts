@@ -12,7 +12,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { FirebaseService } from '../../../../../assets/services/firebase-service';
 import tinymce, { RawEditorOptions } from 'tinymce';
 import { EditorModule } from '@tinymce/tinymce-angular';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import { FilePreviewDialogComponent } from '../../input-box/file-preview-dialog/file-preview-dialog.component';
 
@@ -67,40 +66,15 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
     public chatService: ChatService,
     private profileAuth: ProfileAuthentication,
     public firebaseService: FirebaseService,
-    private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {
   }
 
 
-  // isImage(url: string): boolean {
-  //   const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
-  //   const extension = this.getFileExtension(url).toLowerCase();
-  //   return imageExtensions.includes(extension);
-  // }
-
-
-  // getFileExtension(url: string): string {
-  //   return url.split('.').pop() || '';
-  // }
-
-
-
   /**
- * Emits an event indicating that a profile with the specified ID should be opened.
- * @param id The ID of the profile to open.
+ * Initializes the component by fetching and subscribing to the current user information.
+ * Updates the currentUser property with the fetched user information.
  */
-  openProfile(id: string) {
-    const opened = true;
-    const userId = id
-    this.hasOpened.emit({ opened, userId });
-  }
-
-
-  /**
-   * Initializes the component by fetching and subscribing to the current user information.
-   * Updates the currentUser property with the fetched user information.
-   */
   ngOnInit(): void {
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
@@ -112,8 +86,8 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
-   * Subscribes to message count changes and scrolls to the bottom of the view.
-   */
+ * Subscribes to message count changes and scrolls to the bottom of the view.
+ */
   ngAfterViewInit() {
     this.subscription.add(this.chatService.scrollToBottom$.subscribe(shouldScroll => {
       if (shouldScroll) {
@@ -123,6 +97,17 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
         }, 300);
       }
     }));
+  }
+
+
+  /**
+ * Emits an event indicating that a profile with the specified ID should be opened.
+ * @param id The ID of the profile to open.
+ */
+  openProfile(id: string) {
+    const opened = true;
+    const userId = id
+    this.hasOpened.emit({ opened, userId });
   }
 
 
@@ -165,18 +150,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
- * Determines the border radius style based on whether the sender matches the current user.
- * @param {string} sender - The ID of the message sender.
- * @returns {object} CSS style object with border-radius property.
- */
-  getMessageStyle(sender: string) {
-    return this.isCurrentUserSender(sender) ?
-      { 'border-radius': '30px 0 30px 30px' } :
-      { 'border-radius': '0 30px 30px 30px' };
-  }
-
-
-  /**
  * Checks if the date of the message at the specified index is different from the previous message.
  * @param {number} index The index of the message to compare with the previous one.
  * @returns {boolean} Returns true if the date of the current message is different from the previous one, otherwise false.
@@ -186,55 +159,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
     const currentDateFormatted = this.customDatePipe.transform(this.replies[index].time);
     const previousDateFormatted = this.customDatePipe.transform(this.replies[index - 1].time);
     return currentDateFormatted !== previousDateFormatted;
-  }
-
-
-  /**
-* Extracts the file name from a URL.
-* @param {string} url - The URL from which to extract the file name.
-* @returns {string} - The extracted file name.
-*/
-  // urlToFileName(url: string): string {
-  //   const decodedUrl = decodeURIComponent(url);
-  //   const parts = decodedUrl.split('/');
-  //   let fileName = parts[parts.length - 1];
-  //   fileName = fileName.split('?')[0];
-  //   return fileName;
-  // }
-
-  /**
-* Extracts the file name from a URL.
-* @param {string} url - The URL to extract the file name from.
-* @returns {string} - The extracted file name.
-*/
-  urlToFileName(url: string): string {
-    return url.split('/').pop() || '';
-  }
-
-
-
-  /**
-   * Initiates the file download process from a specified URL.
-   * @param {string} url - The URL of the file to download.
-   * @param {string} filename - The name to assign to the downloaded file.
-   */
-  async downloadFile(url: string, filename: string): Promise<void> {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Network response was not ok. Status: ${response.status}`);
-      }
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = filename || 'downloaded-file';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(blobUrl);
-      document.body.removeChild(a);
-    } catch (error) {
-    }
   }
 
 
@@ -261,7 +185,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  *
  * @param {string} messageId The ID of the message to react to.
  * @param {string} emote The emote (reaction) to add to the message.
- * @returns {void}
  */
   addReaction(messageId: string, emote: string) {
     this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true)
@@ -275,7 +198,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  * Then, it updates these preferences in the Firebase service.
  *
  * @param {string} emote The emote (reaction) to add/update.
- * @returns {void}
  */
   addToLastReaction(emote: string) {
     if (emote != this.getReactionEmote1()) {
@@ -293,7 +215,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  *
  * @param {string} id The ID of the message to edit.
  * @param {string} content The content of the message to edit.
- * @returns {void}
  */
   editMessage(id: string, content: string) {
     this.closeEditor();
@@ -306,8 +227,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  * Closes the editor instance associated with the currently editing message ID.
  * If an editor instance exists for the current editing message, it removes the instance.
  * Sets the editingMessageId to 'editOver' to indicate the editor is closed.
- *
- * @returns {void}
  */
   closeEditor() {
     const editorInstance = tinymce.get('editData-' + this.editingMessageId);
@@ -323,7 +242,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
    *
    * @param {boolean} safe - Whether to save the edited content.
    * @param {string} [messageId=''] - Optional. ID of the message being edited.
-   * @returns {void}
    */
   safeMessage(safe: boolean, messageId: string = '') {
     if (safe) {
@@ -387,6 +305,18 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
     this.dialog.open(FilePreviewDialogComponent, {
       data: { fileUrl: url, fileType: 'image' }
     });
+  }
+
+
+  /**
+* Determines the border radius style based on whether the sender matches the current user.
+* @param {string} sender - The ID of the message sender.
+* @returns {object} CSS style object with border-radius property.
+*/
+  getMessageStyle(sender: string) {
+    return this.isCurrentUserSender(sender) ?
+      { 'border-radius': '30px 0 30px 30px' } :
+      { 'border-radius': '0 30px 30px 30px' };
   }
 
 

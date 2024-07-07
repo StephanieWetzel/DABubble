@@ -5,7 +5,7 @@
     <div class="messages-section">
         <div class="no-message-container" *ngIf="chatService.noMessages === true && isDirectMessage()">
             <div class="other-user-container">
-                <img [src]="getOtherUserImg()" alt="" loading="lazy">
+                <img [src]="getOtherUserImg()" loading="lazy">
                 <span>{{ getOtherUserName() }}</span>
             </div>
             <p>
@@ -52,30 +52,18 @@
                             <span class="name">{{ chatService.getUserName(message.sendId) }} </span>
                             <span class="time">{{ message.time | customTime }}</span>
                         </div>
+
                         <div class="message-content"
                             [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
                             <p *ngIf="message.content" (ngModel)="currentContent">{{ message.content }}</p>
 
-
-
-
                             <div class="files-container" *ngIf="message.fileUrls.length > 0">
                                 <div *ngFor="let url of message.fileUrls" class="attached-file">
                                     <img (click)="openFilePreview(url)" [ngStyle]="getMessageStyle(message.sendId)"
-                                        [src]="url" alt="image" class="attached-img">
-
-                                    <!-- <img (click)="openFilePreview(url)" [ngStyle]="getMessageStyle(message.sendId)"
-                                        *ngIf="urlToFileName(url).endsWith('.pdf')" src="./assets/img/pdf.png"
-                                        alt="pdf:"> -->
-
+                                        [src]="url" alt="Vorschau" class="attached-img">
                                 </div>
                             </div>
-
-
-
-
                         </div>
-
 
                         <div class="reactions" *ngIf="message.reactions.length > 0">
                             <div *ngFor="let reaction of message.reactions"

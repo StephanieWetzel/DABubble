@@ -65,11 +65,11 @@ export class RegisterComponent {
 
 
   /**
- * Validator function for ensuring that a full name input contains both a first name and a last name.
- * Key is either an error-object or null (null = full name is given = no error).
- * Returns either 'required' error or 'fullName' error or no error.
- * @returns A validator function that checks if the full name input contains both a first name and a last name.
- */
+   * Validator to check if a full name is provided.
+   * 
+   * Ensures the input is not empty and contains at least two words.
+   *
+   */
   fullNameValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const value: string = control.value;

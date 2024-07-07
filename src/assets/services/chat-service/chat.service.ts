@@ -16,6 +16,7 @@ import { Editor } from 'tinymce';
 })
 export class ChatService implements OnDestroy {
   private firestore: Firestore = inject(Firestore);
+
   emoticons = ['👍', '👎', '😂', '😅', '🚀', '💯', '🥳', '🤯', '🤷‍♂️', '🤷', '👏', '🤩']
   showReply: boolean = false;
   messageIdReply = '';
@@ -75,7 +76,11 @@ export class ChatService implements OnDestroy {
   }
 
 
-  /** Initialize user and message subscriptions */
+  /**
+   * Initializes the user and messages.
+   * 
+   * Subscribes to user and channel changes to update the current user and messages.
+   */
   initializeUserAndMessages() {
     this.profileAuth.user$.subscribe(user => {
       if (user) {

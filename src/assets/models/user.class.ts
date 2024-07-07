@@ -8,6 +8,7 @@ export class User {
     lastReaction1: string;
     lastReaction2: string;
 
+
     /**
      * Constructs a new instance of the User class.
      * @param {any} [obj] - An object containing values used to initialize the user properties. If not provided, defaults will be set.

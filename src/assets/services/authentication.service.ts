@@ -11,7 +11,6 @@ import {
 import { Injectable } from '@angular/core';
 import { Auth, signInWithPopup, signOut } from '@angular/fire/auth';
 import { User } from '../../assets/models/user.class';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +20,8 @@ export class AuthenticationService {
 
   constructor(
     public auth: Auth,
-    private firestore: Firestore,
-    private router: Router) {
+    private firestore: Firestore
+  ) {
   }
 
 

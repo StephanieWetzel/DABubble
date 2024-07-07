@@ -136,19 +136,6 @@ export class HeadbarComponent {
 
 
   /**
- * Cleans up resources and subscriptions when the component is destroyed.
- * - Unsubscribes from `unsubscribeFromChannel` if it exists to prevent memory leaks.
- *
- * @returns {void} Returns nothing.
- */
-  ngOnDestroy() {
-    if (this.unsubscribeFromChannel) {
-      this.unsubscribeFromChannel();
-    }
-  }
-
-
-  /**
    * Retrieves the user ID of the currently logged-in user from an authentication service.
    */
   getAuthUserID() {
@@ -414,5 +401,18 @@ export class HeadbarComponent {
   removeChannel(channelToRemove: Channel) {
     this.selectedChannels = this.selectedChannels.filter(channel => channel.channelId !== channelToRemove.channelId);
     this.searchInput.setValue(this.searchInput.value);
+  }
+
+
+  /**
+* Cleans up resources and subscriptions when the component is destroyed.
+* - Unsubscribes from `unsubscribeFromChannel` if it exists to prevent memory leaks.
+*
+* @returns {void} Returns nothing.
+*/
+  ngOnDestroy() {
+    if (this.unsubscribeFromChannel) {
+      this.unsubscribeFromChannel();
+    }
   }
 }

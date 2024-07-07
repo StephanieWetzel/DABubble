@@ -18,7 +18,6 @@ import {
 import { Observable } from 'rxjs';
 import { Channel } from '../models/channel.class';
 import { User } from '../models/user.class';
-import { AuthenticationService } from './authentication.service';
 import { DirectMessage } from '../models/directMessage.class';
 import { ChatService } from './chat-service/chat.service';
 
@@ -28,7 +27,7 @@ import { ChatService } from './chat-service/chat.service';
 export class FirebaseService {
   firestore: Firestore = inject(Firestore);
 
-  constructor(private auth: AuthenticationService, private chatService: ChatService) { };
+  constructor(private chatService: ChatService) { };
 
 
   /**
@@ -249,15 +248,12 @@ export class FirebaseService {
 
 
   /**
-   * Checks if a direct message room exists in the Firestore database; if not, it creates a new room.
-   * This function first checks for the existence of a document corresponding to `roomId`.
-   * If the document does not exist, it creates a new `DirectMessage` instance using the provided user IDs
-   * and the room ID, then saves this new room data to Firestore.
-   * 
-   * @param {string} roomId - The unique identifier for the room.
-   * @param {string} currentUserID - The user ID of the current user.
-   * @param {string} otherUserID - The user ID of the other user involved in the direct message.
-   * @returns {Promise<void>} A promise that resolves when the check is complete and the room is created if necessary.
+   * Checks if a direct message room with the specified ID exists in Firestore.
+   * If it does not exist, it creates the room with the given user IDs.
+   *
+   * @param {string} roomId - The ID of the direct message room to check or create.
+   * @param {string} currentUserID - The ID of the current user.
+   * @param {string} otherUserID - The ID of the other user.
    */
   async checkAndCreateRoom(roomId: string, currentUserID: string, otherUserID: string): Promise<void> {
     const roomRef = doc(this.firestore, "directMessages", roomId);
@@ -305,14 +301,10 @@ export class FirebaseService {
 
 
   /**
-   * Checks if a channel name already exists in the Firestore database.
-   * This method queries the Firestore for documents in the 'channel' collection
-   * that match the specified name, limiting the query to the first match. It returns
-   * an observable that emits a boolean value indicating whether the channel name exists.
-   * 
-   * @param {string} name - The name of the channel to check for existence.
-   * @returns {Observable<boolean>} An observable that emits a single boolean value,
-   * true if the channel name exists, otherwise false, and then completes.
+   * Checks if a channel with the specified name exists in Firestore.
+   *
+   * @param {string} name - The name of the channel to check.
+   * @returns {Observable<boolean>} An observable that emits `true` if the channel exists, `false` otherwise.
    */
   checkChannelNameExists(name: string): Observable<boolean> {
     const channelsRef = collection(this.firestore, 'channel');
@@ -345,6 +337,13 @@ export class FirebaseService {
   }
 
 
+  /**
+ * Updates the last reaction fields for a given user in Firestore.
+ *
+ * @param {string} lastReaction1 - The first reaction to be updated.
+ * @param {string} lastReaction2 - The second reaction to be updated.
+ * @param {string} userId - The ID of the user whose reactions are to be updated.
+ */
   async updateLastReaction(lastReaction1: string, lastReaction2: string, userId: string) {
     const userRef = doc(this.firestore, "user", userId);
     await updateDoc(userRef, {

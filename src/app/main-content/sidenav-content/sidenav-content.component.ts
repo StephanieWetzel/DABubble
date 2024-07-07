@@ -133,13 +133,12 @@ export class SidenavContentComponent {
 
 
   /**
-   * Attaches real-time state information to an array of User objects.
-   * Retrieves the current state of each user from the real-time database
-   * and updates their corresponding state property in the fetchedUser array.
-   * Also triggers a state refresh using the authentication service.
+   * Attaches real-time state updates to an array of users.
    *
-   * @param {User[]} users - Array of User objects to attach state information to.
-   * @returns {void} Returns nothing.
+   * For each user, this function sets up a listener on the real-time database to update the user's state
+   * and refreshes the state in the authentication service whenever a state change is detected.
+   *
+   * @param {User[]} users - The array of users to attach state updates to.
    */
   attachStateToUsers(users: User[]) {
     users.forEach(user => {
