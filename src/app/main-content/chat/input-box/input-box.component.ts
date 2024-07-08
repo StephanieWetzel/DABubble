@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ProfileAuthentication } from '../../../../assets/services/profileAuth.service';
 import { User } from '../../../../assets/models/user.class';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { MatDialog } from '@angular/material/dialog';
@@ -45,7 +44,6 @@ export class InputBoxComponent {
         const content = this.getInputContent(editor);
         this.isContentEmpty = !content;
       });
-
       this.chatService.editorMessage = editor;
     }
   };
@@ -65,7 +63,6 @@ export class InputBoxComponent {
     private chatService: ChatService,
     private cdr: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    private profileAuth: ProfileAuthentication,
     public firestore: FirebaseService,
     public dialog: MatDialog
   ) { }
@@ -146,7 +143,7 @@ export class InputBoxComponent {
       message.sendId = this.chatService.currentUser.userId;
 
       if (this.selectedFiles.length > 0) {
-        const file = this.selectedFiles[0]; // Es wird nur die erste Datei verwendet
+        const file = this.selectedFiles[0];
         const fileUrl = await this.chatService.uploadFile(file);
         message.fileUrls.push(fileUrl);
       }
@@ -154,6 +151,7 @@ export class InputBoxComponent {
       await this.chatService.addMessage(message, channel);
     }
   }
+
 
   /**
    * Clears the input in the editor.

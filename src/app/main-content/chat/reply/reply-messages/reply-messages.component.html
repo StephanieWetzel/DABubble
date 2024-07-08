@@ -38,7 +38,6 @@
             </div>
         </div>
 
-
         <div *ngFor="let message of getList(); let i = index" class="message">
 
             <div class="reply-edit-message-container" *ngIf="editingMessageId === message.messageId"
@@ -51,7 +50,7 @@
                             class="edit-image-container">
                             <img (click)="openFilePreview(url)" [src]="url" alt="Bild Vorschau" class="edit-img">
                             <div class="attachment">
-                                <mat-icon (click)="removeImage(message.messageId, imgIndex)">close</mat-icon>
+                                <mat-icon (click)="removeImage(imgIndex)">close</mat-icon>
                             </div>
                         </div>
                     </div>
@@ -77,7 +76,6 @@
                             <span class="time">{{ message.time | customTime }}</span>
                         </div>
 
-
                         <div class="message-content"
                             [ngClass]="{'message-content-sender': isCurrentUserSender(message.sendId)}">
                             <p (ngModel)="currentContent">{{ message.content }}</p>
@@ -94,7 +92,6 @@
 
                     </div>
                 </div>
-
 
                 <div class="reactions" *ngIf="message.reactions.length > 0">
                     <div *ngFor="let reaction of message.reactions"

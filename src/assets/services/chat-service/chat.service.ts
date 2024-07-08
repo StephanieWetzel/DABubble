@@ -374,13 +374,22 @@ export class ChatService implements OnDestroy {
 
 
   /**
-   * Updates the content and file URLs of a message in Firestore.
-   * @param {string} messageId - The ID of the message to update.
-   * @param {string} content - The updated content of the message.
-   * @param {string[]} fileUrls - The updated file URLs of the message.
+   * Edits the content and file URLs of a message in the Firestore.
+   *
+   * @param {string} messageId - The ID of the message to be edited.
+   * @param {string} content - The new content of the message.
+   * @param {string[]} fileUrls - The new file URLs associated with the message.
+   * @param {boolean} isDirectMessage - Flag indicating whether the message is a direct message.
    */
-  async editMessage(messageId: string, content: string, fileUrls: string[]) {
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/`, messageId), {
+  async editMessage(messageId: string, content: string, fileUrls: string[], isDirectMessage: boolean) {
+    let collectionPath;
+    if (isDirectMessage) {
+      collectionPath = `directMessages/${this.currentChannel$.value}/messages`;
+    } else {
+      collectionPath = `channel/${this.currentChannel$.value}/messages`;
+    }
+
+    await updateDoc(doc(this.firestore, `${collectionPath}/${messageId}`), {
       content,
       fileUrls
     });
@@ -668,12 +677,21 @@ export class ChatService implements OnDestroy {
 
 
   /**
-   * Deletes an image URL from the fileUrls array of a message document in Firestore.
-   * @param {string} messageId - The ID of the message containing the image URL to delete.
-   * @param {string} imageUrl - The URL of the image to delete from the message's fileUrls array.
-   */
-  async deleteMessageImage(messageId: string, imageUrl: string) {
-    const messageDocRef = doc(this.firestore, `channel/${this.currentChannel$.value}/messages/`, messageId);
+ * Deletes an image URL from a message in the Firestore.
+ *
+ * @param {string} messageId - The ID of the message.
+ * @param {string} imageUrl - The URL of the image to be deleted.
+ * @param {boolean} isDirectMessage - Flag indicating whether the message is a direct message.
+ */
+  async deleteMessageImage(messageId: string, imageUrl: string, isDirectMessage: boolean) {
+    let collectionPath;
+    if (isDirectMessage) {
+      collectionPath = `directMessages/${this.currentChannel$.value}/messages`;
+    } else {
+      collectionPath = `channel/${this.currentChannel$.value}/messages`;
+    }
+
+    const messageDocRef = doc(this.firestore, `${collectionPath}/${messageId}`);
     const messageDocSnap = await getDoc(messageDocRef);
 
     if (messageDocSnap.exists()) {

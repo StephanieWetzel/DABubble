@@ -30,7 +30,6 @@
                 <div></div>
             </div>
 
-
             <div class="edit-message-container" *ngIf="editingMessageId === message.messageId"
                 [ngClass]="{'edit-visible': editingMessageId === message.messageId}">
                 <div class="edit-message">
@@ -40,7 +39,7 @@
                             class="edit-image-container">
                             <img (click)="openFilePreview(url)" [src]="url" alt="Bild Vorschau" class="edit-img">
                             <div class="attachment">
-                                <mat-icon (click)="removeImage(message.messageId, imgIndex)">close</mat-icon>
+                                <mat-icon (click)="removeImage(imgIndex)">close</mat-icon>
                             </div>
                         </div>
                     </div>
@@ -50,7 +49,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="message-container" *ngIf="editingMessageId != message.messageId"
                 [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}" [id]="message.messageId">

@@ -20,7 +20,6 @@ import { FilePreviewDialogComponent } from '../input-box/file-preview-dialog/fil
 import { SafeResourceUrl } from '@angular/platform-browser';
 
 
-
 @Component({
   selector: 'app-messages',
   standalone: true,
@@ -77,9 +76,9 @@ export class MessagesComponent implements AfterViewInit {
   editingMessageId: string = 'editOver';
   currentContent!: string;
   currentEditingContent: string = '';
-
   currentEditingFileUrls: string[] = [];
   originalEditingFileUrls: string[] = [];
+  deletedImageUrls: string[] = [];
 
   subscription = new Subscription();
   isShowingProfile: boolean = false;
@@ -232,13 +231,13 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
- * Removes an image from the current editing session for a message.
- * @param {string} messageId - The ID of the message from which the image is being removed.
- * @param {number} imgIndex - The index of the image to be removed from `currentEditingFileUrls`.
- */
-  async removeImage(messageId: string, imgIndex: number) {
+   * Removes an image from the current editing session and adds it to the list of deleted images.
+   *
+   * @param {number} imgIndex - The index of the image to be removed from `currentEditingFileUrls`.
+   */
+  removeImage(imgIndex: number) {
     const imageUrl = this.currentEditingFileUrls[imgIndex];
-    await this.chatService.deleteMessageImage(messageId, imageUrl);
+    this.deletedImageUrls.push(imageUrl);
     this.currentEditingFileUrls.splice(imgIndex, 1);
   }
 
@@ -249,17 +248,18 @@ export class MessagesComponent implements AfterViewInit {
   closeEditor() {
     this.editingMessageId = '';
     this.currentEditingContent = '';
-    this.currentEditingFileUrls = [...this.originalEditingFileUrls];
+    this.currentEditingFileUrls = [];
     this.originalEditingFileUrls = [];
   }
 
 
   /**
-   * Saves the edited message content and file URLs. If no content or file URLs are present,
-   * sets the message content to "Nachricht wurde gelöscht".
+   * Saves the edited message content and file URLs.
+   * If no content or file URLs are present, sets the message content to "Nachricht wurde gelöscht".
+   *
    * @param {string} messageId - The ID of the message being edited.
    */
-  saveEdit(messageId: string) {
+  async saveEdit(messageId: string) {
     const content = this.getInputContent(tinymce.get('editData-' + messageId));
     const message = this.messages.find((msg: any) => msg.messageId === messageId);
 
@@ -270,9 +270,16 @@ export class MessagesComponent implements AfterViewInit {
         message.content = content;
         message.fileUrls = this.currentEditingFileUrls;
       }
+
+      await this.chatService.editMessage(messageId, message.content, message.fileUrls, this.isDirectMessage());
+
+      for (const url of this.deletedImageUrls) {
+        await this.chatService.deleteMessageImage(messageId, url, this.isDirectMessage());
+      }
+
+      this.deletedImageUrls = [];
     }
 
-    this.chatService.editMessage(messageId, message.content, message.fileUrls);
     this.closeEditor();
   }
 
@@ -284,12 +291,11 @@ export class MessagesComponent implements AfterViewInit {
   cancelEdit(messageId: string) {
     const originalMessage = this.messages.find((msg: any) => msg.messageId === messageId);
     if (originalMessage) {
-      originalMessage.fileUrls = [...this.originalEditingFileUrls];
       this.currentEditingFileUrls = [...this.originalEditingFileUrls];
+      this.deletedImageUrls = [];
     }
     this.closeEditor();
   }
-
 
 
   /**

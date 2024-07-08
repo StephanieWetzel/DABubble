@@ -52,7 +52,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
   @Output() hasOpened = new EventEmitter<{ opened: boolean, userId: string }>();
 
-
   subscription = new Subscription;
   replies!: Message[];
   customDatePipe = new CustomDatePipe();
@@ -60,15 +59,12 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   currentContent!: string;
   editingMessageId: string = '';
   currentEditingContent: string = '';
-
   currentEditingFileUrls: string[] = [];
   originalEditingFileUrls: string[] = [];
-
   menuEditMessage: boolean = false;
-
   highlightSubscription!: Subscription;
-
   fileUrls: SafeResourceUrl[] = [];
+  deletedImageUrls: string[] = [];
 
 
   constructor(
@@ -218,10 +214,11 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
-   * Edits a message identified by its ID, updating the editor state with new content and file URLs.
-   * @param {string} id - The ID of the message being edited.
-   * @param {string} content - The new content of the message.
-   * @param {string[]} fileUrls - The new file URLs associated with the message.
+   * Edits a message by initializing the editor with the specified content and file URLs.
+   *
+   * @param {string} id - The ID of the message to be edited.
+   * @param {string} content - The content of the message to be edited.
+   * @param {string[]} fileUrls - The file URLs associated with the message.
    */
   editMessage(id: string, content: string, fileUrls: string[]) {
     this.closeEditor();
@@ -237,13 +234,13 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
-* Removes an image from the current editing session for a message.
-* @param {string} messageId - The ID of the message from which the image is being removed.
-* @param {number} imgIndex - The index of the image to be removed from `currentEditingFileUrls`.
-*/
-  async removeImage(messageId: string, imgIndex: number) {
+   * Removes an image from the current editing session.
+   *
+   * @param {number} imgIndex - The index of the image to be removed.
+   */
+  removeImage(imgIndex: number) {
     const imageUrl = this.currentEditingFileUrls[imgIndex];
-    await this.chatService.deleteReplyImage(messageId, imageUrl);
+    this.deletedImageUrls.push(imageUrl);
     this.currentEditingFileUrls.splice(imgIndex, 1);
   }
 
@@ -254,17 +251,18 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   closeEditor() {
     this.editingMessageId = '';
     this.currentEditingContent = '';
-    this.currentEditingFileUrls = [...this.originalEditingFileUrls];
+    this.currentEditingFileUrls = [];
     this.originalEditingFileUrls = [];
   }
 
 
   /**
- * Saves the edited message content and file URLs. If no content or file URLs are present,
- * sets the message content to "Nachricht wurde gelöscht".
- * @param {string} messageId - The ID of the message being edited.
- */
-  saveEdit(messageId: string) {
+   * Saves the edited message content and file URLs.
+   * If no content or file URLs are present, sets the message content to "Nachricht wurde gelöscht".
+   *
+   * @param {string} messageId - The ID of the message being edited.
+   */
+  async saveEdit(messageId: string) {
     const content = this.getInputContent(tinymce.get('editData-' + messageId));
     const message = this.replies.find((msg: any) => msg.messageId === messageId);
 
@@ -276,7 +274,13 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
         message.fileUrls = this.currentEditingFileUrls;
       }
 
-      this.chatService.editReplyMessage(messageId, message.content, message.fileUrls);
+      await this.chatService.editReplyMessage(messageId, message.content, message.fileUrls);
+
+      for (const url of this.deletedImageUrls) {
+        await this.chatService.deleteReplyImage(messageId, url);
+      }
+
+      this.deletedImageUrls = [];
     }
 
     this.closeEditor();
@@ -290,8 +294,8 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   cancelEdit(messageId: string) {
     const originalMessage = this.replies.find((msg: any) => msg.messageId === messageId);
     if (originalMessage) {
-      originalMessage.fileUrls = [...this.originalEditingFileUrls];
       this.currentEditingFileUrls = [...this.originalEditingFileUrls];
+      this.deletedImageUrls = [];
     }
     this.closeEditor();
   }
