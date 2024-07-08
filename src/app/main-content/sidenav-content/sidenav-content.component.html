@@ -3,11 +3,6 @@
     <img src="./assets/img/Workspace logo.png" alt="logo" />
     <h3>Devspace</h3>
   </div>
-  <div [ngClass]="!showBlueEdit ? 'edit' : 'edit-blue'" (mouseenter)="showBlueEdit = true"
-    (mouseleave)="showBlueEdit = false" (click)="writeNewMessage()">
-    <img src="./assets/icons/edit_square.png" *ngIf="!showBlueEdit" />
-    <img *ngIf="showBlueEdit" src="./assets/icons/edit_square_blue.png" />
-  </div>
 </section>
 <section class="search-mobile">
   <div class="search">

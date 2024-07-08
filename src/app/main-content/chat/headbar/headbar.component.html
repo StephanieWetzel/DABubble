@@ -98,11 +98,6 @@
                 </div>
                 <mat-icon matChipRemove>cancel</mat-icon>
             </mat-chip>
-            <div class="input-search br-32">
-                <!-- Changed input with new class and placeholder -->
-                <input [formControl]="searchInput" type="text"
-                    placeholder="An: #Channel, oder @jemand oder E-Mail Adresse">
-            </div>
         </mat-chip-listbox>
         <div class="search-results" *ngIf="searchResults.length > 0">
             <div>

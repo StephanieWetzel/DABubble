@@ -29,22 +29,35 @@
                 <span>{{ message.time | customDate }}</span>
                 <div></div>
             </div>
+
+
             <div class="edit-message-container" *ngIf="editingMessageId === message.messageId"
                 [ngClass]="{'edit-visible': editingMessageId === message.messageId}">
                 <div class="edit-message">
                     <editor [init]="editEditorInit" [id]="'editData-' + message.messageId"></editor>
+                    <div class="edit-images" *ngIf="currentEditingFileUrls.length > 0">
+                        <div *ngFor="let url of currentEditingFileUrls; let imgIndex = index"
+                            class="edit-image-container">
+                            <img (click)="openFilePreview(url)" [src]="url" alt="Bild Vorschau" class="edit-img">
+                            <div class="attachment">
+                                <mat-icon (click)="removeImage(message.messageId, imgIndex)">close</mat-icon>
+                            </div>
+                        </div>
+                    </div>
                     <div class="edit-btns">
-                        <button (click)="safeMessage(false)" class="break-btn">Abbrechen</button>
-                        <button (click)="safeMessage(true, message.messageId)" class="safe-btn">Speichern</button>
+                        <button (click)="cancelEdit(message.messageId)" class="break-btn">Abbrechen</button>
+                        <button (click)="saveEdit(message.messageId)" class="safe-btn">Speichern</button>
                     </div>
                 </div>
             </div>
+
+
             <div class="message-container" *ngIf="editingMessageId != message.messageId"
                 [ngClass]="{'message-container-sender': isCurrentUserSender(message.sendId)}" [id]="message.messageId">
                 <div class="avatar-and-message"
                     [ngClass]="{'avatar-and-message-sender': isCurrentUserSender(message.sendId)}">
                     <div class="avatar-container">
-                        <img (click)="showID(message.sendId)" [src]="chatService.getUserAvatar(message.sendId)">
+                        <img [src]="chatService.getUserAvatar(message.sendId)">
                     </div>
                     <div class="info-and-content"
                         [ngClass]="{'info-and-content-sender': isCurrentUserSender(message.sendId)}">
@@ -122,16 +135,19 @@
                                 </ul>
                             </mat-menu>
                             <div (click)="showReply(message)"><mat-icon class="outlined">chat_outline</mat-icon></div>
+
                             <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)"
                                 (mouseenter)="menuEditMessage = true" (mouseleave)="menuEditMessage = false">
                                 <div class="icon-container">
                                     <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
                                 </div>
                                 <div class="edit-text" *ngIf="menuEditMessage == true"
-                                    (click)="editMessage(message.messageId, message.content)">
+                                    (click)="editMessage(message.messageId, message.content, message.fileUrls)">
                                     <p>Nachricht bearbeiten</p>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>

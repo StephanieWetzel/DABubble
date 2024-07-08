@@ -97,33 +97,6 @@ export class ChatService implements OnDestroy {
 
 
   /**
-   * Loads the initial message for a thread based on messageId.
-   * @param {string} messageId - The ID of the message to load.
-   */
-  async loadInitialMessageForThread(messageId: string) {
-    const messageRef = doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${messageId}`);
-    const messageDoc = await getDoc(messageRef);
-    if (messageDoc.exists()) {
-      const messageData = messageDoc.data();
-      this.initialMessageForThread = new Message(messageData);
-      await this.loadFileUrlsForMessage(this.initialMessageForThread);
-    }
-  }
-
-
-  /**
-   * Load file URLs for a given message.
-   * @param {Message} message - The message object to load file URLs for.
-   */
-  async loadFileUrlsForMessage(message: Message) {
-    const urls = await Promise.all(message.fileUrls.map(async url => {
-      return url;
-    }));
-    message.fileUrls = urls;
-  }
-
-
-  /**
  * Highlights a specific message within a channel.
  * 
  * @param {string} messageId - The ID of the message to highlight.
@@ -401,24 +374,31 @@ export class ChatService implements OnDestroy {
 
 
   /**
-   * Edit the content of a message
-   * @param {string} messageId - The ID of the message
-   * @param {string} input - The new content of the message
+   * Updates the content and file URLs of a message in Firestore.
+   * @param {string} messageId - The ID of the message to update.
+   * @param {string} content - The updated content of the message.
+   * @param {string[]} fileUrls - The updated file URLs of the message.
    */
-  async editMessage(messageId: string, input: string) {
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/`, messageId), { content: input });
+  async editMessage(messageId: string, content: string, fileUrls: string[]) {
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/`, messageId), {
+      content,
+      fileUrls
+    });
   }
 
 
   /**
- * Edits the content of a specific reply message within a thread.
- * 
- * @param {string} messageId - The ID of the reply message to edit.
- * @param {string} input - The new content to update for the reply message.
- * @returns {Promise<void>} A promise that resolves once the message is successfully updated.
- */
-  async editReplyMessage(messageId: string, input: string) {
-    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.initialMessageForThread.messageId}/replies`, messageId), { content: input });
+   * Updates the content and file URLs of a specific reply message in Firestore.
+   *
+   * @param {string} messageId - The ID of the reply message to update.
+   * @param {string} content - The new content for the reply message.
+   * @param {string[]} fileUrls - The updated array of file URLs associated with the reply message.
+   */
+  async editReplyMessage(messageId: string, content: string, fileUrls: string[]) {
+    await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.initialMessageForThread.messageId}/replies`, messageId), {
+      content,
+      fileUrls
+    });
   }
 
 
@@ -683,6 +663,45 @@ export class ChatService implements OnDestroy {
   setEditorFocusReply() {
     if (this.editorReply) {
       this.editorReply.focus()
+    }
+  }
+
+
+  /**
+   * Deletes an image URL from the fileUrls array of a message document in Firestore.
+   * @param {string} messageId - The ID of the message containing the image URL to delete.
+   * @param {string} imageUrl - The URL of the image to delete from the message's fileUrls array.
+   */
+  async deleteMessageImage(messageId: string, imageUrl: string) {
+    const messageDocRef = doc(this.firestore, `channel/${this.currentChannel$.value}/messages/`, messageId);
+    const messageDocSnap = await getDoc(messageDocRef);
+
+    if (messageDocSnap.exists()) {
+      const messageData = messageDocSnap.data();
+      if (messageData && messageData['fileUrls']) {
+        const updatedFileUrls = messageData['fileUrls'].filter((url: string) => url !== imageUrl);
+        await updateDoc(messageDocRef, { fileUrls: updatedFileUrls });
+      }
+    }
+  }
+
+
+  /**
+   * Deletes an image URL from the fileUrls array of a specific reply message in Firestore.
+   *
+   * @param {string} messageId - The ID of the reply message containing the fileUrls array to update.
+   * @param {string} imageUrl - The URL of the image to remove from the fileUrls array.
+   */
+  async deleteReplyImage(messageId: string, imageUrl: string) {
+    const messageDocRef = doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.initialMessageForThread.messageId}/replies`, messageId);
+    const messageDocSnap = await getDoc(messageDocRef);
+
+    if (messageDocSnap.exists()) {
+      const messageData = messageDocSnap.data();
+      if (messageData && messageData['fileUrls']) {
+        const updatedFileUrls = messageData['fileUrls'].filter((url: string) => url !== imageUrl);
+        await updateDoc(messageDocRef, { fileUrls: updatedFileUrls });
+      }
     }
   }
 

@@ -210,13 +210,13 @@ section {
     z-index: 3;
 }
 
-.safe-btn {
+.break-btn {
     color: #444DF2;
     border: #797EF3 1px solid;
     background-color: white;
 }
 
-.break-btn {
+.safe-btn {
     background-color: #444DF2;
     color: white;
     border: #444DF2 1px solid;
@@ -304,6 +304,32 @@ section {
     .edit-text-reply {
         top: 50px;
         left: -160px;
+    }
+}
+
+.attachment {
+    border: 1px solid $bgPage;
+    background-color: $bgPage;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+
+
+    p {
+        margin: 0;
+        max-width: 80%;
+        line-break: anywhere;
+    }
+
+    mat-icon {
+        transform: scale(0.8);
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 }
 
@@ -686,4 +712,17 @@ app-user-detail {
 .highlight {
     background-color: #8c91dd;
     transition: background-color 0.5s ease;
+}
+
+.edit-image-container {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.edit-img {
+    width: fit-content;
+    height: 120px;
+    filter: drop-shadow(2px 4px 6px black);
+    border-radius: 16px;
+    cursor: pointer;
 }

@@ -392,3 +392,9 @@ ul {
 .d-none {
     display: none;
 }
+
+.edit-visible {
+    display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
+}

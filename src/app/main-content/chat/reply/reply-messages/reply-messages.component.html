@@ -40,12 +40,25 @@
 
 
         <div *ngFor="let message of getList(); let i = index" class="message">
-            <div class="reply-edit-message-container" *ngIf="editingMessageId === message.messageId">
+
+            <div class="reply-edit-message-container" *ngIf="editingMessageId === message.messageId"
+                [ngClass]="{'edit-visible': editingMessageId === message.messageId}">
                 <div class="reply-edit-message">
                     <editor [init]="replyEditEditorInit" [id]="'editData-' + message.messageId"></editor>
-                    <div class="reply-edit-btns">
-                        <button (click)="safeMessage(false)" class="break-btn">Abbrechen</button>
-                        <button (click)="safeMessage(true, message.messageId)" class="safe-btn">Speichern</button>
+
+                    <div class="edit-images" *ngIf="currentEditingFileUrls.length > 0">
+                        <div *ngFor="let url of currentEditingFileUrls; let imgIndex = index"
+                            class="edit-image-container">
+                            <img (click)="openFilePreview(url)" [src]="url" alt="Bild Vorschau" class="edit-img">
+                            <div class="attachment">
+                                <mat-icon (click)="removeImage(message.messageId, imgIndex)">close</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="edit-btns">
+                        <button (click)="cancelEdit(message.messageId)" class="break-btn">Abbrechen</button>
+                        <button (click)="saveEdit(message.messageId)" class="safe-btn">Speichern</button>
                     </div>
                 </div>
             </div>
@@ -130,16 +143,18 @@
                             </li>
                         </ul>
                     </mat-menu>
+
                     <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)"
                         (mouseenter)="menuEditMessage = true" (mouseleave)="menuEditMessage = false">
                         <div class="icon-container">
                             <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
                         </div>
                         <div class="edit-text edit-text-reply" *ngIf="menuEditMessage == true"
-                            (click)="editMessage(message.messageId, message.content)">
+                            (click)="editMessage(message.messageId, message.content, message.fileUrls)">
                             <p>Nachricht bearbeiten</p>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

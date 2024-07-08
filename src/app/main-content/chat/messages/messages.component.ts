@@ -17,6 +17,8 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { FirebaseService } from '../../../../assets/services/firebase-service';
 import { MatDialog } from '@angular/material/dialog';
 import { FilePreviewDialogComponent } from '../input-box/file-preview-dialog/file-preview-dialog.component';
+import { SafeResourceUrl } from '@angular/platform-browser';
+
 
 
 @Component({
@@ -43,21 +45,6 @@ import { FilePreviewDialogComponent } from '../input-box/file-preview-dialog/fil
 export class MessagesComponent implements AfterViewInit {
   @ViewChild('chatContainer') private chatContainer!: ElementRef<HTMLDivElement>;
 
-  messages;
-  time: any;
-  date: any;
-  menuEditMessage = false;
-  customDatePipe = new CustomDatePipe();
-  editingMessageId: string = 'editOver';
-  currentContent!: string;
-  currentEditingContent: string = '';
-  subscription = new Subscription();
-  isShowingProfile: boolean = false;
-  selectedProfileId: string = '';
-  highlightSubscription!: Subscription;
-
-  currentUser!: User;
-
   public editorId: string = `messages-${Date.now()}`;
 
   public editEditorInit: RawEditorOptions = {
@@ -80,6 +67,27 @@ export class MessagesComponent implements AfterViewInit {
       });
     }
   };
+
+
+  messages;
+  time: any;
+  date: any;
+  menuEditMessage = false;
+  customDatePipe = new CustomDatePipe();
+  editingMessageId: string = 'editOver';
+  currentContent!: string;
+  currentEditingContent: string = '';
+
+  currentEditingFileUrls: string[] = [];
+  originalEditingFileUrls: string[] = [];
+
+  subscription = new Subscription();
+  isShowingProfile: boolean = false;
+  selectedProfileId: string = '';
+  highlightSubscription!: Subscription;
+  currentUser!: User;
+
+  fileUrls: SafeResourceUrl[] = [];
 
 
   constructor(
@@ -205,29 +213,17 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
- * Initializes the TinyMCE editor for a specific message ID if it matches the currently editing message ID.
- * Sets the content of the editor to the current editing content.
- * @param {string} messageId - The ID of the message for which the editor is being initialized.
- */
-  onEditorInit(messageId: string) {
-    if (this.editingMessageId === messageId) {
-      const editorInstance = tinymce.get('editData-' + messageId);
-      if (editorInstance) {
-        editorInstance.setContent(this.currentEditingContent);
-      }
-    }
-  }
-
-
-  /**
-   * Prepares a message for editing by setting necessary states.
-   * @param {string} id - The ID of the message to edit.
-   * @param {string} content - The current content of the message.
+   * Edits a message identified by its ID, updating the editor state with new content and file URLs.
+   * @param {string} id - The ID of the message being edited.
+   * @param {string} content - The new content of the message.
+   * @param {string[]} fileUrls - The new file URLs associated with the message.
    */
-  editMessage(id: string, content: string) {
+  editMessage(id: string, content: string, fileUrls: string[]) {
     this.closeEditor();
     this.editingMessageId = id;
-    this.currentEditingContent = content
+    this.currentEditingContent = content;
+    this.currentEditingFileUrls = [...fileUrls];
+    this.originalEditingFileUrls = [...fileUrls];
     const editorInstance = tinymce.get('editData-' + id);
     if (editorInstance) {
       editorInstance.setContent(content);
@@ -236,33 +232,64 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
-   * Closes the message editor and clears related states.
-   */
-  closeEditor() {
-    const editorInstance = tinymce.get('editData-' + this.editingMessageId);
-    if (editorInstance) {
-      editorInstance.remove();
-    }
-    this.editingMessageId = 'editOver';
+ * Removes an image from the current editing session for a message.
+ * @param {string} messageId - The ID of the message from which the image is being removed.
+ * @param {number} imgIndex - The index of the image to be removed from `currentEditingFileUrls`.
+ */
+  async removeImage(messageId: string, imgIndex: number) {
+    const imageUrl = this.currentEditingFileUrls[imgIndex];
+    await this.chatService.deleteMessageImage(messageId, imageUrl);
+    this.currentEditingFileUrls.splice(imgIndex, 1);
   }
 
 
   /**
-  * Saves the edited message content.
-  * @param {boolean} safe - Determines whether to save the changes.
-  * @param {string} messageId - The ID of the message being saved.
-  */
-  safeMessage(safe: boolean, messageId: string = '') {
-    if (safe) {
-      const content = this.getInputContent(tinymce.get('editData-' + messageId));
-      const message = this.messages.find(msg => msg.messageId === messageId);
-      if (message) {
+ * Closes the message editor, resetting all editing-related state variables.
+ */
+  closeEditor() {
+    this.editingMessageId = '';
+    this.currentEditingContent = '';
+    this.currentEditingFileUrls = [...this.originalEditingFileUrls];
+    this.originalEditingFileUrls = [];
+  }
+
+
+  /**
+   * Saves the edited message content and file URLs. If no content or file URLs are present,
+   * sets the message content to "Nachricht wurde gelöscht".
+   * @param {string} messageId - The ID of the message being edited.
+   */
+  saveEdit(messageId: string) {
+    const content = this.getInputContent(tinymce.get('editData-' + messageId));
+    const message = this.messages.find((msg: any) => msg.messageId === messageId);
+
+    if (message) {
+      if (content.trim() === '' && this.currentEditingFileUrls.length === 0) {
+        message.content = 'Nachricht wurde gelöscht';
+      } else {
         message.content = content;
+        message.fileUrls = this.currentEditingFileUrls;
       }
-      this.chatService.editMessage(messageId, content);
+    }
+
+    this.chatService.editMessage(messageId, message.content, message.fileUrls);
+    this.closeEditor();
+  }
+
+
+  /**
+ * Cancels the editing of a message and restores original file URLs.
+ * @param {string} messageId - The ID of the message being edited.
+ */
+  cancelEdit(messageId: string) {
+    const originalMessage = this.messages.find((msg: any) => msg.messageId === messageId);
+    if (originalMessage) {
+      originalMessage.fileUrls = [...this.originalEditingFileUrls];
+      this.currentEditingFileUrls = [...this.originalEditingFileUrls];
     }
     this.closeEditor();
   }
+
 
 
   /**
