@@ -9,7 +9,7 @@
   <div class="p-pic mrB45">
     <div class="pic-cont">
       <img class="user-pic" [src]="user?.avatar" alt="user-pic" />
-      <div (click)="openEditAvatar()" class="edit-avatar-cont">
+      <div *ngIf="user?.userId !== 'qFPUf7Skn1W63jnFonnxvdck5jy2'" (click)="openEditAvatar()" class="edit-avatar-cont">
         <img class="edit-avatar-btn" src="./assets/icons/edit-mobile.png">
       </div>
     </div>
@@ -35,7 +35,8 @@
         </ng-template>
       </ng-template>
     </div>
-    <div (click)="userIsEditing()" class="edit"><img src="./assets/icons/edit-mobile.png"><span>Bearbeiten</span></div>
+    <div *ngIf="user?.userId !== 'qFPUf7Skn1W63jnFonnxvdck5jy2'" (click)="userIsEditing()" class="edit"><img
+        src="./assets/icons/edit-mobile.png"><span>Bearbeiten</span></div>
   </div>
 
   <div *ngIf="!isEditing" class="p-mail-cont mrB45">

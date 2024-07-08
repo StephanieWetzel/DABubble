@@ -134,7 +134,7 @@ export class ReplyInputBoxComponent {
       const file = input.files[0];
 
       if (file.size > 1024 * 1024) {
-        alert("Dateien dürfen nicht größer als 1 MB sein.");
+        alert("Dateien dürfen nicht größer als 1 MB sein!");
       } else {
         this.selectedFiles = [file];
         this.selectedFileNames = [file.name];
