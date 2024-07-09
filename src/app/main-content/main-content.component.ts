@@ -56,9 +56,6 @@ export class MainContentComponent {
   @HostListener('window:resize')
   onResize() {
     this.screenWidth = window.innerWidth;
-    if (this.screenWidth <= 820) {
-      this.isDrawerOpen = true;
-    }
   }
 
 

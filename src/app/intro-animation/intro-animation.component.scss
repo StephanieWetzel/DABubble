@@ -1,79 +1,3 @@
-@mixin image-start-animation-state {
-    transform: translateX(0) translateY(0) scale(1);
-}
-
-@mixin text-start-animation-state-0 {
-    transform: translateX(-100%) scale(1); // text out of sight to the left
-}
-
-@mixin text-start-animation-state-70 {
-    opacity: 1;
-    transform: translateX(0%) scale(1); // zooms out from behind img
-}
-
-@mixin imageAnimation {
-    @keyframes imageAnimation {
-        0% {
-            transform: translateX(100%); // starting position
-        }
-
-        50% {
-            transform: translateX(100%); // starting position
-        }
-
-        100% {
-            transform: translateX(0%); // img stops left
-        }
-    }
-}
-
-
-
-// BACKGROUND ANIMATION
-@keyframes backgroundFadeOut {
-    0% {
-        opacity: 1; // background visible
-    }
-
-    100% {
-        opacity: 0; // background hidden (fading)
-        z-index: -1;
-    }
-}
-
-
-// STANDARD IMAGE UP ANIMATION
-@keyframes imageUpAnimation {
-    0% {
-        transform: translateX(0) translateY(0) scale(1); // starting position
-    }
-
-    100% {
-        transform: translateX(-300%) translateY(-240%) scale(0.3); // final position (upper left)
-
-    }
-}
-
-
-// STANDARD TEXT ANIMATION
-@keyframes textAnimation {
-    0% {
-        transform: translateX(-100%) scale(1); // text out of sight to the left
-    }
-
-    70% {
-        opacity: 1; // text remains visible
-        transform: translateX(0%) scale(1); // zooms out from behind img
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(-180%) translateY(-1800%) scale(0.4); // zooms to final position upper left and gets smaller
-    }
-}
-
-
-
 .intro-container {
     height: 100vh;
     width: 100%;
@@ -103,331 +27,63 @@
         span {
             color: white;
             font-size: 80px;
-            animation: textAnimation 2s 1s forwards;
+            animation: textAnimation 1.5s 1s forwards;
             opacity: 0;
 
-            @media (min-width: 1920px) {
-                @keyframes textAnimationMin1920 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateX(-860px) translateY(-43vh) scale(0.3);
-                    }
-                }
-
-                animation: textAnimationMin1920 2s 1s forwards;
-            }
-
-            @media (max-width: 1920px) {
-                @keyframes textAnimationMax1920 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateX(-43vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                animation: textAnimationMax1920 2s 1s forwards;
-            }
-
-            @media (max-width: 1650px) {
-                @keyframes textAnimationMax1650 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateX(-42vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                animation: textAnimationMax1650 2s 1s forwards;
-            }
-
-            @media (max-width: 1350px) {
-                @keyframes textAnimationMax1350 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateX(-40vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                animation: textAnimationMax1350 2s 1s forwards;
-            }
-
-            @media (max-width: 1050px) {
-                @keyframes textAnimationMax1050 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateX(-38vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                animation: textAnimationMax1050 2s 1s forwards;
-            }
-
-            @media (max-width: 900px) {
-                @keyframes textAnimationMax900 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateX(-35vw) translateY(-42vh) scale(0.4);
-                    }
-                }
-
-                animation: textAnimationMax900 2s 1s forwards;
-            }
-
-            // mobile
             @media (max-width: 600px) {
-                @keyframes textAnimationMax600 {
-                    0% {
-                        @include text-start-animation-state-0;
-                    }
-
-                    70% {
-                        @include text-start-animation-state-70;
-                    }
-
-                    100% {
-                        opacity: 0.5;
-                        transform: translateY(-41vh) scale(1);
-                    }
-                }
-
-                animation: textAnimationMax600 2s 1s forwards;
                 font-size: 40px;
             }
         }
 
-
         img {
             height: 160px;
             width: auto;
-            animation: imageAnimation 1s forwards, imageUpAnimation 0.6s 2.4s forwards;
+            animation: imageAnimation 1s forwards;
 
-            @media (min-width: 1920px) {
-                @keyframes imageUpAnimationMin1920 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-680px) translateY(-43vh) scale(0.3);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMin1920 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1920px) {
-                @keyframes imageUpAnimationMax1920 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-35vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1920 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1800px) {
-                @keyframes imageUpAnimationMax1800 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-34vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1800 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1650px) {
-                @keyframes imageUpAnimationMax1650 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-32vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1650 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1500px) {
-                @keyframes imageUpAnimationMax1500 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-31vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1500 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1350px) {
-                @keyframes imageUpAnimationMax1350 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-28vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1350 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1200px) {
-                @keyframes imageUpAnimationMax1200 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-26vw) translateY(-43vh) scale(0.4);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1200 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 1050px) {
-                @keyframes imageUpAnimationMax1050 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-22vw) translateY(-42vh) scale(0.3);
-
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax1050 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 900px) {
-                @keyframes imageUpAnimationMax900 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-17vw) translateY(-42vh) scale(0.4);
-
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax900 0.6s 2.4s forwards;
-            }
-
-            @media (max-width: 750px) {
-                @keyframes imageUpAnimationMax750 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(-10vw) translateY(-42vh) scale(0.4);
-
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax750 0.6s 2.4s forwards;
-            }
-
-            // mobile
             @media (max-width: 600px) {
-                @keyframes imageUpAnimationMax600 {
-                    0% {
-                        @include image-start-animation-state;
-                    }
-
-                    100% {
-                        transform: translateX(2vw) translateY(-41vh) scale(1);
-                    }
-                }
-
-                @include imageAnimation();
-                animation: imageAnimation 1s forwards,
-                imageUpAnimationMax600 0.6s 2.4s forwards;
                 height: 80px;
             }
         }
+    }
+}
+
+
+
+
+@keyframes imageAnimation {
+    0% {
+        transform: translateX(100%); // starting position
+    }
+
+    50% {
+        transform: translateX(100%); // starting position
+    }
+
+    100% {
+        transform: translateX(0%); // img stops left
+    }
+}
+
+
+@keyframes backgroundFadeOut {
+    0% {
+        opacity: 1; // background visible
+    }
+
+    100% {
+        opacity: 0; // background hidden (fading)
+        z-index: -1;
+    }
+}
+
+
+@keyframes textAnimation {
+    0% {
+        transform: translateX(-100%) scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0%) scale(1);
     }
 }

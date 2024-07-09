@@ -1,9 +1,8 @@
 <section>
   <div class="logo-container">
-    <img class="back-arrow" *ngIf="isChannelOpen && screenWidth < 820" (click)="getBackToNav()"
-      src="./assets/icons/keyboard_arrow_down.png">
-    <img *ngIf="!isChannelOpen || screenWidth > 550" src="./assets/img/logo-header_complete.svg" alt="" />
-    <div class="mobile-cont" *ngIf="isChannelOpen && screenWidth < 550">
+    <img class="back-arrow" *ngIf="isChannelOpen" (click)="getBackToNav()" src="./assets/icons/keyboard_arrow_down.png">
+    <img *ngIf="!isChannelOpen" src="./assets/img/logo-header_complete.svg" alt="" />
+    <div class="mobile-cont" *ngIf="isChannelOpen">
       <img src="./assets/img/Workspace logo.png" alt="logo" />
       <h3>Devspace</h3>
     </div>
