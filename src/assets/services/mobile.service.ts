@@ -11,7 +11,7 @@ export class MobileService {
   drawerOpened = new BehaviorSubject<boolean>(false);
   drawerOpened$ = this.drawerOpened.asObservable();
 
-  activeChannel = new BehaviorSubject<string | null>('V4fl3CDNCrJMOp6Dro36');
+  activeChannel = new BehaviorSubject<string | null>('Gv0iivQSIwEPIJrroQyt');
   activeChannel$ = this.activeChannel.asObservable();
 
 

@@ -35,4 +35,14 @@ export class Channel {
             creator: this.creator
         }
     }
+
+
+    /**
+     * Removes a member from the channel based on the memberId.
+     *
+     * @param {string} memberId - The ID of the member to be removed.
+     */
+    removeMember(memberId: string) {
+        this.member = this.member.filter(member => member.id !== memberId);
+    }
 }

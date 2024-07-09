@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Firestore, collection, deleteDoc, doc, docData, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, deleteDoc, doc, docData, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { trigger, transition, animate, style } from '@angular/animations';
 import { AuthenticationService } from '../../../../assets/services/authentication.service';
+import { Channel } from '../../../../assets/models/channel.class';
 
 @Component({
   selector: 'app-choose-avatar',
@@ -44,6 +45,8 @@ export class ChooseAvatarComponent {
 
   containerWidth: number;
   containerHeight: number;
+
+  channel: Channel | null = null;
 
 
   constructor(
@@ -177,9 +180,9 @@ export class ChooseAvatarComponent {
  * @async
  */
   async deleteUserFromFirebase() {
+    await this.deleteUserFromChannel();
     await this.deleteUserFromDatabase();
     await this.auth.deleteUserFromAuth();
-    // await this.deleteUserFromChannel();
   }
 
 
@@ -200,15 +203,28 @@ export class ChooseAvatarComponent {
   }
 
 
+  /**
+   * Deletes the current user from the channel by removing their member entry.
+   * Updates the channel document in Firestore to reflect the removed member.
+   * 
+   * @async
+   * @returns {Promise<void>} A promise that resolves when the user is successfully removed from the channel.
+   * @throws {Error} Throws an error if there's an issue deleting the user from the channel.
+   */
+  async deleteUserFromChannel() {
+    try {
+      const channelId = 'Gv0iivQSIwEPIJrroQyt';
+      const channelDocRef = doc(this.firestore, 'channel', channelId);
+      const channelDoc = await getDoc(channelDocRef);
 
+      if (channelDoc.exists()) {
+        const channelData = new Channel(channelDoc.data());
+        channelData.removeMember(this.userId);
 
-  // async deleteUserFromChannel() {
-  //   try {
-  //     const channelDocRef = doc(this.firestore, 'channel', 'V4fl3CDNCrJMOp6Dro36');
-  //     const userDocRef = doc(channelDocRef, 'member', this.userId);
-  //     await deleteDoc(userDocRef);
-  //   } catch (error) {
-  //   }
-  // }
+        await updateDoc(channelDocRef, { member: channelData.member });
+      }
+    } catch (error) {
+    }
+  }
 
 }

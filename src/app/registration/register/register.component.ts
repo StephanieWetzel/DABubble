@@ -37,7 +37,7 @@ export class RegisterComponent {
   isMailFocused: boolean = false;
   isPasswordFocused: boolean = false;
   isHovered: boolean = false;
-  developerChannelId: string = 'V4fl3CDNCrJMOp6Dro36';
+  developerChannelId: string = 'Gv0iivQSIwEPIJrroQyt';
 
   containerWidth: number;
   containerHeight: number;
@@ -116,7 +116,6 @@ export class RegisterComponent {
  * 
  * @param formData - The sign-up form data.
  * @param userId - The ID of the user.
- * @returns An object containing the transformed user data.
  */
   transformSignUpData(formData: any, userId: string) {
     return {

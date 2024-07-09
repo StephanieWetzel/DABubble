@@ -22,7 +22,7 @@ export class ChatService implements OnDestroy {
   messageIdReply = '';
   messages: any[] = [];
   replies: Message[] = [];
-  currentChannel$: BehaviorSubject<string> = new BehaviorSubject<string>('V4fl3CDNCrJMOp6Dro36');
+  currentChannel$: BehaviorSubject<string> = new BehaviorSubject<string>('Gv0iivQSIwEPIJrroQyt');
   messageCount = new BehaviorSubject<number>(0);
   messageCount$ = this.messageCount.asObservable();
   dmPartnerID = new BehaviorSubject<string>('');

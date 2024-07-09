@@ -35,7 +35,7 @@ export class HeaderComponent {
   isChannelOpen!: boolean;
   isChannelOpenSub!: Subscription;
   keepMenuOpen: boolean = window.innerWidth <= 520;
-  selectedChannel: string | null = 'V4fl3CDNCrJMOp6Dro36';
+  selectedChannel: string | null = 'Gv0iivQSIwEPIJrroQyt';
   selectedChannelSub!: Subscription;
   debounceTime: any;
   @Output() openSidenav = new EventEmitter<void>();
@@ -95,11 +95,11 @@ export class HeaderComponent {
    */
   logout() {
     this.chatService.messages = [];
-    this.chatService.currentChannel$.next('V4fl3CDNCrJMOp6Dro36');
+    this.chatService.currentChannel$.next('Gv0iivQSIwEPIJrroQyt');
     this.chatService.isFirstLoad = true
     this.chatService.setIsDmRoom(false);
     this.chatService.setIsNewMessage(false);
-    this.mobileService.setActiveChannel('V4fl3CDNCrJMOp6Dro36');
+    this.mobileService.setActiveChannel('Gv0iivQSIwEPIJrroQyt');
     this.chatService.isFirstLoad = true;
     this.profileAuth.userLogout();
   }

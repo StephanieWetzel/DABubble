@@ -32,7 +32,7 @@ export class SidenavContentComponent {
   unsubUsers: Subscription | undefined;
   currentUser: string = '';
   screenWidth: number;
-  selectedChannel: string | null = 'V4fl3CDNCrJMOp6Dro36';
+  selectedChannel: string | null = 'Gv0iivQSIwEPIJrroQyt';
   selectedChannelSub!: Subscription;
   showBlueEdit: boolean = false;
   debounceTime: any;
