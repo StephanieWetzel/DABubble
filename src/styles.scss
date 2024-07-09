@@ -1,3 +1,10 @@
+::ng-deep .cdk-global-overlay-wrapper {
+    align-items: center !important;
+    margin-top: 0 !important;
+    justify-content: center !important;
+}
+
+
 html,
 body {
     margin: 0;
@@ -135,12 +142,6 @@ app-reply-input-box div .tox-toolbar__primary {
     position: absolute;
 
     transform: translateY(-20%);
-}
-
-.cdk-overlay-container {
-    @media(max-width: 520px) {
-        width: auto;
-    }
 }
 
 // style for search container

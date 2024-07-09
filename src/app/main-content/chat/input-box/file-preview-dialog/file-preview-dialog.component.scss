@@ -1,12 +1,14 @@
-img{
-    height: fit-content;
-    width: fit-content;
-}
-
-section{
-    min-width: 50vw;
-    min-height: 50vh;
+.dialog-content {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
 }
