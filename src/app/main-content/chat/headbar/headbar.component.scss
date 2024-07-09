@@ -470,6 +470,10 @@ app-member-oversight {
       position: absolute;
       top: 172px;
       right: 108px;
+
+      @media(max-width: 600px) {
+        position: initial;
+      }
     }
   }
 
