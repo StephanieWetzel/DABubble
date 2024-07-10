@@ -421,15 +421,6 @@ export class MessagesComponent implements AfterViewInit {
 
 
   /**
- * Toggles the state of the edit message menu.
- * If the menu is currently open, it closes it; if closed, it opens it.
- */
-  openEditMessage() {
-    this.menuEditMessage = !this.menuEditMessage;
-  }
-
-
-  /**
    * Converts a timestamp into a formatted date string.
    * @param {number} value - The timestamp to format.
    * @returns {string} - The formatted date string.

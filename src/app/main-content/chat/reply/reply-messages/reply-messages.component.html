@@ -48,7 +48,7 @@
                     <div class="edit-images" *ngIf="currentEditingFileUrls.length > 0">
                         <div *ngFor="let url of currentEditingFileUrls; let imgIndex = index"
                             class="edit-image-container">
-                            <img (click)="openFilePreview(url)" [src]="url" alt="Bild Vorschau" class="edit-img">
+                            <img [src]="url" alt="Bild Vorschau" class="edit-img">
                             <div class="attachment">
                                 <mat-icon (click)="removeImage(imgIndex)">close</mat-icon>
                             </div>
@@ -143,12 +143,9 @@
 
                     <div class="edit-message-options" *ngIf="isCurrentUserSender(message.sendId)"
                         (mouseenter)="menuEditMessage = true" (mouseleave)="menuEditMessage = false">
-                        <div class="icon-container">
-                            <mat-icon (click)="openEditMessage()">more_vertic</mat-icon>
-                        </div>
-                        <div class="edit-text edit-text-reply" *ngIf="menuEditMessage == true"
-                            (click)="editMessage(message.messageId, message.content, message.fileUrls)">
-                            <p>Nachricht bearbeiten</p>
+                        <div (click)="editMessage(message.messageId, message.content, message.fileUrls)"
+                            class="icon-container">
+                            <mat-icon>more_vertic</mat-icon>
                         </div>
                     </div>
 

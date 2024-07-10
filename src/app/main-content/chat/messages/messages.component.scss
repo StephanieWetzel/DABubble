@@ -201,10 +201,11 @@ section {
 
 .edit-btns {
     @include dFlex($jc: flex-end, $g: 16px);
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
+    // position: absolute;
+    // bottom: 16px;
+    // right: 16px;
     z-index: 3;
+    margin-top: 16px;
 }
 
 .reply-edit-btns {
@@ -729,7 +730,6 @@ app-user-detail {
     height: 120px;
     filter: drop-shadow(2px 4px 6px black);
     border-radius: 16px;
-    cursor: pointer;
 
     @media(max-width: 600px) {
         height: 64px;

@@ -314,14 +314,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
- * Toggles the edit message menu.
- */
-  openEditMessage() {
-    this.menuEditMessage = !this.menuEditMessage;
-  }
-
-
-  /**
  * Returns the first reaction emote of the current user.
  * If no reaction is set, returns a default emote.
  * 
