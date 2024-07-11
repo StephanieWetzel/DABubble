@@ -66,6 +66,8 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   fileUrls: SafeResourceUrl[] = [];
   deletedImageUrls: string[] = [];
 
+  replyCount: number | any;
+
 
   constructor(
     public chatService: ChatService,
@@ -81,6 +83,11 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  * Updates the currentUser property with the fetched user information.
  */
   ngOnInit(): void {
+    this.chatService.replyCount$.subscribe(count => {
+      this.replyCount = count;
+      console.log(this.replyCount)
+    });
+
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
       if (user) {

@@ -207,9 +207,17 @@ export class ChatService implements OnDestroy {
   }
 
 
-  /** Get the length of the replies for the current message */
+  /**
+   * Fetches the number of replies for the current message in the current channel.
+   * Updates the `replyCount` observable with the fetched count.
+   */
   async getRepliesLength() {
-    await getDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`))
+    if (this.messageIdReply && this.currentChannel$.value) {
+      const repliesCollection = collection(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`);
+      const snapshot = await getDocs(repliesCollection);
+      const replyCount = snapshot.size;
+      this.replyCount.next(replyCount);
+    }
   }
 
 
