@@ -83,17 +83,25 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  * Updates the currentUser property with the fetched user information.
  */
   ngOnInit(): void {
-    this.chatService.replyCount$.subscribe(count => {
-      this.replyCount = count;
-      console.log(this.replyCount)
-    });
-
+    this.getReplyCount();
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
       if (user) {
         this.currentUser = new User(user);
       }
     })
+  }
+
+
+  /**
+ * Subscribes to the replyCount observable from the ChatService to get the latest reply count.
+ * Updates the local replyCount variable with the latest value and logs it to the console.
+ */
+  getReplyCount() {
+    this.chatService.replyCount$.subscribe(count => {
+      this.replyCount = count;
+      console.log(this.replyCount)
+    });
   }
 
 
