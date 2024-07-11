@@ -101,6 +101,7 @@
                                 </ul>
                             </mat-menu>
                         </div>
+
                         <div class="answers" *ngIf="message.replies.length != 0">
                             <span class="a-count" (click)="showReply(message)">
                                 {{ message.replies.length }} Antwort{{ message.replies.length === 1 ? '' : 'en' }}
@@ -108,6 +109,7 @@
                             <span class="last">Letzte Antwort {{ getLastReplyTime(message.replies) | customTime
                                 }}</span>
                         </div>
+
                         <div class="options-container"
                             [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
                             <div (click)="addReaction(message.messageId, getReactionEmote1())"
