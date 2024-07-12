@@ -66,8 +66,6 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   fileUrls: SafeResourceUrl[] = [];
   deletedImageUrls: string[] = [];
 
-  replyCount: number | any;
-
 
   constructor(
     public chatService: ChatService,
@@ -83,24 +81,12 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  * Updates the currentUser property with the fetched user information.
  */
   ngOnInit(): void {
-    this.getReplyCount();
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
       if (user) {
         this.currentUser = new User(user);
       }
     })
-  }
-
-
-  /**
- * Subscribes to the replyCount observable from the ChatService to get the latest reply count.
- * Updates the local replyCount variable with the latest value.
- */
-  getReplyCount() {
-    this.chatService.replyCount$.subscribe(count => {
-      this.replyCount = count;
-    });
   }
 
 
@@ -154,7 +140,7 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
  */
   getList(): Message[] {
     this.replies = this.chatService.replies;
-    return this.chatService.replies;
+    return this.replies;
   }
 
 
@@ -379,6 +365,9 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.highlightSubscription) {
+      this.highlightSubscription.unsubscribe();
     }
   }
 }

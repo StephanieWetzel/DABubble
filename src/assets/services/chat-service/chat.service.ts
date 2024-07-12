@@ -36,6 +36,7 @@ export class ChatService implements OnDestroy {
 
   replyCount = new BehaviorSubject<number>(0);
   replyCount$ = this.replyCount.asObservable();
+
   currentUser!: User;
   userInitialized = new BehaviorSubject<boolean>(false);
   messageIdSource = new BehaviorSubject<string | null>(null);
@@ -208,12 +209,14 @@ export class ChatService implements OnDestroy {
 
 
   /**
-   * Fetches the number of replies for the current message in the current channel.
-   * Updates the `replyCount` observable with the fetched count.
+   * Asynchronously retrieves the number of replies for a given message in a specified channel.
+   *
+   * @param {string} messageId - The ID of the message for which to count replies.
+   * @param {string} channelId - The ID of the channel containing the message.
    */
-  async getRepliesLength() {
-    if (this.messageIdReply && this.currentChannel$.value) {
-      const repliesCollection = collection(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`);
+  async getRepliesLength(messageId: string, channelId: string) {
+    if (messageId && channelId) {
+      const repliesCollection = collection(this.firestore, `channel/${channelId}/messages/${messageId}/replies`);
       const snapshot = await getDocs(repliesCollection);
       const replyCount = snapshot.size;
       this.replyCount.next(replyCount);
@@ -273,9 +276,6 @@ export class ChatService implements OnDestroy {
   /**
    * Updates the messages in the current channel or direct messages based on the current state.
    * Fetches messages and their replies using Firestore queries and updates internal state accordingly.
-   * 
-   * @async
-   * @returns {void}
    */
   async updateMessages() {
     const ref = this.currentChannel$.value.length <= 25 ? this.getChannelMessagesQ() : this.getDirectMessagesQ(this.currentChannel$.value);
@@ -344,14 +344,12 @@ export class ChatService implements OnDestroy {
   /**
    * Retrieves replies for a message using a Firestore snapshot listener.
    * Updates the local `replies` array and `replyCount` observable with the fetched replies.
-   * 
-   * @returns {void}
    */
   getReplies() {
     this.unsubreplies = onSnapshot(this.getRepliesQ(), (list) => {
       this.replies = [];
       this.replies = this.loadMessages(list);
-      this.replyCount.next(this.replies.length)
+      this.replyCount.next(this.replies.length);
     })
   }
 
@@ -420,14 +418,43 @@ export class ChatService implements OnDestroy {
 
 
   /**
-  * Add a reply to a message
-  * @param {Message} message - The reply message object
-  */
+   * Adds a reply to a specific message.
+   * 
+   * @param {Message} message - The reply message to be added.
+   */
   async addReply(message: Message) {
     const docRef = await addDoc(this.getReplyRef(), message.toJSON(message));
     const docRefId = docRef.id;
     await updateDoc(doc(this.firestore, `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`, docRefId), { messageId: docRefId });
+
+    const newReply = new Message(message.toJSON(message));
+    newReply.messageId = docRefId;
+
+    const messageIndex = this.messages.findIndex(msg => msg.messageId === this.messageIdReply);
+    if (messageIndex !== -1) {
+      if (!this.messages[messageIndex].replies) {
+        this.messages[messageIndex].replies = [];
+      }
+      this.messages[messageIndex].replies.push(newReply);
+    }
+
+    this.updateReplyCount();
+
     this.scrollToBottom$.next(true);
+  }
+
+
+  /**
+   * Updates the count of replies across all messages and updates the replyCount subject.
+   */
+  updateReplyCount() {
+    this.replyCount.next(0);
+
+    const totalReplies = this.messages.reduce((count, message) => {
+      return count + (message.replies ? message.replies.length : 0);
+    }, 0);
+
+    this.replyCount.next(totalReplies);
   }
 
 

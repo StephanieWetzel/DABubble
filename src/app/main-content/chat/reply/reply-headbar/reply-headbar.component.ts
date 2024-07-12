@@ -21,4 +21,5 @@ export class ReplyHeadbarComponent {
   closeReply() {
     this.chatService.showReply = false;
   }
+
 }

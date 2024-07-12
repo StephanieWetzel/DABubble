@@ -31,11 +31,14 @@
                 </div>
 
             </div>
+
             <div class="answer-count-border">
-                <span>{{ replyCount}} Antwort{{ replyCount === 1 ? '' : 'en' }}</span>
+                <span>{{ chatService.replies.length}} Antwort{{
+                    chatService.replies.length === 1 ? '' : 'en' }}</span>
                 <div>
                 </div>
             </div>
+
         </div>
 
         <div *ngFor="let message of getList(); let i = index" class="message">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ChatService } from '../../../../assets/services/chat-service/chat.service';
 import { Message } from '../../../../assets/models/message.class';
 import { CommonModule, KeyValuePipe, NgClass } from '@angular/common';
@@ -88,12 +88,15 @@ export class MessagesComponent implements AfterViewInit {
 
   fileUrls: SafeResourceUrl[] = [];
 
+  replyCount: number | any;
+
 
   constructor(
     public chatService: ChatService,
     private profileAuth: ProfileAuthentication,
     public firebaseService: FirebaseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
     this.messages = this.chatService.messages;
   }
@@ -103,12 +106,25 @@ export class MessagesComponent implements AfterViewInit {
   * Initializes user information when the component is first created.
   */
   ngOnInit() {
+    this.getReplyCount();
     this.profileAuth.initializeUser();
     this.profileAuth.user$.subscribe((user) => {
       if (user) {
         this.currentUser = new User(user);
       }
     })
+  }
+
+
+  /**
+* Subscribes to the replyCount observable from the ChatService to get the latest reply count.
+* Updates the local replyCount variable with the latest value.
+*/
+  getReplyCount() {
+    this.replyCount = this.chatService.replyCount$.subscribe(count => {
+      this.replyCount = count;
+      this.cdr.detectChanges();
+    });
   }
 
 
@@ -328,7 +344,7 @@ export class MessagesComponent implements AfterViewInit {
    */
   getList(): Message[] {
     this.messages = this.chatService.messages;
-    return this.chatService.messages;
+    return this.messages;
   }
 
 
@@ -522,6 +538,9 @@ export class MessagesComponent implements AfterViewInit {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.highlightSubscription) {
+      this.highlightSubscription.unsubscribe();
     }
   }
 }
