@@ -363,7 +363,10 @@ export class MessagesComponent implements AfterViewInit {
    * @returns {boolean} - True if the current user is the sender.
    */
   isCurrentUserSender(sender: string) {
-    return sender === this.currentUser.userId;
+    if (this.currentUser && this.currentUser.userId) {
+      return sender === this.currentUser.userId;
+    }
+    return false;
   }
 
 
@@ -384,8 +387,10 @@ export class MessagesComponent implements AfterViewInit {
    * Retrieves the first custom reaction emote set by the user.
    * @returns {string} - The emote or a default if not set.
    */
-  getReactionEmote1(): string {
-    return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
+  getReactionEmote1(): string | any {
+    if (this.currentUser) {
+      return this.currentUser.lastReaction1 && this.currentUser.lastReaction1 ? this.currentUser.lastReaction1 : '🙌🏻';
+    }
   }
 
 
@@ -393,8 +398,10 @@ export class MessagesComponent implements AfterViewInit {
    * Retrieves the second custom reaction emote set by the user.
    * @returns {string} - The emote or a default if not set.
    */
-  getReactionEmote2(): string {
-    return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
+  getReactionEmote2(): string | any {
+    if (this.currentUser) {
+      return this.currentUser.lastReaction2 && this.currentUser.lastReaction2 ? this.currentUser.lastReaction2 : '✅';
+    }
   }
 
 

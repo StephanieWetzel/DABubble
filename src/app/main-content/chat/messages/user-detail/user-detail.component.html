@@ -1,7 +1,7 @@
 <section>
   <div class="p-head mrB45">
     <span>Profil</span>
-    <div (click)="closeProfile(true)" class="close-btn">
+    <div (click)="closeProfile(true); $event.stopPropagation()" class="close-btn">
       <mat-icon>close_outline</mat-icon>
     </div>
   </div>
@@ -42,11 +42,5 @@
       <span>E-Mail-Adresse</span>
     </div>
     <span class="mail"><b>{{ pUser?.email }}</b></span>
-  </div>
-  <div (click)="openDM()" class="dm-btn">
-    <div>
-      <img src="./assets/icons/dm-icon.png">
-      <span>Nachricht</span>
-    </div>
   </div>
 </section>

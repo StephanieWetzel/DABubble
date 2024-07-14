@@ -377,8 +377,13 @@ app-member-oversight {
   display: flex;
   justify-content: center;
 
-  @media (max-height: 880px) {
+  overflow-y: scroll;
+
+  @media (max-height: 880px) and (max-width: 600px) {
     background-color: #ffffff;
+  }
+
+  @media (max-height: 880px) {
     overflow-y: scroll;
   }
 
@@ -390,7 +395,7 @@ app-member-oversight {
     >.channel-info {
       background-color: #ffffff;
       border-radius: 30px;
-      margin-top: 156px;
+      // margin-top: 156px;
       max-width: 792px;
       padding: 40px 40px;
       margin-right: 68px;
@@ -420,7 +425,7 @@ app-member-oversight {
 }
 
 .channel-info-opened {
-  @media (min-width: 820px) {
+  @media (min-width: 821px) {
     margin-left: 410px !important;
   }
 }
@@ -470,7 +475,7 @@ app-member-oversight {
       width: 100%;
       max-width: 335px;
       position: absolute;
-      top: 172px;
+      // top: 172px;
       right: 108px;
 
       @media(max-width: 600px) {

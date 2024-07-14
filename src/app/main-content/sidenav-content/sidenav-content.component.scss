@@ -264,7 +264,8 @@
   }
 
   @media (max-height: 980px) {
-    max-height: 300px;
+    // max-height: 300px;
+    max-height: 288px;
   }
 
   @media (max-height: 670px) {
@@ -413,6 +414,8 @@
   @include dFlex(space-between, center);
   padding: 20px 30px 0px 30px;
 
+  background-color: white;
+
   @media (max-width: 600px) {
     padding-left: 72px;
   }
@@ -490,7 +493,7 @@
 
   @media (max-height: 670px) {
     font-size: 18px;
-    margin-bottom: -5px;
+    // margin-bottom: -5px;
   }
 
   /* Support for all WebKit browsers. */

@@ -1,171 +1,203 @@
 @import "./../../../../../styles.scss";
 
 section {
-    padding: 40px;
-    width: 60%;
-    max-width: 450px;
-    background-color: #FFFFFF;
-    border-radius: 32px;
-    @media(max-width: 600px) {
-      width: 70%;
-    }
-    @media(max-width: 520px) {
-      padding: 45px 20px;
-      width: 80%;
-    }
-    > .p-head {
-      width: 100%;
-      @include dFlex(space-between);
-      > span {
-        font-size: 24px;
-        font-weight: bold;
-        @media(max-width: 520px) {
-          margin-bottom: 15px;
-        }
-      }
-      > .close-btn {
-        height: 40px;
-        width: 40px;
-        border-radius: 50%;
-        @include dFlex();
-        &:hover {
-          cursor: pointer;
-          background-color: #eceffe;
-          mat-icon {
-            color: #535af1;
-          }
-        }
-      }
-    }
-  
-    > .p-pic {
-      width: 100%;
-      @include dFlex(center, center);
-      > .pic-cont {
-        width: 120px;
-        height: 120px;
-        @include dFlex(center, center);
-        > img {
-          height: 120px;
-          width: 120px;
-          border-radius: 50%;
-          @media(max-width: 820px) {
-            height: 120px;
-            width: 120px;
-          }
-        }
-      }
-    }
-  
-    > .p-name-cont {
-      width: 100%;
-      @include dFlex(space-between, flex-start);
-      > .name-status {
-        @include dFlex(flex-start, flex-start, 15px, column);
-        margin-bottom: 15px;
-        > span {
-          font-size: 20px;
-          font-weight: bold;
-        }
-        > div {
-          @include dFlex(flex-start, center, 15px);
-          > img {
-            height: 16px;
-            width: 16px;
-          }
-          > span {
-            font-size: 18px;
-          }
-        }
-      }
-      > .edit {
-        width: 90px;
-        height: 25px;
-        color: #535af1;
-        transition: all 175ms;
-        @media(max-width: 520px) {
-          display: flex;
-          justify-content: flex-end;
-        }
-        > span {
-          font-size: 18px;
-          @media(max-width: 520px) {
-            display: none;
-          }
-        }
-        > img {
-          display: none;
-          border-radius: 50%;
-          background-color: #eceefe;
-          padding: 4px;
-          @media(max-width: 520px) {
-            display: flex;
-            height: 24px;
-          }
-        }
-        &:hover {
-          font-weight: bold;
-          font-size: 19px;
-          cursor: pointer;
-        }
-      }
-    }
-  
-    > .p-mail-cont {
-      width: 100%;
-      @include dFlex(flex-start, flex-start, 0, column);
-      > .mail-content {
-        @include dFlex(flex-start, center, 20px);
-        margin-bottom: 15px;
-        > div {
-          @include dFlex();
-          height: 20px;
-          width: 25px;
-          > mat-icon {
-            height: 20px;
-            width: 25px;
-          }
-        }
-        > span {
-          font-size: 20px;
-          font-weight: bold;
-        }
-      }
-      > .mail {
-          width: 100%;
-          > b {
-              font-size: 18px;
-              font-weight: 600;
-              color: #1381FF;
-              padding-left: 50px;
-          }
-      }
-    }
-  
-    > .dm-btn {
-      width: 100%;
-      @include dFlex(center, center);
-      &:hover {
-        cursor: pointer;
-      }
-      > div {
-          @include dFlex(center,center, );
-          width: 164px;
-          height: 49px;
-          background-color: #1381FF;
-          border-radius: 32px;
-          gap: 10px;
-          > span {
-              color: #FFFFFF;
-              font-size: 18px;
-              font-weight: bold;
-          }
-      }
-  
-    }
-  
+  padding: 40px;
+  width: 60%;
+  max-width: 450px;
+  background-color: #FFFFFF;
+  border-radius: 32px;
+
+  @media(max-width: 600px) {
+    width: 70%;
   }
 
-  .mrB45 {
-    margin-bottom: 45px;
+  @media(max-width: 520px) {
+    padding: 45px 20px;
+    width: 80%;
   }
+
+  >.p-head {
+    width: 100%;
+    @include dFlex(space-between);
+
+    >span {
+      font-size: 24px;
+      font-weight: bold;
+
+      @media(max-width: 520px) {
+        margin-bottom: 15px;
+      }
+    }
+
+    >.close-btn {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      @include dFlex();
+
+      &:hover {
+        cursor: pointer;
+        background-color: #eceffe;
+
+        mat-icon {
+          color: #535af1;
+        }
+      }
+    }
+  }
+
+  >.p-pic {
+    width: 100%;
+    @include dFlex(center, center);
+
+    >.pic-cont {
+      width: 120px;
+      height: 120px;
+      @include dFlex(center, center);
+
+      >img {
+        height: 120px;
+        width: 120px;
+        border-radius: 50%;
+
+        @media(max-width: 820px) {
+          height: 120px;
+          width: 120px;
+        }
+      }
+    }
+  }
+
+  >.p-name-cont {
+    width: 100%;
+    @include dFlex(space-between, flex-start);
+
+    >.name-status {
+      @include dFlex(flex-start, flex-start, 15px, column);
+      margin-bottom: 15px;
+
+      >span {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      >div {
+        @include dFlex(flex-start, center, 15px);
+
+        >img {
+          height: 16px;
+          width: 16px;
+        }
+
+        >span {
+          font-size: 18px;
+        }
+      }
+    }
+
+    >.edit {
+      width: 90px;
+      height: 25px;
+      color: #535af1;
+      transition: all 175ms;
+
+      @media(max-width: 520px) {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      >span {
+        font-size: 18px;
+
+        @media(max-width: 520px) {
+          display: none;
+        }
+      }
+
+      >img {
+        display: none;
+        border-radius: 50%;
+        background-color: #eceefe;
+        padding: 4px;
+
+        @media(max-width: 520px) {
+          display: flex;
+          height: 24px;
+        }
+      }
+
+      &:hover {
+        font-weight: bold;
+        font-size: 19px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  >.p-mail-cont {
+    width: 100%;
+    @include dFlex(flex-start, flex-start, 0, column);
+
+    >.mail-content {
+      @include dFlex(flex-start, center, 20px);
+      margin-bottom: 15px;
+
+      >div {
+        @include dFlex();
+        height: 20px;
+        width: 25px;
+
+        >mat-icon {
+          height: 20px;
+          width: 25px;
+        }
+      }
+
+      >span {
+        font-size: 20px;
+        font-weight: bold;
+      }
+    }
+
+    >.mail {
+      width: 100%;
+
+      >b {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1381FF;
+        // padding-left: 50px;
+      }
+    }
+  }
+
+  >.dm-btn {
+    width: 100%;
+    @include dFlex(center, center);
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    >div {
+      @include dFlex(center, center, );
+      width: 164px;
+      height: 49px;
+      background-color: #1381FF;
+      border-radius: 32px;
+      gap: 10px;
+
+      >span {
+        color: #FFFFFF;
+        font-size: 18px;
+        font-weight: bold;
+      }
+    }
+
+  }
+
+}
+
+.mrB45 {
+  margin-bottom: 45px;
+}

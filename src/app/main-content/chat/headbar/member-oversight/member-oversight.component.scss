@@ -132,7 +132,16 @@
 
     >app-user-detail {
       @include dFlex(center, center);
-      margin-top: 173px;
+      // margin-top: 173px;
+      background-color: white;
+      height: 100%;
+      border-radius: 30px;
+      border-top-right-radius: 0px !important;
+
+      @media(max-height: 1023px) and (max-width: 1023px) and (hover: none) {
+        position: fixed;
+        width: 100%;
+      }
     }
   }
 }

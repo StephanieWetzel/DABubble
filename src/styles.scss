@@ -88,6 +88,10 @@ app-reply-input-box div .tox-toolbar__primary {
     cursor: pointer !important;
     border-radius: 50% !important;
 
+    @media(hover: none) {
+        margin-left: 32px !important;
+    }
+
     svg {
         margin: 0 0 !important;
     }
