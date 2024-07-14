@@ -78,7 +78,8 @@
 
                         <div class="reactions" *ngIf="message.reactions.length > 0">
                             <div *ngFor="let reaction of message.reactions"
-                                (click)="addReaction(message.messageId, reaction.emote)" class="reaction-container">
+                                (click)="addReaction(message.messageId, reaction.emote, isDirectMessage())"
+                                class="reaction-container">
                                 <span class="emote">{{ reaction.emote }}</span><span class="r-count">{{ reaction.count
                                     }}</span>
                                 <div class="reaction-info"
@@ -95,7 +96,7 @@
                             <mat-menu #down_menu="matMenu" xPosition="before">
                                 <ul>
                                     <li *ngFor="let emote of chatService.emoticons"
-                                        (click)="addReaction(message.messageId, emote)">
+                                        (click)="addReaction(message.messageId, emote, isDirectMessage())">
                                         {{ emote }}
                                     </li>
                                 </ul>
@@ -112,13 +113,13 @@
 
                         <div class="options-container"
                             [ngClass]="{'options-container-sender': isCurrentUserSender(message.sendId)}">
-                            <div (click)="addReaction(message.messageId, getReactionEmote1())"
+                            <div (click)="addReaction(message.messageId, getReactionEmote1(), isDirectMessage())"
                                 class="last-reaction-container">
                                 <div class="last-reaction">
                                     {{ getReactionEmote1() }}
                                 </div>
                             </div>
-                            <div (click)="addReaction(message.messageId, getReactionEmote2())"
+                            <div (click)="addReaction(message.messageId, getReactionEmote2(), isDirectMessage())"
                                 class="last-reaction-container">
                                 <div class="last-reaction">
                                     {{ getReactionEmote2() }}
@@ -129,7 +130,7 @@
                             <mat-menu #menu="matMenu" xPosition="before">
                                 <ul>
                                     <li *ngFor="let emote of chatService.emoticons"
-                                        (click)="addReaction(message.messageId, emote)">
+                                        (click)="addReaction(message.messageId, emote, isDirectMessage())">
                                         {{ emote }}
                                     </li>
                                 </ul>

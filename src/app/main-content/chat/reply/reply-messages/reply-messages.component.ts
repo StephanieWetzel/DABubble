@@ -185,14 +185,13 @@ export class ReplyMessagesComponent implements AfterViewInit, OnInit {
 
 
   /**
- * Adds a reaction (emote) to a message identified by its ID.
- * This function calls the 'reactOnMessage' method from 'chatService' to add the reaction and then adds the emote to the last reactions list.
- *
- * @param {string} messageId The ID of the message to react to.
- * @param {string} emote The emote (reaction) to add to the message.
- */
-  addReaction(messageId: string, emote: string) {
-    this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true)
+   * Adds a reaction to a message and updates the user's last used reactions.
+   * @param {string} messageId - The ID of the message to react to.
+   * @param {string} emote - The emote to use for the reaction.
+   * @param {boolean} [isDirectMessage=false] - Indicates if the reaction is for a direct message.
+   */
+  addReaction(messageId: string, emote: string, isDirectMessage: boolean = false) {
+    this.chatService.reactOnMessage(messageId, emote, this.currentUser.name, true, isDirectMessage)
     this.addToLastReaction(emote);
   }
 

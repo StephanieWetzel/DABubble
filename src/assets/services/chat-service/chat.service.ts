@@ -491,17 +491,18 @@ export class ChatService implements OnDestroy {
 
 
   /**
- * Reacts to a message by adding or updating a reaction.
- * 
- * @param {string} messageId - The ID of the message to react to.
- * @param {string} emote - The emote or reaction to add/update.
- * @param {string} user - The user adding the reaction.
- * @param {boolean} reply - Indicates whether the reaction is for a reply message.
- * @returns {Promise<void>} A promise that resolves once the reaction is successfully added/updated.
- */
-  async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean) {
+   * Adds a reaction to a message in either a direct message or a channel.
+   * @param {string} messageId - The ID of the message to react to.
+   * @param {string} emote - The emote to use for the reaction.
+   * @param {string} user - The name of the user reacting.
+   * @param {boolean} reply - Whether the reaction is for a reply.
+   * @param {boolean} isDirectMessage - Whether the message is a direct message.
+   */
+  async reactOnMessage(messageId: string, emote: string, user: string, reply: boolean, isDirectMessage: boolean) {
     let path;
-    if (reply) {
+    if (isDirectMessage) {
+      path = `directMessages/${this.currentChannel$.value}/messages`;
+    } else if (reply) {
       path = `channel/${this.currentChannel$.value}/messages/${this.messageIdReply}/replies`;
     } else {
       path = `channel/${this.currentChannel$.value}/messages`;
